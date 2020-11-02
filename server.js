@@ -8,8 +8,6 @@ const resolvers = require('./graphql/resolvers/index')
 const typeDefs = require('./graphql/typeDefs')
 
 
-
-
 //setting up apollo
 const server = new ApolloServer({
     typeDefs,

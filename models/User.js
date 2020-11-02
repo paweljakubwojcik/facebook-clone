@@ -4,7 +4,7 @@ const userSchema = new Schema({
     username: String,  // required i s handled by GraphQL
     password: String,
     email: String,
-    createdAt: Date,
+    createdAt: String,
 })
 
 module.exports = model('User', userSchema)
