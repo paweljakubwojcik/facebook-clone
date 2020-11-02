@@ -1,0 +1,16 @@
+{
+  "name": "facebook-clone",
+  "version": "1.0.0",
+  "description": "facebook clone with limited features",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "author": "Me",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.19.0",
+    "graphql": "^15.4.0",
+    "mongoose": "^5.10.11"
+  }
+}
