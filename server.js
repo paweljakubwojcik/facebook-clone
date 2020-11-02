@@ -11,7 +11,8 @@ const typeDefs = require('./graphql/typeDefs')
 //setting up apollo
 const server = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
+    context: ({ req }) => ({ req }) //so we have req.body inside the context argument in resolver
 })
 
 //connecting to DB
