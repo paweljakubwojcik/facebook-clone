@@ -59,25 +59,26 @@ module.exports = {
                 throw new UserInputError('Errors', { errors })
             }
             // Make sure user doesn't already exist 
-            const user = await User.findOne({ username })
+            const user = await User.findOne({ $or: [{ username }, { email }] })
             if (user) {
-                //specific error from apollo server
-                throw new UserInputError('Username is taken', {
-                    //payloads for front end to display messages
-                    errors: {
-                        username: 'This username is taken'
-                    }
-                })
-            }
-            const userEmail = await User.findOne({ email })
-            if (userEmail) {
-                //specific error from apollo server
-                throw new UserInputError('Email already registered', {
-                    //payloads for front end to display messages
-                    errors: {
-                        email: 'Email already registered, forgot password?'
-                    }
-                })
+                if (user.username === username) {
+                    //specific error from apollo server
+                    throw new UserInputError('Username is taken', {
+                        //payloads for front end to display messages
+                        errors: {
+                            username: 'This username is taken'
+                        }
+                    })
+                }
+                if (user.email === email) {
+                    //specific error from apollo server
+                    throw new UserInputError('Email already registered', {
+                        //payloads for front end to display messages
+                        errors: {
+                            email: 'Email already registered, forgot password?'
+                        }
+                    })
+                }
             }
 
             // hash password & create auth token
@@ -94,7 +95,6 @@ module.exports = {
 
             //creating validation token
             const token = generateToken(res)
-            console.log(res._doc)
             return {
                 ...res._doc,
                 id: res._id,
