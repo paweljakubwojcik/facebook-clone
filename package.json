@@ -4,7 +4,8 @@
   "description": "facebook clone with limited features",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start": "node server.js"
   },
   "author": "Me",
   "license": "ISC",
