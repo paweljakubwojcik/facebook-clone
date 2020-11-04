@@ -15,13 +15,16 @@ const server = new ApolloServer({
     context: ({ req }) => ({ req }) //so we have req.body inside the context argument in resolver
 })
 
-//connecting to DB
-mongoose.connect(MONGODB_KEY, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log(`Mongo connected`)
-        // starting up a server
-        return server.listen({ port: 5000 })
-    })
-    .then(res => {
-        console.log(`server running at ${res.url}`)
-    })
+
+
+
+    ;   //  make sure to add a semicolumn before IIFE's
+(async () => {
+    //connecting to DB
+    await mongoose.connect(MONGODB_KEY, { useNewUrlParser: true, useUnifiedTopology: true })
+    console.log(`Mongo connected`)
+
+    // starting up a server
+    const res = await server.listen({ port: 5000 })
+    console.log(`server running at ${res.url}`)
+})()
