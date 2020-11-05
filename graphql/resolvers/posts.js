@@ -1,4 +1,4 @@
-const { AuthenticationError } = require('apollo-server')
+const { AuthenticationError, UserInputError } = require('apollo-server')
 const Post = require('../../models/Post');
 const { Mutation } = require('./users');
 const checkAuth = require('../../utils/checkAuth')
@@ -34,13 +34,16 @@ module.exports = {
                 body,
                 user: user.id,
                 username: user.username,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                likes: [],
+                comments: []
             })
 
             const post = await newPost.save()
 
             return post
         },
+
         async deletePost(_, { postId }, context) {
             const user = checkAuth(context)
             try {
@@ -54,6 +57,28 @@ module.exports = {
             } catch (e) {
                 throw new Error(e)
             }
-        }
+        },
+
+        async likePost(_, { postId }, context) {
+            const { username } = checkAuth(context)
+            try {
+                const post = await Post.findById(postId)
+                if (post.likes.find(like => like.username === username)) {
+                    // Post already liked
+                    post.likes = post.likes.filter(like => like.username !== username)
+                } else {
+                    post.likes.push({
+                        username,
+                        createdAt: new Date().toISOString()
+                    })
+                }
+                await post.save()
+                return post
+            } catch (e) {
+                throw new UserInputError(e)
+            }
+        },
+
+
     }
 }

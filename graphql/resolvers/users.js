@@ -34,13 +34,12 @@ module.exports = {
             }
             //finding user in DB
             const user = await User.findOne({ username })
-            //when user isnt found
-            if (!user) {
+            if (!user) { //when user isnt found
                 errors.general = 'User not found'
                 throw new UserInputError('User not found', { errors })
             }
             const match = await bcrypt.compare(password, user.password)
-            if (!match) {
+            if (!match) { //when password is invalid
                 errors.general = 'Wrong password'
                 throw new UserInputError('Wrong password', { errors })
             }
@@ -58,7 +57,7 @@ module.exports = {
             if (!valid) {
                 throw new UserInputError('Errors', { errors })
             }
-            // Make sure user doesn't already exist 
+            // Make sure user with same username or email doesn't already exist 
             const user = await User.findOne({ $or: [{ username }, { email }] })
             if (user) {
                 if (user.username === username) {
@@ -83,7 +82,6 @@ module.exports = {
 
             // hash password & create auth token
             password = await bcrypt.hash(password, 12)
-
             const newUser = new User({
                 email,
                 username,
