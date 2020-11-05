@@ -30,6 +30,10 @@ module.exports = {
             //if check auth fails to confirm token, error is being thrown
             // so if get to this blok of code thats means [user] definetly exists
 
+            if (body.trim() === "") {
+                throw new Error('Post body must not be empty')
+            }
+
             const newPost = new Post({
                 body,
                 user: user.id,
