@@ -1,16 +1,12 @@
 .skeleton.text {
     width: 100%;
-    height: 5px;
 }
 .skeleton.title {
     width: 100px;
-    height: 10px;
-    margin-bottom: 15px;
 }
 .skeleton.avatar {
     width: 40px;
     height: 40px;
-    margin: 10px;
     border-radius: 50%;
 }
 .skeleton.thumbnail {
@@ -18,32 +14,3 @@
     height: 100px;
 }
 
-/* animation */
-.shimmer-wrapper {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-}
-
-.shimmer-wrapper .shimmer {
-    width: 50%;
-    height: 100%;
-    background-color: #ffffff33;
-    box-shadow: 0 0 30px 15px #ffffff11;
-    animation: shimmer 2s infinite;
-    filter: blur(10px);
-}
-
-@keyframes shimmer {
-    0% {
-        transform: translateX(-300%) skewX(-20deg);
-    }
-    50% {
-        transform: translateX(-120%) skewX(-20deg);
-    }
-    100% {
-        transform: translateX(300%) skewX(-20deg);
-    }
-}

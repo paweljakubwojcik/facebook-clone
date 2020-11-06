@@ -1,28 +1,41 @@
 import React from 'react'
 import styled from 'styled-components'
+
 import Shimmer from './Shimmer'
 import SkeletonElement from './SkeletonElement'
-import SkeletonProfile from './SkeletonProfile'
+
+import { PostCardContainer, PostCardBody, PostCardHeader } from '../PostCard'
 
 
-const SkeletonWrapper = styled.div`
-    margin: 20px auto;
-    padding: 10px 15px;
-    border-radius: 4px;
-    position: relative;
-    width: 100%;
+const SkeletonWrapper = styled(PostCardContainer)`
     overflow: hidden;
-    background-color: ${props => props.theme.primaryElementColor};
+    position:relative;
 `
+const SkeletonBody = styled(PostCardBody)`
 
+`
+const SkeletonHeader = styled(PostCardHeader)`
+
+`
 
 function SkeletonPost() {
     return (
         <SkeletonWrapper className={`skeleton-wrapper`}>
-            <SkeletonProfile></SkeletonProfile>
-
-            <SkeletonElement type='text'></SkeletonElement>
-            <SkeletonElement type='text'></SkeletonElement>
+            <SkeletonHeader>
+                <SkeletonElement type='avatar'></SkeletonElement>
+                <header>
+                    <h4>
+                        <SkeletonElement type='title' />
+                    </h4>
+                    <p>
+                        <SkeletonElement type='title' />
+                    </p>
+                </header>
+            </SkeletonHeader>
+            <SkeletonBody>
+                <SkeletonElement type='text'></SkeletonElement>
+                <SkeletonElement type='text'></SkeletonElement>
+            </SkeletonBody>
             <Shimmer />
         </SkeletonWrapper>
     )
