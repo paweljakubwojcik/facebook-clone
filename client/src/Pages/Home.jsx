@@ -4,48 +4,48 @@ import { useQuery, gql } from '@apollo/client';
 
 import SkeletonPost from '../Components/skeletons/SkeletonPost'
 import Status from '../Components/Status'
+import PostCard from '../Components/PostCard';
 
 const QUERY_POSTS = gql`
    {
-  getPosts {
-    body
-    commentsCount
-    id
-    createdAt
-    likesCount
-    username
-    comments {
+    getPosts {
       body
-      username
-      createdAt
+      commentsCount
       id
-    }
-    likes {
+      createdAt
+      likesCount
       username
+      comments {
+        body
+        username
+        createdAt
+        id
+      }
+      likes {
+        username
+      }
     }
-  }
-}
-
+  }   
 `
 
 
 export default function Home() {
 
 
-    const { loading, error, data } = useQuery(QUERY_POSTS);
+  const { loading, error, data: { getPosts: posts } = {} } = useQuery(QUERY_POSTS);
 
 
-    return (
-        <Container>
-            <Feed>
-                <Status />
+  return (
+    <Container>
+      <Feed>
+        <Status />
 
-                {data && data.getPosts.map(post => <SkeletonPost key={post.id} theme={'dark'} />)}
-                {loading && [1, 2, 3, 4].map((key) => <SkeletonPost key={key} theme={'dark'} />)}
+        {posts && posts.map(post => <PostCard key={post.id} post={post} />)}
+        {[1, 2, 3, 4].map((key) => <SkeletonPost key={key} theme={'dark'} />)}
 
-            </Feed>
-        </Container>
-    )
+      </Feed>
+    </Container>
+  )
 }
 
 const Container = styled.div`
