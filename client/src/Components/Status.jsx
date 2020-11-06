@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
-width:600px;
-height:300px;
-background-color:#242526;
-border-radius:1em;
+width:100%;
+height:200px;
+background-color:${props => props.theme.primaryElementColor};
+border-radius:.5em;
 margin: 2vh 2%;
 `
 

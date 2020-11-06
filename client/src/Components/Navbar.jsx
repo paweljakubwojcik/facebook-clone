@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import face from '../styles/images/face.jpg'
@@ -14,14 +15,16 @@ export default function Navbar() {
                 <img src={logo} alt="Fake Facebook" />
                 <h1>Fake Facebook</h1>
             </header>
-            <Avatar className='avatar'>
-                <div className="imageContainer">
-                    <img src={face} alt="" />
+            <Link>
+                <Avatar className='avatar'>
+                    <div className="imageContainer">
+                        <img src={face} alt="" />
+                    </div>
+                    <div className="username">
+                        Użytkownik
                 </div>
-                <div className="username">
-                    Użytkownik
-                </div>
-            </Avatar>
+                </Avatar>
+            </Link>
             <Menu>
 
             </Menu>

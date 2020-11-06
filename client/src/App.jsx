@@ -6,8 +6,9 @@ import Login from './Pages/Login'
 import Register from './Pages/Register'
 
 import NavBar from './Components/Navbar'
+import { ThemeProvider } from 'styled-components'
 
-const theme = {
+const darkTheme = {
   backgroundColor: "#18191a",
   primaryColor: "#3646D8",
   primaryElementColor: "#242526",
@@ -19,20 +20,21 @@ const theme = {
 
 export default function App() {
   return (
-    <Router>
-
-      <Route exact path='/' >
-        <NavBar />
-        {/* if user is not login - display login/register component */}
-        <Home />
-      </Route>
-      <Route exact path='/register' >
-        <Register />
-      </Route>
-      <Route exact path='/login' >
-        <Login />
-      </Route>
-    </Router>
+    <ThemeProvider theme={darkTheme}>
+      <Router>
+        <Route exact path='/' >
+          <NavBar />
+          {/* if user is not login - display login/register component */}
+          <Home />
+        </Route>
+        <Route exact path='/register' >
+          <Register />
+        </Route>
+        <Route exact path='/login' >
+          <Login />
+        </Route>
+      </Router>
+    </ThemeProvider>
   )
 }
 
