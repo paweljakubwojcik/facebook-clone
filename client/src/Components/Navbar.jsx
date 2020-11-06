@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import face from '../styles/images/face.jpg'
 import logo from '../styles/svg/logo.svg'
+import Avatar from './Avatar'
 
 
 
@@ -12,18 +13,18 @@ export default function Navbar() {
     return (
         <NavBar className='navBar'>
             <header>
-                <img src={logo} alt="Fake Facebook" />
-                <h1>Fake Facebook</h1>
+                <Link to='./'>
+                    <img src={logo} alt="Fake Facebook" />
+                    <h1>Fake Facebook</h1>
+                </Link>
             </header>
-            <Link>
-                <Avatar className='avatar'>
-                    <div className="imageContainer">
-                        <img src={face} alt="" />
-                    </div>
+            <Link to='./'>
+                <UserLink className='avatar'>
+                    <Avatar image={face} altText='not anonymus faker' />
                     <div className="username">
                         Użytkownik
-                </div>
-                </Avatar>
+                    </div>
+                </UserLink>
             </Link>
             <Menu>
 
@@ -37,6 +38,7 @@ const NavBar = styled.nav`
     position:sticky;
     top:0;
     left:0;
+    z-index:2;
 
     display:flex;
     width:100%;
@@ -45,9 +47,11 @@ const NavBar = styled.nav`
     border-bottom: solid 1px #444648;
 
     header{
-        display:flex;
-        align-items:center;
         margin: .3em auto .3em 1em;
+        a{
+            display:flex;
+            align-items:center;
+        }
         h1{
             margin: 0 1em;
         }
@@ -56,8 +60,8 @@ const NavBar = styled.nav`
         }
     }
 `
-
-const Avatar = styled.div`
+//TODO component to be extracted
+const UserLink = styled.div`
 
     display:flex;
     justify-content:space-evenly;
@@ -71,17 +75,6 @@ const Avatar = styled.div`
     &:hover{
         background-color:#444648;
         cursor:pointer;
-    }
-
-    .imageContainer{
-        height:40px;
-        width:40px;
-    }
-
-    img{
-        border-radius:50%;
-        width:auto;
-        height:100%;
     }
 
     .username{

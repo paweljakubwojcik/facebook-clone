@@ -1,9 +1,52 @@
 import React from 'react'
 import styled from 'styled-components'
-import SkeletonPost from '../Components/skeletons/SkeletonPost'
+import { useQuery, gql } from '@apollo/client';
 
+import SkeletonPost from '../Components/skeletons/SkeletonPost'
 import Status from '../Components/Status'
 
+const QUERY_POSTS = gql`
+   {
+  getPosts {
+    body
+    commentsCount
+    id
+    createdAt
+    likesCount
+    username
+    comments {
+      body
+      username
+      createdAt
+      id
+    }
+    likes {
+      username
+    }
+  }
+}
+
+`
+
+
+export default function Home() {
+
+
+    const { loading, error, data } = useQuery(QUERY_POSTS);
+
+
+    return (
+        <Container>
+            <Feed>
+                <Status />
+
+                {data && data.getPosts.map(post => <SkeletonPost key={post.id} theme={'dark'} />)}
+                {loading && [1, 2, 3, 4].map((key) => <SkeletonPost key={key} theme={'dark'} />)}
+
+            </Feed>
+        </Container>
+    )
+}
 
 const Container = styled.div`
     display:flex;
@@ -19,20 +62,3 @@ const Feed = styled.section`
     flex-direction:column;
     align-items:center;
 `
-
-export default function Home() {
-    return (
-        <Container>
-            <Feed>
-                <Status />
-
-
-                {[1, 2, 3, 4].map(() => <SkeletonPost theme={'dark'} />)}
-
-
-
-
-            </Feed>
-        </Container>
-    )
-}
