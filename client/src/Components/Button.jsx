@@ -14,8 +14,7 @@ export const MyButton = styled.button`
     justify-content:center;
     align-items:center;
     flex:1;
-    padding: 0 .4em;
-    margin: .4em 0;
+    margin: .4em;
     font-size:1em;
     background-color:transparent;
     border:none;

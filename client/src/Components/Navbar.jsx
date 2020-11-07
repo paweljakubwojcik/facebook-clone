@@ -107,8 +107,6 @@ const Menu = styled.menu`
 
 const MenuButton = styled(MyButton)`
     border-radius:50%;
-    padding:0;
-    margin:.2em;
     width:40px;
     height:40px;
     transition: background-color .4s ;
