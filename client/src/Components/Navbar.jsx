@@ -4,7 +4,13 @@ import styled from 'styled-components'
 
 import face from '../styles/images/face.jpg'
 import logo from '../styles/svg/logo.svg'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCaretDown, faBell } from '@fortawesome/free-solid-svg-icons'
+import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons'
+
 import Avatar from './Avatar'
+import { MyButton } from './Button'
 
 
 
@@ -26,8 +32,16 @@ export default function Navbar() {
                     </div>
                 </UserLink>
             </Link>
-            <Menu>
-
+            <Menu className='menu'>
+                <MenuButton className='menu__button'>
+                    <FontAwesomeIcon className='icon' icon={faFacebookMessenger} />
+                </MenuButton>
+                <MenuButton className='menu__button'>
+                    <FontAwesomeIcon className='icon' icon={faBell} />
+                </MenuButton>
+                <MenuButton className='menu__button'>
+                    <FontAwesomeIcon className='icon' icon={faCaretDown} />
+                </MenuButton>
             </Menu>
         </NavBar>
     )
@@ -85,8 +99,23 @@ const UserLink = styled.div`
 `
 
 const Menu = styled.menu`
-    display:block;
-    width:200px;
-    height:100%;
-    background-color:white;
+    display:flex;
+    padding:0;
+    margin:0;
+    font-size:1.4em;
+`
+
+const MenuButton = styled(MyButton)`
+    border-radius:50%;
+    padding:0;
+    margin:.2em;
+    width:40px;
+    height:40px;
+    transition: background-color .4s ;
+    &:hover{
+        background-color:${props => props.theme.secondaryElementColor};
+    }
+    .icon{
+        margin:0;
+    }
 `

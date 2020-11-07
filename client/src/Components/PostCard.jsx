@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import moment from 'moment'
 
 import Avatar from './Avatar'
+import Button from './Button'
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -96,7 +97,7 @@ const PostCardCounters = styled.div`
         margin-right:auto;
         .icon{
             color:${props => props.theme.primaryColor};
-            margin: 0 .5em;
+            margin: 0.5em;
         }
     }
 `
@@ -108,24 +109,5 @@ border-bottom: 1px solid ${props => props.theme.secondaryFontColor};
 border-top: 1px solid ${props => props.theme.secondaryFontColor};
 `
 
-const ActionButton = styled.button`
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex:1;
-    padding: 0 .4em;
-    margin: .4em 0;
-    font-size:1em;
-    background-color:transparent;
-    border:none;
-    color:${props => props.theme.secondaryFontColor};
-    .icon{
-        margin:.5em;
-    }
-    transition: color .4s ;
-    &:hover{
-        cursor:pointer;
-        color:${props => props.theme.primaryFontColor};
-    }
-
+const ActionButton = styled(Button)`
 `
