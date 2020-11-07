@@ -18,7 +18,7 @@ const StyledButton = styled.button`
     border-radius:1.5em;
     margin:1.3em;
     transition:transform .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    &:hover, &:active{
+    &:hover, &:focus{
         cursor:pointer;
         transform:scale(1.1);
     }

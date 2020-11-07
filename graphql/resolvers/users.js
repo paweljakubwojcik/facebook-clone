@@ -35,12 +35,12 @@ module.exports = {
             //finding user in DB
             const user = await User.findOne({ username })
             if (!user) { //when user isnt found
-                errors.general = 'User not found'
+                errors.username = 'User not found'
                 throw new UserInputError('User not found', { errors })
             }
             const match = await bcrypt.compare(password, user.password)
             if (!match) { //when password is invalid
-                errors.general = 'Wrong password'
+                errors.password = 'Wrong password'
                 throw new UserInputError('Wrong password', { errors })
             }
             const token = generateToken(user)
