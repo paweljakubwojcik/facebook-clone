@@ -10,7 +10,7 @@ import { faCaretDown, faBell } from '@fortawesome/free-solid-svg-icons'
 import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons'
 
 import Avatar from './Avatar'
-import { MyButton } from './Button'
+import Button from './Button'
 
 
 
@@ -105,7 +105,7 @@ const Menu = styled.menu`
     font-size:1.4em;
 `
 
-const MenuButton = styled(MyButton)`
+const MenuButton = styled(Button)`
     border-radius:50%;
     width:40px;
     height:40px;

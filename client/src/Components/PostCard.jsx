@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import moment from 'moment'
 
 import Avatar from './Avatar'
-import Button, { MyButton } from './Button'
+import Button from './Button'
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -113,7 +113,7 @@ const PostCardButtonsContainer = styled.div`
     border-top: 1px solid ${props => props.theme.secondaryFontColor};
 `
 
-const ActionButton = styled(MyButton)`
+const ActionButton = styled(Button)`
     flex:1;
     .icon{
         margin:.5em;

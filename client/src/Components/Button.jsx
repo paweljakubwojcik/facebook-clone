@@ -1,19 +1,6 @@
-import React from 'react'
 import styled from 'styled-components'
 
-const blur = (e) => {
-    e.target.blur()
-}
-
-export default function Button(props) {
-    return (
-        <MyButton onClick={blur}>
-            { props.children}
-        </MyButton>
-    )
-}
-
-export const MyButton = styled.button`
+export default styled.button`
     display:flex;
     justify-content:center;
     align-items:center;
