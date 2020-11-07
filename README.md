@@ -12,6 +12,7 @@
 #### front
 - [ ] register/login page
 - [ ] dashboard
+  - [x] post feed
 - [ ] user details page
 - [ ] messenger
 
@@ -21,7 +22,9 @@
 ## tech so far used:
 * [GraphQl](https://graphql.org/) with [Apollo-server](https://www.apollographql.com/docs/apollo-server/) & [Apollo-Client](https://www.apollographql.com/docs/react/)
 * [MongoDB](https://www.mongodb.com/) with Mongoose
-* [React](https://en.reactjs.org/)
+* [React](https://en.reactjs.org/),[React Router](https://reactrouter.com/) 
+* [Styled Components](https://styled-components.com/)
+* [Font Awesome Icons](https://fontawesome.com/)
 
 ######
 Project was inspired by [this vid](https://www.youtube.com/watch?v=n1mdAPFq2Os&list=PLQ6_tJw-XJx3k25CWH3BKeWj48n7ExZFM&index=1&t=5759s)
