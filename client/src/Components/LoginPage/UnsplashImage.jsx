@@ -1,18 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import Unsplash, { toJson } from 'unsplash-js';
 
 import TestImage from '../../styles/images/testImage.jpg'
 import Logo from '../../styles/images/logo.png'
 
+import { UNSPLASH_APP_KEY } from '../../config.js'
+
+
+// this component fetch a random photo every time it's mounted
+// it may be better to get random photo once per hour and save it in DB - that way every client will have the same photo
+// thus number of requests will be decresed
+
+const unsplash = new Unsplash({ accessKey: UNSPLASH_APP_KEY });
+
 export default function UnsplashImage() {
+
+    const [imageData, updateImage] = useState({
+        src: TestImage,
+        credit: ''
+    })
+
+
+    unsplash.photos.getRandomPhoto({
+        query: "community",
+        orientation: "portrait"
+    }).then(toJson)
+        .then(
+            ({ urls, user }) => {
+                updateImage({
+                    src: urls.regular,
+                    credit: user.name
+                })
+            }
+        ).catch(e => {
+            console.log(e)
+        })
+
+
     return (
-        <Container>
+        <Container image={imageData.src}>
             <header>
                 <img src={Logo} alt="Logo" />
                 <h1>Fake Facebook</h1>
             </header>
             <p>Welcome to the smallest fake community on the Net</p>
-            <p className='credits'> Image from Unsplash by (Author here)</p>
+            <p className='credits'> Image by {imageData.credit}</p>
         </Container>
     )
 }
@@ -20,7 +53,7 @@ export default function UnsplashImage() {
 const Container = styled.div`
     display:flex;
     flex-direction:column;
-    background-image: url(${TestImage});
+    background-image: url(${props => props.image});
     background-size:cover;
     background-position:center;
     position:relative;
