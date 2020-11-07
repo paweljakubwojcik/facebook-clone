@@ -4,6 +4,10 @@ import moment from 'moment'
 
 import Avatar from './Avatar'
 
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faComment, faThumbsUp, faShare } from '@fortawesome/free-solid-svg-icons'
+
 export default function PostCard({ post }) {
     const { body, createdAt, commentsCount, id, likesCount, username, comments, likes } = post
 
@@ -14,14 +18,40 @@ export default function PostCard({ post }) {
                 <Avatar />
                 <header>
                     <h4>{username}</h4>
-                    <p className="timestamp">
+                    <div className="timestamp">
                         {moment(createdAt).fromNow()}
-                    </p>
+                    </div>
                 </header>
             </PostCardHeader>
             <PostCardBody className='postCard__body'>
                 {body}
             </PostCardBody>
+            <PostCardCounters className='postCard__counters' >
+                <div className="counter likes">
+                    <FontAwesomeIcon className="icon" icon={faThumbsUp} />
+                    {likesCount}
+                </div>
+                <div className="counter comments">
+                    {commentsCount} Comments
+                </div>
+                <div className="counter shares">
+                    0 Shares
+                </div>
+            </PostCardCounters>
+            <PostCardButtonsContainer>
+                <ActionButton className='postCard__button'>
+                    <FontAwesomeIcon className="icon" icon={faThumbsUp} />
+                    Like!
+                </ActionButton>
+                <ActionButton className='postCard__button'>
+                    <FontAwesomeIcon className="icon" icon={faComment} />
+                   Comment
+                </ActionButton>
+                <ActionButton className='postCard__button'>
+                    <FontAwesomeIcon className="icon" icon={faShare} />
+                    Share
+                </ActionButton>
+            </PostCardButtonsContainer>
         </PostCardContainer>
     )
 }
@@ -43,7 +73,7 @@ export const PostCardHeader = styled.div`
         flex-direction:column;
         justify-content:center;
         margin:  0 .5em;
-        p{
+        .timestamp{
             font-size:.7em;
             color:${props => props.theme.secondaryFontColor};
         }
@@ -53,4 +83,49 @@ export const PostCardBody = styled.div`
     width:100%;
     margin: 1em 0;
     padding: 0 .2em;
+`
+
+const PostCardCounters = styled.div`
+    display:flex;
+    font-size:.6em;
+    color:${props => props.theme.secondaryFontColor};
+    .counter{
+        margin:1em;
+    }
+    .counter.likes{
+        margin-right:auto;
+        .icon{
+            color:${props => props.theme.primaryColor};
+            margin: 0 .5em;
+        }
+    }
+`
+
+const PostCardButtonsContainer = styled.div`
+display:flex;
+justify-content:space-evenly;
+border-bottom: 1px solid ${props => props.theme.secondaryFontColor};
+border-top: 1px solid ${props => props.theme.secondaryFontColor};
+`
+
+const ActionButton = styled.button`
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex:1;
+    padding: 0 .4em;
+    margin: .4em 0;
+    font-size:1em;
+    background-color:transparent;
+    border:none;
+    color:${props => props.theme.secondaryFontColor};
+    .icon{
+        margin:.5em;
+    }
+    transition: color .4s ;
+    &:hover{
+        cursor:pointer;
+        color:${props => props.theme.primaryFontColor};
+    }
+
 `

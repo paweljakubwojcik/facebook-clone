@@ -41,7 +41,7 @@ export default function Home() {
         <Status />
 
         {posts && posts.map(post => <PostCard key={post.id} post={post} />)}
-        {[1, 2, 3, 4].map((key) => <SkeletonPost key={key} theme={'dark'} />)}
+        {loading && [1, 2].map((key) => <SkeletonPost key={key} theme={'dark'} />)}
 
       </Feed>
     </Container>

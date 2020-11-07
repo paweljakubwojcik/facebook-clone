@@ -27,9 +27,9 @@ function SkeletonPost() {
                     <h4>
                         <SkeletonElement type='title' />
                     </h4>
-                    <p>
+                    <div className='timestamp'>
                         <SkeletonElement type='title' />
-                    </p>
+                    </div>
                 </header>
             </SkeletonHeader>
             <SkeletonBody>
