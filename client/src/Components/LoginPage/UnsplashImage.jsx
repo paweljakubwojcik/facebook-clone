@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import React, { useState, useEffect } from 'react'
+import styled, { keyframes } from 'styled-components'
 import Unsplash, { toJson } from 'unsplash-js';
 
-import TestImage from '../../styles/images/testImage.jpg'
+
 import Logo from '../../styles/images/logo.png'
+import TestImage from '../../styles/images/testImage.jpg'
 
 import { UNSPLASH_APP_KEY } from '../../config.js'
 
@@ -18,25 +19,28 @@ export default function UnsplashImage() {
 
     const [imageData, updateImage] = useState({
         src: TestImage,
-        credit: ''
+        credit: '',
+        link: ''
     })
 
-
-    unsplash.photos.getRandomPhoto({
-        query: "community",
-        orientation: "portrait"
-    }).then(toJson)
-        .then(
-            ({ urls, user }) => {
-                updateImage({
-                    src: urls.regular,
-                    credit: user.name
-                })
-            }
-        ).catch(e => {
-            console.log(e)
-        })
-
+    useEffect(() => {
+        unsplash.photos.getRandomPhoto({
+            query: "community",
+            orientation: "portrait"
+        }).then(toJson)
+            .then(
+                ({ urls, user }) => {
+                    console.log(user)
+                    updateImage({
+                        src: urls.regular,
+                        credit: user.name,
+                        link: user.links.html,
+                    })
+                }
+            ).catch(e => {
+                console.log(e)
+            })
+    }, []);
 
     return (
         <Container image={imageData.src}>
@@ -45,7 +49,7 @@ export default function UnsplashImage() {
                 <h1>Fake Facebook</h1>
             </header>
             <p>Welcome to the smallest fake community on the Net</p>
-            <p className='credits'> Image by {imageData.credit}</p>
+            <p className='credits'> Image by <a href={imageData.link}>{imageData.credit}</a>, powered by Unsplash</p>
         </Container>
     )
 }

@@ -30,13 +30,13 @@ export default function RegisterForm() {
     const [addUser, { loading }] = useMutation(REGISTER_USER, {
         //executed if mutation is succesful
         update(proxy, result) {
-            console.log(result)
             setErrors({})
             history.push('/')
 
         },
         onError(err) {
-            setErrors(err.graphQLErrors[0].extensions.exception.errors)
+            if (err.graphQLErrors[0])
+                setErrors(err?.graphQLErrors[0]?.extensions?.exception?.errors)
         },
         variables: values
     })
@@ -53,7 +53,7 @@ export default function RegisterForm() {
             <Input label='Email' type='email' name='email' value={values.email} onChange={onChange} error={errors.email} />
             <Input label='Password' type='password' name='password' value={values.password} onChange={onChange} error={errors.password} />
             <Input label='Confirm Password' type='password' name='confirmPassword' value={values.confirmPassword} onChange={onChange} error={errors.confirmPassword} />
-            <Button primary>Join</Button>
+            <Button primary loading={loading}>Join</Button>
             <div className='link'>
                 <p>Have an account? </p>
                 <Link to='/login'>Log In</Link>

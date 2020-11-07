@@ -33,8 +33,8 @@ export default function LoginForm() {
             history.push('/')
         },
         onError(err) {
-            console.log(err.graphQLErrors[0].extensions.exception.errors)
-            setErrors(err.graphQLErrors[0].extensions.exception.errors)
+            if (err.graphQLErrors[0])
+                setErrors(err?.graphQLErrors[0]?.extensions?.exception?.errors)
         },
         variables: values
     })
@@ -48,15 +48,15 @@ export default function LoginForm() {
             <h2>Log In</h2>
             <Input label='Username' type='text' name="username" value={values.username} onChange={onChange} error={errors.username} />
             <Input label='Password' type='password' name="password" value={values.password} onChange={onChange} error={errors.password} />
-            <Button primary>Log In</Button>
+            <Button type='submit' primary loading={loading}>Log In</Button>
             <div className='link'>
                 <p>First time here?</p>
                 <Link to='/register'>Create new account</Link>
             </div>
             <Providers>
                 <p>Or login using one of following:</p>
-                <Button >Facebook</Button>
-                <Button >Google</Button>
+                <Button type='button'>Facebook</Button>
+                <Button type='button'>Google</Button>
             </Providers>
         </Form>
     )
