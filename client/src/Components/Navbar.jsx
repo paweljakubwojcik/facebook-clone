@@ -50,15 +50,15 @@ export default function Navbar() {
 const NavBar = styled.nav`
 
     position:sticky;
-    top:0;
+    top:0px;
     left:0;
     z-index:2;
 
     display:flex;
     width:100%;
     align-items:center;
-    background-color:#242526;
-    border-bottom: solid 1px #444648;
+    background-color: ${props => props.theme.primaryElementColor}ee; // no its not a typo, ee is responsible for opacity like #ffffff + ee
+    border-bottom: solid 1px ${props => props.theme.secondaryElementColor}dd;
 
     header{
         margin: .3em auto .3em 1em;

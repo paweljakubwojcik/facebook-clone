@@ -34,3 +34,7 @@ a {
   color: inherit;
 }
 
+button:active {
+  outline: none;
+  border: none;
+}
