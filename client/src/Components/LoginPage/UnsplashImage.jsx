@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import Unsplash, { toJson } from 'unsplash-js';
 
 
@@ -18,7 +18,7 @@ const unsplash = new Unsplash({ accessKey: UNSPLASH_APP_KEY });
 export default function UnsplashImage() {
 
     const [imageData, updateImage] = useState({
-        src: TestImage,
+        src: '',
         credit: '',
         link: ''
     })
@@ -32,13 +32,17 @@ export default function UnsplashImage() {
                 ({ urls, user }) => {
                     console.log(user)
                     updateImage({
-                        src: urls.regular,
+                        src: urls.regular || TestImage,
                         credit: user.name,
                         link: user.links.html,
                     })
                 }
             ).catch(e => {
-                console.log(e)
+                updateImage({
+                    src: TestImage,
+                    credit: '',
+                    link: ''
+                })
             })
     }, []);
 
@@ -49,7 +53,7 @@ export default function UnsplashImage() {
                 <h1>Fake Facebook</h1>
             </header>
             <p>Welcome to the smallest fake community on the Net</p>
-            <p className='credits'> Image by <a href={imageData.link}>{imageData.credit}</a>, powered by Unsplash</p>
+            <p className='credits'> Image by <a target='blank' href={imageData.link}>{imageData.credit}</a>, powered by Unsplash</p>
         </Container>
     )
 }

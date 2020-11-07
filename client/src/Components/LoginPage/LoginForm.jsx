@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { useMutation, gql } from '@apollo/client'
+
+import { AuthContext } from '../../Context/auth'
 
 import { Form } from './Form'
 import Input from './Input'
@@ -10,9 +12,8 @@ import Button from './Button'
 import { useForm } from '../../Util/Hooks'
 
 export default function LoginForm() {
-
-
     const history = useHistory()
+    const context = useContext(AuthContext)
 
     const [errors, setErrors] = useState({})
 
@@ -27,8 +28,8 @@ export default function LoginForm() {
     //graphQL query
     const [loginUser, { loading }] = useMutation(LOGIN_USER, {
         //executed if mutation is succesful
-        update(proxy, result) {
-            console.log(result)
+        update(proxy, { data: { login: userData } }) {
+            context.login(userData)
             setErrors({})
             history.push('/')
         },
