@@ -1,16 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { PostCardContainer } from './PostCard'
 import Avatar from './Avatar'
+import PostForm from './PostForm'
 
 
 
 export default function Status() {
+
+    const [isFormOpen, toggleForm] = useState(false)
+
+
+    const handleOnclick = () => {
+        toggleForm(true)
+    }
+
     return (
         <Container className='status__container'>
             <Avatar className="status__avatar"></Avatar>
-            <StatusInput className='status__input' type="text" />
+            <StatusInput role="button" className='status__input' type="text" onClick={handleOnclick} > O czym myślisz user?</StatusInput>
+            {isFormOpen && <PostForm toggleForm={toggleForm}></PostForm>}
         </Container>
     )
 }
@@ -19,7 +29,7 @@ const Container = styled(PostCardContainer)`
     display:flex;
 `
 
-const StatusInput = styled.input`
+const StatusInput = styled.div`
     flex:1;
     margin:.5em;
     border-radius:1em;

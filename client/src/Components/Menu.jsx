@@ -35,6 +35,7 @@ export default function Menu() {
     const [activeButton, changeActive] = useState('')
 
     const toggleActive = (e) => {
+        e.target.blur()
         if (activeButton === e.target.value)
             changeActive('')
         else
@@ -52,7 +53,7 @@ export default function Menu() {
                     <FontAwesomeIcon className='icon' icon={icon} />
                 </MenuButton>
             )}
-            {activeButton === 'usermenu' && <UserMenu />}
+            {activeButton === buttons[2].value && <UserMenu />}
         </StyledMenu>
     )
 }
@@ -75,8 +76,8 @@ const MenuButton = styled.button`
     font-size:1em;
     border:none;
     color:${props => props.theme.primaryFontColor};
-    background-color:${props => props.theme.secondaryFontColor};
-    transition: filter .2s ,color .4s,background-color .4s  ;
+    background-color:${props => props.theme.roundButtonColor};
+    transition: filter .2s ,color .4s, background-color .4s ;
     &:hover,
     &:focus{
         cursor:pointer;
@@ -86,7 +87,7 @@ const MenuButton = styled.button`
         filter:brightness(.9);
     }
 
-    background-color:${props => props.active && props.theme.primaryColor}dd;
+    background-color:${props => props.active && props.theme.activeButtonColor};
     color: ${props => props.active && props.theme.primaryFontColors};
     border-radius:50%;
     width:40px;
