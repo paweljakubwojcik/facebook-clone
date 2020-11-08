@@ -14,8 +14,8 @@ import { darkTheme } from './themes'
 
 export default function App() {
 
+  //checks if user is logged in
   const { user } = useContext(AuthContext)
-  // way of checking if user is logged - because every refresh was deleting user from context
 
   return (
     <ThemeProvider theme={darkTheme}>
