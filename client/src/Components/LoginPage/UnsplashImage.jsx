@@ -50,7 +50,7 @@ export default function UnsplashImage() {
         <Container image={imageData.src}>
             <header>
                 <img src={Logo} alt="Logo" />
-                <h1>Fake Facebook</h1>
+                <h1>Fakebook</h1>
             </header>
             <p>Welcome to the smallest fake community on the Net</p>
             <p className='credits'> Image by <a target='blank' href={imageData.link}>{imageData.credit}</a>, powered by Unsplash</p>
