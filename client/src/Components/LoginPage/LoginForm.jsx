@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { useMutation, gql } from '@apollo/client'
 
@@ -11,7 +11,7 @@ import Button from './Button'
 
 import { useForm } from '../../Util/Hooks'
 
-export default function LoginForm() {
+export default function LoginForm({ changeForm }) {
     const history = useHistory()
     const context = useContext(AuthContext)
 
@@ -53,7 +53,7 @@ export default function LoginForm() {
             <Button type='submit' primary loading={loading}>Log In</Button>
             <div className='link'>
                 <p>First time here?</p>
-                <Link to='/register'>Create new account</Link>
+                <div className='changeForm' role="button" onClick={changeForm.bind(this, false)}>Create new account</div>
             </div>
             <Providers>
                 <p>Or login using one of the following:</p>

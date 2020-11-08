@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown, faBell } from '@fortawesome/free-solid-svg-icons'
 import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons'
 
-import Button from './Button'
 import UserMenu from './UserMenu'
 
 const buttons = [

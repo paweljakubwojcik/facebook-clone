@@ -4,13 +4,17 @@ import './index.css';
 import Apollo from './Apollo'
 import reportWebVitals from './reportWebVitals';
 
+import { AuthProvider } from './Context/auth'
 import App from './App';
 
 ReactDOM.render(
   <React.StrictMode>
     <Apollo >
-      <App></App>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </Apollo>
+
   </React.StrictMode>,
   document.getElementById('root')
 );

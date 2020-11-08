@@ -22,9 +22,12 @@ export const Form = styled.form`
             opacity:.8;
             margin: 0 .3em;
         }
-        a{
+        .changeForm{
             font-weight:bold;
             opacity:1;
+            &:hover{
+                cursor:pointer;
+            }
         }
     }
 `

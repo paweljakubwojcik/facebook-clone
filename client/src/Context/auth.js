@@ -28,12 +28,16 @@ function AuthProvider(props) {
     const [state, dispatch] = useReducer(authReducer, { user: null })
 
     const login = (userData) => {
+        sessionStorage.setItem('token', userData.token)
+        sessionStorage.setItem('user', userData.username)
+        sessionStorage.setItem('id', userData.id)
         dispatch({
             type: 'LOGIN',
             payload: userData
         })
     }
     const logout = () => {
+        sessionStorage.clear()
         dispatch({
             type: 'LOGOUT',
         })

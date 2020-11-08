@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { useMutation, gql } from '@apollo/client';
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 
 import Input from './Input'
@@ -13,7 +13,7 @@ import { AuthContext } from '../../Context/auth'
 
 
 
-export default function RegisterForm() {
+export default function RegisterForm({ changeForm }) {
     const history = useHistory()
 
     const context = useContext(AuthContext)
@@ -58,7 +58,7 @@ export default function RegisterForm() {
             <Button primary loading={loading}>Join</Button>
             <div className='link'>
                 <p>Have an account? </p>
-                <Link to='/login'>Log In</Link>
+                <div className='changeForm' role="button" onClick={changeForm.bind(this, true)}>Log In</div>
             </div>
         </Form>
     )
