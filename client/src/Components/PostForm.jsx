@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
-import Avatar from './Avatar'
 
+import Avatar from './Avatar'
 import Button from './LoginPage/Button'
 
+import { AuthContext } from '../Context/auth'
+
 export default function PostForm({ toggleForm }) {
+
+    const { user: { username } } = useContext(AuthContext)
 
     const handleClick = (e) => {
         if (e.target.classList.contains('modal'))
@@ -18,9 +22,9 @@ export default function PostForm({ toggleForm }) {
                 <h2>Create Post</h2>
                 <div className='userInfo'>
                     <Avatar />
-                    <h3>User</h3>
+                    <h3>{username}</h3>
                 </div>
-                <textarea name="body" id="body" placeholder="O czym teraz myślisz, user?"></textarea>
+                <textarea name="body" id="body" placeholder={`O czym teraz myślisz, ${username}?`}></textarea>
                 <Button primary>Post</Button>
             </Form>
         </Modal>

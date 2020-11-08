@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
 
 import { PostCardContainer } from './PostCard'
 import Avatar from './Avatar'
 import PostForm from './PostForm'
 
+import { AuthContext } from '../Context/auth'
 
 
 export default function Status() {
+
+    const { user: { username } } = useContext(AuthContext)
 
     const [isFormOpen, toggleForm] = useState(false)
 
@@ -19,7 +22,7 @@ export default function Status() {
     return (
         <Container className='status__container'>
             <Avatar className="status__avatar"></Avatar>
-            <StatusInput role="button" className='status__input' type="text" onClick={handleOnclick} > O czym myślisz user?</StatusInput>
+            <StatusInput role="button" className='status__input' type="text" onClick={handleOnclick} > O czym myślisz {username}?</StatusInput>
             {isFormOpen && <PostForm toggleForm={toggleForm}></PostForm>}
         </Container>
     )

@@ -1,19 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import face from '../styles/images/face.jpg'
 import logo from '../styles/svg/logo.svg'
 
-
-
 import Avatar from './Avatar'
 import Menu from './Menu'
 
-
+import { AuthContext } from '../Context/auth'
 
 
 export default function Navbar() {
+
+    const { user } = useContext(AuthContext)
+
     return (
         <NavBar className='navBar'>
             <header>
@@ -26,7 +27,7 @@ export default function Navbar() {
                 <UserLink className='avatar'>
                     <Avatar image={face} altText='not anonymus faker' />
                     <div className="username">
-                        Użytkownik
+                        {user.username}
                     </div>
                 </UserLink>
             </Link>
