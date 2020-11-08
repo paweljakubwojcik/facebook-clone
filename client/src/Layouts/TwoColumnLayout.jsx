@@ -18,7 +18,7 @@ const Container = styled.div`
 
     @media(max-width: 700px) {
         grid-template-columns: 1fr;
-        grid-template-rows:1fr 10fr;
+        grid-template-rows:1fr 8fr;
         grid-auto-flow:column;
   }
 `

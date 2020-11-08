@@ -29,6 +29,7 @@ export default function LoginForm() {
     const [loginUser, { loading }] = useMutation(LOGIN_USER, {
         //executed if mutation is succesful
         update(proxy, { data: { login: userData } }) {
+            //adds user data to context
             context.login(userData)
             setErrors({})
             history.push('/')
@@ -55,7 +56,7 @@ export default function LoginForm() {
                 <Link to='/register'>Create new account</Link>
             </div>
             <Providers>
-                <p>Or login using one of following:</p>
+                <p>Or login using one of the following:</p>
                 <Button type='button'>Facebook</Button>
                 <Button type='button'>Google</Button>
             </Providers>
