@@ -6,16 +6,17 @@
   - [x] adding/deleting post
   - [x] adding/deleting comments to posts
   - [x] liking unliking posts
-  - [ ] login using third party providors (like google or facebook)
+  - [ ] login using third party providers (like google or facebook)
   - [ ] sharing system
   - [ ] friends
   - [ ] messenger
   - [ ] targeting feed
 #### front
-- [ ] register/login page
+- [x] register/login page
+- [x] user context
 - [ ] dashboard
   - [x] post feed
-  - [ ] list contacts
+  - [ ] contact list
   - [ ] menu
 - [ ] user details page
 - [ ] messenger
@@ -26,6 +27,7 @@
 * [React](https://en.reactjs.org/),[React Router](https://reactrouter.com/) 
 * [Styled Components](https://styled-components.com/)
 * [Font Awesome Icons](https://fontawesome.com/)
+* [Unsplash Api](https://unsplash.com/)
 
 ## mockups
 ![Web 1920 – 1](https://user-images.githubusercontent.com/46058997/98292438-ff1f2800-1fac-11eb-9228-25f58f434b87.png)
