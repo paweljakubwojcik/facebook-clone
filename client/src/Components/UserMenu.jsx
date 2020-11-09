@@ -5,17 +5,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 import { AuthContext } from '../Context/auth'
-import Button from './Button'
+import { SquareButton } from './Buttons'
 
 export default function UserMenu() {
     const { logout } = useContext(AuthContext)
 
     return (
         <Menu>
-            <Button onClick={logout}>
+            <SquareButton onClick={logout}>
                 <FontAwesomeIcon className="icon" icon={faSignOutAlt} />
                 Log Out
-            </Button>
+            </SquareButton>
         </Menu>
     )
 }

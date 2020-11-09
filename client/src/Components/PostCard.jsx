@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import moment from 'moment'
 
 import Avatar from './Avatar'
-import Button from './Button'
+import { GenericButton, SquareButton } from './Buttons'
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -34,27 +34,27 @@ export default function PostCard({ post }) {
                     <FontAwesomeIcon className="icon" icon={faThumbsUp} />
                     {likesCount}
                 </div>
-                <Button className="counter comments">
+                <GenericButton className="counter comments">
                     {commentsCount} Comments
-                </Button>
-                <Button className="counter shares">
+                </GenericButton>
+                <GenericButton className="counter shares">
                     0 Shares
-                </Button>
+                </GenericButton>
             </PostCardCounters>
 
             <PostCardButtonsContainer>
-                <ActionButton className='postCard__button'>
+                <SquareButton className='postCard__button'>
                     <FontAwesomeIcon className="icon" icon={faThumbsUp} />
                     Like!
-                </ActionButton>
-                <ActionButton className='postCard__button'>
+                </SquareButton>
+                <SquareButton className='postCard__button'>
                     <FontAwesomeIcon className="icon" icon={faComment} />
                    Comment
-                </ActionButton>
-                <ActionButton className='postCard__button'>
+                </SquareButton>
+                <SquareButton className='postCard__button'>
                     <FontAwesomeIcon className="icon" icon={faShare} />
                     Share
-                </ActionButton>
+                </SquareButton>
             </PostCardButtonsContainer>
 
         </PostCardContainer>
@@ -111,11 +111,7 @@ const PostCardButtonsContainer = styled.div`
     justify-content:space-evenly;
     border-bottom: 1px solid ${props => props.theme.secondaryFontColor};
     border-top: 1px solid ${props => props.theme.secondaryFontColor};
-`
-
-const ActionButton = styled(Button)`
-    flex:1;
-    .icon{
-        margin:.5em;
+    & > * {
+        flex:1;
     }
 `
