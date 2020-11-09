@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 
 
 import Input from './Input'
-import Button from './Button'
+import FormButton from './FormButton'
 import { Form } from './Form'
 
 import { useForm } from '../../Util/Hooks'
@@ -55,7 +55,7 @@ export default function RegisterForm({ changeForm }) {
             <Input label='Email' type='email' name='email' value={values.email} onChange={onChange} error={errors.email} />
             <Input label='Password' type='password' name='password' value={values.password} onChange={onChange} error={errors.password} />
             <Input label='Confirm Password' type='password' name='confirmPassword' value={values.confirmPassword} onChange={onChange} error={errors.confirmPassword} />
-            <Button primary loading={loading}>Join</Button>
+            <FormButton primary loading={loading}>Join</FormButton>
             <div className='link'>
                 <p>Have an account? </p>
                 <div className='changeForm' role="button" onClick={changeForm.bind(this, true)}>Log In</div>

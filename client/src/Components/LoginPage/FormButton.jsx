@@ -1,12 +1,12 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 
-export default function Button({ children, type, primary, loading }) {
-    return (
-        <StyledButton type={type} primary={primary} loading={loading ? 1 : 0}>
-            {!loading ? children : 'Loading...'}
-        </StyledButton>
-    )
+export default function FormButton({ children, type, primary, loading, inactive }) {
+  return (
+    <StyledButton type={type} primary={primary} loading={loading ? 1 : 0} inactive={inactive ? 1 : 0}>
+      {!loading ? children : 'Loading...'}
+    </StyledButton>
+  )
 }
 
 const loading = keyframes`
@@ -42,8 +42,6 @@ const loading = keyframes`
   }
 `
 
-
-
 const StyledButton = styled.button`
     background-color: ${props => props.primary ? props.theme.primaryColor : props.theme.primaryFontColor};
     color: ${props => props.primary ? props.theme.primaryFontColor : props.theme.primaryColor};
@@ -58,7 +56,9 @@ const StyledButton = styled.button`
         cursor:pointer;
         transform:scale(1.1);
     }
-    animation: ${props => props.loading && loading} 6s infinite cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    animation: ${props => props.loading && loading} 6s infinite cubic-bezier(.66,-0.33,.3,1.02);
+    background-color: ${props => props.inactive && props.theme.secondaryElementColor};
+    pointer-events: ${props => props.inactive && 'none'};
 `
 
 

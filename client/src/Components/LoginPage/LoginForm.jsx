@@ -7,7 +7,7 @@ import { AuthContext } from '../../Context/auth'
 
 import { Form } from './Form'
 import Input from './Input'
-import Button from './Button'
+import FormButton from './FormButton'
 
 import { useForm } from '../../Util/Hooks'
 
@@ -50,15 +50,15 @@ export default function LoginForm({ changeForm }) {
             <h2>Log In</h2>
             <Input label='Username' type='text' name="username" value={values.username} onChange={onChange} error={errors.username} />
             <Input label='Password' type='password' name="password" value={values.password} onChange={onChange} error={errors.password} />
-            <Button type='submit' primary loading={loading}>Log In</Button>
+            <FormButton type='submit' primary loading={loading}>Log In</FormButton>
             <div className='link'>
                 <p>First time here?</p>
                 <div className='changeForm' role="button" onClick={changeForm.bind(this, false)}>Create new account</div>
             </div>
             <Providers>
                 <p>Or login using one of the following:</p>
-                <Button type='button'>Facebook</Button>
-                <Button type='button'>Google</Button>
+                <FormButton type='button'>Facebook</FormButton>
+                <FormButton type='button'>Google</FormButton>
             </Providers>
         </Form>
     )

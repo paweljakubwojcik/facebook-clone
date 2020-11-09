@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 
 import Avatar from './Avatar'
-import Button from './LoginPage/Button'
+import FormButton from './LoginPage/FormButton'
 
 import { AuthContext } from '../Context/auth'
 
@@ -25,7 +25,7 @@ export default function PostForm({ toggleForm }) {
                     <h3>{username}</h3>
                 </div>
                 <textarea name="body" id="body" placeholder={`O czym teraz myślisz, ${username}?`}></textarea>
-                <Button primary>Post</Button>
+                <FormButton primary inactive>Post</FormButton>
             </Form>
         </Modal>
     )
