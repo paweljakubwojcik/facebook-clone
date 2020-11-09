@@ -6,7 +6,7 @@ import { AuthContext } from './Context/auth'
 
 import Home from './Pages/Home'
 import Login from './Pages/Login'
-import NavBar from './Components/Navbar'
+import NavBar from './Components/General/Navbar'
 
 
 import { darkTheme } from './themes'

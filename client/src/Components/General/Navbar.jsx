@@ -2,13 +2,13 @@ import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import face from '../styles/images/face.jpg'
-import logo from '../styles/svg/logo.svg'
+import face from '../../styles/images/face.jpg'
+import logo from '../../styles/svg/logo.svg'
 
 import Avatar from './Avatar'
 import Menu from './Menu'
 
-import { AuthContext } from '../Context/auth'
+import { AuthContext } from '../../Context/auth'
 
 
 export default function Navbar() {

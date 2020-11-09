@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { useQuery, gql } from '@apollo/client';
 
 import SkeletonPost from '../Components/skeletons/SkeletonPost'
-import Status from '../Components/Status'
-import PostCard from '../Components/PostCard';
+import Status from '../Components/HomePage/Status'
+import PostCard from '../Components/HomePage/PostCard';
 
 const QUERY_POSTS = gql`
    {

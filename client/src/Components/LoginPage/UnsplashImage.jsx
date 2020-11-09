@@ -4,7 +4,6 @@ import Unsplash, { toJson } from 'unsplash-js';
 
 
 import Logo from '../../styles/images/logo.png'
-import TestImage from '../../styles/images/testImage.jpg'
 
 import { UNSPLASH_APP_KEY } from '../../config.js'
 
@@ -32,14 +31,14 @@ export default function UnsplashImage() {
                 ({ urls, user }) => {
                     console.log(user)
                     updateImage({
-                        src: urls.regular || TestImage,
+                        src: urls.regular,
                         credit: user.name,
                         link: user.links.html,
                     })
                 }
             ).catch(e => {
                 updateImage({
-                    src: TestImage,
+                    src: '',
                     credit: '',
                     link: ''
                 })

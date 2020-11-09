@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
-import { AuthContext } from '../Context/auth'
+import { AuthContext } from '../../Context/auth'
 import { SquareButton } from './Buttons'
 
 export default function UserMenu() {

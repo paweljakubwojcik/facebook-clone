@@ -2,10 +2,10 @@ import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
 
 import { PostCardContainer } from './PostCard'
-import Avatar from './Avatar'
+import Avatar from '../General/Avatar'
 import PostForm from './PostForm'
 
-import { AuthContext } from '../Context/auth'
+import { AuthContext } from '../../Context/auth'
 
 
 export default function Status() {

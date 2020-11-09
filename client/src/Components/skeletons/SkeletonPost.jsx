@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Shimmer from './Shimmer'
 import SkeletonElement from './SkeletonElement'
 
-import { PostCardContainer, PostCardBody, PostCardHeader } from '../PostCard'
+import { PostCardContainer, PostCardBody, PostCardHeader } from '../HomePage/PostCard'
 
 
 const SkeletonWrapper = styled(PostCardContainer)`

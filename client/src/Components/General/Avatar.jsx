@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 
-import defaultUserImage from '../styles/svg/user-solid.svg'
+import defaultUserImage from '../../styles/svg/user-solid.svg'
 
 export default function Avatar({ image, altText }) {
     return (

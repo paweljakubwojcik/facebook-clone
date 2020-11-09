@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
 
-import Avatar from './Avatar'
-import { GenericButton, SquareButton } from './Buttons'
+import Avatar from '../General/Avatar'
+import { GenericButton, SquareButton } from '../General/Buttons'
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

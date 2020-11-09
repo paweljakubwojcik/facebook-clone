@@ -1,19 +1,19 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 
-import Avatar from './Avatar'
-import FormButton from './LoginPage/FormButton'
+import Avatar from '../General/Avatar'
+import FormButton from '../LoginPage/FormButton'
 
-import { AuthContext } from '../Context/auth'
+import { AuthContext } from '../../Context/auth'
 
 export default function PostForm({ toggleForm }) {
 
     const { user: { username } } = useContext(AuthContext)
 
     const handleClick = (e) => {
-        if (e.target.classList.contains('modal'))
+        if (e.target.classList.contains('modal')) {
             toggleForm(false)
-
+        }
     }
 
     return (
@@ -30,6 +30,9 @@ export default function PostForm({ toggleForm }) {
         </Modal>
     )
 }
+
+
+
 
 
 const Modal = styled.div`
