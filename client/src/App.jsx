@@ -9,7 +9,7 @@ import Login from './Pages/Login'
 import NavBar from './Components/General/Navbar'
 
 
-import { darkTheme } from './themes'
+import { darkTheme } from './styles/themes'
 
 
 export default function App() {
