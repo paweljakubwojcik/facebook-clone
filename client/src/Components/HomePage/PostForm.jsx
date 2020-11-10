@@ -1,14 +1,48 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
+import { useMutation } from '@apollo/client'
+
 
 import Avatar from '../General/Avatar'
 import FormButton from '../LoginPage/FormButton'
 
 import { AuthContext } from '../../Context/auth'
+import { useForm } from '../../Util/Hooks'
+import { ADD_POST, GET_POSTS } from '../../Util/GraphQL_Queries'
 
 export default function PostForm({ toggleForm }) {
+    const initialState = {
+        body: ''
+    }
 
     const { user: { username } } = useContext(AuthContext)
+
+    const { onChange, onSubmit, values } = useForm(createPostCallback, initialState)
+
+
+
+    const [createPost, { error, loading }] = useMutation(ADD_POST, {
+        //executed if mutation is succesful
+        update(proxy, { data: { createPost } }) {
+            const cacheData = proxy.readQuery({
+                query: GET_POSTS
+            })
+            console.log(cacheData)
+            const updatedPosts = [createPost, ...cacheData.getPosts]
+            proxy.writeQuery({ query: GET_POSTS, data: { getPosts: updatedPosts } })
+            values.body = ''
+            toggleForm(false)
+        },
+        onError(err) {
+            console.log(err)
+        },
+        variables: values
+    })
+
+    // only purpose of this function is to call createPost... isn't it sad? 
+    function createPostCallback() {
+        createPost()
+    }
 
     const handleClick = (e) => {
         if (e.target.classList.contains('modal')) {
@@ -18,14 +52,15 @@ export default function PostForm({ toggleForm }) {
 
     return (
         <Modal className='modal' onClick={handleClick}>
-            <Form>
+            <Form onChange={onChange} onSubmit={onSubmit}>
                 <h2>Create Post</h2>
                 <div className='userInfo'>
                     <Avatar />
                     <h3>{username}</h3>
                 </div>
-                <textarea name="body" id="body" placeholder={`O czym teraz myślisz, ${username}?`}></textarea>
-                <FormButton primary inactive>Post</FormButton>
+                <textarea autoFocus name="body" id="body" placeholder={`O czym teraz myślisz, ${username}?`}></textarea>
+                {error && <ErrorMessage>There was a problem during faking your status, please try later</ErrorMessage>}
+                <FormButton primary inactive={values.body.trim().length === 0} loading={loading} loadingMessage={'Posting'}>Post</FormButton>
             </Form>
         </Modal>
     )
@@ -35,6 +70,7 @@ export default function PostForm({ toggleForm }) {
 
 
 
+// ----------------------- styles begin here ----------------------------------------------
 const Modal = styled.div`
     position:fixed;
     top:0;
@@ -46,6 +82,11 @@ const Modal = styled.div`
     justify-content:center;
     align-items:center;
     background-color:#00000044;
+`
+
+const ErrorMessage = styled.p`
+    color:#c22c2c;
+    font-size:.8em;
 `
 
 const Form = styled.form`
@@ -69,6 +110,7 @@ const Form = styled.form`
         margin:.5em;
     }
     textarea{
+        resize: none;
         font-family:inherit;
         font-size:inherit;
         color:inherit;
