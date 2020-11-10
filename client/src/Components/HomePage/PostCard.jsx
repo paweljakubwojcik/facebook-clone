@@ -1,17 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
 
 import Avatar from '../General/Avatar'
 import { GenericButton, SquareButton } from '../General/Buttons'
-
+import PostOptions from './PostOptions'
+import { AuthContext } from '../../Context/auth'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faThumbsUp, faShare } from '@fortawesome/free-solid-svg-icons'
 
+
 export default function PostCard({ post }) {
     const { body, createdAt, commentsCount, id, likesCount, username, comments, likes } = post
-
+    const context = useContext(AuthContext)
 
     return (
         <PostCardContainer className='postCard'>
@@ -23,6 +25,7 @@ export default function PostCard({ post }) {
                         {moment(createdAt).fromNow()}
                     </div>
                 </header>
+                {context.user.username === username && <PostOptions></PostOptions>}
             </PostCardHeader>
 
             <PostCardBody className='postCard__body'>
@@ -70,6 +73,7 @@ export const PostCardContainer = styled.div`
 `
 
 export const PostCardHeader = styled.div`
+position:relative;
     display:flex;
     align-items:center;
     width:100%;
@@ -115,3 +119,4 @@ const PostCardButtonsContainer = styled.div`
         flex:1;
     }
 `
+

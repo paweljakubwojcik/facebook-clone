@@ -11,4 +11,5 @@ export const PopUpMenu = styled.div`
     right:5%;
     top:105%;
     border-radius:.5em;
+    border: solid 1px  ${props => props.theme.secondaryFontColor}${'aa'};
 `
