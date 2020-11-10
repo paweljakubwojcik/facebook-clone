@@ -1,5 +1,5 @@
 
-# Fake Facebook aka facebook-clone
+# Fakebook aka facebook-clone
 ## development in progress...
 #### server
   - [x] user registration & authorization
@@ -16,6 +16,7 @@
 - [x] user context
 - [ ] dashboard
   - [x] post feed
+  - [x] adding & liking posts
   - [ ] contact list
   - [ ] menu
 - [ ] user details page
