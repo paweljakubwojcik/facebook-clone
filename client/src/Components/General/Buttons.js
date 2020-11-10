@@ -21,6 +21,7 @@ export const GenericButton = styled.button`
         filter:brightness(.9);
         transform:scale(.95);
     }
+    pointer-events:${props => props.inactive && 'none'};
     
 `
 
@@ -43,8 +44,7 @@ export const RoundButton = styled(GenericButton)`
 
 export const SquareButton = styled(GenericButton)`
 
-    background-color:${props => props.active && props.theme.activeButtonColor};
-    color: ${props => props.active && props.theme.primaryFontColors};
+    color: ${props => props.active && props.theme.primaryColor};
     &:hover{
         background-color:${props => props.theme.roundButtonColor};
     }

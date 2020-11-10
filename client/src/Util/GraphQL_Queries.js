@@ -86,3 +86,20 @@ export const REGISTER_USER = gql`
         }
     }
 `
+
+export const LIKE_POST = gql`
+    mutation likePost($postId:ID!)
+    {
+        likePost(postId:$postId){
+            id
+            likes{
+                id
+                createdAt
+                username
+            }
+            body
+            likesCount
+            }
+        }
+
+`

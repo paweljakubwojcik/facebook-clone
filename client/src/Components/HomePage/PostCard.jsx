@@ -9,6 +9,7 @@ import { AuthContext } from '../../Context/auth'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faThumbsUp, faShare } from '@fortawesome/free-solid-svg-icons'
+import LikeButton from './LikeButton'
 
 
 export default function PostCard({ post }) {
@@ -46,10 +47,7 @@ export default function PostCard({ post }) {
             </PostCardCounters>
 
             <PostCardButtonsContainer>
-                <SquareButton className='postCard__button'>
-                    <FontAwesomeIcon className="icon" icon={faThumbsUp} />
-                    Like!
-                </SquareButton>
+                <LikeButton postData={{ id, likes }} />
                 <SquareButton className='postCard__button'>
                     <FontAwesomeIcon className="icon" icon={faComment} />
                    Comment
@@ -71,7 +69,6 @@ export const PostCardContainer = styled.div`
     margin: 2vh 2%;
     padding:1em;
 `
-
 export const PostCardHeader = styled.div`
 position:relative;
     display:flex;
