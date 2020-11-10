@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 
 import SkeletonPost from '../Components/skeletons/SkeletonPost'
 import Status from '../Components/HomePage/Status'
@@ -20,8 +20,9 @@ export default function Home() {
       <Feed>
         <Status />
 
-        {posts && posts.map(post => <PostCard key={post.id} post={post} />)}
         {loading && [1, 2].map((key) => <SkeletonPost key={key} theme={'dark'} />)}
+        {posts && posts.map(post => <PostCard key={post.id} post={post} />)}
+        {error && <ErrorMessage>I'm sorry, I failed, couldn't find any posts {';('}</ErrorMessage>}
 
       </Feed>
     </Container>
@@ -41,4 +42,9 @@ const Feed = styled.section`
     flex-shrink:1;
     flex-direction:column;
     align-items:center;
+`
+
+const ErrorMessage = styled.p`
+    color:#c22c2c;
+    font-size:.8em;
 `

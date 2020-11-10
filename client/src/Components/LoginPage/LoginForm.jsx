@@ -27,7 +27,7 @@ export default function LoginForm({ changeForm }) {
 
 
     //graphQL query
-    const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+    const [loginUser, { error, loading }] = useMutation(LOGIN_USER, {
         //executed if mutation is succesful
         update(proxy, { data: { login: userData } }) {
             //adds user data to context
@@ -38,6 +38,10 @@ export default function LoginForm({ changeForm }) {
         onError(err) {
             if (err.graphQLErrors[0])
                 setErrors(err?.graphQLErrors[0]?.extensions?.exception?.errors)
+            else
+                setErrors({
+                    unknown: 'Check your internet connection, it appears to be faking it\'s presence'
+                })
         },
         variables: values
     })
@@ -51,7 +55,8 @@ export default function LoginForm({ changeForm }) {
             <h2>Log In</h2>
             <Input label='Username' type='text' name="username" value={values.username} onChange={onChange} error={errors.username} />
             <Input label='Password' type='password' name="password" value={values.password} onChange={onChange} error={errors.password} />
-            <FormButton type='submit' primary loading={loading}>Log In</FormButton>
+            {errors.unknown && <ErrorMessage>{errors.unknown}</ErrorMessage>}
+            <FormButton type='submit' primary loading={loading}>{error ? 'Try Again' : 'Log In'}</FormButton>
             <div className='link'>
                 <p>First time here?</p>
                 <div className='changeForm' role="button" onClick={changeForm.bind(this, false)}>Create new account</div>
@@ -68,8 +73,13 @@ export default function LoginForm({ changeForm }) {
 
 
 const Providers = styled.div`
-    
     margin:2em 0;
+`
+
+const ErrorMessage = styled.p`
+    color:#c22c2c;
+    font-size:.8em;
+    display:inline-block;
 `
 
 
