@@ -1,6 +1,10 @@
 import { useState } from "react"
 
-
+/**
+ *
+ * @param {*} callback - a function to be executed on submit
+ * @param {*} initialState - inital state for the form values
+ */
 export const useForm = (callback, initialState = {}) => {
     const [values, setValues] = useState(initialState)
 
