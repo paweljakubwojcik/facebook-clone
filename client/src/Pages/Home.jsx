@@ -6,33 +6,13 @@ import SkeletonPost from '../Components/skeletons/SkeletonPost'
 import Status from '../Components/HomePage/Status'
 import PostCard from '../Components/HomePage/PostCard';
 
-const QUERY_POSTS = gql`
-   {
-    getPosts {
-      body
-      commentsCount
-      id
-      createdAt
-      likesCount
-      username
-      comments {
-        body
-        username
-        createdAt
-        id
-      }
-      likes {
-        username
-      }
-    }
-  }   
-`
+import { GET_POSTS } from '../Util/GraphQL_Queries'
 
 
 export default function Home() {
 
 
-  const { loading, error, data: { getPosts: posts } = {} } = useQuery(QUERY_POSTS);
+  const { loading, error, data: { getPosts: posts } = {} } = useQuery(GET_POSTS);
 
 
   return (

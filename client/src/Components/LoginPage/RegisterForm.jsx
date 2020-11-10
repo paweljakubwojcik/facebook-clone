@@ -9,6 +9,7 @@ import { Form } from './Form'
 
 import { useForm } from '../../Util/Hooks'
 import { AuthContext } from '../../Context/auth'
+import { REGISTER_USER } from '../../Util/GraphQL_Queries'
 
 
 
@@ -64,26 +65,3 @@ export default function RegisterForm({ changeForm }) {
     )
 }
 
-const REGISTER_USER = gql`
-    mutation register(
-        $username: String!
-        $email: String!
-        $password: String!
-        $confirmPassword: String!
-    ){
-        register(
-            registerInput: {
-                username: $username,
-                email: $email,
-                password: $password,
-                confirmPassword:$confirmPassword,
-            }
-        ){
-            id
-            token
-            username
-            email
-            createdAt
-        }
-    }
-`

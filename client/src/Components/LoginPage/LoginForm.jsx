@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
-import { useMutation, gql } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 
 import { AuthContext } from '../../Context/auth'
 
@@ -10,6 +10,7 @@ import Input from './Input'
 import FormButton from './FormButton'
 
 import { useForm } from '../../Util/Hooks'
+import { LOGIN_USER } from '../../Util/GraphQL_Queries'
 
 export default function LoginForm({ changeForm }) {
     const history = useHistory()
@@ -71,21 +72,5 @@ const Providers = styled.div`
     margin:2em 0;
 `
 
-const LOGIN_USER = gql`
-    mutation login(
-        $username: String!
-        $password: String!
-    ){
-        login(
-                username: $username,
-                password: $password,
-        ){
-            id
-            token
-            username
-            email
-            createdAt
-        }
-    }
-`
+
 
