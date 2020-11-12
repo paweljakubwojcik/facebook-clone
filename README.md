@@ -1,11 +1,12 @@
 
-# Fake Facebook aka facebook-clone
+# Fakebook aka facebook-clone
 ## development in progress...
 #### server
   - [x] user registration & authorization
   - [x] adding/deleting post
   - [x] adding/deleting comments to posts
   - [x] liking unliking posts
+  - [ ] uploading pictures 
   - [ ] login using third party providers (like google or facebook)
   - [ ] sharing system
   - [ ] friends
@@ -16,10 +17,13 @@
 - [x] user context
 - [ ] dashboard
   - [x] post feed
+  - [x] adding & liking posts
   - [ ] contact list
-  - [ ] menu
+  - [x] menu
+  - [ ] comments 
 - [ ] user details page
 - [ ] messenger
+
 
 ## tech so far used:
 * [GraphQl](https://graphql.org/) with [Apollo-server](https://www.apollographql.com/docs/apollo-server/) & [Apollo-Client](https://www.apollographql.com/docs/react/)
