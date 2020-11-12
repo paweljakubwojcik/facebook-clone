@@ -68,6 +68,9 @@ export const PostCardContainer = styled.div`
     border-radius:.5em;
     margin: 2vh 2%;
     padding:1em;
+    @media (max-width:600px){
+        border-radius:0;
+    }
 `
 export const PostCardHeader = styled.div`
 position:relative;

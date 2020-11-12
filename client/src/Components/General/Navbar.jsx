@@ -2,10 +2,10 @@ import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import face from '../../styles/images/face.jpg'
+import UserLink from './UserLink'
 import logo from '../../styles/svg/logo.svg'
 
-import Avatar from './Avatar'
+
 import Menu from './Menu'
 
 import { AuthContext } from '../../Context/auth'
@@ -23,14 +23,7 @@ export default function Navbar() {
                     <h1>Fakebook</h1>
                 </Link>
             </header>
-            <Link to='./'>
-                <UserLink className='avatar'>
-                    <Avatar image={face} altText='not anonymus faker' />
-                    <div className="username">
-                        {user.username}
-                    </div>
-                </UserLink>
-            </Link>
+            <UserLink user={user} />
             <Menu />
         </NavBar>
     )
@@ -63,27 +56,5 @@ const NavBar = styled.nav`
         }
     }
 `
-//TODO component to be extracted
-const UserLink = styled.div`
 
-    display:flex;
-    justify-content:space-evenly;
-    align-items:center;
-
-    border-radius:1em;
-    padding:5px;
-
-    transition: background-color .3s;
-
-    &:hover{
-        background-color:#444648;
-        cursor:pointer;
-    }
-
-    .username{
-        font-size:.8em;
-        margin: .5em 1em;
-        font-weight:bold;
-    }
-`
 

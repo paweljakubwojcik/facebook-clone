@@ -5,8 +5,10 @@ import { useQuery } from '@apollo/client';
 import SkeletonPost from '../Components/skeletons/SkeletonPost'
 import Status from '../Components/HomePage/Status'
 import PostCard from '../Components/HomePage/PostCard';
+import ContactList from '../Components/HomePage/ContactList';
 
 import { GET_POSTS } from '../Util/GraphQL_Queries'
+
 
 
 export default function Home() {
@@ -19,12 +21,11 @@ export default function Home() {
     <Container>
       <Feed>
         <Status />
-
-        {loading && [1, 2].map((key) => <SkeletonPost key={key} theme={'dark'} />)}
+        {!posts && [1, 2].map((key) => <SkeletonPost key={key} theme={'dark'} />)}
         {posts && posts.map(post => <PostCard key={post.id} post={post} />)}
         {error && <ErrorMessage>I'm sorry, I failed, couldn't find any posts {';('}</ErrorMessage>}
-
       </Feed>
+      <ContactList />
     </Container>
   )
 }
