@@ -8,14 +8,14 @@ import { AuthProvider } from './Context/auth'
 import App from './App';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Apollo >
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </Apollo>
 
-  </React.StrictMode>,
+  <Apollo >
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </Apollo>
+
+  ,
   document.getElementById('root')
 );
 

@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 import defaultUserImage from '../../styles/svg/user-solid.svg'
 
-export default function Avatar({ image, altText }) {
+export default function Avatar({ image, altText, big }) {
     return (
-        <ImageContainer className="imageContainer">
+        <ImageContainer big={big ? 1 : 0} className="imageContainer">
             <img src={image} alt={altText} />
         </ImageContainer>
     )
@@ -17,9 +17,8 @@ Avatar.defaultProps = {
 };
 
 const ImageContainer = styled.div`
-
-    height:40px;
-    width:40px;
+    ${props => props.big ? "height:80px; width:80px;" : "height:40px; width:40px;" }
+    
 
     img{
         border-radius:50%;

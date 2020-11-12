@@ -9,7 +9,8 @@ module.exports = {
     },
     Query: {
         ...postsResorvels.Query,
-        ...commentsResorvels.Query
+        ...commentsResorvels.Query,
+        ...usersResorvels.Query,
     },
     Mutation: {
         ...usersResorvels.Mutation,

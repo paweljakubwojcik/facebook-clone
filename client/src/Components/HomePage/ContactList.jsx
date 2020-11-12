@@ -1,16 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
-import UserLink from '../General/UserLink'
+import UserButton from '../General/UserButton'
 
+import { GET_USERS } from '../../Util/GraphQL_Queries'
 
+import { useQuery } from '@apollo/client';
 
 
 
 export default function ContactList() {
+
+    const { loading, error, data: { getUsers: users } = {} } = useQuery(GET_USERS);
+
     return (
         <Container>
             <h2>Kontakty</h2>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map(key => <UserLink key={key} />)}
+            { users && users.map(user => <UserButton key={user.id} user={user} />)}
         </Container>
     )
 }
@@ -24,8 +29,6 @@ const Container = styled.div`
     display:flex;
     flex-direction:column;
     
-   
-   
     h2{
         padding: .5em 0;
         width:100%;
@@ -39,8 +42,7 @@ const Container = styled.div`
     @media (max-width:1260px){
         display:none;
     }
-    overflow:auto;
-    overflow-x:hidden;
+    overflow-x:visible;
     scrollbar-width: thin;          /* "auto" or "thin"  */
     scrollbar-color: ${props => props.theme.secondaryFontColor} ${props => props.theme.primaryElementColor};   /* scroll thumb & track */
 

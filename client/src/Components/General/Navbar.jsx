@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import UserLink from './UserLink'
+import UserButton from './UserButton'
 import logo from '../../styles/svg/logo.svg'
 
 
@@ -23,7 +23,7 @@ export default function Navbar() {
                     <h1>Fakebook</h1>
                 </Link>
             </header>
-            <UserLink user={user} />
+            <UserButton user={user} notLink />
             <Menu />
         </NavBar>
     )
