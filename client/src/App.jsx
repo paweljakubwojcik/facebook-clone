@@ -10,6 +10,7 @@ import NavBar from './Components/General/Navbar'
 
 
 import { darkTheme } from './styles/themes'
+import Profile from './Pages/Profile'
 
 
 export default function App() {
@@ -30,8 +31,8 @@ export default function App() {
               <Login />
             )}
         </Route>
-        <Route exact path='/other' >
-
+        <Route exact path='/profile/:id' >
+          <Profile></Profile>
         </Route>
       </Router>
     </ThemeProvider>

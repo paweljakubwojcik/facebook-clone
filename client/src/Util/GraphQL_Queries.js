@@ -53,6 +53,14 @@ export const GET_USERS = gql`
     }
 }
 `
+export const GET_USER = gql`
+query getUser(  $userId: ID! ){
+ getUser( userId: $userId,) {
+    id
+    username
+    }
+}
+`
 
 export const LOGIN_USER = gql`
     mutation login(

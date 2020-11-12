@@ -109,9 +109,9 @@ module.exports = {
                 throw new Error(err)
             }
         },
-        getUser: async (_, { username }) => {
+        getUser: async (_, { userId }) => {
             try {
-                const user = await User.findOne({ username })
+                const user = await User.findById(userId)
                 return user
             } catch (err) {
                 throw new Error(err)
