@@ -18,7 +18,7 @@
 - [ ] dashboard
   - [x] post feed
   - [x] adding & liking posts
-  - [ ] contact list
+  - [x] contact list
   - [x] menu
   - [ ] comments 
 - [ ] user details page
@@ -28,7 +28,7 @@
 ## tech so far used:
 * [GraphQl](https://graphql.org/) with [Apollo-server](https://www.apollographql.com/docs/apollo-server/) & [Apollo-Client](https://www.apollographql.com/docs/react/)
 * [MongoDB](https://www.mongodb.com/) with Mongoose
-* [React](https://en.reactjs.org/),[React Router](https://reactrouter.com/) 
+* [React](https://en.reactjs.org/), [React Router](https://reactrouter.com/) , [React Transition Group](http://reactcommunity.org/react-transition-group/)
 * [Styled Components](https://styled-components.com/)
 * [Font Awesome Icons](https://fontawesome.com/)
 * [Unsplash Api](https://unsplash.com/)
