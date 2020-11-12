@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 export const Skeleton = styled.div`
     background-color: ${props => props.theme.secondaryElementColor};
-    margin: .2em 0;
+    margin: .2em;
     border-radius: 4px;
     height:.8em;
     filter:opacity(.4);

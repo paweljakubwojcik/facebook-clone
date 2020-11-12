@@ -31,7 +31,7 @@ export default function UserButton({ user, notLink }) {
     )
 }
 
-const StyledButton = styled.div`
+export const StyledButton = styled.div`
 
     position:relative;
 

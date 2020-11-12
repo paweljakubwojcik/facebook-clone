@@ -30,6 +30,7 @@ export default function Status() {
 
 const Container = styled(PostCardContainer)`
     display:flex;
+    align-items:center;
 `
 
 const StatusInput = styled.div`

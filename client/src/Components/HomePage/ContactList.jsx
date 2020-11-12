@@ -1,10 +1,12 @@
 import React from 'react'
+import { useQuery } from '@apollo/client';
 import styled from 'styled-components'
+
 import UserButton from '../General/UserButton'
+import SkeletonUserButton from '../skeletons/SkeletonUserButton'
 
 import { GET_USERS } from '../../Util/GraphQL_Queries'
 
-import { useQuery } from '@apollo/client';
 
 
 
@@ -16,6 +18,7 @@ export default function ContactList() {
         <Container>
             <h2>Kontakty</h2>
             { users && users.map(user => <UserButton key={user.id} user={user} />)}
+            { loading && [0, 1, 2].map(key => <SkeletonUserButton key={key} />)}
         </Container>
     )
 }
