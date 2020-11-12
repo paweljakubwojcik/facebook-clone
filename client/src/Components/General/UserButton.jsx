@@ -56,4 +56,16 @@ const StyledButton = styled.div`
         margin: .5em 1em;
         font-weight:bold;
     }
+
+    //invisible extension for hover
+    &::after{
+        content:'';
+        display:block;
+        position:absolute;
+        left:50%;
+        top:50%;
+        transform: translate(-50%,-50%);
+        width:110%;
+        height:110%;
+    }
 `

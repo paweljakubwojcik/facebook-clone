@@ -23,7 +23,9 @@ export default function Navbar() {
                     <h1>Fakebook</h1>
                 </Link>
             </header>
-            <UserButton user={user} notLink />
+            <Link to={`./profile/${user.username}`}>
+                <UserButton user={user} notLink />
+            </Link>
             <Menu />
         </NavBar>
     )

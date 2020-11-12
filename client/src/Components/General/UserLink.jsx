@@ -18,7 +18,7 @@ export default function UserLink({ user, isVisible }) {
                 appear={true}>
                 <>
                     {isVisible && (
-                        <StyledLink to={`./user/${user.username}`} className='avatar'>
+                        <StyledLink to={`./profile/${user.username}`} className='avatar'>
                             <Avatar altText='not anonymus faker' big />
                             <div className="username">
                                 {user?.username || "User"}
@@ -38,7 +38,6 @@ const StyledLink = styled(Link)`
     left:0;
     top:0;
 
-
     transform: translate(-105%, -25%);
 
     display:flex;
@@ -46,6 +45,8 @@ const StyledLink = styled(Link)`
     align-items:center;
 
     background-color:${props => props.theme.primaryElementColor};
+
+    transition: background-color ${animDuration}ms;
 
     border: solid 1px ${props => props.theme.secondaryFontColor};
     border-radius:1em;
