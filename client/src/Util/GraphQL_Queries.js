@@ -45,6 +45,15 @@ export const ADD_POST = gql`
     }
 `
 
+export const GET_USERS = gql`
+{
+ getUsers {
+    id
+    username
+    }
+}
+`
+
 export const LOGIN_USER = gql`
     mutation login(
         $username: String!

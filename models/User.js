@@ -5,6 +5,15 @@ const userSchema = new Schema({
     password: String,
     email: String,
     createdAt: String,
+    friends: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'users'
+        }
+    ],
+    profileImage: String,
+    isOnline: Boolean,
+    lastTimeOnline: String
 })
 
 module.exports = model('User', userSchema)

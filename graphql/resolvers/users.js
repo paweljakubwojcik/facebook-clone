@@ -99,5 +99,23 @@ module.exports = {
                 token
             }
         }
+    },
+    Query: {
+        getUsers: async () => {
+            try {
+                const users = await User.find().sort({ lastTimeOnline: -1 }); //Get users and sort them by activity
+                return users
+            } catch (err) {
+                throw new Error(err)
+            }
+        },
+        getUser: async (_, { username }) => {
+            try {
+                const user = await User.findOne({ username })
+                return user
+            } catch (err) {
+                throw new Error(err)
+            }
+        }
     }
 }
