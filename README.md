@@ -34,9 +34,9 @@
 * [Unsplash Api](https://unsplash.com/)
 
 ## mockups
-![Web 1920 – 1](https://user-images.githubusercontent.com/46058997/98292438-ff1f2800-1fac-11eb-9228-25f58f434b87.png)
-![Web 1920 – 2](https://user-images.githubusercontent.com/46058997/98442023-72867e00-2102-11eb-9a7b-8b39859dc1c6.png)
-![Web 1920 – 3](https://user-images.githubusercontent.com/46058997/98442042-95b12d80-2102-11eb-9f4e-937ef99612fc.png)
+![DashBoard](https://user-images.githubusercontent.com/46058997/98292438-ff1f2800-1fac-11eb-9228-25f58f434b87.png)
+![LoginPage](https://user-images.githubusercontent.com/46058997/98442023-72867e00-2102-11eb-9a7b-8b39859dc1c6.png)
+![User detail page](https://user-images.githubusercontent.com/46058997/99118583-1b981180-25f8-11eb-8136-69ca38facef4.png)
 
 
 
