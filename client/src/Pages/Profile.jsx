@@ -13,7 +13,6 @@ export default function Profile() {
     const { data: { getUser: user } = {} } = useQuery(GET_USER, {
         variables: { userId: id },
     })
-    console.log(user)
 
     return (
         <h1>
