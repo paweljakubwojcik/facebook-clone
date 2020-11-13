@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 
@@ -18,6 +18,8 @@ export default function App() {
   //checks if user is logged in
   const { user } = useContext(AuthContext)
 
+  const [whichForm, setForm] = useState('login')
+
   return (
     <ThemeProvider theme={darkTheme}>
       <Router>
@@ -28,11 +30,12 @@ export default function App() {
               <Home />
             </>
           ) : (
-              <Login />
+              <Login whichForm={whichForm} setForm={setForm} />
             )}
         </Route>
         <Route exact path='/profile/:id' >
-          <Profile></Profile>
+          <NavBar setForm={setForm} />
+          <Profile />
         </Route>
       </Router>
     </ThemeProvider>

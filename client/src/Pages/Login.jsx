@@ -1,18 +1,19 @@
-import React, { useState } from 'react'
+import React from 'react'
 import UnsplashImage from '../Components/LoginPage/UnsplashImage'
 import TwoColumnLayout from '../Layouts/TwoColumnLayout'
 import LoginForm from '../Components/LoginPage/LoginForm'
 import RegisterForm from '../Components/LoginPage/RegisterForm'
 
-export default function Login() {
+export default function Login({ whichForm, setForm }) {
 
-    const [isLoginForm, changeForm] = useState(true)
+
 
 
     return (
         <TwoColumnLayout>
             <UnsplashImage></UnsplashImage>
-            { isLoginForm ? <LoginForm changeForm={changeForm} /> : <RegisterForm changeForm={changeForm} />}
+            { whichForm === 'login' && <LoginForm setForm={setForm} />}
+            {whichForm === 'register' && <RegisterForm setForm={setForm} />}
         </TwoColumnLayout>
     )
 }

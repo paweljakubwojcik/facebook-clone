@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom'
 
 
@@ -14,7 +14,7 @@ import { REGISTER_USER } from '../../Util/GraphQL_Queries'
 
 
 
-export default function RegisterForm({ changeForm }) {
+export default function RegisterForm({ setForm }) {
     const history = useHistory()
 
     const context = useContext(AuthContext)
@@ -59,7 +59,7 @@ export default function RegisterForm({ changeForm }) {
             <FormButton primary loading={loading}>Join</FormButton>
             <div className='link'>
                 <p>Have an account? </p>
-                <div className='changeForm' role="button" onClick={changeForm.bind(this, true)}>Log In</div>
+                <div className='changeForm' role="button" onClick={setForm.bind(this, 'login')}>Log In</div>
             </div>
         </Form>
     )

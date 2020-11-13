@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
+import FormButton from '../LoginPage/FormButton'
 import UserButton from './UserButton'
 import logo from '../../styles/svg/logo.svg'
 
@@ -11,22 +12,37 @@ import Menu from './Menu'
 import { AuthContext } from '../../Context/auth'
 
 
-export default function Navbar() {
+export default function Navbar({ setForm }) {
 
     const { user } = useContext(AuthContext)
+
 
     return (
         <NavBar className='navBar'>
             <header>
-                <Link to='./'>
+                <Link to='/'>
                     <img src={logo} alt="Fake Facebook" />
                     <h1>Fakebook</h1>
                 </Link>
             </header>
-            <Link to={`./profile/${user.id}`}>
-                <UserButton user={user} notLink />
-            </Link>
-            <Menu />
+            {user ? (
+                <>
+                    <Link to={`/profile/${user.id}`}>
+                        <UserButton user={user} notLink />
+                    </Link>
+                    <Menu />
+                </>
+            ) : (
+                    <>
+                        <Link to={`/`} onClick={setForm.bind(this, 'login')}>
+                            <FormButton >Login</FormButton>
+                        </Link>
+                        <Link to={`/`} onClick={setForm.bind(this, 'register')}>
+                            <FormButton >Register</FormButton>
+                        </Link>
+                    </>
+                )}
+
         </NavBar>
     )
 }

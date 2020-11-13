@@ -12,7 +12,7 @@ import FormButton from './FormButton'
 import { useForm } from '../../Util/Hooks'
 import { LOGIN_USER } from '../../Util/GraphQL_Queries'
 
-export default function LoginForm({ changeForm }) {
+export default function LoginForm({ setForm }) {
     const history = useHistory()
     const context = useContext(AuthContext)
 
@@ -59,7 +59,7 @@ export default function LoginForm({ changeForm }) {
             <FormButton type='submit' primary loading={loading}>{error ? 'Try Again' : 'Log In'}</FormButton>
             <div className='link'>
                 <p>First time here?</p>
-                <div className='changeForm' role="button" onClick={changeForm.bind(this, false)}>Create new account</div>
+                <div className='changeForm' role="button" onClick={setForm.bind(this, 'register')}>Create new account</div>
             </div>
             <Providers>
                 <p>Or login using one of the following:</p>
