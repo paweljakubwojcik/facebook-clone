@@ -44,7 +44,7 @@ export default function Profile() {
             </TopPanel>
             <ProfileMenu width={width} contentType={contentType} setContentType={setContentType} user={user} ></ProfileMenu>
             <Content>
-                {contentType === contentTypes.POSTS && <Posts />}
+                {contentType === contentTypes.POSTS && user && <Posts user={user} />}
             </Content>
         </>
     )

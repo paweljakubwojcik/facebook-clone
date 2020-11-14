@@ -66,6 +66,7 @@ const ContainerBar = styled.div`
     justify-content:center;
     background-color: ${props => props.theme.primaryElementColor};
     position: sticky;
+    z-index:2;
     height:60px;
     top:${props => props.top}px;
 `

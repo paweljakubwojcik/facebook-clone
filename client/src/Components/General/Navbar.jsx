@@ -57,7 +57,7 @@ const NavBar = styled.nav`
     display:flex;
     width:100%;
     align-items:center;
-    background-color: ${props => props.theme.primaryElementColor}ee; // no its not a typo, ee is responsible for opacity like #ffffff + ee
+    background-color: ${props => props.theme.primaryElementColor}; // no its not a typo, ee is responsible for opacity like #ffffff + ee
     border-bottom: solid 1px ${props => props.theme.secondaryElementColor}dd;
 
     header{
