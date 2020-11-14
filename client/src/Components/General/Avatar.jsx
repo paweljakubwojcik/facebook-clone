@@ -20,7 +20,7 @@ const ImageContainer = styled.div`
     height:40px;
     width:40px;
     ${props => props.big && "height:80px; width:80px;"}
-    ${props => props.large && "height:120px; width:120px;"}
+    ${props => props.large && "height:8em; width:8em;"}
     background-image: url(${props => props.img});
     background-position:center;
     background-size:cover;
