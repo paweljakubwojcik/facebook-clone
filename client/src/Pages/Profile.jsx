@@ -4,9 +4,11 @@ import { useParams } from "react-router-dom";
 import { useQuery } from '@apollo/client'
 
 import { GET_USER } from '../Util/GraphQL_Queries'
+import contentTypes from '../Components/ProfilePage/contentTypes'
 
 import Avatar from '../Components/General/Avatar'
 import ProfileMenu from '../Components/ProfilePage/ProfileMenu';
+import Posts from '../Components/ProfilePage/Posts';
 
 const width = 1000
 
@@ -41,7 +43,9 @@ export default function Profile() {
                 <h2>{user?.username}</h2>
             </TopPanel>
             <ProfileMenu width={width} contentType={contentType} setContentType={setContentType} user={user} ></ProfileMenu>
-            <Content></Content>
+            <Content>
+                {contentType === contentTypes.POSTS && <Posts />}
+            </Content>
         </>
     )
 }
@@ -92,5 +96,10 @@ const BackgroundImage = styled.div`
 
 const Content = styled.div`
     height:1000px;
+    display:flex;
+    justify-content:center;
+    & > * {
+        max-width:1000px;
+    }
 `
 
