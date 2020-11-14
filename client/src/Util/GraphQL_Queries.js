@@ -58,6 +58,7 @@ query getUser(  $userId: ID! ){
  getUser( userId: $userId,) {
     id
     username
+    backgroundImage
     }
 }
 `
