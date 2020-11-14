@@ -53,9 +53,9 @@ const Container = styled.div`
 `
 const Details = styled.div`
     display:flex;
-    width:30%;
+    width:40%;
 `
 
 const PostFeed = styled.div`
-    width:70%;
+    width:60%;
 `

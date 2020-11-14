@@ -1,10 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
-import { SwitchTransition, CSSTransition, TransitionGroup } from 'react-transition-group'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 import { SquareButton } from '../General/Buttons'
 import RadioButtons from './RadioButtons'
 import UserButton from '../General/UserButton'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserPlus, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
 let navBarHeight;
 
@@ -51,8 +54,14 @@ export default function ProfileMenu({ width, contentType, setContentType, user }
                     </TransitionGroup>
 
                     <Buttons>
-                        <SquareButton>Add to friends</SquareButton>
-                        <SquareButton>Send message</SquareButton>
+                        <SquareButton>
+                            <FontAwesomeIcon icon={faUserPlus} />
+                            Add to friends
+                            </SquareButton>
+                        <SquareButton>
+                            <FontAwesomeIcon icon={faEnvelope} />
+                            Send message
+                        </SquareButton>
                     </Buttons>
                 </Menu>
             </ContainerBar>
