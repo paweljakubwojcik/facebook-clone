@@ -5,6 +5,7 @@ const { UserInputError } = require('apollo-server')
 
 const { SECRET_KEY } = require('../../config')
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
+const { getRandomPhoto } = require('../../utils/randomPhoto')
 
 const User = require('../../models/User')
 
@@ -80,13 +81,17 @@ module.exports = {
                 }
             }
 
+            //generate random backgroundImage
+            const backgroundImage = await getRandomPhoto()
+
             // hash password & create auth token
             password = await bcrypt.hash(password, 12)
             const newUser = new User({
                 email,
                 username,
                 password,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                backgroundImage
             })
             //saving user in DB  //TODO error handling? 
             const res = await newUser.save()

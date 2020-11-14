@@ -11,9 +11,26 @@ const userSchema = new Schema({
             ref: 'users'
         }
     ],
-    profileImage: String,
+    invitations: [
+        {
+            username: String,
+        }
+    ],
+    profileImage: {
+        large: String,
+        medium: String,
+        small: String,
+    },
+    backgroundImage: String,
     isOnline: Boolean,
-    lastTimeOnline: String
+    lastTimeOnline: String,
+    conversations: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'conversations'
+        }
+    ]
+
 })
 
 module.exports = model('User', userSchema)
