@@ -27,7 +27,7 @@ const getOffsetPosition = (element) => {
 
 
 
-export default function RadioButtons({ setContentType, contentType }) {
+export default function RadioButtons({ setContentType, contentType, ...rest }) {
 
     const [indicatorOffset, setOffset] = useState(0)
     const [indicatorWidth, setWidth] = useState(0)
@@ -49,7 +49,7 @@ export default function RadioButtons({ setContentType, contentType }) {
     }
 
     return (
-        <Container >
+        <Container {...rest} >
             {buttons.map(({ value }) =>
                 <RadioButton key={value}
                     value={value}

@@ -6,7 +6,7 @@ import Avatar from './Avatar'
 import UserLink from './UserLink'
 
 
-export default function UserButton({ user, notLink }) {
+export default function UserButton({ user, notLink, ...rest }) {
 
     const [isHovered, setHover] = useState(false)
 
@@ -20,7 +20,7 @@ export default function UserButton({ user, notLink }) {
 
     return (
 
-        <StyledButton onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
+        <StyledButton {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
             <Avatar altText='not anonymus faker' />
             <div className="username">
                 {user?.username || "User"}

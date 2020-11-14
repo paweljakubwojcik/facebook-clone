@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useParams } from "react-router-dom";
 import { useQuery } from '@apollo/client'
@@ -12,10 +12,19 @@ const width = 1000
 
 export default function Profile() {
 
-
     const { id } = useParams();
 
     const [contentType, setContentType] = useState('posts')
+
+    useEffect(() => {
+        setTimeout(() => {
+            window.scrollTo({
+                top: 150,
+                behavior: "smooth",
+            })
+        }, 100)
+
+    }, [])
 
 
     const { loading, data: { getUser: user } = {} } = useQuery(GET_USER, {
@@ -31,7 +40,7 @@ export default function Profile() {
                 </BackgroundImage>}
                 <h2>{user?.username}</h2>
             </TopPanel>
-            <ProfileMenu width={width} contentType={contentType} setContentType={setContentType}></ProfileMenu>
+            <ProfileMenu width={width} contentType={contentType} setContentType={setContentType} user={user} ></ProfileMenu>
             <Content></Content>
         </>
     )
@@ -54,11 +63,13 @@ const TopPanel = styled.div`
 `
 
 const BackgroundImage = styled.div`
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:end;
-    flex-shrink:0;
+    display:block;
+    position:relative;
+    & > .avatar {
+        position:absolute;
+        bottom:0;
+        left:50%;
+    }
     background-color:${props => props.theme.secondaryElementColor};
     background-image: url(${props => props.img});
     background-position:center;
@@ -69,7 +80,7 @@ const BackgroundImage = styled.div`
     height:300px;
 
     .avatar{
-        transform: translate(0, 1em);
+        transform: translate(-50%, 1.5em);
     }
 
     @media (max-width:${width}px){
