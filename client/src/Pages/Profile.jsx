@@ -73,6 +73,7 @@ const BackgroundImage = styled.div`
         position:absolute;
         bottom:0;
         left:50%;
+        z-index:3;
     }
     background-color:${props => props.theme.secondaryElementColor};
     background-image: url(${props => props.img});
@@ -95,7 +96,6 @@ const BackgroundImage = styled.div`
 `
 
 const Content = styled.div`
-    height:1000px;
     display:flex;
     justify-content:center;
     & > * {

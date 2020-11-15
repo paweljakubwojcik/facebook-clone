@@ -19,9 +19,15 @@ export default function UserLink({ user, isVisible }) {
                 <>
                     {isVisible && (
                         <StyledLink to={`./profile/${user.id}`} className='avatar'>
+                            <LittleBackground image={user?.backgroundImage} />
                             <Avatar image={user?.profileImage?.medium} big />
-                            <div className="username">
-                                {user?.username || "User"}
+                            <div>
+                                <div className="username">
+                                    {user?.username || "User"}
+                                </div>
+                                <p>
+                                    some info about user
+                                </p>
                             </div>
                         </StyledLink>
                     )}
@@ -31,6 +37,19 @@ export default function UserLink({ user, isVisible }) {
     )
 }
 
+const LittleBackground = styled.div`
+    position:absolute;
+    z-index:-1;
+    width:100%;
+    height:50%;
+    top:0;
+    left:0;
+    background-image: url(${props => props.image});
+    background-size:cover;
+    background-position:center;
+    filter:brightness(.7);
+`
+
 const StyledLink = styled(Link)`
 
     position:absolute;
@@ -38,29 +57,42 @@ const StyledLink = styled(Link)`
     left:0;
     top:0;
 
+    height:160px;
+
     transform: translate(-105%, -25%);
 
-    display:flex;
-    justify-content:left;
+    display:grid;
+    grid-template-columns:1fr 2fr;
+    justify-items:left;
     align-items:center;
 
     background-color:${props => props.theme.primaryElementColor};
 
-    transition: background-color ${animDuration}ms;
+    transition: filter ${animDuration}ms;
 
     border: solid 1px ${props => props.theme.secondaryFontColor};
     border-radius:1em;
-    padding:5px;
+    padding:.5em;
+
+    overflow:hidden;
 
     &:hover{
-        background-color:#444648;
+        filter:brightness(1.5);
         cursor:pointer;
     }
 
     .username{
-        font-size:.8em;
+        font-size:1em;
         margin: .5em 1em;
         font-weight:bold;
+        min-width:100px;
+    }
+
+    p{
+        margin:.5em 1em;
+        padding:0;
+        color: ${props => props.theme.secondaryFontColor};
+        font-size:.7em;
     }
 
     &.fade-enter {

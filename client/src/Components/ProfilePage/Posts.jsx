@@ -4,33 +4,12 @@ import { useQuery, gql } from '@apollo/client'
 import PostCard from '../HomePage/PostCard'
 import SkeletonPost from '../skeletons/SkeletonPost'
 
-const GET_USER_POSTS = gql`
-    query getPosts($userId:ID){
-        getPosts(userId:$userId){
-            body
-            commentsCount
-            id
-            createdAt
-            likesCount
-            username
-            user
-            comments {
-                body
-                username
-                createdAt
-                id
-            }
-            likes {
-                username
-            }
-        }
-    }
-`
+import { GET_POSTS } from '../../Util/GraphQL_Queries'
 
 
 export default function Posts({ user }) {
 
-    const { loading, data: { getPosts: posts } = {} } = useQuery(GET_USER_POSTS, {
+    const { loading, data: { getPosts: posts } = {} } = useQuery(GET_POSTS, {
         variables: {
             userId: user.id
         }

@@ -50,7 +50,7 @@ export default function Navbar({ setForm }) {
 const NavBar = styled.nav`
 
     position:sticky;
-    top:0px;
+    top:0;
     left:0;
     z-index:2;
 

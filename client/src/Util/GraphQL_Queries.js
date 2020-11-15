@@ -1,26 +1,26 @@
 import { gql } from '@apollo/client'
 
 export const GET_POSTS = gql`
-{
- getPosts {
-   body
-   commentsCount
-   id
-   createdAt
-   likesCount
-   username
-   user
-   comments {
-     body
-     username
-     createdAt
-     id
-   }
-   likes {
-     username
-   }
- }
-}   
+query getPosts($userId:ID){
+    getPosts(userId:$userId){
+        body
+        commentsCount
+        id
+        createdAt
+        likesCount
+        username
+        user
+        comments {
+            body
+            username
+            createdAt
+            id
+        }
+        likes {
+            username
+        }
+    }
+}
 `
 
 // graphQL query
