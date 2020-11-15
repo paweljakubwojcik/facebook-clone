@@ -22,6 +22,8 @@
   - [x] menu
   - [ ] comments 
 - [ ] user details page
+  - [x] hero image
+  - [x] posts section
 - [ ] messenger
 
 
