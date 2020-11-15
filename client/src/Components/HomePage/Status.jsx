@@ -10,7 +10,8 @@ import { AuthContext } from '../../Context/auth'
 
 export default function Status() {
 
-    const { user: { username, profileImage } } = useContext(AuthContext)
+    const { user: { username } } = useContext(AuthContext)
+    const profileImage = localStorage.getItem('avatar')
 
     const [isFormOpen, toggleForm] = useState(false)
 
@@ -21,7 +22,7 @@ export default function Status() {
 
     return (
         <Container className='status__container'>
-            <Avatar image={profileImage?.medium} className="status__avatar"></Avatar>
+            <Avatar image={profileImage} className="status__avatar"></Avatar>
             <StatusInput role="button" className='status__input' type="text" onClick={handleOnclick} > O czym myślisz {username}?</StatusInput>
             {isFormOpen && <PostForm toggleForm={toggleForm}></PostForm>}
         </Container>

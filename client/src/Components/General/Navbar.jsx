@@ -15,7 +15,7 @@ import { AuthContext } from '../../Context/auth'
 export default function Navbar({ setForm }) {
 
     const { user } = useContext(AuthContext)
-
+    const profileImage = localStorage.getItem('avatar')
 
     return (
         <NavBar className='navBar'>
@@ -28,7 +28,7 @@ export default function Navbar({ setForm }) {
             {user ? (
                 <>
                     <Link to={`/profile/${user.id}`}>
-                        <UserButton user={user} notLink />
+                        <UserButton user={{ ...user, profileImage: { medium: profileImage } }} notLink />
                     </Link>
                     <Menu />
                 </>

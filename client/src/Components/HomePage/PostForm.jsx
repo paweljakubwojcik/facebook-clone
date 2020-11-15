@@ -16,6 +16,7 @@ export default function PostForm({ toggleForm }) {
     }
 
     const { user: { username } } = useContext(AuthContext)
+    const avatar = localStorage.getItem('avatar')
 
     const { onChange, onSubmit, values } = useForm(createPostCallback, initialState)
 
@@ -55,7 +56,7 @@ export default function PostForm({ toggleForm }) {
             <Form onChange={onChange} onSubmit={onSubmit}>
                 <h2>Create Post</h2>
                 <div className='userInfo'>
-                    <Avatar />
+                    <Avatar image={avatar} />
                     <h3>{username}</h3>
                 </div>
                 <textarea autoFocus name="body" id="body" placeholder={`O czym teraz myślisz, ${username}?`}></textarea>
@@ -102,6 +103,9 @@ const Form = styled.form`
         text-align:center;
         border-bottom:solid 1px #ffffff22;
         width:100%;
+    }
+    h3{
+        margin:.5em;
     }
     .userInfo{
         display:flex;
