@@ -13,6 +13,7 @@ if (localStorage.getItem('token')) {
         localStorage.removeItem('token')
     else {
         initialState.user = decodedToken
+        console.log(decodedToken)
     }
 }
 

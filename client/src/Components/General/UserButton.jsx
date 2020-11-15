@@ -21,7 +21,7 @@ export default function UserButton({ user, notLink, ...rest }) {
     return (
 
         <StyledButton {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
-            <Avatar altText='not anonymus faker' />
+            <Avatar image={user?.profileImage?.medium} />
             <div className="username">
                 {user?.username || "User"}
             </div>

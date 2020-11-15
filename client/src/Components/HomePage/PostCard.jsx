@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
+import { useQuery, gql } from '@apollo/client'
 
 import Avatar from '../General/Avatar'
 import { GenericButton, SquareButton } from '../General/Buttons'
@@ -11,15 +12,38 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faThumbsUp, faShare } from '@fortawesome/free-solid-svg-icons'
 import LikeButton from './LikeButton'
 
+const GET_USER_PIC = gql`
+query getUser(  $userId: ID! ){
+ getUser( userId: $userId,) {
+    id
+    username
+    profileImage{
+        medium
+    }
+    }
+}
+
+`
 
 export default function PostCard({ post }) {
-    const { body, createdAt, commentsCount, id, likesCount, username, comments, likes } = post
+
+
+
+
+    const { body, createdAt, commentsCount, id, likesCount, username, comments, likes, user } = post
     const context = useContext(AuthContext)
+    console.log(user)
+
+    const { loading, data: { getUser: { profileImage } = {} } = {} } = useQuery(GET_USER_PIC, {
+        variables: {
+            userId: user
+        }
+    })
 
     return (
         <PostCardContainer className='postCard'>
             <PostCardHeader className='postCard__header'>
-                <Avatar />
+                <Avatar image={profileImage?.medium} />
                 <header>
                     <h4>{username}</h4>
                     <div className="timestamp">

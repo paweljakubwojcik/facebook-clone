@@ -13,6 +13,7 @@ const GET_USER_POSTS = gql`
             createdAt
             likesCount
             username
+            user
             comments {
                 body
                 username

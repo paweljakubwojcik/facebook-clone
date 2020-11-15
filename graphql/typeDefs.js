@@ -8,6 +8,7 @@ module.exports = gql`
         body:String!
         createdAt:String!
         username:String!
+        user:String!
         comments:[Comment]!
         likes:[Like]!
         commentsCount:Int!
@@ -24,6 +25,11 @@ module.exports = gql`
         createdAt:String!
         username:String!
     }
+    type ProfileImage{
+        small:String
+        medium:String
+        large:String
+    }
     type User{
         id:ID!
         email:String!
@@ -33,6 +39,7 @@ module.exports = gql`
         backgroundImage:String
         isOnline:Boolean
         lastTimeOnline:String
+        profileImage:ProfileImage
     }
     input RegisterInput{
         username: String!

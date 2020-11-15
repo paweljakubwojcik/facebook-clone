@@ -39,7 +39,7 @@ export default function RegisterForm({ setForm }) {
         },
         onError(err) {
             if (err.graphQLErrors[0])
-                setErrors(err?.graphQLErrors[0]?.extensions?.exception?.errors)
+                setErrors(err?.graphQLErrors[0]?.extensions?.exception?.errors || {})
         },
         variables: values
     })

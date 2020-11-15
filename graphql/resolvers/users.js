@@ -5,7 +5,7 @@ const { UserInputError } = require('apollo-server')
 
 const { SECRET_KEY } = require('../../config')
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
-const { getRandomPhoto } = require('../../utils/randomPhoto')
+const { getRandomBackground, getRandomAvatar } = require('../../utils/randomPhoto')
 
 const User = require('../../models/User')
 
@@ -82,7 +82,9 @@ module.exports = {
             }
 
             //generate random backgroundImage
-            const backgroundImage = await getRandomPhoto()
+            const backgroundImage = await getRandomBackground()
+
+            const profileImage = await getRandomAvatar()
 
             // hash password & create auth token
             password = await bcrypt.hash(password, 12)
@@ -91,7 +93,8 @@ module.exports = {
                 username,
                 password,
                 createdAt: new Date().toISOString(),
-                backgroundImage
+                backgroundImage,
+                profileImage
             })
             //saving user in DB  //TODO error handling? 
             const res = await newUser.save()

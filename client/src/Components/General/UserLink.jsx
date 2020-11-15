@@ -19,7 +19,7 @@ export default function UserLink({ user, isVisible }) {
                 <>
                     {isVisible && (
                         <StyledLink to={`./profile/${user.id}`} className='avatar'>
-                            <Avatar altText='not anonymus faker' big />
+                            <Avatar image={user?.profileImage?.medium} big />
                             <div className="username">
                                 {user?.username || "User"}
                             </div>

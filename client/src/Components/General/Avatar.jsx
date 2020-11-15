@@ -5,7 +5,7 @@ import defaultUserImage from '../../styles/svg/user-solid.svg'
 
 export default function Avatar({ image, altText, big, large }) {
     return (
-        <ImageContainer big={big} large={large} img={image} className="avatar">
+        <ImageContainer big={big} large={large} img={image || defaultUserImage} className="avatar">
         </ImageContainer>
     )
 }
@@ -20,11 +20,11 @@ const ImageContainer = styled.div`
     height:40px;
     width:40px;
     ${props => props.big && "height:80px; width:80px;"}
-    ${props => props.large && "height:8em; width:8em;"}
+    ${props => props.large && "height:12em; width:12em;"}
     background-image: url(${props => props.img});
     background-position:center;
     background-size:cover;
     border-radius:50%;
-    border: solid 10px ${props => props.large ? props.theme.primaryElementColor : 'none'}; 
+    border: solid 5px ${props => props.large ? props.theme.primaryElementColor : 'none'}; 
 
 `

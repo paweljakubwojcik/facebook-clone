@@ -38,7 +38,7 @@ export default function Profile() {
         <>
             <TopPanel>
                 {!loading && <BackgroundImage img={user?.backgroundImage || null}>
-                    <Avatar large />
+                    <Avatar image={user?.profileImage?.large} large />
                 </BackgroundImage>}
                 <h2>{user?.username}</h2>
             </TopPanel>

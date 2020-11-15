@@ -9,6 +9,7 @@ export const GET_POSTS = gql`
    createdAt
    likesCount
    username
+   user
    comments {
      body
      username
@@ -50,6 +51,10 @@ export const GET_USERS = gql`
  getUsers {
     id
     username
+    backgroundImage
+    profileImage{
+        medium
+    }
     }
 }
 `
@@ -59,6 +64,10 @@ query getUser(  $userId: ID! ){
     id
     username
     backgroundImage
+    profileImage{
+        medium
+        large
+    }
     }
 }
 `
@@ -77,6 +86,10 @@ export const LOGIN_USER = gql`
             username
             email
             createdAt
+            profileImage{
+            medium
+            large
+            }
         }
     }
 `
@@ -101,6 +114,10 @@ export const REGISTER_USER = gql`
             username
             email
             createdAt
+            profileImage{
+            medium
+            large
+            }
         }
     }
 `
