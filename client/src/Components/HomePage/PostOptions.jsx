@@ -3,10 +3,12 @@ import styled from 'styled-components'
 import { RoundButton, SquareButton } from '../General/Buttons'
 import { PopUpMenu } from '../General/PopUpMenu'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
+import DeleteButton from './DeleteButton'
 
-export default function PostOptions() {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
+
+export default function PostOptions({ postId }) {
 
     const [open, setopen] = useState(false)
 
@@ -19,11 +21,8 @@ export default function PostOptions() {
             <OptionButton onClick={toggleOpen}></OptionButton>
             {open &&
                 <PopUpMenu>
-                    <SquareButton>
-                        <FontAwesomeIcon icon={faTrash} />
-                        Delete post
-                    </SquareButton>
-                    <SquareButton>
+                <DeleteButton postId={postId} />
+                <SquareButton >
                         <FontAwesomeIcon icon={faEdit} />
                         Edit post
                     </SquareButton>

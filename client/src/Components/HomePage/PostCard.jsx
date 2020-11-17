@@ -50,7 +50,7 @@ export default function PostCard({ post }) {
                         {moment(createdAt).fromNow()}
                     </div>
                 </header>
-                {context?.user?.username === username && <PostOptions></PostOptions>}
+                {context?.user?.username === username && <PostOptions postId={id} />}
             </PostCardHeader>
 
             <PostCardBody className='postCard__body'>

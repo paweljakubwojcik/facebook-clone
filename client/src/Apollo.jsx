@@ -8,6 +8,14 @@ const httpLink = createHttpLink({
     uri: 'http://localhost:5000',
 });
 
+const cache = new InMemoryCache({
+    typePolicies: {
+        getPosts: {
+            merge: true
+        }
+    }
+})
+
 const setAuthorizationLink = setContext(() => {
     const token = localStorage.getItem('token')
     return {
@@ -19,7 +27,7 @@ const setAuthorizationLink = setContext(() => {
 
 const client = new ApolloClient({
     link: setAuthorizationLink.concat(httpLink),
-    cache: new InMemoryCache()
+    cache,
 });
 
 
