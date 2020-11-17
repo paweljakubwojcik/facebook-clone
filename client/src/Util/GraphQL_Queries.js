@@ -13,6 +13,7 @@ query getPosts($userId:ID){
         comments {
             body
             username
+            user
             createdAt
             id
         }

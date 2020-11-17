@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import Avatar from '../General/Avatar'
@@ -10,10 +9,11 @@ export default function TopPanel({ loading, user, width }) {
     return (
         <Container>
             {user &&
-                <BackgroundImage img={user?.backgroundImage || null} width={width} href={user?.backgroundImage}>
+                <BackgroundImage img={user?.backgroundImage || null} width={width} >
                     <a className={'avatar-link'} href={user?.profileImage?.large}>
                         <Avatar image={user?.profileImage?.large} large />
                     </a>
+                <a className={'background-link'} href={user?.backgroundImage}> </a>
                 </BackgroundImage>}
             <h2>{user?.username}</h2>
         </Container>
@@ -36,7 +36,7 @@ const Container = styled.div`
    
 `
 
-const BackgroundImage = styled.a`
+const BackgroundImage = styled.div`
     display:block;
     position:relative;
     & > .avatar-link {
@@ -55,6 +55,13 @@ const BackgroundImage = styled.a`
     max-width:${props => props.width}px;
     height:300px;
     min-height:160px;
+
+    .background-link{
+        position:absolute;
+        z-index:1;
+        width:100%;
+        height:100%;
+    }
 
 
     @media (max-width:${props => props.width}px){

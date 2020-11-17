@@ -15,7 +15,7 @@ export default function PostForm({ toggleForm }) {
         body: ''
     }
 
-    const { user: { username, id } } = useContext(AuthContext)
+    const { user: { username } } = useContext(AuthContext)
     const avatar = localStorage.getItem('avatar')
 
     const { onChange, onSubmit, values } = useForm(createPostCallback, initialState)
@@ -31,16 +31,6 @@ export default function PostForm({ toggleForm }) {
             })
             const updatedPosts = [createPost, ...cacheData.getPosts]
             proxy.writeQuery({ query: GET_POSTS, data: { getPosts: updatedPosts } })
-            //updating cached posts on profile page
-        /* const cacheDataUserSpecific = proxy.readQuery({
-            query: GET_POSTS,
-            variables: {
-                userId: id
-            }
-        })
-        console.log(cacheDataUserSpecific)
-        const updatedUserPosts = [createPost, ...cacheDataUserSpecific.getPosts]
-        proxy.writeQuery({ query: GET_POSTS, variables: { userId: id }, data: { getPosts: updatedUserPosts } }) */
 
             values.body = ''
             toggleForm(false)

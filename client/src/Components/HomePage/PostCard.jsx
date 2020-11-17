@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
 import { useQuery, gql } from '@apollo/client'
@@ -11,6 +11,7 @@ import { AuthContext } from '../../Context/auth'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faThumbsUp, faShare } from '@fortawesome/free-solid-svg-icons'
 import LikeButton from './LikeButton'
+import CommentSection from './CommentSection'
 
 const GET_USER_PIC = gql`
 query getUser(  $userId: ID! ){
@@ -27,18 +28,26 @@ query getUser(  $userId: ID! ){
 
 export default function PostCard({ post }) {
 
-
-
-
     const { body, createdAt, commentsCount, id, likesCount, username, comments, likes, user } = post
     const context = useContext(AuthContext)
-    console.log(user)
 
-    const { loading, data: { getUser: { profileImage } = {} } = {} } = useQuery(GET_USER_PIC, {
+    const { data: { getUser: { profileImage } = {} } = {} } = useQuery(GET_USER_PIC, {
         variables: {
             userId: user
         }
     })
+
+
+    const initialCommentsVisibility = commentsCount > 3 ? false : true;
+    const [commentsVisible, setCommentsVisibility] = useState(initialCommentsVisibility)
+
+    const [commentInputFocus, setCommentInputFocus] = useState(false)
+
+    const engageComment = () => {
+        setCommentsVisibility(true)
+        setCommentInputFocus(true)
+    }
+
 
     return (
         <PostCardContainer className='postCard'>
@@ -62,7 +71,7 @@ export default function PostCard({ post }) {
                     <FontAwesomeIcon className="icon" icon={faThumbsUp} />
                     {likesCount}
                 </div>
-                <GenericButton className="counter comments">
+                <GenericButton className="counter comments" onClick={() => setCommentsVisibility(!commentsVisible)}>
                     {commentsCount} Comments
                 </GenericButton>
                 <GenericButton className="counter shares">
@@ -72,7 +81,7 @@ export default function PostCard({ post }) {
 
             <PostCardButtonsContainer>
                 <LikeButton postData={{ id, likes }} />
-                <SquareButton className='postCard__button'>
+                <SquareButton onClick={engageComment} className='postCard__button'>
                     <FontAwesomeIcon className="icon" icon={faComment} />
                    Comment
                 </SquareButton>
@@ -81,6 +90,8 @@ export default function PostCard({ post }) {
                     Share
                 </SquareButton>
             </PostCardButtonsContainer>
+
+            {commentsVisible && <CommentSection comments={comments} postId={id} inputFocus={commentInputFocus} setFocus={setCommentInputFocus} />}
 
         </PostCardContainer>
     )
@@ -143,4 +154,6 @@ const PostCardButtonsContainer = styled.div`
         flex:1;
     }
 `
+
+
 
