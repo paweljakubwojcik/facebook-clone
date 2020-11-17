@@ -15,15 +15,16 @@
 #### front
 - [x] register/login page
 - [x] user context
-- [ ] dashboard
+- [x] dashboard
   - [x] post feed
   - [x] adding & liking posts
   - [x] contact list
   - [x] menu
-  - [ ] comments 
+  - [x] comments
 - [ ] user details page
   - [x] hero image
   - [x] posts section
+  - [ ] adding/deleting pictures
 - [ ] messenger
 
 
