@@ -54,7 +54,30 @@ module.exports = {
                     }
                 })
             }
-        }
+        },
+        async likeComment(_, { postId, commentId }, context) {
+            const { username } = checkAuth(context)
+            try {
+                const post = await Post.findById(postId)
+                const comment = post.comments.find(comment => comment.id === commentId)
+                const indexOfComment = post.comments.indexOf(comment)
+                console.log(indexOfComment)
+                if (comment.likes.find(like => like.username === username)) {
+                    comment.likes = comment.likes.filter(like => like.username !== username)
+                } else {
+                    comment.likes.push({
+                        username,
+                        createdAt: new Date().toISOString()
+                    })
+                }
+                post.comments[indexOfComment] = comment
+
+                await post.save()
+                return post
+            } catch (e) {
+                throw new UserInputError(e)
+            }
+        },
 
     }
 }

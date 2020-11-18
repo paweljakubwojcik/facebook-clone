@@ -20,6 +20,8 @@ module.exports = gql`
         username:String!
         user:String!
         body:String!
+        likes:[Like]!
+        likesCount:Int!
     }
     type Like{
         id:ID!
@@ -38,8 +40,8 @@ module.exports = gql`
         username:String!
         createdAt:String!
         backgroundImage:String
-        isOnline:Boolean
-        lastTimeOnline:String
+        isOnline:Boolean!
+        lastTimeOnline:String!
         profileImage:ProfileImage
     }
     input RegisterInput{
@@ -62,5 +64,6 @@ module.exports = gql`
         createComment(postId:ID!,body:String!): Post!
         deleteComment(postId:ID!,commentId:ID!):Post!
         likePost(postId:ID!):Post!
+        likeComment(postId:ID!,commentId:ID!):Post!
     }
  `

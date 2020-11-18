@@ -13,7 +13,8 @@ const userSchema = new Schema({
     ],
     invitations: [
         {
-            username: String,
+            type: Schema.Types.ObjectId,
+            ref: 'users'
         }
     ],
     profileImage: {

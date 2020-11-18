@@ -10,6 +10,7 @@ const conversationSchema = new Schema({
     ],
     messages: [
         {
+            id: String,
             body: String,
             date: String,
             author: String,
