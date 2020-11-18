@@ -16,6 +16,11 @@ query getPosts($userId:ID){
             user
             createdAt
             id
+            likes{
+                username
+                id
+            }
+            likesCount
         }
         likes {
             username

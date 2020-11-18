@@ -23,6 +23,7 @@ export const GenericButton = styled.button`
         transform:scale(.95);
     }
     pointer-events:${props => props.inactive && 'none'};
+    color: ${props => props.active && props.theme.primaryColor};
     
 `
 

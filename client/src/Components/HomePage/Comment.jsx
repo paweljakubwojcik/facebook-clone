@@ -1,8 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useQuery, gql, useMutation } from '@apollo/client'
 import { AuthContext } from '../../Context/auth'
-//import { GET_USER_PIC } from '../../Util/GraphQL_Queries'
+import moment from 'moment'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThumbsUp, } from '@fortawesome/free-solid-svg-icons'
 
 import Avatar from '../General/Avatar'
 import { GenericButton } from '../General/Buttons'
@@ -16,25 +19,52 @@ export default function Comment({ comment, postId }) {
         }
     })
 
-    const [deleteComment, data] = useMutation(DELETE_COMMENT, {
+    const [deleteComment] = useMutation(DELETE_COMMENT, {
         variables: {
             postId,
             commentId: comment.id
         },
         update() {
-            console.log(data)
+
         }
     })
+
+    const [likeComment, data] = useMutation(LIKE_COMMENT, {
+        variables: {
+            postId,
+            commentId: comment.id
+        },
+        update() {
+        }
+    })
+
+    const [liked, setLiked] = useState(false)
+
+    useEffect(() => {
+        if (context.user && comment.likes.find(like => like.username === context.user.username))
+            setLiked(true)
+        else
+            setLiked(false)
+
+    }, [comment.likes, context.user])
+
 
     return (
         <Container>
             <Avatar image={profileImage?.medium} />
             <CommentBody>
-                <h4>{username}</h4>
+                <header>
+                    <h4>{username}</h4>
+                    <Date>{moment(comment.createdAt).fromNow()}</Date>
+                </header>
                 {comment.body}
-                <Buttons >
-                    <GenericButton>Like</GenericButton>
-                    {context.user.username === username && <GenericButton onClick={deleteComment}>Delete</GenericButton>}
+                <Buttons blue={comment.likesCount > 0 ? 1 : 0}>
+                    <div className="counter likes" >
+                        <FontAwesomeIcon className="icon" icon={faThumbsUp} />
+                        {comment.likesCount}
+                    </div>
+                    <GenericButton onClick={likeComment} active={liked}> {liked ? 'Unlike' : 'Like'} </GenericButton>
+                    {context?.user?.username === username && <GenericButton onClick={deleteComment}>Delete</GenericButton>}
                 </Buttons>
             </CommentBody>
 
@@ -47,7 +77,21 @@ const Container = styled.div`
     align-items:flex-start;
     margin: 1em 0;
     font-size:.8em;
-    
+    header{
+        display:flex;
+    }
+    & > .avatar {
+        flex-shrink:0;
+    }
+
+`
+
+const Date = styled.p`
+
+    color: ${props => props.theme.secondaryFontColor};
+    font-size:.7em;
+    margin:.5em;
+    padding:0;
 `
 
 const CommentBody = styled.div`
@@ -58,7 +102,7 @@ const CommentBody = styled.div`
     padding:.5em;
     border-radius:.5em;
     background-color: ${props => props.theme.roundButtonColor};
-
+    word-wrap:break-word;
 `
 
 const Buttons = styled.div`
@@ -73,6 +117,16 @@ const Buttons = styled.div`
     & > * {
         padding:0;
         margin:0 .5em;
+    }
+
+    .counter.likes{
+        margin-right:auto;
+        font-size:.9em;
+        color:${props => props.theme.secondaryFontColor};
+        .icon{
+            color:${props => props.blue && props.theme.primaryColor};
+            margin:0  0.5em;
+        }
     }
 
 `
@@ -102,6 +156,24 @@ mutation deleteComment($postId:ID! , $commentId:ID!){
             body
             user
             username
+        }
+    }
+}
+`
+
+const LIKE_COMMENT = gql`
+mutation likeComment($postId:ID! , $commentId:ID!){
+    likeComment(
+        postId:$postId,
+        commentId:$commentId
+    ){
+        id
+        comments{
+            id
+           likes{
+               id
+           }
+           likesCount
         }
     }
 }

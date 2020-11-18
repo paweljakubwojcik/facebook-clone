@@ -61,7 +61,6 @@ module.exports = {
                 const post = await Post.findById(postId)
                 const comment = post.comments.find(comment => comment.id === commentId)
                 const indexOfComment = post.comments.indexOf(comment)
-                console.log(indexOfComment)
                 if (comment.likes.find(like => like.username === username)) {
                     comment.likes = comment.likes.filter(like => like.username !== username)
                 } else {
