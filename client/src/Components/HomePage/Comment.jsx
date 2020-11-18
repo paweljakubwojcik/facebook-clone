@@ -29,7 +29,7 @@ export default function Comment({ comment, postId }) {
         }
     })
 
-    const [likeComment, data] = useMutation(LIKE_COMMENT, {
+    const [likeComment] = useMutation(LIKE_COMMENT, {
         variables: {
             postId,
             commentId: comment.id

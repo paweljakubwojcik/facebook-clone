@@ -21,7 +21,7 @@ export default function LikeButton({ postData }) {
 
     }, [likes, user])
 
-    const [likePost, { error, loading }] = useMutation(LIKE_POST, {
+    const [likePost, { loading }] = useMutation(LIKE_POST, {
         variables: { postId: id },
         onError(err) {
             console.log(err)

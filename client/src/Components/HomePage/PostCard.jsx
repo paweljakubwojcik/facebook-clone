@@ -72,7 +72,7 @@ export default function PostCard({ post }) {
                     {likesCount}
                 </div>
                 <GenericButton className="counter comments" onClick={() => setCommentsVisibility(!commentsVisible)}>
-                    {commentsCount} Comments
+                    {commentsCount} {`Comment${commentsCount !== 1 ? 's' : ''}`}
                 </GenericButton>
                 <GenericButton className="counter shares">
                     0 Shares
