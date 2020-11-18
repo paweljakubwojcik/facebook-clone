@@ -52,7 +52,7 @@ export default function CommentSection({ comments, postId, inputFocus, setFocus 
     return (
         <>
             <CommentsContainer>
-                {comments.map(comment => <Comment key={comment.id} comment={comment} />)}
+                {comments.map(comment => <Comment key={comment.id} comment={comment} postId={postId} />)}
             </CommentsContainer>
             <CommentForm onSubmit={onSubmit}>
                 <Avatar image={avatarImage} />

@@ -16,6 +16,7 @@ export const GenericButton = styled.button`
     &:focus{
         cursor:pointer;
         filter:brightness(1.1);
+        text-decoration:underline;
     }
     &:active{
         filter:brightness(.9);
@@ -47,6 +48,7 @@ export const SquareButton = styled(GenericButton)`
     color: ${props => props.active && props.theme.primaryColor};
     &:hover{
         background-color:${props => props.theme.roundButtonColor};
+        text-decoration:none;
     }
     
     & > *{
