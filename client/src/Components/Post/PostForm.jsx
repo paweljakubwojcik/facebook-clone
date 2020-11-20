@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/client'
 
 
 import Avatar from '../General/Avatar'
-import FormButton from '../LoginPage/FormButton'
+import FormButton from '../General/FormButton'
 
 import { AuthContext } from '../../Context/auth'
 import { useForm } from '../../Util/Hooks'
@@ -70,9 +70,7 @@ export default function PostForm({ toggleForm }) {
 
 
 
-
-
-// ----------------------- styles begin here ----------------------------------------------
+// ----------------------- styles here ----------------------------------------------
 const Modal = styled.div`
     position:fixed;
     top:0;

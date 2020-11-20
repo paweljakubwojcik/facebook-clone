@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
 
-import { PostCardContainer } from './PostCard'
+import ElementContainer from '../General/ElementContainer'
 import Avatar from '../General/Avatar'
-import PostForm from './PostForm'
+import PostForm from '../Post/PostForm'
 
 import { AuthContext } from '../../Context/auth'
 
@@ -29,7 +29,7 @@ export default function Status() {
     )
 }
 
-const Container = styled(PostCardContainer)`
+const Container = styled(ElementContainer)`
     display:flex;
     align-items:center;
 `

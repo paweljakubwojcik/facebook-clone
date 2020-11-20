@@ -2,8 +2,8 @@ import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import FormButton from '../LoginPage/FormButton'
-import UserButton from './UserButton'
+import FormButton from '../General/FormButton'
+import UserButton from '../General/UserButton'
 import logo from '../../styles/svg/logo.svg'
 
 

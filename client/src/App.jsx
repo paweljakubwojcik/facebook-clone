@@ -4,13 +4,14 @@ import { ThemeProvider } from 'styled-components'
 
 import { AuthContext } from './Context/auth'
 
-import Home from './Pages/Home'
-import Login from './Pages/Login'
-import NavBar from './Components/General/Navbar'
+import Home from './Components/HomePage/Home'
+import Login from './Components/LoginPage/Login'
+import NavBar from './Components/Navbar/Navbar'
+import Profile from './Components/ProfilePage/Profile'
 
 
 import { darkTheme } from './styles/themes'
-import Profile from './Pages/Profile'
+
 
 
 export default function App() {

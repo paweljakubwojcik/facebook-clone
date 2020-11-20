@@ -6,7 +6,7 @@ import { faCaretDown, faBell } from '@fortawesome/free-solid-svg-icons'
 import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons'
 
 import UserMenu from './UserMenu'
-import { RoundButton } from './Buttons'
+import { RoundButton } from '../General/Buttons'
 
 const buttons = [
     {

@@ -3,15 +3,17 @@ import styled from 'styled-components'
 import moment from 'moment'
 import { useQuery, gql } from '@apollo/client'
 
-import Avatar from '../General/Avatar'
-import { GenericButton, SquareButton } from '../General/Buttons'
-import PostOptions from './PostOptions'
 import { AuthContext } from '../../Context/auth'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faThumbsUp, faShare } from '@fortawesome/free-solid-svg-icons'
-import LikeButton from './LikeButton'
+
+import { GenericButton, SquareButton } from '../General/Buttons'
+import LikeButton from '../HomePage/LikeButton'
 import CommentSection from './CommentSection'
+import PostOptions from './PostOptions'
+import Avatar from '../General/Avatar'
+import ElementContainer from '../General/ElementContainer'
 
 const GET_USER_PIC = gql`
 query getUser(  $userId: ID! ){
@@ -20,10 +22,9 @@ query getUser(  $userId: ID! ){
     username
     profileImage{
         medium
-    }
+        }
     }
 }
-
 `
 
 export default function PostCard({ post }) {
@@ -50,7 +51,7 @@ export default function PostCard({ post }) {
 
 
     return (
-        <PostCardContainer className='postCard'>
+        <ElementContainer className='postCard'>
             <PostCardHeader className='postCard__header'>
                 <Avatar image={profileImage?.medium} />
                 <header>
@@ -93,20 +94,11 @@ export default function PostCard({ post }) {
 
             {commentsVisible && <CommentSection comments={comments} postId={id} inputFocus={commentInputFocus} setFocus={setCommentInputFocus} />}
 
-        </PostCardContainer>
+        </ElementContainer>
     )
 }
 
-export const PostCardContainer = styled.div`
-    width:100%;
-    background-color:${props => props.theme.primaryElementColor};
-    border-radius:.5em;
-    margin: 2vh 2%;
-    padding:1em;
-    @media (max-width:600px){
-        border-radius:0;
-    }
-`
+
 export const PostCardHeader = styled.div`
 position:relative;
     display:flex;

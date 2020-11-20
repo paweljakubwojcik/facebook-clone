@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 
 
 import Input from './Input'
-import FormButton from './FormButton'
+import FormButton from '../General/FormButton'
 import { Form } from './Form'
 
 import { useForm } from '../../Util/Hooks'

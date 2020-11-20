@@ -16,7 +16,7 @@ export default function CommentSection({ comments, postId, inputFocus, setFocus 
     const [body, setBody] = useState('')
 
 
-    const [createPost, data] = useMutation(ADD_COMMENT, {
+    const [createPost] = useMutation(ADD_COMMENT, {
         variables: {
             body,
             postId

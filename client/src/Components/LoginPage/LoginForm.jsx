@@ -7,7 +7,7 @@ import { AuthContext } from '../../Context/auth'
 
 import { Form } from './Form'
 import Input from './Input'
-import FormButton from './FormButton'
+import FormButton from '../General/FormButton'
 
 import { useForm } from '../../Util/Hooks'
 import { LOGIN_USER } from '../../Util/GraphQL_Queries'

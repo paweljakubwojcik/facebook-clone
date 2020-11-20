@@ -4,10 +4,11 @@ import styled from 'styled-components'
 import Shimmer from './Shimmer'
 import SkeletonElement from './SkeletonElement'
 
-import { PostCardContainer, PostCardBody, PostCardHeader } from '../HomePage/PostCard'
+import { PostCardBody, PostCardHeader } from '../Post/PostCard'
+import ElementContainer from '../General/ElementContainer'
 
 
-const SkeletonWrapper = styled(PostCardContainer)`
+const SkeletonWrapper = styled(ElementContainer)`
     overflow: hidden;
     position:relative;
 `

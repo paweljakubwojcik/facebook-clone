@@ -3,13 +3,14 @@ import styled from 'styled-components'
 
 import { useParams } from "react-router-dom";
 import { useQuery } from '@apollo/client'
-import { GET_USER } from '../Util/GraphQL_Queries'
 
-import contentTypes from '../Components/ProfilePage/contentTypes'
+import { GET_USER } from '../../Util/GraphQL_Queries'
 
-import ProfileMenu from '../Components/ProfilePage/ProfileMenu';
-import Posts from '../Components/ProfilePage/Posts';
-import TopPanel from '../Components/ProfilePage/TopPanel';
+import contentTypes from './contentTypes'
+
+import ProfileMenu from './ProfileMenu';
+import Posts from './Posts';
+import TopPanel from './TopPanel';
 
 const width = 1000
 
@@ -17,13 +18,14 @@ export default function Profile() {
 
     const { id } = useParams();
 
-    const { loading, data: { getUser: user } = {} } = useQuery(GET_USER, {
+    const { data: { getUser: user } = {} } = useQuery(GET_USER, {
         variables: { userId: id },
     })
 
     const [contentType, setContentType] = useState('posts')
 
     useEffect(() => {
+        //scrolling to the right position after page has load
         setTimeout(() => {
             window.scrollTo({
                 top: 150,
@@ -40,13 +42,13 @@ export default function Profile() {
             <ProfileMenu width={width} contentType={contentType} setContentType={setContentType} user={user} ></ProfileMenu>
             <Content>
                 {contentType === contentTypes.POSTS && user && <Posts user={user} />}
+                {contentType === contentTypes.INFO && user && <h2>{'INFO'}</h2>}
+                {contentType === contentTypes.PICTURES && user && <h2>{'PICTURES'}</h2>}
+                {contentType === contentTypes.FRIENDS && user && <h2>{'FRIENDS'}</h2>}
             </Content>
         </>
     )
 }
-
-
-
 
 
 const Content = styled.div`

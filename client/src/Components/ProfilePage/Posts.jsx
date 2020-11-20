@@ -1,15 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useQuery, gql } from '@apollo/client'
-import PostCard from '../HomePage/PostCard'
-import SkeletonPost from '../skeletons/SkeletonPost'
+import { useQuery } from '@apollo/client'
+import PostsContainer from '../Post/PostsContainer'
 
 import { GET_POSTS } from '../../Util/GraphQL_Queries'
 
 
 export default function Posts({ user }) {
 
-    const { loading, data: { getPosts: posts } = {} } = useQuery(GET_POSTS, {
+    //gets every post written by user
+    const postsData = useQuery(GET_POSTS, {
         variables: {
             userId: user.id
         }
@@ -18,11 +18,7 @@ export default function Posts({ user }) {
     return (
         <Container>
             <Details />
-            <PostFeed>
-                {loading && [1, 2].map((key) => <SkeletonPost key={key} theme={'dark'} />)}
-                {posts && posts.map(post => <PostCard key={post.id} post={post} />)}
-            </PostFeed>
-
+            <PostsContainer postsData={postsData} />
         </Container>
     )
 }
@@ -34,8 +30,4 @@ const Container = styled.div`
 const Details = styled.div`
     display:flex;
     width:40%;
-`
-
-const PostFeed = styled.div`
-    width:60%;
 `
