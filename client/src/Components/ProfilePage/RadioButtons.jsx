@@ -32,6 +32,7 @@ export default function RadioButtons({ setContentType, contentType, ...rest }) {
 
     const handleOnClick = (e) => {
         setContentType(e.target.value)
+        e.target.blur()
 
     }
 
@@ -68,7 +69,7 @@ const Indicator = styled.span`
     left:0;
     width:${props => props.width}px;
     height:5px;
-    background-color:blue;
+    background-color:${props => props.theme.primaryColor};
     transform: translateX(${props => props.offset}px);
     transition: transform .4s, width .6s;
 `

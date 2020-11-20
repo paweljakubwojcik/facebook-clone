@@ -1,6 +1,6 @@
 export const darkTheme = {
     backgroundColor: "#18191a",
-    primaryColor: "#3646D8",
+    primaryColor: "#5698FF",
     primaryElementColor: "#242526",
     secondaryElementColor: "#898989",
     secondaryFontColor: "#707070",

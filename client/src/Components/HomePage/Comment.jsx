@@ -48,6 +48,10 @@ export default function Comment({ comment, postId }) {
 
     }, [comment.likes, context.user])
 
+    const handleClick = (e, callback) => {
+        e.target.blur()
+        callback()
+    }
 
     return (
         <Container>
@@ -63,8 +67,8 @@ export default function Comment({ comment, postId }) {
                         <FontAwesomeIcon className="icon" icon={faThumbsUp} />
                         {comment.likesCount}
                     </div>
-                    <GenericButton onClick={likeComment} active={liked}> {liked ? 'Unlike' : 'Like'} </GenericButton>
-                    {context?.user?.username === username && <GenericButton onClick={deleteComment}>Delete</GenericButton>}
+                    <GenericButton onClick={(e) => handleClick(e, likeComment)} active={liked}> {liked ? 'Liked' : 'Like'} </GenericButton>
+                    {context?.user?.username === username && <GenericButton onClick={(e) => handleClick(e, deleteComment)}>Delete</GenericButton>}
                 </Buttons>
             </CommentBody>
 
@@ -116,7 +120,7 @@ const Buttons = styled.div`
     
     & > * {
         padding:0;
-        margin:0 .5em;
+        margin:0 2%;
     }
 
     .counter.likes{
