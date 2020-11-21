@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 
 import Avatar from './Avatar'
-import UserLink from './UserLink'
+import PopUpElement from './PopUpElement'
+import UserLink from './ProfilePreview'
 
 
 export default function UserButton({ user, notLink, ...rest }) {
@@ -21,23 +22,34 @@ export default function UserButton({ user, notLink, ...rest }) {
     return (
 
         <StyledButton {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
+            <HoverWrapper>
+                {!notLink && (
+                    <PopUpElement isVisible={isHovered}>
+                        <UserLink user={user} />
+                    </PopUpElement>
+                )}
+            </HoverWrapper>
             <Avatar image={user?.profileImage?.medium} />
             <div className="username">
                 {user?.username || "User"}
             </div>
-            <UserLink user={user} isVisible={!notLink && isHovered} />
         </StyledButton>
-
     )
 }
 
+const HoverWrapper = styled.div`
+    position:absolute;
+    left:-5px;
+`
+
 export const StyledButton = styled.div`
 
-    position:relative;
 
     display:flex;
     justify-content:left;
     align-items:center;
+
+    overflow:visible;
 
     min-width:10em;
 
@@ -57,15 +69,5 @@ export const StyledButton = styled.div`
         font-weight:bold;
     }
 
-    //invisible extension for hover
-    &::after{
-        content:'';
-        display:block;
-        position:absolute;
-        left:50%;
-        top:50%;
-        transform: translate(-50%,-50%);
-        width:110%;
-        height:110%;
-    }
+    
 `

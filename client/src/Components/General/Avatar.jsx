@@ -1,29 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components';
 
 import defaultUserImage from '../../styles/svg/user-solid.svg'
-import UserLink from './UserLink'
 
 
-export default function Avatar({ image, user, altText, big, large, link }) {
 
-    const img = user?.profileImage?.medium || image
-
-    const [isHovered, setHover] = useState(false)
-
-    const handleMouseEnter = () => {
-        setHover(true)
-    }
-
-    const handleMouseLeave = () => {
-        setHover(false)
-    }
+export default function Avatar({ image, altText, big, large, link }) {
 
     return (
         <>
-            <ImageContainer onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} big={big} large={large} img={img || defaultUserImage} className="avatar">
+            <ImageContainer big={big} large={large} img={image || defaultUserImage} className="avatar">
             </ImageContainer>
-            {user && <UserLink user={user} isVisible={isHovered} />}
         </>
     )
 }

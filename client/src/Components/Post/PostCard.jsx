@@ -14,6 +14,8 @@ import CommentSection from './CommentSection'
 import PostOptions from './PostOptions'
 import Avatar from '../General/Avatar'
 import ElementContainer from '../General/ElementContainer'
+import ProfilePreview from '../General/ProfilePreview'
+import PopUpElement from '../General/PopUpElement'
 
 const GET_USER_PIC = gql`
 query getUser(  $userId: ID! ){
@@ -29,14 +31,24 @@ query getUser(  $userId: ID! ){
 
 export default function PostCard({ post }) {
 
-    const { body, createdAt, commentsCount, id, likesCount, username, comments, likes, user } = post
+    const { body, createdAt, commentsCount, id, likesCount, comments, likes, user } = post
     const context = useContext(AuthContext)
 
-    const { data: { getUser: { profileImage } = {} } = {} } = useQuery(GET_USER_PIC, {
+    const { data: { getUser: { profileImage, username } = {} } = {} } = useQuery(GET_USER_PIC, {
         variables: {
             userId: user
         }
     })
+
+    const [isHovered, setHover] = useState(false)
+
+    const handleMouseEnter = () => {
+        setHover(true)
+    }
+
+    const handleMouseLeave = () => {
+        setHover(false)
+    }
 
 
     const initialCommentsVisibility = commentsCount > 3 ? false : true;
@@ -52,6 +64,7 @@ export default function PostCard({ post }) {
 
     return (
         <ElementContainer className='postCard'>
+
             <PostCardHeader className='postCard__header'>
                 <Avatar image={profileImage?.medium} />
                 <header>
@@ -61,6 +74,9 @@ export default function PostCard({ post }) {
                     </div>
                 </header>
                 {context?.user?.username === username && <PostOptions postId={id} />}
+                <PopUpElement isVisible={isHovered}>
+                    {user && <ProfilePreview user={user} />}
+                </PopUpElement>
             </PostCardHeader>
 
             <PostCardBody className='postCard__body'>
@@ -98,7 +114,7 @@ export default function PostCard({ post }) {
     )
 }
 
-
+//----------------------styles--------------------------
 export const PostCardHeader = styled.div`
 position:relative;
     display:flex;

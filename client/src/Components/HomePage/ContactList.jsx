@@ -15,10 +15,13 @@ export default function ContactList() {
     const { loading, error, data: { getUsers: users } = {} } = useQuery(GET_USERS);
 
     return (
+
         <Container>
-            <h2>Kontakty</h2>
-            { users && users.map(user => <UserButton key={user.id} user={user} />)}
-            { loading && [0, 1, 2].map(key => <SkeletonUserButton key={key} />)}
+            <ScrollWrapper>
+                <h2>Kontakty</h2>
+                {users && users.map(user => <UserButton key={user.id} user={user} />)}
+                {[0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(key => <SkeletonUserButton key={key} />)}
+            </ScrollWrapper>
         </Container>
     )
 }
@@ -26,11 +29,12 @@ export default function ContactList() {
 
 const Container = styled.div`
     position:fixed;
-    right:2%;
+    right:1%;
     width:300px;
     height:92vh;
     display:flex;
     flex-direction:column;
+    overflow-x:visible;
     
     h2{
         padding: .5em 0;
@@ -40,12 +44,26 @@ const Container = styled.div`
     }
     & > * {
         margin: .2em;
+        flex-shrink:0;
     }
 
     @media (max-width:1260px){
         display:none;
     }
-    overflow-x:visible;
+
+`
+
+const ScrollWrapper = styled.div`
+    overflow-y: auto;   /* Just apply overflow-y */
+    height: 100%;
+    width: 100%;
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    > * {
+        margin: .2em;
+        flex-shrink:0;
+    }
     scrollbar-width: thin;          /* "auto" or "thin"  */
     scrollbar-color: ${props => props.theme.secondaryFontColor} ${props => props.theme.primaryElementColor};   /* scroll thumb & track */
 

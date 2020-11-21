@@ -33,6 +33,8 @@ a {
   text-decoration: none;
   cursor: pointer;
   color: inherit;
+  display:inline-block;
+  margin:0;
 }
 
 button {

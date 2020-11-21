@@ -14,7 +14,7 @@ import { GET_POSTS } from '../../Util/GraphQL_Queries'
 
 export default function Home() {
 
-  // without any variables it gets every post from DB
+  // without any variables it gets all posts from DB
   const postsData = useQuery(GET_POSTS);
 
 
@@ -35,6 +35,8 @@ const Container = styled.div`
    justify-content:center;
 `
 const Feed = styled.section`
+  position:relative;
+  z-index:0;
     display:flex;
     flex-shrink:1;
     flex-direction:column;
