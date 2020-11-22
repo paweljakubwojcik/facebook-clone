@@ -63,7 +63,6 @@ export const GET_USERS = gql`
  getUsers {
     id
     username
-    backgroundImage
     profileImage{
         medium
     }

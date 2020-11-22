@@ -24,16 +24,17 @@ export default function Profile() {
 
     const [contentType, setContentType] = useState('posts')
 
+
     useEffect(() => {
-        //scrolling to the right position after page has load
-        setTimeout(() => {
+        //scrolling to the right position after page has load aka user data has been loaded
+        if (user) {
             window.scrollTo({
                 top: 150,
                 behavior: "smooth",
             })
-        }, 100)
+        }
 
-    }, [])
+    }, [user])
 
 
     return (

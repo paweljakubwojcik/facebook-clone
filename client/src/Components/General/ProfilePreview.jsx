@@ -1,22 +1,44 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useQuery, gql } from '@apollo/client'
+
+
 import ElementContainer from './ElementContainer'
 import Avatar from './Avatar'
 
+const GET_USER_DETAILS = gql`
+query getUser(  $userId: ID! ){
+ getUser( userId: $userId,) {
+    id
+    username
+    backgroundImage
+    profileImage{
+        medium
+        }
+    }
+}
+`
+
+export default function ProfilePreview({ userId }) {
 
 
-export default function ProfilePreview({ user }) {
+    const { data: { getUser: { profileImage, username, backgroundImage } = {} } = {} } = useQuery(GET_USER_DETAILS, {
+        variables: {
+            userId
+        }
+    })
+
     return (
         <ElementContainer >
             <Container >
-                <Avatar image={user?.profileImage?.medium} big />
+                <Avatar image={profileImage?.medium} big />
                 <div className="infoContainer">
-                    <h4 className="username">{user?.username}</h4>
+                    <h4 className="username">{username}</h4>
                     <p>
-                        some info about {user?.username}
+                        some info about {username}
                     </p>
                 </div>
-                <LittleBackground image={user?.backgroundImage} />
+                <LittleBackground image={backgroundImage} />
             </Container>
         </ElementContainer>
     )

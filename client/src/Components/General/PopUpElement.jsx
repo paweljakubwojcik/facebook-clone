@@ -22,10 +22,13 @@ export default function PopUpElement({ isVisible, children, ...rest }) {
 const Container = styled.div`
     position:absolute;
     z-index:3;
-    left:0;
-    top:0;
+    left:${props => props.showRight ? `100%;` : '0'};
+    pointer-events:fill;
+    
+    top:50%;
 
     transform: translate(-105%, -50%);
+    ${props => props.showRight ? `transform: translate(0, -50%);` : ''}
 
     //css animations here
     &.fade-enter {
@@ -53,7 +56,8 @@ const Container = styled.div`
         left:50%;
         top:50%;
         transform: translate(0,-50%);
-        width:80%;
+        ${props => props.showRight ? `transform: translate(-100%, -50%);` : ''}
+        width:50%;
         height:40%;
         z-index:-1;
     }

@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+
 import styled from 'styled-components'
 import moment from 'moment'
 import { useQuery, gql } from '@apollo/client'
@@ -16,8 +17,9 @@ import Avatar from '../General/Avatar'
 import ElementContainer from '../General/ElementContainer'
 import ProfilePreview from '../General/ProfilePreview'
 import PopUpElement from '../General/PopUpElement'
+import UserLink from './UserLink'
 
-const GET_USER_PIC = gql`
+const GET_USER_DETAILS = gql`
 query getUser(  $userId: ID! ){
  getUser( userId: $userId,) {
     id
@@ -34,26 +36,15 @@ export default function PostCard({ post }) {
     const { body, createdAt, commentsCount, id, likesCount, comments, likes, user } = post
     const context = useContext(AuthContext)
 
-    const { data: { getUser: { profileImage, username } = {} } = {} } = useQuery(GET_USER_PIC, {
+    const { data: { getUser: { profileImage, username } = {} } = {} } = useQuery(GET_USER_DETAILS, {
         variables: {
             userId: user
         }
     })
 
-    const [isHovered, setHover] = useState(false)
-
-    const handleMouseEnter = () => {
-        setHover(true)
-    }
-
-    const handleMouseLeave = () => {
-        setHover(false)
-    }
-
 
     const initialCommentsVisibility = commentsCount > 3 ? false : true;
     const [commentsVisible, setCommentsVisibility] = useState(initialCommentsVisibility)
-
     const [commentInputFocus, setCommentInputFocus] = useState(false)
 
     const engageComment = () => {
@@ -68,15 +59,14 @@ export default function PostCard({ post }) {
             <PostCardHeader className='postCard__header'>
                 <Avatar image={profileImage?.medium} />
                 <header>
-                    <h4>{username}</h4>
+                    <h4>
+                        <UserLink userId={user}>{username}</UserLink>
+                    </h4>
                     <div className="timestamp">
                         {moment(createdAt).fromNow()}
                     </div>
                 </header>
                 {context?.user?.username === username && <PostOptions postId={id} />}
-                <PopUpElement isVisible={isHovered}>
-                    {user && <ProfilePreview user={user} />}
-                </PopUpElement>
             </PostCardHeader>
 
             <PostCardBody className='postCard__body'>
@@ -116,7 +106,7 @@ export default function PostCard({ post }) {
 
 //----------------------styles--------------------------
 export const PostCardHeader = styled.div`
-position:relative;
+    position:relative;
     display:flex;
     align-items:center;
     width:100%;
@@ -128,6 +118,10 @@ position:relative;
         .timestamp{
             font-size:.7em;
             color:${props => props.theme.secondaryFontColor};
+            &:hover{
+                text-decoration:underline;
+                cursor:pointer;
+            }
         }
     }
 `

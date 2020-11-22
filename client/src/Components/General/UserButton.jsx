@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import Avatar from './Avatar'
 import PopUpElement from './PopUpElement'
-import UserLink from './ProfilePreview'
+import ProfilePreview from './ProfilePreview'
 
 
 export default function UserButton({ user, notLink, ...rest }) {
@@ -25,7 +25,7 @@ export default function UserButton({ user, notLink, ...rest }) {
             <HoverWrapper>
                 {!notLink && (
                     <PopUpElement isVisible={isHovered}>
-                        <UserLink user={user} />
+                        <ProfilePreview userId={user.id} />
                     </PopUpElement>
                 )}
             </HoverWrapper>

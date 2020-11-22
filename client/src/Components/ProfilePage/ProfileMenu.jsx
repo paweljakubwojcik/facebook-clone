@@ -17,8 +17,7 @@ export default function ProfileMenu({ width, contentType, setContentType, user }
     const [sticky, setSticky] = useState(false)
 
     const handleScroll = () => {
-
-        const containerPosition = containerBar.current.getBoundingClientRect().top
+        const containerPosition = containerBar.current?.getBoundingClientRect().top
         if (containerPosition - navBarHeight <= 0)
             setSticky(true)
         else
@@ -27,7 +26,6 @@ export default function ProfileMenu({ width, contentType, setContentType, user }
 
     useEffect(() => {
         navBarHeight = document.querySelector('.navBar').clientHeight
-        console.log(navBarHeight)
         window.addEventListener('scroll', handleScroll)
         setSticky(false)
         return () => {

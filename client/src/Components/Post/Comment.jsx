@@ -9,6 +9,7 @@ import { faThumbsUp, } from '@fortawesome/free-solid-svg-icons'
 
 import Avatar from '../General/Avatar'
 import { GenericButton } from '../General/Buttons'
+import UserLink from './UserLink'
 
 export default function Comment({ comment, postId }) {
     const context = useContext(AuthContext)
@@ -58,7 +59,7 @@ export default function Comment({ comment, postId }) {
             <Avatar image={profileImage?.medium} />
             <CommentBody>
                 <header>
-                    <h4>{username}</h4>
+                    <h4><UserLink userId={comment.user}>{username}</UserLink></h4>
                     <Date>{moment(comment.createdAt).fromNow()}</Date>
                 </header>
                 {comment.body}

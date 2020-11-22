@@ -41,8 +41,8 @@ const OptionButton = styled(RoundButton)`
     &::after{
         content:"";
         display:block;
-        width:20%;
-        height:20%;
+        width:.2em;
+        height:.2em;
         border-radius:50%;
         background-color:${props => props.theme.secondaryFontColor};
         box-shadow: .5em 0 ${props => props.theme.secondaryFontColor},
