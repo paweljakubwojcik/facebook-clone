@@ -18,22 +18,26 @@ export default function UserLink({ userId, children }) {
     }
 
     return (
-        <>
+        <Container onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}>
             <StyledLink to={`/profile/${userId}`}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}>
+            >
                 {children}
-                <PopUpElement isVisible={isHovered} showRight>
-                    {userId && <ProfilePreview userId={userId} />}
-                </PopUpElement>
-            </StyledLink>
 
-        </>
+            </StyledLink>
+            <PopUpElement isVisible={isHovered} showRight>
+                {userId && <ProfilePreview userId={userId} />}
+            </PopUpElement>
+        </Container>
     )
 }
 
-const StyledLink = styled(Link)`
+const Container = styled.div`
     position:relative;
+`
+
+const StyledLink = styled(Link)`
+    
     display:inline-block;
     &:hover{
          text-decoration:underline;

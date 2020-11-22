@@ -21,7 +21,7 @@ export default function ContactList() {
             <ScrollWrapper>
                 <h2>Kontakty</h2>
                 {users && users.map(user => <UserButton key={user.id} user={user} />)}
-                {loading && [0, 1, 2].map(key => <SkeletonUserButton key={key} />)}
+                {!loading && [0, 1, 2, 3, 4, 5, 6].map(key => <SkeletonUserButton key={key} />)}
                 {/* TODO: error handling */}
             </ScrollWrapper>
         </Container>

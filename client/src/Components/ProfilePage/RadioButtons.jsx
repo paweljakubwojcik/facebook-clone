@@ -2,17 +2,13 @@ import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { SquareButton } from '../General/Buttons'
 
+
+import { getOffsetPosition } from '../../Util/Methods'
 import types from './contentTypes'
 
 const buttons = Object.values(types).map(value => { return { value: value } })
 
-const getOffsetPosition = (element) => {
-    const previousElement = element.previousElementSibling
-    if (previousElement)
-        return previousElement.clientWidth + getOffsetPosition(previousElement)
-    else
-        return 0
-}
+
 
 export default function RadioButtons({ setContentType, contentType, ...rest }) {
 
@@ -23,7 +19,7 @@ export default function RadioButtons({ setContentType, contentType, ...rest }) {
     useEffect(() => {
 
         setWidth(activeButton.current.clientWidth)
-        setOffset(getOffsetPosition(activeButton.current))
+        setOffset(getOffsetPosition(activeButton.current).x)
 
         return () => {
 

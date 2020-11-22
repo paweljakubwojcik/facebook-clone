@@ -10,9 +10,14 @@ import ProfilePreview from './ProfilePreview'
 export default function UserButton({ user, notLink, ...rest }) {
 
     const [isHovered, setHover] = useState(false)
+    const [popUpPosition, setPopUpPosition] = useState(0)
 
-    const handleMouseEnter = () => {
+    const handleMouseEnter = (e) => {
         setHover(true)
+        const elementPosition = e.target.offsetTop
+        const elementHeight = e.target.clientHeight
+        const elementScrollOffset = e.target.offsetParent.children[0].scrollTop
+        setPopUpPosition(elementPosition - elementScrollOffset + elementHeight / 2)
     }
 
     const handleMouseLeave = () => {
@@ -20,9 +25,8 @@ export default function UserButton({ user, notLink, ...rest }) {
     }
 
     return (
-
         <StyledButton {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
-            <HoverWrapper>
+            <HoverWrapper top={popUpPosition}>
                 {!notLink && (
                     <PopUpElement isVisible={isHovered}>
                         <ProfilePreview userId={user.id} />
@@ -45,6 +49,7 @@ export default function UserButton({ user, notLink, ...rest }) {
 const HoverWrapper = styled.div`
     position:absolute;
     left:-5px;
+    top:${props => props.top}px;
 `
 
 /**

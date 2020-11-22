@@ -23,7 +23,6 @@ const Container = styled.div`
     position:absolute;
     z-index:3;
     left:${props => props.showRight ? `100%;` : '0'};
-    pointer-events:fill;
     
     top:50%;
 
@@ -55,7 +54,7 @@ const Container = styled.div`
         position:absolute;
         left:50%;
         top:50%;
-        transform: translate(0,-50%);
+        transform: translate(50%,-50%);
         ${props => props.showRight ? `transform: translate(-100%, -50%);` : ''}
         width:50%;
         height:40%;
