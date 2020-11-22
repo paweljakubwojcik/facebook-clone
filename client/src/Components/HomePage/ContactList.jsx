@@ -12,6 +12,7 @@ import { GET_USERS } from '../../Util/GraphQL_Queries'
 
 export default function ContactList() {
 
+    //it gets every user from database
     const { loading, error, data: { getUsers: users } = {} } = useQuery(GET_USERS);
 
     return (
@@ -20,7 +21,8 @@ export default function ContactList() {
             <ScrollWrapper>
                 <h2>Kontakty</h2>
                 {users && users.map(user => <UserButton key={user.id} user={user} />)}
-                {[0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(key => <SkeletonUserButton key={key} />)}
+                {loading && [0, 1, 2].map(key => <SkeletonUserButton key={key} />)}
+                {/* TODO: error handling */}
             </ScrollWrapper>
         </Container>
     )
@@ -52,9 +54,12 @@ const Container = styled.div`
     }
 
 `
-
+//This componenet is responsible for scroll behaviour only, notice it is positioned static - because in order to 
+//allow child elements to overflow it, they have to be positoned relative to container that doesn't have overflow:scroll,
+//so child elements are positioned relative to Container wchich has property overflow-x set to visible
 const ScrollWrapper = styled.div`
     overflow-y: auto;   /* Just apply overflow-y */
+    overflow-x:hidden;
     height: 100%;
     width: 100%;
     display:flex;
@@ -64,6 +69,8 @@ const ScrollWrapper = styled.div`
         margin: .2em;
         flex-shrink:0;
     }
+
+    /* ScrollBar styling here */
     scrollbar-width: thin;          /* "auto" or "thin"  */
     scrollbar-color: ${props => props.theme.secondaryFontColor} ${props => props.theme.primaryElementColor};   /* scroll thumb & track */
 

@@ -10,11 +10,11 @@ export default function ProfilePreview({ user }) {
         <ElementContainer >
             <Container >
                 <Avatar image={user?.profileImage?.medium} big />
-                <div>
-                    <h4>{user?.username}</h4>
+                <div className="infoContainer">
+                    <h4 className="username">{user?.username}</h4>
                     <p>
-                        some info about user
-                </p>
+                        some info about {user?.username}
+                    </p>
                 </div>
                 <LittleBackground image={user?.backgroundImage} />
             </Container>
@@ -39,7 +39,7 @@ const Container = styled.div`
     position:relative;
     z-index:4;
     height:120px;
-    width:200px;
+    //min-width:200px;
 
     display:grid;
     grid-template-columns:1fr 2fr;
@@ -49,6 +49,10 @@ const Container = styled.div`
     border-radius:inherit;
     overflow:hidden;
     cursor:default;
+
+    .infoContainer{
+        width:10em;
+    }
 
     .username{
         margin:.3em;

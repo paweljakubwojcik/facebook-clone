@@ -37,14 +37,20 @@ export default function UserButton({ user, notLink, ...rest }) {
     )
 }
 
+/**
+ * this element is only for <PopUpElement /> positioning
+ * Notice when absolute postioned elements dont have specified properties like top or left
+ * they are positioned static, but overflow the hierarchy
+ */
 const HoverWrapper = styled.div`
     position:absolute;
     left:-5px;
 `
 
+/**
+ * it must be positioned static
+ */
 export const StyledButton = styled.div`
-
-
     display:flex;
     justify-content:left;
     align-items:center;

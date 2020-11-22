@@ -10,9 +10,7 @@ export default function PopUpElement({ isVisible, children, ...rest }) {
             <CSSTransition
                 key={isVisible}
                 timeout={animDuration}
-                classNames="fade"
-                in={true}
-                appear={true}>
+                classNames="fade">
                 <>
                     {isVisible && <Container {...rest}> {children}</Container>}
                 </>
@@ -29,10 +27,9 @@ const Container = styled.div`
 
     transform: translate(-105%, -50%);
 
-    //overflow:hidden;
-
+    //css animations here
     &.fade-enter {
-            opacity: 0;
+         opacity: 0;
 
     }
     &.fade-enter-active {
@@ -47,6 +44,7 @@ const Container = styled.div`
     opacity: 0;
     transition: opacity ${animDuration}ms;
     }
+
     //invisible extension for hover
     &::after{
         content:'';
