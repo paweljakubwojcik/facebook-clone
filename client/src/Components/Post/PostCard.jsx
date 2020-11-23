@@ -7,7 +7,7 @@ import { useQuery, gql } from '@apollo/client'
 import { AuthContext } from '../../Context/auth'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faComment, faThumbsUp, faShare } from '@fortawesome/free-solid-svg-icons'
+import { faComment, faShare } from '@fortawesome/free-solid-svg-icons'
 
 import { GenericButton, SquareButton } from '../General/Buttons'
 import LikeButton from '../HomePage/LikeButton'
@@ -15,9 +15,9 @@ import CommentSection from './CommentSection'
 import PostOptions from './PostOptions'
 import Avatar from '../General/Avatar'
 import ElementContainer from '../General/ElementContainer'
-import ProfilePreview from '../General/ProfilePreview'
-import PopUpElement from '../General/PopUpElement'
+
 import UserLink from './UserLink'
+import LikesCounter from './LikesCounter'
 
 const GET_USER_DETAILS = gql`
 query getUser(  $userId: ID! ){
@@ -74,10 +74,7 @@ export default function PostCard({ post }) {
             </PostCardBody>
 
             <PostCardCounters className='postCard__counters' >
-                <div className="counter likes">
-                    <FontAwesomeIcon className="icon" icon={faThumbsUp} />
-                    {likesCount}
-                </div>
+                <LikesCounter likesCount={likesCount} likes={likes} />
                 <GenericButton className="counter comments" onClick={() => setCommentsVisibility(!commentsVisible)}>
                     {commentsCount} {`Comment${commentsCount !== 1 ? 's' : ''}`}
                 </GenericButton>
@@ -138,13 +135,7 @@ const PostCardCounters = styled.div`
     .counter{
         margin:1em;
     }
-    .counter.likes{
-        margin-right:auto;
-        .icon{
-            color:${props => props.theme.primaryColor};
-            margin:0  0.5em;
-        }
-    }
+   
 `
 
 const PostCardButtonsContainer = styled.div`

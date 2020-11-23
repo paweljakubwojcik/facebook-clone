@@ -10,6 +10,7 @@ import { faThumbsUp, } from '@fortawesome/free-solid-svg-icons'
 import Avatar from '../General/Avatar'
 import { GenericButton } from '../General/Buttons'
 import UserLink from './UserLink'
+import LikesCounter from './LikesCounter'
 
 export default function Comment({ comment, postId }) {
     const context = useContext(AuthContext)
@@ -64,12 +65,9 @@ export default function Comment({ comment, postId }) {
                 </header>
                 {comment.body}
                 <Buttons blue={comment.likesCount > 0 ? 1 : 0}>
-                    <div className="counter likes" >
-                        <FontAwesomeIcon className="icon" icon={faThumbsUp} />
-                        {comment.likesCount}
-                    </div>
-                    <GenericButton onClick={(e) => handleClick(e, likeComment)} active={liked}> {liked ? 'Liked' : 'Like'} </GenericButton>
-                    {context?.user?.username === username && <GenericButton onClick={(e) => handleClick(e, deleteComment)}>Delete</GenericButton>}
+                    <LikesCounter className="likes" likesCount={comment.likesCount} likes={comment.likes} />
+                    <GenericButton className="button" onClick={(e) => handleClick(e, likeComment)} active={liked}> {liked ? 'Liked' : 'Like'} </GenericButton>
+                    {context?.user?.username === username && <GenericButton className="button" onClick={(e) => handleClick(e, deleteComment)}>Delete</GenericButton>}
                 </Buttons>
             </CommentBody>
 
@@ -119,18 +117,19 @@ const Buttons = styled.div`
     justify-content:flex-end;
     font-size:.8em;
     
-    & > * {
+    .button {
         padding:0;
         margin:0 2%;
     }
 
-    .counter.likes{
+    .likes{
+        padding:0;
+        margin:0 2%;
         margin-right:auto;
         font-size:.9em;
-        color:${props => props.theme.secondaryFontColor};
+        color:${props => props.blue ? props.theme.primaryColor : props.theme.secondaryFontColor};
         .icon{
-            color:${props => props.blue && props.theme.primaryColor};
-            margin:0  0.5em;
+            color:${props => props.blue ? props.theme.primaryColor : props.theme.secondaryFontColor};
         }
     }
 

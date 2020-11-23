@@ -1,6 +1,7 @@
 import React from 'react'
 import { SwitchTransition, CSSTransition } from 'react-transition-group'
 import styled from 'styled-components'
+import PropTypes from 'prop-types';
 
 const animDuration = 300;
 
@@ -62,3 +63,10 @@ const Container = styled.div`
     }
 
 `
+
+Container.propTypes = {
+    showRigth: PropTypes.bool,
+    showAbove: PropTypes.bool,
+    showLeft: PropTypes.bool
+}
+

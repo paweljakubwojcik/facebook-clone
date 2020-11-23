@@ -14,10 +14,15 @@ export default function UserButton({ user, notLink, ...rest }) {
 
     const handleMouseEnter = (e) => {
         setHover(true)
-        const elementPosition = e.target.offsetTop
-        const elementHeight = e.target.clientHeight
-        const elementScrollOffset = e.target.offsetParent.children[0].scrollTop
-        setPopUpPosition(elementPosition - elementScrollOffset + elementHeight / 2)
+        //make sure it takes right element for computing offset
+        if (e.target.classList.contains('contact')) {
+            const elementPosition = e.target.offsetTop
+            const elementHeight = e.target.clientHeight
+            const elementScrollOffset = e.target.offsetParent.children[0].scrollTop
+            //computing popUpElement position
+            setPopUpPosition(elementPosition - elementScrollOffset + elementHeight / 2)
+        }
+
     }
 
     const handleMouseLeave = () => {
@@ -25,7 +30,7 @@ export default function UserButton({ user, notLink, ...rest }) {
     }
 
     return (
-        <StyledButton {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
+        <StyledButton {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className='contact'>
             <HoverWrapper top={popUpPosition}>
                 {!notLink && (
                     <PopUpElement isVisible={isHovered}>
@@ -43,8 +48,7 @@ export default function UserButton({ user, notLink, ...rest }) {
 
 /**
  * this element is only for <PopUpElement /> positioning
- * Notice when absolute postioned elements dont have specified properties like top or left
- * they are positioned static, but overflow the hierarchy
+ * It is positioned on hover event
  */
 const HoverWrapper = styled.div`
     position:absolute;
