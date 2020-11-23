@@ -110,7 +110,7 @@ const Menu = styled.div`
     transform:translateY(0);
     }
     .buttons.rollUp-exit-active {
-        position:absolute;
+    position:absolute;
     transform:translateY(-100%);
     transition: transform 200ms;
     }

@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faShare } from '@fortawesome/free-solid-svg-icons'
 
 import { GenericButton, SquareButton } from '../General/Buttons'
-import LikeButton from '../HomePage/LikeButton'
+import LikeButton from './LikeButton'
 import CommentSection from './CommentSection'
 import PostOptions from './PostOptions'
 import Avatar from '../General/Avatar'

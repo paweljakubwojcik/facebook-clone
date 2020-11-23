@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 import PostCard from './PostCard';
@@ -6,7 +6,14 @@ import SkeletonPost from '../skeletons/SkeletonPost'
 
 export default function Posts({ postsData }) {
 
-    const { loading, error, data: { getPosts: posts } = {} } = postsData
+    const { loading, error, refetch, data: { getPosts: posts } = {} } = postsData
+
+    // refetch data on every mount od component to synchronize posts on profile page with posts on home
+    // but when adding posts, still using cache to minimalize traffic
+    useEffect(() => {
+        refetch()
+        console.log('refetching')
+    }, [refetch])
 
     return (
         <PostsContainer>

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { RoundButton, SquareButton } from '../General/Buttons'
 import { PopUpMenu } from '../General/PopUpMenu'
 
-import DeleteButton from '../HomePage/DeleteButton'
+import DeleteButton from './DeleteButton'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'

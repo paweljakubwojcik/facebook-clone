@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 
 
@@ -9,13 +9,14 @@ import ProfilePreview from './ProfilePreview'
 
 export default function UserButton({ user, notLink, ...rest }) {
 
+    const button = useRef(null)
     const [isHovered, setHover] = useState(false)
     const [popUpPosition, setPopUpPosition] = useState(0)
 
     const handleMouseEnter = (e) => {
         setHover(true)
         //make sure it takes right element for computing offset
-        if (e.target.classList.contains('contact')) {
+        if (e.target === button.current) {
             const elementPosition = e.target.offsetTop
             const elementHeight = e.target.clientHeight
             const elementScrollOffset = e.target.offsetParent.children[0].scrollTop
@@ -24,13 +25,12 @@ export default function UserButton({ user, notLink, ...rest }) {
         }
 
     }
-
     const handleMouseLeave = () => {
         setHover(false)
     }
 
     return (
-        <StyledButton {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className='contact'>
+        <StyledButton {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} ref={button}>
             <HoverWrapper top={popUpPosition}>
                 {!notLink && (
                     <PopUpElement isVisible={isHovered}>
