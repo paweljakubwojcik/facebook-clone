@@ -49,7 +49,12 @@ export default function Menu() {
     return (
         <StyledMenu className='menu'>
             {buttons.map(({ value, icon }) =>
-                <MenuButton className='menu__button' key={value} value={value} onClick={toggleActive} active={value === activeButton ? 1 : 0}>
+                <MenuButton
+                    className='menu__button'
+                    key={value}
+                    value={value}
+                    onClick={toggleActive}
+                    active={value === activeButton ? 1 : 0} aria-label={value}>
                     <FontAwesomeIcon className='icon' icon={icon} />
                 </MenuButton>
             )}
@@ -67,7 +72,4 @@ const StyledMenu = styled.menu`
     position:relative;
 `
 
-const MenuButton = styled(RoundButton)`
-
-    
-`
+const MenuButton = RoundButton

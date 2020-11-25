@@ -47,7 +47,8 @@ export const RoundButton = styled(GenericButton)`
 export const SquareButton = styled(GenericButton)`
 
     color: ${props => props.active && props.theme.primaryColor};
-    &:hover{
+    &:hover,
+    &:focus{
         background-color:${props => props.theme.roundButtonColor};
         text-decoration:none;
     }

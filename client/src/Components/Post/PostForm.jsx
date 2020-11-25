@@ -60,7 +60,7 @@ export default function PostForm({ toggleForm }) {
                     <Avatar image={avatar} />
                     <h3>{username}</h3>
                 </div>
-                <textarea autoFocus name="body" id="body" placeholder={`O czym teraz myślisz, ${username}?`}></textarea>
+                <textarea aria-label='post' autoFocus name="body" id="body" placeholder={`O czym teraz myślisz, ${username}?`}></textarea>
                 {error && <ErrorMessage>There was a problem during faking your status, please try later</ErrorMessage>}
                 <FormButton primary inactive={values.body.trim().length === 0} loading={loading} loadingMessage={'Posting'}>Post</FormButton>
             </Form>

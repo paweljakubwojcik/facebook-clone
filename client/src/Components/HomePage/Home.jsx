@@ -29,7 +29,7 @@ export default function Home() {
   )
 }
 
-const Container = styled.div`
+const Container = styled.main`
     display:flex;
     width:100%;
    justify-content:center;

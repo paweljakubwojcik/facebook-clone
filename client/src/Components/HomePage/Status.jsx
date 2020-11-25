@@ -24,7 +24,7 @@ export default function Status() {
         <ElementContainer>
             <Container className='status__container'>
                 <Avatar image={profileImage} className="status__avatar"></Avatar>
-                <StatusInput role="button" className='status__input' type="text" onClick={handleOnclick} > O czym myślisz {username}?</StatusInput>
+                <StatusInput className='status__input' type="text" onClick={handleOnclick} > O czym myślisz {username}?</StatusInput>
                 {isFormOpen && <PostForm toggleForm={toggleForm}></PostForm>}
             </Container>
         </ElementContainer>
@@ -37,7 +37,9 @@ const Container = styled.div`
     width:100%;
 `
 
-const StatusInput = styled.div`
+const StatusInput = styled.button`
+    text-align:left;
+    font-size:1em;
     flex:1;
     margin:.5em;
     border-radius:1em;

@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components'
 
 export default function FormButton({ children, type, primary, loading, loadingMessage, inactive }) {
   return (
-    <StyledButton type={type} primary={primary} loading={loading ? 1 : 0} inactive={inactive ? 1 : 0}>
+    <StyledButton type={type} primary={primary} loading={loading ? 1 : 0} inactive={inactive ? 1 : 0} aria-label={children}>
       {!loading ? children : (loadingMessage || 'Loading...')}
     </StyledButton>
   )

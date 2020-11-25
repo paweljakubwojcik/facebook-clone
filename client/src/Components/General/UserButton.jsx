@@ -73,7 +73,8 @@ export const StyledButton = styled.div`
 
     transition: background-color .3s;
 
-    &:hover{
+    &:hover,
+    &:focus{
         background-color:#444648;
         cursor:pointer;
     }
