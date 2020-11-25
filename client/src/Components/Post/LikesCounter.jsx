@@ -20,10 +20,11 @@ export default function LikesCounter({ likesCount, likes, ...rest }) {
         setHover(false)
     }
 
-    const isVisible = isHovered && likesCount !== 0;
+    const areThereAnyLikes = likesCount !== 0;
+    const isVisible = isHovered && areThereAnyLikes;
 
     return (
-        <CounterLikes {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <CounterLikes {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} blue={areThereAnyLikes}>
             <FontAwesomeIcon className="icon" icon={faThumbsUp} />
             {likesCount}
             <PopUpElement isVisible={isVisible} showRight>
@@ -34,16 +35,21 @@ export default function LikesCounter({ likesCount, likes, ...rest }) {
 }
 
 const CounterLikes = styled.div`
-    color:inherit;
+    color: ${props => props.blue ? props.theme.primaryColor : 'inherit'};
     position:relative;
     margin:1em;
     margin-right:auto;
     .icon{
-        color:${props => props.theme.primaryColor};
+        color:${props => props.blue ? props.theme.primaryColor : 'inherit'};
         margin:0  0.5em;
     }
+   
     &:hover{
-        cursor:pointer;
-        text-decoration:underline;
+        ${props => props.blue ?
+        `cursor:pointer;
+            text-decoration:underline;`
+        : ''
+        };
+        
     }
 `

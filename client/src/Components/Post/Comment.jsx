@@ -4,9 +4,6 @@ import { useQuery, gql, useMutation } from '@apollo/client'
 import { AuthContext } from '../../Context/auth'
 import moment from 'moment'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faThumbsUp, } from '@fortawesome/free-solid-svg-icons'
-
 import Avatar from '../General/Avatar'
 import { GenericButton } from '../General/Buttons'
 import UserLink from './UserLink'
@@ -116,7 +113,7 @@ const Buttons = styled.div`
     display:flex;
     justify-content:flex-end;
     font-size:.8em;
-    
+    color:${props => props.theme.secondaryFontColor};
     .button {
         padding:0;
         margin:0 2%;
@@ -127,10 +124,6 @@ const Buttons = styled.div`
         margin:0 2%;
         margin-right:auto;
         font-size:.9em;
-        color:${props => props.blue ? props.theme.primaryColor : props.theme.secondaryFontColor};
-        .icon{
-            color:${props => props.blue ? props.theme.primaryColor : props.theme.secondaryFontColor};
-        }
     }
 
 `
