@@ -53,6 +53,7 @@ const NavBar = styled.nav`
     top:0;
     left:0;
     z-index:2;
+    height:60px;
 
     display:flex;
     width:100%;

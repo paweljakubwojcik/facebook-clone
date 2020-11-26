@@ -25,7 +25,7 @@ export default function ProfileMenu({ width, contentType, setContentType, user }
     }
 
     useEffect(() => {
-        navBarHeight = document.querySelector('.navBar').clientHeight
+        navBarHeight = document.querySelector('.navBar').clientHeight - 1
         window.addEventListener('scroll', handleScroll)
         setSticky(false)
         return () => {
@@ -74,7 +74,7 @@ const ContainerBar = styled.div`
     background-color: ${props => props.theme.primaryElementColor};
     position: sticky;
     z-index:1;
-    height:60px;
+    height:4em;
     top:${props => props.top}px;
 `
 

@@ -16,10 +16,10 @@ export default function UserButton({ user, notLink, ...rest }) {
     const handleMouseEnter = (e) => {
         setHover(true)
         //make sure it takes right element for computing offset
-        if (e.target === button.current) {
-            const elementPosition = e.target.offsetTop
-            const elementHeight = e.target.clientHeight
-            const elementScrollOffset = e.target.offsetParent.children[0].scrollTop
+        if (button.current) {
+            const elementPosition = button.current.offsetTop
+            const elementHeight = button.current.clientHeight
+            const elementScrollOffset = button.current.offsetParent.children[0].scrollTop
             //computing popUpElement position
             setPopUpPosition(elementPosition - elementScrollOffset + elementHeight / 2)
         }
@@ -30,7 +30,7 @@ export default function UserButton({ user, notLink, ...rest }) {
     }
 
     return (
-        <StyledButton {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} ref={button}>
+        <StyledButton {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={() => button.current.blur()} ref={button}>
             <HoverWrapper top={popUpPosition}>
                 {!notLink && (
                     <PopUpElement isVisible={isHovered}>

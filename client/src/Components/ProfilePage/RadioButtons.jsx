@@ -17,9 +17,10 @@ export default function RadioButtons({ setContentType, contentType, ...rest }) {
     const activeButton = useRef()
 
     useEffect(() => {
-
-        setWidth(activeButton.current.clientWidth)
-        setOffset(getOffsetPosition(activeButton.current).x)
+        // to get consistent position even when resizing
+        const fontSize = parseFloat(getComputedStyle(document.body).fontSize)
+        setWidth(activeButton.current.clientWidth / fontSize)
+        setOffset(getOffsetPosition(activeButton.current).x / fontSize)
 
         return () => {
 
@@ -29,7 +30,6 @@ export default function RadioButtons({ setContentType, contentType, ...rest }) {
     const handleOnClick = (e) => {
         setContentType(e.target.value)
         e.target.blur()
-
     }
 
     return (
@@ -63,10 +63,12 @@ const Indicator = styled.span`
     position:absolute;
     bottom:0;
     left:0;
-    width:${props => props.width}px;
+    width:${props => props.width}em;
     height:5px;
     background-color:${props => props.theme.primaryColor};
-    transform: translateX(${props => props.offset}px);
+    border-radius:.5em;
+    transform: translateX(${props => props.offset}em);
     transition: transform .4s, width .6s;
+    transition-timing-function:cubic-bezier(0.175, 0.885, 0.32, 1.275);
 `
 
