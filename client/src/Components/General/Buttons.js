@@ -15,7 +15,7 @@ export const GenericButton = styled.button`
     &:hover,
     &:focus{
         cursor:pointer;
-        filter:brightness(1.1);
+        filter:brightness(1.2);
         text-decoration:underline;
     }
     &:active{

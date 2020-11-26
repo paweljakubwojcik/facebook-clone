@@ -39,7 +39,8 @@ const Container = styled.div`
 const StyledLink = styled(Link)`
     
     display:inline-block;
-    &:hover{
+    &:hover,
+    &:focus{
          text-decoration:underline;
          cursor:pointer;
     }

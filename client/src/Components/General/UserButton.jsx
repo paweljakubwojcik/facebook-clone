@@ -59,10 +59,15 @@ const HoverWrapper = styled.div`
 /**
  * it must be positioned static
  */
-export const StyledButton = styled.div`
+export const StyledButton = styled.button`
     display:flex;
     justify-content:left;
     align-items:center;
+
+    background-color:transparent;
+    color:inherit;
+    font-size:inherit;
+    font-family:inherit;
 
     overflow:visible;
 

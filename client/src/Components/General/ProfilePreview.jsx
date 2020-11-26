@@ -81,9 +81,11 @@ const Container = styled.div`
         font-size:1em;
         font-weight:bold;
         min-width:100px;
+        text-align:left;
     }
 
     p{
+        text-align:left;
         margin:.5em 0;
         padding:0;
         color: ${props => props.theme.secondaryFontColor};

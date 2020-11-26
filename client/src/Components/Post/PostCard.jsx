@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react'
 
 import styled from 'styled-components'
-import moment from 'moment'
 import { useQuery, gql } from '@apollo/client'
 
 import { AuthContext } from '../../Context/auth'
@@ -15,6 +14,7 @@ import CommentSection from './CommentSection'
 import PostOptions from './PostOptions'
 import Avatar from '../General/Avatar'
 import ElementContainer from '../General/ElementContainer'
+import TimeStamp from './TimeStamp'
 
 import UserLink from './UserLink'
 import LikesCounter from './LikesCounter'
@@ -62,9 +62,7 @@ export default function PostCard({ post }) {
                     <h4>
                         <UserLink userId={user}>{username}</UserLink>
                     </h4>
-                    <div className="timestamp">
-                        {moment(createdAt).fromNow()}
-                    </div>
+                    <TimeStamp time={createdAt} />
                 </header>
                 {context?.user?.username === username && <PostOptions postId={id} />}
             </PostCardHeader>
@@ -112,14 +110,7 @@ export const PostCardHeader = styled.div`
         flex-direction:column;
         justify-content:center;
         margin:  0 .5em;
-        .timestamp{
-            font-size:.7em;
-            color:${props => props.theme.secondaryFontColor};
-            &:hover{
-                text-decoration:underline;
-                cursor:pointer;
-            }
-        }
+        
     }
 `
 export const PostCardBody = styled.div`
