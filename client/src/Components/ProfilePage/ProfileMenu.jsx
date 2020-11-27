@@ -76,6 +76,7 @@ const ContainerBar = styled.div`
     z-index:1;
     height:4em;
     top:${props => props.top}px;
+    overflow:hidden;
 `
 
 const Menu = styled.div`
@@ -83,7 +84,7 @@ const Menu = styled.div`
     width:100%;
     max-width: ${props => props.width}px;
     border-top: solid 1px ${props => props.theme.secondaryFontColor}; 
-    overflow:hidden;
+    overflow:visible;
     position:relative;
 
 

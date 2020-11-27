@@ -27,7 +27,7 @@ export default function Navbar({ setForm }) {
             </header>
             {user ? (
                 <>
-                    <Link to={`/profile/${user.id}`} onFocus={({ target }) => console.log(target.childNodes[0].focus())}>
+                    <Link to={`/profile/${user.id}`} >
                         <UserButton user={{ ...user, profileImage: { medium: profileImage } }} notLink />
                     </Link>
                     <Menu />

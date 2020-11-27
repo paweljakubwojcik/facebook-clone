@@ -12,7 +12,7 @@ const buttons = Object.values(types).map(value => { return { value: value } })
 
 export default function RadioButtons({ setContentType, contentType, ...rest }) {
 
-    const [indicatorOffset, setOffset] = useState(-120)
+    const [indicatorOffset, setOffset] = useState(-.5)
     const [indicatorWidth, setWidth] = useState(0)
     const activeButton = useRef()
 
@@ -51,6 +51,7 @@ export default function RadioButtons({ setContentType, contentType, ...rest }) {
 const Container = styled.div`
     display:flex;
     position:relative;
+    overflow:visible;
 `
 
 const RadioButton = styled(SquareButton)`

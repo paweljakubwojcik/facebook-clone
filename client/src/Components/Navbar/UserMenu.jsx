@@ -7,7 +7,7 @@ import { AuthContext } from '../../Context/auth'
 import { SquareButton } from '../General/Buttons'
 import { PopUpMenu } from '../General/PopUpMenu'
 
-export default function UserMenu() {
+export default function UserMenu({ ...rest }) {
     const { logout } = useContext(AuthContext)
     const history = useHistory()
 
@@ -17,7 +17,7 @@ export default function UserMenu() {
     }
 
     return (
-        <PopUpMenu>
+        <PopUpMenu {...rest}>
             <SquareButton onClick={handleOnClick}>
                 <FontAwesomeIcon className="icon" icon={faSignOutAlt} />
                 Log Out

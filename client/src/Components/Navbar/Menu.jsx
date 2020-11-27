@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -43,7 +43,8 @@ export default function Menu() {
     }
 
     const closeMenu = (e) => {
-        //TODO
+        if (!e.target.classList.contains('openMenu') && !e.target.classList.contains('menu') && !e.target.classList.contains('menu__button'))
+            toggleActive(e)
     }
 
     return (
@@ -58,7 +59,7 @@ export default function Menu() {
                     <FontAwesomeIcon className='icon' icon={icon} />
                 </MenuButton>
             )}
-            {activeButton === buttons[2].value && <UserMenu />}
+            {activeButton === buttons[2].value && <UserMenu className='openMenu' />}
         </StyledMenu>
     )
 }

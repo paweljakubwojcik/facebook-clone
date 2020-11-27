@@ -7,7 +7,7 @@ import PopUpElement from './PopUpElement'
 import ProfilePreview from './ProfilePreview'
 
 
-export default function UserButton({ user, notLink, ...rest }) {
+export default function UserButton({ user, notLink, onClick, ...rest }) {
 
     const button = useRef(null)
     const [isHovered, setHover] = useState(false)
@@ -28,9 +28,14 @@ export default function UserButton({ user, notLink, ...rest }) {
     const handleMouseLeave = () => {
         setHover(false)
     }
+    const handleOnClick = () => {
+        if (onClick)
+            onClick()
+        button.current.blur()
+    }
 
     return (
-        <StyledButton {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={() => button.current.blur()} ref={button}>
+        <StyledButton {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleOnClick} ref={button}>
             <HoverWrapper top={popUpPosition}>
                 {!notLink && (
                     <PopUpElement isVisible={isHovered}>
