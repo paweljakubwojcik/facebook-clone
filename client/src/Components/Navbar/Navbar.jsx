@@ -60,6 +60,7 @@ const NavBar = styled.nav`
     align-items:center;
     background-color: ${props => props.theme.primaryElementColor}; // no its not a typo, ee is responsible for opacity like #ffffff + ee
     border-bottom: solid 1px ${props => props.theme.secondaryElementColor}dd;
+    box-shadow: ${props => props.theme.standardShadow};
 
     header{
         margin: .3em auto .3em 1em;

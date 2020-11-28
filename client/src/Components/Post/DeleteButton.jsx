@@ -2,7 +2,7 @@ import React from 'react'
 import { useMutation } from '@apollo/client'
 import { useLocation } from 'react-router-dom'
 
-import { SquareButton } from '../General/Buttons'
+import { MenuButton } from '../General/Buttons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
@@ -39,9 +39,9 @@ export default function DeleteButton({ postId }) {
     }
 
     return (
-        <SquareButton onClick={handleOnClick} inactive={loading} className='postCard__button'>
+        <MenuButton onClick={handleOnClick} inactive={loading} className='postCard__button'>
             <FontAwesomeIcon icon={faTrash} />
             Delete post
-        </SquareButton>
+        </MenuButton>
     )
 }

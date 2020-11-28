@@ -25,12 +25,6 @@ const buttons = [
 
 export default function Menu() {
 
-    useEffect(() => {
-        window.addEventListener('click', closeMenu)
-        return () => {
-            window.removeEventListener('click', closeMenu)
-        }
-    }, [])
 
     const [activeButton, changeActive] = useState('')
 
@@ -43,9 +37,19 @@ export default function Menu() {
     }
 
     const closeMenu = (e) => {
-        if (!e.target.classList.contains('openMenu') && !e.target.classList.contains('menu') && !e.target.classList.contains('menu__button'))
+        if (!e.target.classList.contains('openMenu')
+            && !e.target.classList.contains('menu')
+            && !e.target.classList.contains('menu__button')
+            && e.target.localName !== 'button')
             toggleActive(e)
     }
+
+    useEffect(() => {
+        window.addEventListener('click', closeMenu)
+        return () => {
+            window.removeEventListener('click', closeMenu)
+        }
+    }, [])
 
     return (
         <StyledMenu className='menu'>

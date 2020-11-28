@@ -57,3 +57,16 @@ export const SquareButton = styled(GenericButton)`
         margin:.25em;
     }
 `
+
+export const MenuButton = styled(SquareButton)`
+
+    width:100%;
+    justify-content:left;
+    & > *{
+        margin: .25em .75em;
+        pointer-events:none;
+    }
+    color: ${props => props.theme.primaryFontColor};
+    font-weight:lighter;
+
+`

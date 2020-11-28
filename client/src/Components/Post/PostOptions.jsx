@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { RoundButton, SquareButton } from '../General/Buttons'
-import { PopUpMenu } from '../General/PopUpMenu'
+import { RoundButton, MenuButton } from '../General/Buttons'
+import { DropDownMenu } from '../General/DropDownMenu'
 
 import DeleteButton from './DeleteButton'
 
@@ -16,17 +16,39 @@ export default function PostOptions({ postId }) {
         setopen(!open)
     }
 
+    const dropDownMenu = useRef(null)
+    const optionButton = useRef(null)
+
+    const closeMenu = (e) => {
+        if (e.target !== dropDownMenu.current
+            && e.target !== optionButton.current
+            && !(dropDownMenu.current?.contains(e.target))
+        )
+            setopen(false)
+
+    }
+
+    useEffect(() => {
+        if (open)
+            window.addEventListener('click', closeMenu)
+        else
+            window.removeEventListener('click', closeMenu)
+        return () => {
+            window.removeEventListener('click', closeMenu)
+        }
+    }, [open])
+
     return (
         <>
-            <OptionButton onClick={toggleOpen}></OptionButton>
+            <OptionButton onClick={toggleOpen} ref={optionButton}></OptionButton>
             {open &&
-                <PopUpMenu>
+                <DropDownMenu small ref={dropDownMenu}>
                     <DeleteButton postId={postId} />
-                    <SquareButton >
+                <MenuButton >
                         <FontAwesomeIcon icon={faEdit} />
                         Edit post
-                    </SquareButton>
-                </PopUpMenu>
+                    </MenuButton>
+            </DropDownMenu>
             }
         </>
     )

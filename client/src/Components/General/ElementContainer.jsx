@@ -19,8 +19,8 @@ export const Container = styled.div`
     ${props => props.noPadding ? "" : 'padding:1em;'}
     cursor:default;
     
-    border: solid 1px ${props => props.theme.roundButtonColor};
-    box-shadow: 0 0 30px -10px #11163d33;
+    border: solid 1px ${props => props.theme.borderColor};
+    box-shadow: ${props => props.theme.standardShadow};
     @media (max-width:600px){
         border-radius:0;
     }
