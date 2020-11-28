@@ -29,7 +29,6 @@ export default function Menu() {
     const [activeButton, changeActive] = useState('')
 
     const toggleActive = (e) => {
-        e.target.blur()
         if (activeButton === e.target.value)
             changeActive('')
         else
@@ -58,7 +57,7 @@ export default function Menu() {
                     className='menu__button'
                     key={value}
                     value={value}
-                    onClick={toggleActive}
+                    onClick={(e) => { e.target.blur(); toggleActive(e) }}
                     active={value === activeButton ? 1 : 0} aria-label={value}>
                     <FontAwesomeIcon className='icon' icon={icon} />
                 </MenuButton>
