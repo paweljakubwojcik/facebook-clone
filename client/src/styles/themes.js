@@ -11,3 +11,17 @@ export const darkTheme = {
     standardShadow: "-5px 5px 20px -5px #121215ba",
     borderColor: "#333436",
 };
+
+export const lightTheme = {
+    backgroundColor: "#f0f2f5",
+    primaryColor: "rgb(45, 136, 255)",
+    primaryElementColor: "#fff",
+    secondaryElementColor: "#f0f2f5",
+    secondaryFontColor: "#000",
+    primaryFontColor: "#000",
+    roundButtonColor: "#e4e6eb",
+    activeButtonColor: "#e3e4e6",
+    shadowColor: "#e3e4e6",
+    standardShadow: "-5px 5px 20px -5px #e3e4e6",
+    borderColor: "#e3e4e6",
+};

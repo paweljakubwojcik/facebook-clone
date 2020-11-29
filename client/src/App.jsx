@@ -10,7 +10,7 @@ import NavBar from './Components/Navbar/Navbar'
 import Profile from './Components/ProfilePage/Profile'
 
 
-import { darkTheme } from './styles/themes'
+import { darkTheme, lightTheme } from './styles/themes'
 
 
 
