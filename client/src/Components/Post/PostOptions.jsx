@@ -19,7 +19,7 @@ export default function PostOptions({ postId }) {
     const dropDownMenu = useRef(null)
     const optionButton = useRef(null)
 
-    const closeMenu = (e) => {
+    const closePostMenu = (e) => {
         if (e.target !== dropDownMenu.current
             && e.target !== optionButton.current
             && !(dropDownMenu.current?.contains(e.target))
@@ -30,11 +30,11 @@ export default function PostOptions({ postId }) {
 
     useEffect(() => {
         if (open)
-            window.addEventListener('click', closeMenu)
+            window.addEventListener('click', closePostMenu)
         else
-            window.removeEventListener('click', closeMenu)
+            window.removeEventListener('click', closePostMenu)
         return () => {
-            window.removeEventListener('click', closeMenu)
+            window.removeEventListener('click', closePostMenu)
         }
     }, [open])
 
@@ -44,11 +44,10 @@ export default function PostOptions({ postId }) {
             {open &&
                 <DropDownMenu small ref={dropDownMenu}>
                     <DeleteButton postId={postId} />
-                <MenuButton >
-                        <FontAwesomeIcon icon={faEdit} />
-                        Edit post
+                    <MenuButton >
+                    <FontAwesomeIcon icon={faEdit} /> <p>Edit post</p>
                     </MenuButton>
-            </DropDownMenu>
+                </DropDownMenu>
             }
         </>
     )

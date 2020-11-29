@@ -41,4 +41,5 @@ const Feed = styled.section`
     flex-shrink:1;
     flex-direction:column;
     align-items:center;
+    width:600px;
 `

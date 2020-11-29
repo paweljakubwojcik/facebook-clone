@@ -27,7 +27,7 @@ export default function Posts({ postsData }) {
 
 const PostsContainer = styled.section`
     display:flex;
-    width:600px;
+    width:100%;
     max-width:600px;
     flex-shrink:1;
     flex-direction:column;

@@ -39,16 +39,19 @@ export default function Menu() {
         if (!e.target.classList.contains('openMenu')
             && !e.target.classList.contains('menu')
             && !e.target.classList.contains('menu__button')
-            && e.target.localName !== 'button')
-            toggleActive(e)
+            && !document.querySelector('.openMenu').contains(e.target))
+            changeActive('')
     }
 
     useEffect(() => {
-        window.addEventListener('click', closeMenu)
+        if (activeButton !== '')
+            window.addEventListener('click', closeMenu)
+        else
+            window.removeEventListener('click', closeMenu)
         return () => {
             window.removeEventListener('click', closeMenu)
         }
-    }, [])
+    }, [activeButton])
 
     return (
         <StyledMenu className='menu'>

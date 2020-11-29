@@ -40,14 +40,14 @@ export default function UserMenu({ ...rest }) {
                 onEnter={calcHeight}
             >
                 <AnimationContainer>
-                    <MenuButton onClick={handleLogout}>
-                        <FontAwesomeIcon className="icon" icon={faSignOutAlt} />
-                        <p>Log Out</p>
-                    </MenuButton>
                     <MenuButton onClick={() => setActive('Display Preferences')} >
                         <FontAwesomeIcon className="icon" icon={faMoon} />
                         <p>Display Preferences</p>
                         <FontAwesomeIcon className="icon" icon={faChevronRight} />
+                    </MenuButton>
+                    <MenuButton onClick={handleLogout}>
+                        <FontAwesomeIcon className="icon" icon={faSignOutAlt} />
+                        <p>Log Out</p>
                     </MenuButton>
                 </AnimationContainer>
             </CSSTransition>
@@ -65,15 +65,80 @@ export default function UserMenu({ ...rest }) {
                         </RoundButton>
                         <h3>Display Preferences</h3>
                     </Header>
-                    <MenuButton >
-                        <FontAwesomeIcon className="icon" icon={faSignOutAlt} />
-                        <p>Log Out</p>
-                    </MenuButton>
+                    <RadioButtonsGroup>
+                        <div className="label">
+                            <FontAwesomeIcon className="icon" icon={faMoon} />
+                            <h4> Dark Mode</h4>
+                        </div>
+
+                        <RadioButton active>
+                            <p>On</p>
+                            <span>
+                                <span></span>
+                            </span>
+                        </RadioButton>
+                        <RadioButton >
+                            <p>Off</p>
+                            <span>
+                                <span></span>
+                            </span>
+                        </RadioButton>
+                    </RadioButtonsGroup>
+
                 </AnimationContainer>
             </CSSTransition>
         </DropDownMenu>
     )
 }
+
+const RadioButtonsGroup = styled.div`
+    .label{
+        display:flex;
+        align-items:center;
+        svg{
+            margin: 0 .4em 0 1.3em;
+        }
+       pointer-events:none;
+       
+    }
+    h4{
+        border-bottom:solid 1px ${props => props.theme.borderColor}; 
+        margin:.5em;
+        padding:.4em;
+        flex-grow:1;
+    }
+    
+`
+
+const RadioButton = styled(MenuButton)`
+
+    padding-left:2.9em;
+    justify-content:space-between;
+    color:${props => props.active ? props.theme.primaryColor : 'inherit'};
+    span{
+        color:inherit;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        border-width:1px;
+        border-style:solid;
+        border-color:inherit;
+        width:1.4em;
+        height:1.4em;
+        border-radius:50%;
+        margin:.5em;
+        span{
+            margin:0;
+            content:'';
+            display:block;
+            border:none;
+            background-color:${props => props.active ? props.theme.primaryColor : 'transparent'};
+            width:50%;
+            height:50%;
+        }
+    }
+
+`
 
 const Header = styled.div`
 
@@ -81,8 +146,10 @@ const Header = styled.div`
     align-items:center;
     padding:.4em;
     h3{
+        pointer-events:none;
         margin:.5em;
     }
+    border-bottom:solid 1px ${props => props.theme.borderColor}; 
 
 `
 
