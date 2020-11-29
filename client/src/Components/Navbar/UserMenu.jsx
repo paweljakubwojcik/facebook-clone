@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
+import { ThemeContext } from '../../Context/theme'
 
 import styled from 'styled-components'
 
@@ -13,10 +14,13 @@ import { DropDownMenu } from '../General/DropDownMenu'
 
 export default function UserMenu({ ...rest }) {
     const { logout } = useContext(AuthContext)
+    const { changeTheme, currentTheme } = useContext(ThemeContext)
+    console.log(currentTheme)
     const history = useHistory()
 
     const [active, setActive] = useState('main')
     const [height, setHeight] = useState(null)
+    const [themeName, setThemeName] = useState(currentTheme)
 
     const calcHeight = (el) => {
         const height = el.offsetHeight + parseFloat(getComputedStyle(document.body).fontSize);
@@ -27,6 +31,11 @@ export default function UserMenu({ ...rest }) {
     const handleLogout = () => {
         logout()
         history.push('/')
+    }
+
+    const handleRadioButtonClick = (e) => {
+        setThemeName(e.target.value)
+        changeTheme(e.target.value)
     }
 
     return (
@@ -71,13 +80,13 @@ export default function UserMenu({ ...rest }) {
                             <h4> Dark Mode</h4>
                         </div>
 
-                        <RadioButton active>
+                        <RadioButton value="darkTheme" onClick={handleRadioButtonClick} active={themeName === 'darkTheme'}>
                             <p>On</p>
                             <span>
                                 <span></span>
                             </span>
                         </RadioButton>
-                        <RadioButton >
+                        <RadioButton value="lightTheme" onClick={handleRadioButtonClick} active={themeName === 'lightTheme'}>
                             <p>Off</p>
                             <span>
                                 <span></span>

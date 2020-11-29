@@ -18,7 +18,7 @@ body {
   background-color: #18191a;
   color: white;
   font-size: 16px;
-  transition: font-size 0.2s;
+  transition: font-size 0.2s, color 0.2s, background-color 0.3s;
 }
 
 code {
