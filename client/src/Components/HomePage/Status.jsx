@@ -49,13 +49,14 @@ const StatusInput = styled.button`
     font-family:inherit;
     background-color:${props => props.theme.secondaryElementColor};
     color:${props => props.theme.primaryFontColor};
-    filter:brightness(.6);
-    transition: filter .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter:opacity(.8);
+    transition: background-color .3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter .3s;
     &:focus{
-        filter:brightness(1);
+        filter:opacity(1);
     }
     &:hover{
-        filter:brightness(1.1);
+        background-color:${props => props.theme.secondaryElementHover};
+        filter:opacity(1);
         cursor:pointer;
     }
 `

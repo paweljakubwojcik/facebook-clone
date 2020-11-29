@@ -77,7 +77,8 @@ const Container = styled.div`
     }
 
     .username{
-        margin:.3em;
+        color: #fff;
+        margin:.5em;
         font-size:1em;
         font-weight:bold;
         min-width:100px;

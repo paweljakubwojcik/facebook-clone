@@ -6,10 +6,11 @@ import { ThemeProvider } from 'styled-components'
 
 
 const initialState = {
-    theme: themes.darkTheme,
-    currentTheme: 'darkTheme'
+    theme: themes.lightTheme,
+    currentTheme: 'lightTheme'
 }
-
+document.body.style.backgroundColor = themes[initialState.currentTheme].backgroundColor
+document.body.style.color = themes[initialState.currentTheme].primaryFontColor
 
 const ThemeContext = createContext({
     currentTheme: null,

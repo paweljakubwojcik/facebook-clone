@@ -11,11 +11,10 @@ export const GenericButton = styled.button`
     border:none;
     border-radius:.5em;
     color:${props => props.theme.secondaryFontColor};
-    transition: filter .2s ,color .4s, background-color .4s ;
+    transition:  filter .2s ,color .4s, background-color .4s ;
     &:hover,
     &:focus{
         cursor:pointer;
-        filter:brightness(1.2);
         text-decoration:underline;
     }
     &:active{
@@ -41,6 +40,11 @@ export const RoundButton = styled(GenericButton)`
     & > *{
         margin:0;
         pointer-events:none;
+    }
+    &:hover,
+    &:focus{
+        background-color:${props => props.theme.roundButtonColor};
+        text-decoration:none;
     }
 `
 

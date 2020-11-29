@@ -34,6 +34,7 @@ export default function UserMenu({ ...rest }) {
     }
 
     const handleRadioButtonClick = (e) => {
+        e.target.blur()
         setThemeName(e.target.value)
         changeTheme(e.target.value)
     }

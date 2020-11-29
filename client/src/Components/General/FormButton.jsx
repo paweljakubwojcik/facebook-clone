@@ -43,8 +43,8 @@ const loading = keyframes`
 `
 
 const StyledButton = styled.button`
-    background-color: ${props => props.primary ? props.theme.primaryColor : props.theme.primaryFontColor};
-    color: ${props => props.primary ? props.theme.primaryFontColor : props.theme.primaryColor};
+    background-color: ${props => props.primary ? props.theme.primaryColor : '#fff'};
+    color: ${props => props.primary ? '#fff' : props.theme.primaryColor};
     font-family:inherit;
     font-weight:bold;
     width:9em;

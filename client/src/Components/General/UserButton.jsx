@@ -85,7 +85,7 @@ export const StyledButton = styled.button`
 
     &:hover,
     &:focus{
-        background-color:#444648;
+        background-color:${props => props.theme.secondaryElementHover};
         cursor:pointer;
     }
 

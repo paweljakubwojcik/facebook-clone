@@ -60,6 +60,7 @@ export default function UnsplashImage() {
 const Container = styled.div`
     display:flex;
     flex-direction:column;
+    color:#fff;
     background-image: url(${props => props.image});
     background-size:cover;
     background-position:center;
