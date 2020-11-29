@@ -115,6 +115,7 @@ const RadioButton = styled(MenuButton)`
     padding-left:2.9em;
     justify-content:space-between;
     color:${props => props.active ? props.theme.primaryColor : 'inherit'};
+    pointer-events: ${props => props.active ? 'none' : 'all'};
     span{
         color:inherit;
         display:flex;

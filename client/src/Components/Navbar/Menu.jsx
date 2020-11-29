@@ -39,7 +39,7 @@ export default function Menu() {
         if (!e.target.classList.contains('openMenu')
             && !e.target.classList.contains('menu')
             && !e.target.classList.contains('menu__button')
-            && !document.querySelector('.openMenu').contains(e.target))
+            && !document.querySelector('.openMenu')?.contains(e.target))
             changeActive('')
     }
 
