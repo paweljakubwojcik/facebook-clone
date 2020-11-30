@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 import { ThemeContext } from '../../Context/theme'
+import { useMutation, useQuery, gql } from '@apollo/client'
+//TODO: CHANGING USER PREFERENCES IN DB
 
 import styled from 'styled-components'
 
@@ -13,17 +15,19 @@ import { MenuButton, RoundButton } from '../General/Buttons'
 import { DropDownMenu } from '../General/DropDownMenu'
 
 export default function UserMenu({ ...rest }) {
-    const { logout } = useContext(AuthContext)
+    const { logout, user } = useContext(AuthContext)
     const { changeTheme, currentTheme } = useContext(ThemeContext)
-    console.log(currentTheme)
     const history = useHistory()
 
     const [active, setActive] = useState('main')
     const [height, setHeight] = useState(null)
+    const [options, setOptions] = useState({
+        theme: currentTheme
+    })
     const [themeName, setThemeName] = useState(currentTheme)
 
     const calcHeight = (el) => {
-        const height = el.offsetHeight + parseFloat(getComputedStyle(document.body).fontSize);
+        const height = el.offsetHeight + parseFloat(getComputedStyle(el.parentElement).paddingTop) + parseFloat(getComputedStyle(el.parentElement).paddingBottom);
         setHeight(height)
         console.log(el)
     }
@@ -78,17 +82,17 @@ export default function UserMenu({ ...rest }) {
                     <RadioButtonsGroup>
                         <div className="label">
                             <FontAwesomeIcon className="icon" icon={faMoon} />
-                            <h4> Dark Mode</h4>
+                            <h4> Theme </h4>
                         </div>
 
                         <RadioButton value="darkTheme" onClick={handleRadioButtonClick} active={themeName === 'darkTheme'}>
-                            <p>On</p>
+                            <p>Dark</p>
                             <span>
                                 <span></span>
                             </span>
                         </RadioButton>
                         <RadioButton value="lightTheme" onClick={handleRadioButtonClick} active={themeName === 'lightTheme'}>
-                            <p>Off</p>
+                            <p>Light</p>
                             <span>
                                 <span></span>
                             </span>
@@ -121,8 +125,9 @@ const RadioButtonsGroup = styled.div`
 `
 
 const RadioButton = styled(MenuButton)`
+    font-size:.8em;
 
-    padding-left:2.9em;
+    padding-left:3.5rem;
     justify-content:space-between;
     color:${props => props.active ? props.theme.primaryColor : 'inherit'};
     pointer-events: ${props => props.active ? 'none' : 'all'};

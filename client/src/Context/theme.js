@@ -1,16 +1,22 @@
 import React, { createContext, useReducer } from 'react'
-
 import * as themes from '../styles/themes'
 
 import { ThemeProvider } from 'styled-components'
 
 
+
+const systemPrefferedTheme = window.matchMedia('(prefers-color-scheme:light)');
+
+const preferedTheme = localStorage.getItem('preferredTheme') || (systemPrefferedTheme.matches ? 'lightTheme' : 'darkTheme')
+
 const initialState = {
-    theme: themes.lightTheme,
-    currentTheme: 'lightTheme'
+    theme: themes[preferedTheme],
+    currentTheme: preferedTheme
 }
+
 document.body.style.backgroundColor = themes[initialState.currentTheme].backgroundColor
 document.body.style.color = themes[initialState.currentTheme].primaryFontColor
+
 
 const ThemeContext = createContext({
     currentTheme: null,
@@ -38,6 +44,7 @@ function ThemesProvider(props) {
     const changeTheme = (themeType) => {
         document.body.style.backgroundColor = themes[themeType].backgroundColor
         document.body.style.color = themes[themeType].primaryFontColor
+        localStorage.setItem('preferredTheme', themeType)
         dispatch({
             type: 'CHANGE_THEME',
             payload: {
@@ -46,6 +53,7 @@ function ThemesProvider(props) {
             }
         })
     }
+
 
     return (
         <ThemeContext.Provider value={{ changeTheme, currentTheme }} {...props}>

@@ -22,7 +22,17 @@ const userSchema = new Schema({
         medium: String,
         small: String,
     },
-    backgroundImage: String,
+    backgroundImage: {
+        large: String,
+        medium: String,
+        small: String,
+    },
+    images: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'image'
+        }
+    ],
     isOnline: Boolean,
     lastTimeOnline: String,
     conversations: [
@@ -30,7 +40,10 @@ const userSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'conversations'
         }
-    ]
+    ],
+    preferences: {
+        theme: String,
+    }
 
 })
 
