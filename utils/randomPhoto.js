@@ -4,23 +4,45 @@ const fetch = require('node-fetch');
 global.fetch = fetch;
 const APP_ACCESS_KEY = require('../config.js').UNSPLASH_APP_KEY
 
+const Image = require('../models/Image');
 
 const unsplash = new Unsplash({ accessKey: APP_ACCESS_KEY });
 
-module.exports.getRandomBackground = async () => {
-    const data = await unsplash.photos.getRandomPhoto({ orientation: 'landscape' })
+
+/**
+ *
+ * @param {String} type - 'background' || 'avatar'
+ * @param {String} owner - id of user for who this picture belongs to
+ */
+
+module.exports.generateRandomPhoto = async (type, owner) => {
+    let data
+    switch (type) {
+        case 'background':
+            data = await unsplash.photos.getRandomPhoto({ orientation: 'landscape' })
+            break;
+        case 'avatar':
+            data = await unsplash.photos.getRandomPhoto({ query: 'person' })
+            break;
+        default:
+            data = await unsplash.photos.getRandomPhoto()
+            break;
+    }
+
     const picture = await toJson(data)
-    return await picture.urls.regular;
 
-}
-
-module.exports.getRandomAvatar = async () => {
-    const data = await unsplash.photos.getRandomPhoto({ query: 'person' })
-    const picture = await toJson(data)
-    return await {
-        small: picture.urls.thumb,
-        medium: picture.urls.small,
-        large: picture.urls.regular,
-    };
-
+    const newImage = new Image({
+        urls: {
+            small: picture.urls.thumb,
+            medium: picture.urls.small,
+            large: picture.urls.regular,
+        },
+        createdAt: new Date().toISOString(),
+        author: {
+            name: picture.user.name,
+            link: picture.user.links.self,
+        },
+        uploadedBy: owner
+    })
+    return await newImage.save()
 }

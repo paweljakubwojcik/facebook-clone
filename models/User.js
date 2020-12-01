@@ -5,6 +5,15 @@ const userSchema = new Schema({
     password: String,
     email: String,
     createdAt: String,
+    info: {
+        joiningDate: String,
+        birthDate: String,
+        age: Number,
+        sex: String,
+        description: String,
+        location: String,
+        job: String,
+    },
     friends: [
         {
             type: Schema.Types.ObjectId,
@@ -13,26 +22,29 @@ const userSchema = new Schema({
     ],
     invitations: [
         {
-            type: Schema.Types.ObjectId,
-            ref: 'users'
+            from: {
+                type: Schema.Types.ObjectId,
+                ref: 'users'
+            },
+            date: String
+        }
+    ],
+    notifications: [
+        {
+            body: String,
+            createdAt: String,
+            isSeen: Boolean,
+
         }
     ],
     profileImage: {
-        large: String,
-        medium: String,
-        small: String,
+        type: Schema.Types.ObjectId,
+        ref: 'images'
     },
     backgroundImage: {
-        large: String,
-        medium: String,
-        small: String,
+        type: Schema.Types.ObjectId,
+        ref: 'images'
     },
-    images: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'image'
-        }
-    ],
     isOnline: Boolean,
     lastTimeOnline: String,
     conversations: [
@@ -41,8 +53,9 @@ const userSchema = new Schema({
             ref: 'conversations'
         }
     ],
-    preferences: {
-        theme: String,
+    settings: {
+        preferredTheme: String,
+        postDefaultPrivacy: String,
     }
 
 })

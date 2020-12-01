@@ -5,9 +5,10 @@ const { UserInputError } = require('apollo-server')
 
 const { SECRET_KEY } = require('../../config')
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
-const { getRandomBackground, getRandomAvatar } = require('../../utils/randomPhoto')
+const { generateRandomPhoto } = require('../../utils/randomPhoto')
 
 const User = require('../../models/User')
+const Image = require('../../models/Image')
 
 /**
  * 
@@ -22,7 +23,7 @@ function generateToken(user) {
             username: user.username,
         },
         SECRET_KEY,
-        { expiresIn: '1h' })
+        { expiresIn: '2h' })
 }
 
 module.exports = {
@@ -45,11 +46,27 @@ module.exports = {
                 throw new UserInputError('Wrong password', { errors })
             }
             const token = generateToken(user)
+            //actualize user info
+            user.isOnline = true
+            user.lastTimeOnline = new Date().toISOString()
+            const res = await user.save()
             return {
                 ...user._doc,
                 id: user._id,
                 token
             }
+        },
+
+        async logout(_, { userId }) {
+            try {
+                const user = await User.findById(userId)
+                user.isOnline = false
+                const res = await user.save()
+                return 'logged out'
+            } catch (error) {
+                throw new Error(error)
+            }
+
         },
 
         async register(_, { registerInput: { username, email, password, confirmPassword } }, context, info) {
@@ -81,10 +98,6 @@ module.exports = {
                 }
             }
 
-            //generate random backgroundImage
-            const backgroundImage = await getRandomBackground()
-
-            const profileImage = await getRandomAvatar()
 
             // hash password & create auth token
             password = await bcrypt.hash(password, 12)
@@ -93,10 +106,32 @@ module.exports = {
                 username,
                 password,
                 createdAt: new Date().toISOString(),
-                backgroundImage,
-                profileImage
+                friends: [],
+                conversations: [],
+                notifications: [],
+                invitations: [],
+                info: {
+                    joiningDate: new Date().toISOString(),
+                    birthDate: null,
+                    sex: null,
+                    description: null,
+                    location: null,
+                    job: null,
+                },
+                isOnline: true,
+                lastTimeOnline: new Date().toISOString(),
             })
             //saving user in DB  //TODO error handling? 
+            const { _id } = await newUser.save()
+
+            //generate random backgroundImage and avatar pic
+            const backgroundImage = await generateRandomPhoto('background', _id)
+            const profileImage = await generateRandomPhoto('avatar', _id)
+
+            newUser.backgroundImage = backgroundImage
+            newUser.profileImage = profileImage
+
+            //saving user in DB
             const res = await newUser.save()
 
             //creating validation token
@@ -117,7 +152,7 @@ module.exports = {
                 throw new Error(err)
             }
         },
-        getUser: async (_, { userId }) => {
+        getUser: async (parent, { userId }) => {
             try {
                 const user = await User.findById(userId)
                 return user
@@ -125,5 +160,17 @@ module.exports = {
                 throw new Error(err)
             }
         }
+    },
+    User: {
+        profileImage: async ({ profileImage }) => {
+            return await Image.findById(profileImage)
+        },
+        backgroundImage: async ({ backgroundImage }) => {
+            return await Image.findById(backgroundImage)
+        },
+        images: async ({ id }) => {
+            return await Image.find({ uploadedBy: id })
+        }
     }
+
 }

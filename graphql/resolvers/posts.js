@@ -1,6 +1,6 @@
 const { AuthenticationError, UserInputError } = require('apollo-server')
 const Post = require('../../models/Post');
-const { Mutation } = require('./users');
+const User = require('../../models/User');
 const checkAuth = require('../../utils/checkAuth')
 
 module.exports = {
@@ -40,7 +40,7 @@ module.exports = {
 
             const newPost = new Post({
                 body,
-                user: user.id,
+                user: user,
                 username: user.username,
                 createdAt: new Date().toISOString(),
                 likes: [],
@@ -86,7 +86,10 @@ module.exports = {
                 throw new UserInputError(e)
             }
         },
-
-
+    },
+    Post: {
+        async user({ user }) {
+            return await User.findById(user)
+        }
     }
 }

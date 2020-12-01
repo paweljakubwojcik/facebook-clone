@@ -6,9 +6,13 @@ module.exports = {
     Post: {
         commentsCount: (parent) => parent.comments.length,
         likesCount: (parent) => parent.likes.length,
+        ...postsResorvels.Post
     },
     Comment: {
         likesCount: (parent) => parent.likes.length,
+    },
+    User: {
+        ...usersResorvels.User
     },
     Query: {
         ...postsResorvels.Query,

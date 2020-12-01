@@ -46,8 +46,8 @@ function AuthProvider(props) {
 
     const login = (userData) => {
         localStorage.setItem('token', userData.token)
-        localStorage.setItem('avatar', userData.profileImage.medium)
-        localStorage.setItem('preferredTheme', userData.preferredTheme ? userData.preferredTheme : '')
+        localStorage.setItem('avatar', userData.profileImage.urls.medium)
+        localStorage.setItem('preferredTheme', userData.settings?.preferredTheme ? userData.preferredTheme : '')
         dispatch({
             type: 'LOGIN',
             payload: userData
