@@ -8,7 +8,6 @@
   - [x] liking unliking posts
   - [ ] uploading pictures 
   - [ ] login using third party providers (like google or facebook)
-  - [ ] sharing system
   - [ ] friends
   - [ ] messenger
   - [ ] targeting feed
