@@ -67,7 +67,7 @@ const Indicator = styled.span`
     width:${props => props.width}em;
     height:5px;
     background-color:${props => props.theme.primaryColor};
-    border-radius:.5em;
+    border-radius:.3em .3em 0 0;
     transform: translateX(${props => props.offset}em);
     transition: transform .4s, width .6s;
     transition-timing-function:cubic-bezier(0.175, 0.885, 0.32, 1.275);

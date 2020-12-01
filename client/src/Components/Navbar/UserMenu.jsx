@@ -21,7 +21,7 @@ export default function UserMenu({ ...rest }) {
 
     const [active, setActive] = useState('main')
     const [height, setHeight] = useState(null)
-    const [options, setOptions] = useState({
+    const [settings, setSettings] = useState({
         theme: currentTheme
     })
     const [themeName, setThemeName] = useState(currentTheme)

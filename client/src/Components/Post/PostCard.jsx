@@ -76,9 +76,6 @@ export default function PostCard({ post }) {
                 <GenericButton className="counter comments" onClick={() => setCommentsVisibility(!commentsVisible)}>
                     {commentsCount} {`Comment${commentsCount !== 1 ? 's' : ''}`}
                 </GenericButton>
-                <GenericButton className="counter shares">
-                    0 Shares
-                </GenericButton>
             </PostCardCounters>
 
             <PostCardButtonsContainer>
@@ -86,10 +83,6 @@ export default function PostCard({ post }) {
                 <SquareButton onClick={engageComment} className='postCard__button'>
                     <FontAwesomeIcon className="icon" icon={faComment} />
                    Comment
-                </SquareButton>
-                <SquareButton className='postCard__button'>
-                    <FontAwesomeIcon className="icon" icon={faShare} />
-                    Share
                 </SquareButton>
             </PostCardButtonsContainer>
 
