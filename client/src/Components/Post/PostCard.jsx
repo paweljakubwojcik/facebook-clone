@@ -1,12 +1,11 @@
 import React, { useContext, useState } from 'react'
 
 import styled from 'styled-components'
-import { useQuery, gql } from '@apollo/client'
 
 import { AuthContext } from '../../Context/auth'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faComment, faShare } from '@fortawesome/free-solid-svg-icons'
+import { faComment } from '@fortawesome/free-solid-svg-icons'
 
 import { GenericButton, SquareButton } from '../General/Buttons'
 import LikeButton from './LikeButton'
@@ -19,29 +18,20 @@ import TimeStamp from './TimeStamp'
 import UserLink from './UserLink'
 import LikesCounter from './LikesCounter'
 
-const GET_USER_DETAILS = gql`
-query getUser(  $userId: ID! ){
- getUser( userId: $userId,) {
-    id
-    username
-    profileImage{
-        medium
-        }
-    }
-}
-`
-
 export default function PostCard({ post }) {
 
-    const { body, createdAt, commentsCount, id, likesCount, comments, likes, user } = post
+    const { body,
+        createdAt,
+        commentsCount,
+        id,
+        likesCount,
+        comments,
+        likes,
+        user: { id: userId, username, profileImage }
+    } = post
+
+
     const context = useContext(AuthContext)
-
-    const { data: { getUser: { profileImage, username } = {} } = {} } = useQuery(GET_USER_DETAILS, {
-        variables: {
-            userId: user
-        }
-    })
-
 
     const initialCommentsVisibility = commentsCount > 3 ? false : true;
     const [commentsVisible, setCommentsVisibility] = useState(initialCommentsVisibility)
@@ -57,10 +47,10 @@ export default function PostCard({ post }) {
         <ElementContainer className='postCard'>
 
             <PostCardHeader className='postCard__header'>
-                <Avatar image={profileImage?.medium} />
+                <Avatar image={profileImage?.urls?.small} />
                 <header>
                     <h4>
-                        <UserLink userId={user}>{username}</UserLink>
+                        <UserLink userId={userId}>{username}</UserLink>
                     </h4>
                     <TimeStamp time={createdAt} />
                 </header>

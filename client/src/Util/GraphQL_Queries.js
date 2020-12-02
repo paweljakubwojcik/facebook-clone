@@ -9,20 +9,33 @@ query getPosts($userId:ID){
         createdAt
         likesCount
         username
-        user
+        user{
+            id
+            username
+            profileImage{
+                    urls{
+                        small
+                        medium
+                    }
+                }
+        }
         comments {
+            id
             body
             username
-            user
             createdAt
-            id
-            likes{
+            likesCount
+            user{
                 username
                 id
             }
-            likesCount
+            likes{
+                id
+                username
+            }
         }
         likes {
+            id
             username
         }
     }
@@ -39,15 +52,36 @@ export const ADD_POST = gql`
             createdAt
             likesCount
             username
-            comments {
-                body
-                username
-                createdAt
+            user{
                 id
-                }
-            likes {
+                profileImage{
+                        urls{
+                            small
+                            medium
+                        }
+                    }
+            }
+            comments {
+            id
+            body
+            username
+            user{
+                id
                 username
+                profileImage{
+                    urls{
+                        small
+                    }
                 }
+            }
+            createdAt
+            id
+            likes{
+                username
+                id
+            }
+            likesCount
+        }
         }
     }
 `
@@ -64,8 +98,12 @@ export const GET_USERS = gql`
     id
     username
     profileImage{
-        medium
-    }
+        urls{
+            medium
+            small
+            }
+      
+        }
     }
 }
 `
@@ -74,11 +112,19 @@ query getUser(  $userId: ID! ){
  getUser( userId: $userId,) {
     id
     username
-    backgroundImage
+    backgroundImage{
+                urls{
+                    medium
+                    large
+                }
+            }
     profileImage{
-        medium
-        large
-    }
+                urls{
+                    small
+                    medium
+                    large
+                }
+            }
     }
 }
 `
@@ -98,8 +144,10 @@ export const LOGIN_USER = gql`
             email
             createdAt
             profileImage{
-            medium
-            large
+                urls{
+                    medium
+                    large
+                }
             }
         }
     }
@@ -126,8 +174,10 @@ export const REGISTER_USER = gql`
             email
             createdAt
             profileImage{
-            medium
-            large
+                urls{
+                    medium
+                    large
+                }
             }
         }
     }

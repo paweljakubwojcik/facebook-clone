@@ -11,18 +11,28 @@ query getUser(  $userId: ID! ){
  getUser( userId: $userId,) {
     id
     username
-    backgroundImage
-    profileImage{
-        medium
+    backgroundImage{
+        urls{
+            medium
         }
     }
+    profileImage{
+        urls{
+            medium
+        }
+    }
+    info{
+        location
+        job
+    }
+}
 }
 `
 
 export default function ProfilePreview({ userId }) {
 
 
-    const { data: { getUser: { profileImage, username, backgroundImage } = {} } = {} } = useQuery(GET_USER_DETAILS, {
+    const { data: { getUser: { profileImage, username, backgroundImage, info } = {} } = {} } = useQuery(GET_USER_DETAILS, {
         variables: {
             userId
         }
@@ -31,14 +41,14 @@ export default function ProfilePreview({ userId }) {
     return (
         <ElementContainer >
             <Container >
-                <Avatar image={profileImage?.medium} big />
+                <Avatar image={profileImage?.urls.medium} big />
                 <div className="infoContainer">
                     <h4 className="username">{username}</h4>
                     <p>
                         some info about {username}
                     </p>
                 </div>
-                <LittleBackground image={backgroundImage} />
+                <LittleBackground image={backgroundImage?.urls.medium} />
             </Container>
         </ElementContainer>
     )

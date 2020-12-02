@@ -9,11 +9,11 @@ export default function TopPanel({ loading, user, width }) {
     return (
         <Container>
             {user &&
-                <BackgroundImage img={user?.backgroundImage || null} width={width} >
-                    <a className={'avatar-link'} href={user?.profileImage?.large}>
-                        <Avatar image={user?.profileImage?.large} large />
+                <BackgroundImage img={user?.backgroundImage?.urls?.large || null} width={width} >
+                    <a className={'avatar-link'} href={user?.profileImage?.urls?.large}>
+                        <Avatar image={user?.profileImage?.urls?.large} large />
                     </a>
-                <a className={'background-link'} href={user?.backgroundImage}> </a>
+                <a className={'background-link'} href={user?.backgroundImage?.urls?.large}> </a>
                 </BackgroundImage>}
             <h2>{user?.username}</h2>
         </Container>

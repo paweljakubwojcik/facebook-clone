@@ -11,10 +11,12 @@ import LikesCounter from './LikesCounter'
 
 export default function Comment({ comment, postId }) {
     const context = useContext(AuthContext)
+    const { id: userId, username } = comment.user
 
-    const { data: { getUser: { profileImage, username } = {} } = {} } = useQuery(GET_USER_PIC, {
+    //because getting all info about user straight in posts query qoused some problems
+    const { data: { getUser: { profileImage } = {} } = {} } = useQuery(GET_USER_PIC, {
         variables: {
-            userId: comment.user
+            userId
         }
     })
 
@@ -54,10 +56,10 @@ export default function Comment({ comment, postId }) {
 
     return (
         <Container>
-            <Avatar image={profileImage?.medium} />
+            <Avatar image={profileImage?.urls.small} />
             <CommentBody>
                 <header>
-                    <h4><UserLink userId={comment.user}>{username}</UserLink></h4>
+                    <h4><UserLink userId={userId}>{username}</UserLink></h4>
                     <Date>{moment(comment.createdAt).fromNow()}</Date>
                 </header>
                 {comment.body}
@@ -134,7 +136,9 @@ query getUser(  $userId: ID! ){
     id
     username
     profileImage{
-        medium
+        urls{
+            small
+        }
     }
     }
 }
@@ -151,7 +155,9 @@ mutation deleteComment($postId:ID! , $commentId:ID!){
         comments{
             id
             body
-            user
+            user{
+                id
+            }
             username
         }
     }
@@ -167,10 +173,10 @@ mutation likeComment($postId:ID! , $commentId:ID!){
         id
         comments{
             id
-           likes{
-               id
-           }
-           likesCount
+            likes{
+                id
+                }
+            likesCount
         }
     }
 }

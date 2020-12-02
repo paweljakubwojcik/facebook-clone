@@ -28,7 +28,7 @@ export default function Navbar({ setForm }) {
             {user ? (
                 <>
                     <Link to={`/profile/${user.id}`} >
-                        <UserButton user={{ ...user, profileImage: { medium: profileImage } }} notLink />
+                        <UserButton user={{ ...user, profileImage: { urls: { small: profileImage } } }} notLink />
                     </Link>
                     <Menu />
                 </>

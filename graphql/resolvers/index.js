@@ -10,6 +10,7 @@ module.exports = {
     },
     Comment: {
         likesCount: (parent) => parent.likes.length,
+        ...commentsResorvels.Comment
     },
     User: {
         ...usersResorvels.User

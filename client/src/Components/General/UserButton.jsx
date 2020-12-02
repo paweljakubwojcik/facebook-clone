@@ -43,7 +43,7 @@ export default function UserButton({ user, notLink, onClick, ...rest }) {
                     </PopUpElement>
                 )}
             </HoverWrapper>
-            <Avatar image={user?.profileImage?.medium} />
+            <Avatar image={user?.profileImage?.urls?.small} />
             <div className="username">
                 {user?.username || "User"}
             </div>
