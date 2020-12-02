@@ -22,8 +22,7 @@ function generateToken(user) {
             email: user.email,
             username: user.username,
         },
-        SECRET_KEY,
-        { expiresIn: '2h' })
+        SECRET_KEY)
 }
 
 module.exports = {
@@ -97,8 +96,6 @@ module.exports = {
                     })
                 }
             }
-
-
             // hash password & create auth token
             password = await bcrypt.hash(password, 12)
             const newUser = new User({
@@ -141,6 +138,9 @@ module.exports = {
                 id: res._id,
                 token
             }
+        },
+        async updateSettings(_, { setting, newValue }, context, info) {
+            //TODO:
         }
     },
     Query: {

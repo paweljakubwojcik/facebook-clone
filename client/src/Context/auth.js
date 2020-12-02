@@ -1,4 +1,5 @@
 import React, { createContext, useReducer } from 'react'
+
 import jwtDecode from 'jwt-decode'
 
 
@@ -9,12 +10,9 @@ const initialState = {
 // to ensure that refreshng wont logout the user
 if (localStorage.getItem('token')) {
     const decodedToken = jwtDecode(localStorage.getItem('token'))
-    if (decodedToken.exp * 1000 < Date.now())
-        localStorage.removeItem('token')
-    else {
-        initialState.user = decodedToken
-        console.log(decodedToken)
-    }
+    initialState.user = decodedToken
+    console.log(decodedToken)
+
 }
 
 const AuthContext = createContext({
@@ -44,6 +42,8 @@ function authReducer(state, action) {
 function AuthProvider(props) {
     const [state, dispatch] = useReducer(authReducer, initialState)
 
+
+
     const login = (userData) => {
         localStorage.setItem('token', userData.token)
         localStorage.setItem('avatar', userData.profileImage.urls.medium)
@@ -71,3 +71,5 @@ function AuthProvider(props) {
 }
 
 export { AuthContext, AuthProvider }
+
+

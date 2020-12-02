@@ -103,13 +103,14 @@ module.exports = gql`
     type Mutation{
         register(registerInput:RegisterInput): User!
         login(username: String!, password: String!): User!
-        logout(userId:ID!): String!
+        logout(userId:ID!): ID!
         createPost(body:String!):Post!
         deletePost(postId:ID!):String!
         createComment(postId:ID!,body:String!): Post!
         deleteComment(postId:ID!,commentId:ID!):Post!
         likePost(postId:ID!):Post!
         likeComment(postId:ID!,commentId:ID!):Post!
+        updateSettings(setting:String!,newValue:String!):User!
     }
  `
  //TODO: adding/deleting pictures
