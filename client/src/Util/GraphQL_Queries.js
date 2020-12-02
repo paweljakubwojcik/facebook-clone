@@ -125,7 +125,17 @@ query getUser(  $userId: ID! ){
                     large
                 }
             }
+    
+    info{
+        joiningDate
+        birthDate
+        age 
+        sex
+        description
+        location
+        job
     }
+}
 }
 `
 

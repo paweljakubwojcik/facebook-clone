@@ -42,8 +42,8 @@ export default function Profile() {
             <TopPanel user={user} width={width} />
             <ProfileMenu width={width} contentType={contentType} setContentType={setContentType} user={user} ></ProfileMenu>
             <Content>
-                {contentType === contentTypes.POSTS && user && <Posts user={user} />}
-                {contentType === contentTypes.INFO && user && <h2>{'INFO'}</h2>}
+                {contentType === contentTypes.POSTS && user && <Posts user={user} setContentType={setContentType} />}
+                {contentType === contentTypes.INFO && user && <><h2>{'INFO'}</h2><div style={{ height: 1000 }}></div></>}
                 {contentType === contentTypes.PICTURES && user && <h2>{'PICTURES'}</h2>}
                 {contentType === contentTypes.FRIENDS && user && <h2>{'FRIENDS'}</h2>}
             </Content>
