@@ -22,49 +22,49 @@ export default function Posts({ user, setContentType }) {
         }
     })
 
+    console.log('render')
 
-
-
-
-    const DetailsElement = ({ name, children }) => {
-
-        const handleOnClick = (e) => {
-            e.target.blur()
-            window.scrollTo({
-                top: 150,
-                behavior: "smooth"
-            })
-            setContentType(e.target.value)
-        }
-
-        return (
-            <ElementContainer>
-                <Header>
-                    <h2>{name.toUpperCase()}</h2>
-                    <BlueButton value={name} onClick={handleOnClick}>See All</BlueButton>
-                </Header>
-                {children}
-            </ElementContainer>
-        )
-    }
-
+    
     return (
         <Container>
             <Details>
-                <DetailsElement name={contentTypes.INFO}>
+                <DetailsElement name={contentTypes.INFO} setContentType={setContentType}>
                     <InfoBrief info={user.info} />
                 </DetailsElement>
-                <DetailsElement name={contentTypes.PICTURES}>
+                <DetailsElement name={contentTypes.PICTURES} setContentType={setContentType}>
                     <PicturesBrief pictures={user.images} />
                 </DetailsElement>
-                <DetailsElement name={contentTypes.FRIENDS}>
-                    {user.friends.map(friend => <p>{friend.username}</p>)}
+                <DetailsElement name={contentTypes.FRIENDS} setContentType={setContentType}>
+
                 </DetailsElement>
             </Details>
             <PostsContainer postsData={postsData} />
         </Container>
     )
 }
+
+const DetailsElement = ({ name, children, setContentType }) => {
+
+    const handleOnClick = (e) => {
+        e.target.blur()
+        window.scrollTo({
+            top: 150,
+            behavior: "smooth"
+        })
+        setContentType(e.target.value)
+    }
+
+    return (
+        <ElementContainer>
+            <Header>
+                <h2>{name.toUpperCase()}</h2>
+                <BlueButton value={name} onClick={handleOnClick}>See All</BlueButton>
+            </Header>
+            {children}
+        </ElementContainer>
+    )
+}
+
 
 const Container = styled.div`
     display:grid;

@@ -3,10 +3,12 @@ import styled from 'styled-components'
 
 import PostCard from './PostCard';
 import SkeletonPost from '../skeletons/SkeletonPost'
+import ErrorMessage from '../General/ErrorMessage'
 
 export default function Posts({ postsData }) {
 
     const { loading, error, refetch, data: { getPosts: posts } = {} } = postsData
+    const isPostsEmpty = posts?.length === 0
 
     // refetch data on every mount od component to synchronize posts on profile page with posts on home
     // but when adding posts, still using cache to minimalize traffic
@@ -20,6 +22,7 @@ export default function Posts({ postsData }) {
             {loading && [1, 2].map((key) => <SkeletonPost key={key} theme={'dark'} />)}
             {posts && posts.map(post => <PostCard key={post.id} post={post} />)}
             {error && <ErrorMessage>I'm sorry, I failed, couldn't find any posts {';('}</ErrorMessage>}
+            {isPostsEmpty && <ErrorMessage>This faker haven't post anything yet {`;(`}</ErrorMessage>}
         </PostsContainer>
     )
 }
@@ -34,8 +37,3 @@ const PostsContainer = styled.section`
     align-items:center;
 `
 
-// TODO: extract this component
-const ErrorMessage = styled.p`
-    color:#c22c2c;
-    font-size:.8em;
-`

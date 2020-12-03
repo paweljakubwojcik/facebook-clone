@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { shuffleArray } from '../../../Util/Methods'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,6 +8,7 @@ import styled from 'styled-components'
 
 export default function InfoBrief({ info }) {
 
+    const [briefInfo, setBriefInfo] = useState(null)
 
     const getBriefInfo = (wholeInfo) => {
         const info = Object.entries(wholeInfo)
@@ -17,10 +18,12 @@ export default function InfoBrief({ info }) {
         // return 7 first elements from shufled array
         return shuffleArray(infoThatIsNotNull).splice(0, 7)
     }
-    const briefInfo = getBriefInfo(info)
+
+    useEffect(() => {
+        setBriefInfo(getBriefInfo(info))
+    }, [])
 
     const Information = ({ info }) => {
-
         const sliced = info[0].replace(/([A-Z])/g, " $1");
         const key = sliced.charAt(0).toUpperCase() + sliced.slice(1)
         const value = info[1] ? info[1].charAt(0).toUpperCase() + info[1].slice(1).toLowerCase() : null
@@ -34,7 +37,7 @@ export default function InfoBrief({ info }) {
 
     return (
         <Container>
-            {briefInfo.map(information => <Information key={information[0]} info={information} />)}
+            {briefInfo && briefInfo.map(information => <Information key={information[0]} info={information} />)}
         </Container>
     )
 }

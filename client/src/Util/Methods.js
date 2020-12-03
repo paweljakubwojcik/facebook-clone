@@ -18,6 +18,12 @@ export const getOffsetPosition = (element) => {
         }
 }
 
+
+/**
+ *
+ * @param {Array} array - array to shuffle
+ * @returns shufled array
+ */
 export const shuffleArray = (array) => {
     let currentIndex = array.length, temporaryValue, randomIndex;
 
