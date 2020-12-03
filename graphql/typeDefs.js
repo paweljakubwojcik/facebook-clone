@@ -40,6 +40,8 @@ module.exports = gql`
     }
     type Image{
         id:ID!
+        title:String
+        createdAt:String
         urls:Urls!
         author: ImageAuthor!
         uploadedBy: String!

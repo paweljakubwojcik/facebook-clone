@@ -135,6 +135,24 @@ query getUser(  $userId: ID! ){
         location
         job
     }
+    images{
+        id
+        title
+        createdAt
+        urls{
+            small
+            medium
+        }
+    }
+    friends{
+        id
+        username
+        profileImage{
+            urls{
+                medium
+            }
+        }
+    }
 }
 }
 `

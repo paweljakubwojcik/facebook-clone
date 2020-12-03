@@ -7,7 +7,10 @@ import ElementContainer from '../General/ElementContainer'
 import { GenericButton } from '../General/Buttons'
 import contentTypes from './contentTypes'
 
+
 import { GET_POSTS } from '../../Util/GraphQL_Queries'
+import InfoBrief from './DetailsElements/InfoBrief'
+import PicturesBrief from './DetailsElements/PicturesBrief'
 
 
 export default function Posts({ user, setContentType }) {
@@ -18,6 +21,10 @@ export default function Posts({ user, setContentType }) {
             userId: user.id
         }
     })
+
+
+
+
 
     const DetailsElement = ({ name, children }) => {
 
@@ -45,13 +52,13 @@ export default function Posts({ user, setContentType }) {
         <Container>
             <Details>
                 <DetailsElement name={contentTypes.INFO}>
-                    {Object.entries(user.info).map(information => <p>{information[0]} : {information[1]}</p>)}
+                    <InfoBrief info={user.info} />
                 </DetailsElement>
                 <DetailsElement name={contentTypes.PICTURES}>
-                    {Object.entries(user.info).map(information => <p>{information[0]} : {information[1]}</p>)}
+                    <PicturesBrief pictures={user.images} />
                 </DetailsElement>
                 <DetailsElement name={contentTypes.FRIENDS}>
-                    {Object.entries(user.info).map(information => <p>{information[0]} : {information[1]}</p>)}
+                    {user.friends.map(friend => <p>{friend.username}</p>)}
                 </DetailsElement>
             </Details>
             <PostsContainer postsData={postsData} />

@@ -108,7 +108,7 @@ module.exports = {
                 notifications: [],
                 invitations: [],
                 info: {
-                    joiningDate: new Date().toISOString(),
+                    joiningDate: new Date().toLocaleDateString(),
                     birthDate: null,
                     sex: null,
                     description: null,
@@ -140,7 +140,7 @@ module.exports = {
             }
         },
         async updateSettings(_, { setting, newValue }, context, info) {
-            //TODO:
+            //TODO: updating settings
         }
     },
     Query: {
