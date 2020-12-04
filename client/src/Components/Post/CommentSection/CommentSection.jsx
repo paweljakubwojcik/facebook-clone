@@ -15,7 +15,7 @@ export default function CommentSection({ comments, postId, inputFocus, setFocus 
             <CommentsContainer>
                 {comments.map(comment => <Comment key={comment.id} comment={comment} postId={postId} />)}
             </CommentsContainer>
-            { context.user && <CommentForm props={{ inputFocus, setFocus }} />}
+            { context.user && <CommentForm props={{ inputFocus, setFocus, postId }} />}
         </>
     )
 }

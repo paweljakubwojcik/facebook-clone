@@ -228,3 +228,22 @@ export const LIKE_POST = gql`
 
 `
 
+export const GET_IMAGE = gql`
+query getImage(  $imageId: ID! ){
+    getImage(imageId: $imageId){
+    id
+    title
+    createdAt
+    urls{
+      small
+      medium
+      large
+    }
+    author{
+      name
+      link
+    }
+    uploadedBy
+    }
+}
+`

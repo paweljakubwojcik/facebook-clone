@@ -1,5 +1,7 @@
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import PropsTypes from 'prop-types'
+import { Link, useLocation, useHistory } from 'react-router-dom'
+
 import styled from 'styled-components'
 
 import FormButton from '../General/FormButton'
@@ -11,14 +13,34 @@ import Menu from './Menu'
 
 import { AuthContext } from '../../Context/auth'
 
-
+//TODO: replace set Form prop with state in router
 export default function Navbar({ setForm }) {
 
     const { user } = useContext(AuthContext)
+    const location = useLocation()
+
+
+    //navbar shouldn't be rendered on login page
+    const shouldRender = location.pathname !== '/' || !!user
+
+    const isCovered = location.pathname.split('/').some(el => el === 'image')
+
+
     const profileImage = localStorage.getItem('avatar')
 
-    return (
-        <NavBar className='navBar'>
+    const loggingButtons = (
+        <>
+            <Link to={`/`} onClick={setForm.bind(this, 'login')}>
+                <FormButton >Login</FormButton>
+            </Link>
+            <Link to={`/`} onClick={setForm.bind(this, 'register')}>
+                <FormButton >Register</FormButton>
+            </Link>
+        </>
+    )
+
+    return shouldRender && (
+        <NavBar className='navBar' isCovered={isCovered}>
             <header>
                 <Link to='/'>
                     <img src={logo} alt="Fake Facebook" />
@@ -38,24 +60,18 @@ export default function Navbar({ setForm }) {
                     </MediaQuery>
                     <Menu />
                 </>
-            ) : (
-                    <>
-                        <Link to={`/`} onClick={setForm.bind(this, 'login')}>
-                            <FormButton >Login</FormButton>
-                        </Link>
-                        <Link to={`/`} onClick={setForm.bind(this, 'register')}>
-                            <FormButton >Register</FormButton>
-                        </Link>
-                    </>
-                )}
-
+            ) : loggingButtons}
         </NavBar>
     )
 }
 
+Navbar.propsTypes = {
+    setForm: PropsTypes.func
+}
+
 const NavBar = styled.nav`
 
-    position:sticky;
+    position:${props => !props.isCovered ? 'sticky' : 'static'};
     top:0;
     left:0;
     z-index:2;
@@ -81,6 +97,8 @@ const NavBar = styled.nav`
         }
         img{
             height:40px;
+            ${props => props.isCovered ? 'position:absolute; z-index:3; transform:translateX(100%);' : ''}
+            transition: transform .5s;
         }
     }
 `

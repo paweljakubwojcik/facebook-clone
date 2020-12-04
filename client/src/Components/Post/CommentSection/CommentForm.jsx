@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { useMutation, gql } from '@apollo/client'
+import PropsTypes from 'prop-types'
 
 import Avatar from '../../General/Avatar'
 import { SquareButton } from '../../General/Buttons'
@@ -57,6 +58,14 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
             </SquareButton>
         </Form>
     )
+}
+
+CommentForm.propTypes = {
+    props: PropsTypes.shape({
+        postId: PropsTypes.string.isRequired,
+        inputFocus: PropsTypes.bool.isRequired,
+        setFocus: PropsTypes.func.isRequired,
+    })
 }
 
 const ADD_COMMENT = gql`

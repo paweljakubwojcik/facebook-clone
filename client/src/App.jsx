@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { LastLocationProvider } from 'react-router-last-location';
 
 import { AuthContext } from './Context/auth'
 import { ThemesProvider } from './Context/theme'
@@ -19,27 +20,28 @@ export default function App() {
 
   return (
     <ThemesProvider >
-      <Router>
-        <Route exact path='/' >
-          {user ? (
-            <>
-              <NavBar changeTheme={null} />
-              <Home />
-            </>
-          ) : (
-              <Login whichForm={whichForm} setForm={setForm} />
-            )}
-        </Route>
-        <Route exact path='/profile/:id' >
-          <NavBar setForm={setForm} />
-          <Profile />
-        </Route>
 
-        <Route exact path='/image/:id' >
+      <Router>
+        <LastLocationProvider>
           <NavBar setForm={setForm} />
-          <ImagePage></ImagePage>
-        </Route>
+          <Route exact path='/' >
+            {user ? (
+              <>
+                <Home />
+              </>
+            ) : (
+                <Login whichForm={whichForm} setForm={setForm} />
+              )}
+          </Route>
+          <Route exact path='/profile/:id' >
+            <Profile />
+          </Route>
+          <Route exact path='/image/:id' >
+            <ImagePage></ImagePage>
+          </Route>
+        </LastLocationProvider>
       </Router>
+
     </ThemesProvider>
   )
 }

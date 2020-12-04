@@ -28,7 +28,7 @@ export const GenericButton = styled.button`
 
 export const RoundButton = styled(GenericButton)`
     color:${props => props.theme.primaryFontColor};
-    background-color:${props => props.theme.roundButtonColor};
+    background-color:${props => props.theme.roundButtonColor}${'88'};
     
     background-color:${props => props.active && props.theme.activeButtonColor};
     color: ${props => props.active && props.theme.primaryFontColors};
