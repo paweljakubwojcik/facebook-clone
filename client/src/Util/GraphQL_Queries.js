@@ -9,6 +9,8 @@ query getPosts($userId:ID){
         createdAt
         likesCount
         username
+        privacy
+        isDeletable
         user{
             id
             username
@@ -37,6 +39,13 @@ query getPosts($userId:ID){
         likes {
             id
             username
+        }
+        images{
+            id
+            urls{
+                small
+                medium
+            }
         }
     }
 }
@@ -234,6 +243,7 @@ export const GET_IMAGE = gql`
         id
         title
         createdAt
+        uploadedBy
         urls{
             small
             medium
@@ -243,46 +253,10 @@ export const GET_IMAGE = gql`
             name
             link
             }
-        uploadedBy
-        }
+        
         post{
-            body
-            commentsCount
             id
-            createdAt
-            likesCount
-            username
-            user{
-                id
-                profileImage{
-                        urls{
-                            small
-                            medium
-                        }
-                    }
-            }
-            comments {
-            id
-            body
-            username
-            user{
-                id
-                username
-                profileImage{
-                    urls{
-                        small
-                    }
-                }
-            }
-            createdAt
-            id
-            likes{
-                username
-                id
-            }
-            likesCount
         }
-        }
-        }
+    }
     }
 `

@@ -9,6 +9,7 @@ const { generateRandomPhoto } = require('../../utils/randomPhoto')
 
 const User = require('../../models/User')
 const Image = require('../../models/Image')
+const Post = require('../../models/Post')
 
 /**
  * 
@@ -134,7 +135,8 @@ module.exports = {
                 body: randomTexts[Math.floor(Math.random() * randomTexts.length)],
                 createdAt: new Date().toISOString(),
                 likes: [],
-                comments: []
+                comments: [],
+                isDeletable: false,
             })
 
             const { _id: postId } = await newPost.save()

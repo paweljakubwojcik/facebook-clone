@@ -45,7 +45,8 @@ module.exports = {
                 username: user.username,
                 createdAt: new Date().toISOString(),
                 likes: [],
-                comments: []
+                comments: [],
+                isDeletable: true,
             })
 
             const post = await newPost.save()

@@ -5,6 +5,7 @@ const postSchema = new Schema({
     username: String, // TODO: !IMPORTANT get rid of username property
     createdAt: String,
     privacy: String,
+    isDeletable: Boolean,
     isEdited: Boolean,
     comments: [
         {

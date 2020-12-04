@@ -14,6 +14,7 @@ module.exports = gql`
         commentsCount:Int!
         likesCount:Int!
         privacy:String
+        isDeletable:Boolean
         images: [Image]
     }
     type Comment{
@@ -102,7 +103,7 @@ module.exports = gql`
         getUsers: [User]
         getUser(userId:ID!): User
         getImages(userId:ID!):[Image]
-        getImage(imageId:ID!):Image!
+        getImage(imageId:ID!):Image
     }
     type Mutation{
         register(registerInput:RegisterInput): User!
@@ -110,10 +111,13 @@ module.exports = gql`
         logout(userId:ID!): ID!
         createPost(body:String!):Post!
         deletePost(postId:ID!):String!
+        
         createComment(postId:ID!,body:String!): Post!
         deleteComment(postId:ID!,commentId:ID!):Post!
+        
         likePost(postId:ID!):Post!
         likeComment(postId:ID!,commentId:ID!):Post!
+       
         updateSettings(setting:String!,newValue:String!):User!
         # //TODO: adding/deleting pictures
         uploadPic(data:String!):Image
