@@ -3,9 +3,13 @@ import styled from 'styled-components'
 import { Link, useParams } from 'react-router-dom'
 import { useLastLocation } from 'react-router-last-location';
 import { useQuery } from '@apollo/client'
-import { GET_IMAGE } from '../../Util/GraphQL_Queries'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+
+import { GET_IMAGE, GET_POST } from '../../Util/GraphQL_Queries'
 
 import { RoundButton } from '../General/Buttons'
+import PostCard from '../Post/PostCard';
 
 export default function ImagePage() {
 
@@ -18,28 +22,39 @@ export default function ImagePage() {
         }
     })
 
-
+    const { loading: postLoading, error: postError, data: { getPost: post } = {} } = useQuery(GET_POST, {
+        variables: {
+            postId: image.id
+        }
+    })
 
     const Image = ({ image }) => {
         return (
             <ImageContainer image={image.urls.large} >
 
-                <XButton as={Link} to={lastLocation?.pathname || '/'}>X</XButton>
+                <XButton as={Link} to={lastLocation?.pathname || '/'}><FontAwesomeIcon icon={faTimes} /></XButton>
                 <Img src={image.urls.large} />
             </ImageContainer>
         )
     }
 
     return (
-        <>
+        <Wrapper>
             {image && <Image image={image} />}
-        </>
+            <PostCard post={null} />
+        </Wrapper>
     )
 }
 
+const Wrapper = styled.div`
+    display:grid;
+    grid-template-columns:3fr 1fr; 
+
+`
+
 const XButton = styled(RoundButton)`
     position:absolute;
-    top:6px;
+    top:5px;
     left:1em;
 
 `
@@ -51,12 +66,13 @@ const ImageContainer = styled.div`
     position:absolute;
     top:0;
     height:100vh;
-    width:60vw;
+    width:75vw;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color:${props => props.theme.backgroundColor};
+    border-right: solid 1px ${props => props.theme.borderColor};
    
     &::before{
         content:'';

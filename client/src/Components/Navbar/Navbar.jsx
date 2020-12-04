@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import PropsTypes from 'prop-types'
-import { Link, useLocation, useHistory } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import styled from 'styled-components'
 
@@ -25,7 +25,6 @@ export default function Navbar({ setForm }) {
 
     const isCovered = location.pathname.split('/').some(el => el === 'image')
 
-
     const profileImage = localStorage.getItem('avatar')
 
     const loggingButtons = (
@@ -45,7 +44,7 @@ export default function Navbar({ setForm }) {
                 <Link to='/'>
                     <img src={logo} alt="Fake Facebook" />
                     <MediaQuery width={400}>
-                        <h1>Fakebook</h1>
+                        {!isCovered && <h1>Fakebook</h1>}
                     </MediaQuery>
 
                 </Link>
@@ -82,8 +81,8 @@ const NavBar = styled.nav`
     display:flex;
     width:100%;
     align-items:center;
-    background-color: ${props => props.theme.primaryElementColor}; // no its not a typo, ee is responsible for opacity like #ffffff + ee
-    border-bottom: solid 1px ${props => props.theme.secondaryElementColor}dd;
+    background-color: ${props => props.theme.primaryElementColor}; 
+    border-bottom: solid 1px ${props => props.theme.borderColor};
     box-shadow: ${props => props.theme.standardShadow};
 
     header{
