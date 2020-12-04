@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, createContext } from 'react'
 import styled from 'styled-components'
 
 import { useParams } from "react-router-dom";
 import { useQuery } from '@apollo/client'
 
 import { GET_USER } from '../../Util/GraphQL_Queries'
-
+import { AuthContext } from '../../Context/auth'
 import contentTypes from './contentTypes'
 
 import ProfileMenu from './ProfileMenu';
@@ -14,13 +14,19 @@ import TopPanel from './TopPanel';
 
 const width = 1000
 
+export const UserMatchContext = createContext(false)
+
 export default function Profile() {
+    const context = useContext(AuthContext)
 
     const { id } = useParams();
+
+    const isViewerTheOwner = context.user.id === id
 
     const { data: { getUser: user } = {} } = useQuery(GET_USER, {
         variables: { userId: id },
     })
+
 
     const [contentType, setContentType] = useState('posts')
 
@@ -37,16 +43,16 @@ export default function Profile() {
     }, [user])
 
     return (
-        <>
+        <UserMatchContext.Provider value={isViewerTheOwner}>
             <TopPanel user={user} width={width} />
-            <ProfileMenu width={width} contentType={contentType} setContentType={setContentType} user={user} ></ProfileMenu>
+            <ProfileMenu width={width} contentType={contentType} setContentType={setContentType} user={user}></ProfileMenu>
             <Content>
                 {contentType === contentTypes.POSTS && user && <Posts user={user} setContentType={setContentType} />}
                 {contentType === contentTypes.INFO && user && <><h2>{'INFO'}</h2><div style={{ height: 1000 }}></div></>}
                 {contentType === contentTypes.PICTURES && user && <h2>{'PICTURES'}</h2>}
                 {contentType === contentTypes.FRIENDS && user && <h2>{'FRIENDS'}</h2>}
             </Content>
-        </>
+        </UserMatchContext.Provider>
     )
 }
 

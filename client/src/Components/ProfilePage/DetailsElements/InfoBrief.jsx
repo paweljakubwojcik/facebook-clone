@@ -1,12 +1,17 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { shuffleArray } from '../../../Util/Methods'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { infoIcons } from '../InfoIcons'
 import styled from 'styled-components'
 
+import { FilledButton } from '../../General/Buttons'
+
+import { UserMatchContext } from '../Profile'
 
 export default function InfoBrief({ info }) {
+
+    const isViewerTheOwner = useContext(UserMatchContext)
 
     const [briefInfo, setBriefInfo] = useState(null)
 
@@ -21,7 +26,7 @@ export default function InfoBrief({ info }) {
 
     useEffect(() => {
         setBriefInfo(getBriefInfo(info))
-    }, [])
+    }, [info])
 
     const Information = ({ info }) => {
         const sliced = info[0].replace(/([A-Z])/g, " $1");
@@ -38,6 +43,7 @@ export default function InfoBrief({ info }) {
     return (
         <Container>
             {briefInfo && briefInfo.map(information => <Information key={information[0]} info={information} />)}
+            { isViewerTheOwner && <FilledButton>Update fake info</FilledButton>}
         </Container>
     )
 }
