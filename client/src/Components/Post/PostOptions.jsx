@@ -8,7 +8,7 @@ import DeleteButton from './DeleteButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 
-export default function PostOptions({ postId }) {
+export default function PostOptions({ postId, isDeletable }) {
 
     const [open, setopen] = useState(false)
 
@@ -44,7 +44,7 @@ export default function PostOptions({ postId }) {
             <OptionButton onClick={toggleOpen} ref={optionButton}></OptionButton>
             {open &&
                 <DropDownMenu small ref={dropDownMenu}>
-                    <DeleteButton postId={postId} />
+                {isDeletable && <DeleteButton postId={postId} />}
                     <MenuButton >
                         <FontAwesomeIcon icon={faEdit} /> <p>Edit post</p>
                     </MenuButton>

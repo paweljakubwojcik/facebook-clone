@@ -5,6 +5,7 @@ import PostCard from './PostCard';
 import SkeletonPost from '../skeletons/SkeletonPost'
 import ErrorMessage from '../General/ErrorMessage'
 
+
 export default function Posts({ postsData }) {
 
     const { loading, error, refetch, data: { getPosts: posts } = {} } = postsData
@@ -16,6 +17,7 @@ export default function Posts({ postsData }) {
         refetch()
         console.log('refetching')
     }, [refetch])
+
 
     return (
         <PostsContainer>

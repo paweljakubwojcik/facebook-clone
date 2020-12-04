@@ -11,6 +11,7 @@ import contentTypes from './contentTypes'
 import ProfileMenu from './ProfileMenu';
 import Posts from './Posts';
 import TopPanel from './TopPanel';
+import Pictures from './Pictures';
 
 const width = 1000
 
@@ -49,7 +50,7 @@ export default function Profile() {
             <Content>
                 {contentType === contentTypes.POSTS && user && <Posts user={user} setContentType={setContentType} />}
                 {contentType === contentTypes.INFO && user && <><h2>{'INFO'}</h2><div style={{ height: 1000 }}></div></>}
-                {contentType === contentTypes.PICTURES && user && <h2>{'PICTURES'}</h2>}
+                {contentType === contentTypes.PICTURES && user && <Pictures images={user.images} />}
                 {contentType === contentTypes.FRIENDS && user && <h2>{'FRIENDS'}</h2>}
             </Content>
         </UserMatchContext.Provider>

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Shimmer from './Shimmer'
 import SkeletonElement from './SkeletonElement'
 
-import { PostCardBody, PostCardHeader } from '../Post/PostCard'
+import { PostCardBody, PostCardHeader } from '../Post/PostContent'
 import ElementContainer from '../General/ElementContainer'
 
 
