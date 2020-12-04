@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from 'react'
 import styled from 'styled-components'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { UserMatchContext } from './Profile'
+import { AuthContext } from '../../Context/auth'
 
 import { FilledButton } from '../General/Buttons'
 import RadioButtons from './RadioButtons'
@@ -15,6 +16,7 @@ let navBarHeight;
 
 export default function ProfileMenu({ width, contentType, setContentType, user }) {
     const isViewerTheOwner = useContext(UserMatchContext)
+    const context = useContext(AuthContext)
 
     const containerBar = useRef(null)
     const [sticky, setSticky] = useState(false)
@@ -54,7 +56,7 @@ export default function ProfileMenu({ width, contentType, setContentType, user }
                         </CSSTransition>
                     </TransitionGroup>
 
-                    {!isViewerTheOwner && <Buttons>
+                    {!isViewerTheOwner && context.user && <Buttons>
                         <FilledButton>
                             <FontAwesomeIcon icon={faUserPlus} />
                             Add to friends

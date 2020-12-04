@@ -1,6 +1,7 @@
 const postsResorvels = require('./posts')
 const usersResorvels = require('./users')
 const commentsResorvels = require('./comments')
+const imagesResolvers = require('./images')
 
 module.exports = {
     Post: {
@@ -19,10 +20,12 @@ module.exports = {
         ...postsResorvels.Query,
         ...commentsResorvels.Query,
         ...usersResorvels.Query,
+        ...imagesResolvers.Query
     },
     Mutation: {
         ...usersResorvels.Mutation,
         ...postsResorvels.Mutation,
-        ...commentsResorvels.Mutation
+        ...commentsResorvels.Mutation,
+        ...imagesResolvers.Mutation
     }
 }

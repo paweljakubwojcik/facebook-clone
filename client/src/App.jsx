@@ -8,6 +8,7 @@ import Home from './Components/HomePage/Home'
 import Login from './Components/LoginPage/Login'
 import NavBar from './Components/Navbar/Navbar'
 import Profile from './Components/ProfilePage/Profile'
+import ImagePage from './Components/ImagePage/ImagePage'
 
 export default function App() {
 
@@ -32,6 +33,11 @@ export default function App() {
         <Route exact path='/profile/:id' >
           <NavBar setForm={setForm} />
           <Profile />
+        </Route>
+
+        <Route exact path='/image/:id' >
+          <NavBar setForm={setForm} />
+          <ImagePage></ImagePage>
         </Route>
       </Router>
     </ThemesProvider>

@@ -100,7 +100,7 @@ module.exports = gql`
         getUsers: [User]
         getUser(userId:ID!): User
         getImages(userId:ID!):[Image]
-        getImage(imageId:ID!):Image
+        getImage(imageId:ID!):Image!
     }
     type Mutation{
         register(registerInput:RegisterInput): User!
@@ -113,6 +113,7 @@ module.exports = gql`
         likePost(postId:ID!):Post!
         likeComment(postId:ID!,commentId:ID!):Post!
         updateSettings(setting:String!,newValue:String!):User!
+        # //TODO: adding/deleting pictures
+        uploadPic(data:String!):Image
     }
  `
- //TODO: adding/deleting pictures
