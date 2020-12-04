@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useQuery, gql, useMutation } from '@apollo/client'
-import { AuthContext } from '../../Context/auth'
+import { AuthContext } from '../../../Context/auth'
 import moment from 'moment'
 
-import Avatar from '../General/Avatar'
-import { GenericButton } from '../General/Buttons'
-import UserLink from './UserLink'
-import LikesCounter from './LikesCounter'
+import Avatar from '../../General/Avatar'
+import { GenericButton } from '../../General/Buttons'
+import UserLink from '../UserLink'
+import LikesCounter from '../LikesCounter'
 
 export default function Comment({ comment, postId }) {
     const context = useContext(AuthContext)

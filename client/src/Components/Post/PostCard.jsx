@@ -9,7 +9,7 @@ import { faComment } from '@fortawesome/free-solid-svg-icons'
 
 import { GenericButton, SquareButton } from '../General/Buttons'
 import LikeButton from './LikeButton'
-import CommentSection from './CommentSection'
+import CommentSection from './CommentSection/CommentSection'
 import PostOptions from './PostOptions'
 import Avatar from '../General/Avatar'
 import ElementContainer from '../General/ElementContainer'
