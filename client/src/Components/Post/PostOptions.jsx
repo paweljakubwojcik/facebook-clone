@@ -12,7 +12,8 @@ export default function PostOptions({ postId }) {
 
     const [open, setopen] = useState(false)
 
-    const toggleOpen = () => {
+    const toggleOpen = (e) => {
+        e.target.blur()
         setopen(!open)
     }
 
@@ -45,7 +46,7 @@ export default function PostOptions({ postId }) {
                 <DropDownMenu small ref={dropDownMenu}>
                     <DeleteButton postId={postId} />
                     <MenuButton >
-                    <FontAwesomeIcon icon={faEdit} /> <p>Edit post</p>
+                        <FontAwesomeIcon icon={faEdit} /> <p>Edit post</p>
                     </MenuButton>
                 </DropDownMenu>
             }
