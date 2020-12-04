@@ -22,14 +22,20 @@ export default function Navbar({ setForm }) {
             <header>
                 <Link to='/'>
                     <img src={logo} alt="Fake Facebook" />
-                    <h1>Fakebook</h1>
+                    <MediaQuery width={400}>
+                        <h1>Fakebook</h1>
+                    </MediaQuery>
+
                 </Link>
             </header>
             {user ? (
                 <>
-                    <Link to={`/profile/${user.id}`} >
-                        <UserButton user={{ ...user, profileImage: { urls: { small: profileImage } } }} notLink />
-                    </Link>
+                    <MediaQuery width={740}>
+                        <UserButton user={{ ...user, profileImage: { urls: { small: profileImage } } }}
+                            notLink as={Link}
+                            to={`/profile/${user.id}`}
+                        />
+                    </MediaQuery>
                     <Menu />
                 </>
             ) : (
@@ -55,6 +61,7 @@ const NavBar = styled.nav`
     z-index:2;
     height:60px;
     padding: 0 1em;
+    padding-left:1%;
 
     display:flex;
     width:100%;
@@ -73,9 +80,17 @@ const NavBar = styled.nav`
             margin: 0 1em;
         }
         img{
-            height:50px;
+            height:40px;
         }
     }
+`
+
+const MediaQuery = styled.div`
+
+    @media (max-width:${props => props.width}px){
+        display:none;
+    }
+
 `
 
 

@@ -1,26 +1,48 @@
 import styled from 'styled-components'
 
-export const DropDownMenu = styled.div`
+import React from 'react'
+
+export default function DropDownMenu({ children, ...rest }) {
+    return (
+        <Container>
+
+            <Menu {...rest}>
+                {children}
+            </Menu>
+            <LittleSquare />
+        </Container>
+    )
+}
+
+//TODO: fix positioning of it
+
+const Container = styled.div`
+position:absolute;
+right:${props => props.small ? '1.5%' : '5%'};;
+top:100%;
+
+`
+
+const Menu = styled.div`
     display:flex;
     flex-direction:column;
     position:relative;
     padding:.5em;
     font-size:.8em;
-    width: ${props => props.small ? '200px' : '300px'};
+    width:max-content;
     background-color: ${props => props.theme.primaryElementColor};
-    position:absolute;
-    right:${props => props.small ? '1.5%' : '5%'};;
-    top:100%;
     border-radius:.5em;
     border: solid 1px  ${props => props.theme.borderColor};
     box-shadow: ${props => props.theme.standardShadow};
     overflow:hidden;
     transition: height .5s;
 
-    &:before{
-        content:'';
+`
+
+const LittleSquare = styled.div`
+
         position:absolute;
-        z-index:0;
+        z-index:2;
         display:block;
         background-color:inherit;
         width:10px;
@@ -33,6 +55,4 @@ export const DropDownMenu = styled.div`
        // box-shadow:inherit;
         border-top: solid 1px  ${props => props.theme.borderColor};
         border-left: solid 1px  ${props => props.theme.borderColor};
-    }
-
 `

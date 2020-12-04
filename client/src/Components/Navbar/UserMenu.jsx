@@ -12,7 +12,7 @@ import { faSignOutAlt, faMoon, faArrowLeft, faChevronRight } from '@fortawesome/
 
 import { AuthContext } from '../../Context/auth'
 import { MenuButton, RoundButton } from '../General/Buttons'
-import { DropDownMenu } from '../General/DropDownMenu'
+import DropDownMenu from '../General/DropDownMenu'
 
 //TODO: Split functionalities
 export default function UserMenu({ ...rest }) {

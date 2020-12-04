@@ -20,6 +20,7 @@ Avatar.defaultProps = {
 };
 
 const ImageContainer = styled.div`
+    flex-shrink:0;
     box-sizing:content-box;
     height:40px;
     width:40px;

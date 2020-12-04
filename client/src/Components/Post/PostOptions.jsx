@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { RoundButton, MenuButton } from '../General/Buttons'
-import { DropDownMenu } from '../General/DropDownMenu'
+import DropDownMenu from '../General/DropDownMenu'
 
 import DeleteButton from './DeleteButton'
 
