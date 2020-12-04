@@ -57,7 +57,7 @@ export const SquareButton = styled(GenericButton)`
         text-decoration:none;
     }
     
-    & > *{
+    & > * {
         margin:.25em;
     }
 `
@@ -66,11 +66,25 @@ export const MenuButton = styled(SquareButton)`
 
     width:100%;
     justify-content:left;
-    & > *{
+    & > * {
         margin: .25em .75em;
         pointer-events:none;
     }
     color: ${props => props.theme.primaryFontColor};
     font-weight:lighter;
+
+`
+
+export const FilledButton = styled(SquareButton)`
+
+    color: ${props => props.theme.primaryFontColor};
+    background-color:${props => props.theme.roundButtonColor};
+    display:flex;
+    &:hover,
+    &:focus{
+        background-color:${props => props.theme.primaryColor};
+        text-decoration:none;
+    }
+    margin: .5em;
 
 `

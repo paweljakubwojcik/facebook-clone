@@ -2,9 +2,10 @@ import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
-import { SquareButton } from '../General/Buttons'
+import { FilledButton } from '../General/Buttons'
 import RadioButtons from './RadioButtons'
 import UserButton from '../General/UserButton'
+
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserPlus, faEnvelope } from '@fortawesome/free-solid-svg-icons'
@@ -52,14 +53,14 @@ export default function ProfileMenu({ width, contentType, setContentType, user }
                     </TransitionGroup>
 
                     <Buttons>
-                        <SquareButton>
+                        <FilledButton>
                             <FontAwesomeIcon icon={faUserPlus} />
                             Add to friends
-                            </SquareButton>
-                        <SquareButton>
+                            </FilledButton>
+                        <FilledButton>
                             <FontAwesomeIcon icon={faEnvelope} />
                             Send message
-                        </SquareButton>
+                        </FilledButton>
                     </Buttons>
                 </Menu>
             </ContainerBar>

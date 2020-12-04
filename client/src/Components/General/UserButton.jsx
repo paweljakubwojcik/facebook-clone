@@ -39,7 +39,7 @@ export default function UserButton({ user, notLink, onClick, ...rest }) {
             <HoverWrapper top={popUpPosition}>
                 {!notLink && (
                     <PopUpElement isVisible={isHovered}>
-                        <ProfilePreview userId={user.id} />
+                        <ProfilePreview userId={user.id} buttons={['add to friends', 'see profile']} />
                     </PopUpElement>
                 )}
             </HoverWrapper>
@@ -64,7 +64,7 @@ const HoverWrapper = styled.div`
 /**
  * it must be positioned static
  */
-export const StyledButton = styled.button`
+export const StyledButton = styled.div`
     display:flex;
     justify-content:left;
     align-items:center;
