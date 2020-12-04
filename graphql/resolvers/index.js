@@ -16,6 +16,9 @@ module.exports = {
     User: {
         ...usersResorvels.User
     },
+    Image: {
+        ...imagesResolvers.Image
+    },
     Query: {
         ...postsResorvels.Query,
         ...commentsResorvels.Query,

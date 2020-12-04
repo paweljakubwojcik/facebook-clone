@@ -5,6 +5,7 @@ global.fetch = fetch;
 const APP_ACCESS_KEY = require('../config.js').UNSPLASH_APP_KEY
 
 const Image = require('../models/Image');
+const Post = require('../models/Post')
 
 const unsplash = new Unsplash({ accessKey: APP_ACCESS_KEY });
 
@@ -13,9 +14,12 @@ const unsplash = new Unsplash({ accessKey: APP_ACCESS_KEY });
  *
  * @param {String} type - 'background' || 'avatar'
  * @param {String} owner - id of user for who this picture belongs to
+ *  @param {String} postId - id of post that will contain those photos
  */
 
-module.exports.generateRandomPhoto = async (type, owner) => {
+module.exports.generateRandomPhoto = async (type, owner, postId) => {
+
+
     let data
     switch (type) {
         case 'background':
@@ -42,7 +46,8 @@ module.exports.generateRandomPhoto = async (type, owner) => {
             name: picture.user.name,
             link: picture.user.links.self,
         },
-        uploadedBy: owner
+        uploadedBy: owner,
+        post: postId,
     })
     return await newImage.save()
 }

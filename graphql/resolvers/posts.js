@@ -1,6 +1,7 @@
 const { AuthenticationError, UserInputError } = require('apollo-server')
 const Post = require('../../models/Post');
 const User = require('../../models/User');
+const Image = require('../../models/Image');
 const checkAuth = require('../../utils/checkAuth')
 
 module.exports = {
@@ -90,6 +91,10 @@ module.exports = {
     Post: {
         async user({ user }) {
             return await User.findById(user)
-        }
+        },
+        async images({ id }) {
+            console.log(id)
+            return await Image.find({ post: id })
+        },
     }
 }

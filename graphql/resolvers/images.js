@@ -1,4 +1,5 @@
 const Image = require('../../models/Image')
+const Post = require('../../models/Post')
 
 module.exports = {
 
@@ -9,7 +10,6 @@ module.exports = {
     },
     Query: {
         getImage: async (_, { imageId }) => {
-            console.log(imageId)
             try {
                 const image = await Image.findById(imageId)
                 return image
@@ -17,6 +17,11 @@ module.exports = {
                 return new Error(error)
             }
 
+        }
+    },
+    Image: {
+        post: async ({ post }) => {
+            return await Post.findById(post)
         }
     }
 

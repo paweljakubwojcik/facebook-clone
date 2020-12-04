@@ -14,6 +14,7 @@ module.exports = gql`
         commentsCount:Int!
         likesCount:Int!
         privacy:String
+        images: [Image]
     }
     type Comment{
         id:ID!
@@ -45,6 +46,7 @@ module.exports = gql`
         urls:Urls!
         author: ImageAuthor!
         uploadedBy: String!
+        post:Post
     }
     type Settings {
         preferredTheme: String,

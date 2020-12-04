@@ -121,9 +121,27 @@ module.exports = {
             //saving user in DB  //TODO error handling? 
             const { _id } = await newUser.save()
 
+            const randomTexts = [
+                "Check out my new fake picture",
+                "This is my first picture, uploaded automatically",
+                "My random generated picture from Unsplash.com",
+                "Really nice photo, check out the author",
+            ]
+            //creating post associated with pictures
+            const newPost = new Post({
+                user: _id,
+                username,
+                body: randomTexts[Math.floor(Math.random() * randomTexts.length)],
+                createdAt: new Date().toISOString(),
+                likes: [],
+                comments: []
+            })
+
+            const { _id: postId } = await newPost.save()
+
             //generate random backgroundImage and avatar pic
-            const backgroundImage = await generateRandomPhoto('background', _id)
-            const profileImage = await generateRandomPhoto('avatar', _id)
+            const backgroundImage = await generateRandomPhoto('background', _id, postId)
+            const profileImage = await generateRandomPhoto('avatar', _id, postId)
 
             newUser.backgroundImage = backgroundImage
             newUser.profileImage = profileImage

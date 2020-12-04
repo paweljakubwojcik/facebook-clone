@@ -2,7 +2,7 @@ const { model, Schema } = require('mongoose')
 
 const postSchema = new Schema({
     body: String,
-    username: String,
+    username: String, // TODO: !IMPORTANT get rid of username property
     createdAt: String,
     privacy: String,
     isEdited: Boolean,

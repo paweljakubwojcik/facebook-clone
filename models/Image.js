@@ -14,6 +14,10 @@ const imageSchema = new Schema({
     uploadedBy: {
         type: Schema.Types.ObjectId,
         ref: 'users'
+    },
+    post: {
+        type: Schema.Types.ObjectId,
+        ref: 'posts'
     }
 })
 
