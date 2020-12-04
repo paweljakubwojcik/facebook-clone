@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import styled from 'styled-components'
 import { useMutation, gql } from '@apollo/client'
+import { AuthContext } from '../../Context/auth'
 
 import Avatar from '../General/Avatar'
 import { SquareButton } from '../General/Buttons'
@@ -10,11 +11,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 
 export default function CommentSection({ comments, postId, inputFocus, setFocus }) {
+    const context = useContext(AuthContext)
 
+    return (
+        <>
+            <CommentsContainer>
+                {comments.map(comment => <Comment key={comment.id} comment={comment} postId={postId} />)}
+            </CommentsContainer>
+            { context.user && <Form props={{ inputFocus, setFocus }} />}
+        </>
+    )
+}
+
+// TODO: move it to sepparate file
+const Form = ({ props: { postId, inputFocus, setFocus } }) => {
     const avatarImage = localStorage.getItem('avatar')
 
     const [body, setBody] = useState('')
-
 
     const [createPost] = useMutation(ADD_COMMENT, {
         variables: {
@@ -31,7 +44,7 @@ export default function CommentSection({ comments, postId, inputFocus, setFocus 
         }
     })
 
-    const resizableInput = useRef()
+    const resizableInput = useRef(null)
 
     useEffect(() => {
         resizableInput.current.style.height = '1px'
@@ -50,22 +63,16 @@ export default function CommentSection({ comments, postId, inputFocus, setFocus 
     }
 
     return (
-        <>
-            <CommentsContainer>
-                {comments.map(comment => <Comment key={comment.id} comment={comment} postId={postId} />)}
-            </CommentsContainer>
-            <CommentForm onSubmit={onSubmit}>
-                <Avatar image={avatarImage} />
-                <CommentInput ref={resizableInput} rows="1" onChange={onChange} onBlur={() => setFocus(false)} >
-
-                </CommentInput>
-                <SquareButton className='sendComment'>
-                    <FontAwesomeIcon icon={faPaperPlane} />
-                </SquareButton>
-            </CommentForm>
-        </>
+        <CommentForm onSubmit={onSubmit}>
+            <Avatar image={avatarImage} />
+            <CommentInput ref={resizableInput} rows="1" onChange={onChange} onBlur={() => setFocus(false)} />
+            <SquareButton className='sendComment'>
+                <FontAwesomeIcon icon={faPaperPlane} />
+            </SquareButton>
+        </CommentForm>
     )
 }
+
 
 const ADD_COMMENT = gql`
     mutation createComment( $body:String!, $postId:ID! ){
@@ -85,7 +92,7 @@ const ADD_COMMENT = gql`
 
 
 const CommentsContainer = styled.div`
-
+    border-top: 1px solid ${props => props.theme.borderColor};
 `
 const CommentForm = styled.form`
     display:flex;

@@ -21,7 +21,7 @@ export default function Profile() {
 
     const { id } = useParams();
 
-    const isViewerTheOwner = context.user.id === id
+    const isViewerTheOwner = context.user?.id === id
 
     const { data: { getUser: user } = {} } = useQuery(GET_USER, {
         variables: { userId: id },

@@ -68,13 +68,15 @@ export default function PostCard({ post }) {
                 </GenericButton>
             </PostCardCounters>
 
-            <PostCardButtonsContainer>
-                <LikeButton postData={{ id, likes }} />
-                <SquareButton onClick={engageComment} className='postCard__button'>
-                    <FontAwesomeIcon className="icon" icon={faComment} />
-                   Comment
-                </SquareButton>
-            </PostCardButtonsContainer>
+            {
+                context.user && (
+                    <PostCardButtonsContainer>
+                        <LikeButton postData={{ id, likes }} />
+                        <SquareButton onClick={engageComment} className='postCard__button'>
+                            <FontAwesomeIcon className="icon" icon={faComment} />Comment</SquareButton>
+                    </PostCardButtonsContainer>
+                )
+            }
 
             {commentsVisible && <CommentSection comments={comments} postId={id} inputFocus={commentInputFocus} setFocus={setCommentInputFocus} />}
 
