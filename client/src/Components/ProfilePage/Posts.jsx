@@ -22,8 +22,6 @@ export default function Posts({ user, setContentType }) {
         }
     })
 
-    console.log('render')
-
     
     return (
         <Container>

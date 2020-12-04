@@ -7,12 +7,12 @@ export default function DropDownMenu({ children, small, ...rest }) {
         <>
             <Container small={small}>
 
-            <Menu {...rest}>
-                {children}
-            </Menu>
+                <Menu {...rest}>
+                    {children}
+                </Menu>
 
             </Container>
-        <LittleSquare />
+            <LittleSquare />
         </>
     )
 }
@@ -21,6 +21,7 @@ export default function DropDownMenu({ children, small, ...rest }) {
 
 const Container = styled.div`
     position:absolute;
+    z-index:3;
     right:${props => props.small ? '0' : '0'};
     top:100%;
 

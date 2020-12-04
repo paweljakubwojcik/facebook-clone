@@ -6,10 +6,11 @@ import { useQuery } from '@apollo/client'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
-import { GET_IMAGE, GET_POST } from '../../Util/GraphQL_Queries'
+import { GET_IMAGE } from '../../Util/GraphQL_Queries'
 
 import { RoundButton } from '../General/Buttons'
-import PostCard from '../Post/PostCard';
+import Post from './Post';
+
 
 export default function ImagePage() {
 
@@ -22,15 +23,9 @@ export default function ImagePage() {
         }
     })
 
-    const { loading: postLoading, error: postError, data: { getPost: post } = {} } = useQuery(GET_POST, {
-        variables: {
-            postId: image.id
-        }
-    })
-
     const Image = ({ image }) => {
         return (
-            <ImageContainer image={image.urls.large} >
+            <ImageContainer image={image.urls.small} >
 
                 <XButton as={Link} to={lastLocation?.pathname || '/'}><FontAwesomeIcon icon={faTimes} /></XButton>
                 <Img src={image.urls.large} />
@@ -41,14 +36,26 @@ export default function ImagePage() {
     return (
         <Wrapper>
             {image && <Image image={image} />}
-            <PostCard post={null} />
+            {image && <Post postId={image.post.id}></Post>}
+
         </Wrapper>
     )
 }
 
+
 const Wrapper = styled.div`
-    display:grid;
-    grid-template-columns:3fr 1fr; 
+    display:flex;;
+    pointer-events:none;
+    grid-auto-flow:row;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    & > * {
+        pointer-events:all;
+    }
+   
 
 `
 
@@ -62,16 +69,16 @@ const XButton = styled(RoundButton)`
 const ImageContainer = styled.div`
 
     display:flex;
+    position:relative;
     z-index:2;
-    position:absolute;
     top:0;
     height:100vh;
-    width:75vw;
+    width:calc(100% - 400px);
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color:${props => props.theme.backgroundColor};
+    background-color:transparent;
     border-right: solid 1px ${props => props.theme.borderColor};
    
     &::before{
@@ -79,21 +86,22 @@ const ImageContainer = styled.div`
         position:absolute;
         left:50%;
         top:50%;
-        transform:translate(-50%,-50%);
+        transform:translate(-50%,-50%) scale(1.1);;
         z-index:-1;
         display:block;
-        width:120%;
-        height:120%;
+        width:100%;
+        height:100%;
         background-image:url(${props => props.image});
         background-position: center;
         background-size: cover;
-        filter: blur(10px) brightness(.8);
+        filter: blur(5px) brightness(.8);
     }
 
 `
 
 const Img = styled.img`
    
-    width:100%;
+    max-width:100%;
+    max-height:100%;
 
 `
