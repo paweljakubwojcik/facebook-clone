@@ -6,8 +6,6 @@ import PostContent from '../Post/PostContent'
 
 export default function Post({ postId }) {
 
-    console.log(postId)
-
     const { loading, error, data: { getPost: post } = {} } = useQuery(GET_POST, {
         variables: {
             postId

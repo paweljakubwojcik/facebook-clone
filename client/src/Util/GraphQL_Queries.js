@@ -256,6 +256,9 @@ export const GET_IMAGE = gql`
         
         post{
             id
+            images{
+                id
+            }
         }
     }
     }

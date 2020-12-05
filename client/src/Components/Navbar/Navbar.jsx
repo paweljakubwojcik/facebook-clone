@@ -97,7 +97,7 @@ const NavBar = styled.nav`
         img{
             height:40px;
             ${props => props.isCovered ? 'position:absolute; z-index:3; transform:translateX(100%);' : ''}
-            transition: transform .5s;
+            transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
     }
 `

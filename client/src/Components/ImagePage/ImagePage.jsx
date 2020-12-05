@@ -10,6 +10,7 @@ import { GET_IMAGE } from '../../Util/GraphQL_Queries'
 
 import { RoundButton } from '../General/Buttons'
 import Post from './Post';
+import Arrows from './Arrows';
 
 
 export default function ImagePage() {
@@ -23,11 +24,14 @@ export default function ImagePage() {
         }
     })
 
+    const allImages = image ? image.post.images.map(image => image.id) : null
+
     const Image = ({ image }) => {
         return (
             <ImageContainer image={image.urls.small} >
 
-                <XButton as={Link} to={lastLocation?.pathname || '/'}><FontAwesomeIcon icon={faTimes} /></XButton>
+
+                <Arrows currentImage={id} allImages={allImages} />
                 <Img src={image.urls.large} />
             </ImageContainer>
         )
@@ -35,6 +39,9 @@ export default function ImagePage() {
 
     return (
         <Wrapper>
+            <XButton as={Link} to={lastLocation?.pathname || '/'}>
+                <FontAwesomeIcon icon={faTimes} />
+            </XButton>
             {image && <Image image={image} />}
             {image && <Post postId={image.post.id}></Post>}
 
@@ -44,7 +51,7 @@ export default function ImagePage() {
 
 
 const Wrapper = styled.div`
-    display:flex;;
+    display:flex;
     pointer-events:none;
     grid-auto-flow:row;
     position:absolute;
@@ -55,7 +62,6 @@ const Wrapper = styled.div`
     & > * {
         pointer-events:all;
     }
-   
 
 `
 
@@ -63,8 +69,10 @@ const XButton = styled(RoundButton)`
     position:absolute;
     top:5px;
     left:1em;
-
+    z-index:3;
 `
+
+
 
 const ImageContainer = styled.div`
 
