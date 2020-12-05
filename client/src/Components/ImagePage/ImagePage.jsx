@@ -1,50 +1,30 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Link, useParams } from 'react-router-dom'
+import { Link, BrowserRouter as Router, Route } from 'react-router-dom'
 import { useLastLocation } from 'react-router-last-location';
-import { useQuery } from '@apollo/client'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
-import { GET_IMAGE } from '../../Util/GraphQL_Queries'
-
 import { RoundButton } from '../General/Buttons'
-import Post from './Post';
-import Arrows from './Arrows';
+import Page from './Page';
+
 
 
 export default function ImagePage() {
 
-    const { id } = useParams()
     const lastLocation = useLastLocation();
 
-    const { loading, error, data: { getImage: image } = {} } = useQuery(GET_IMAGE, {
-        variables: {
-            imageId: id
-        }
-    })
-
-    const allImages = image ? image.post.images.map(image => image.id) : null
-
-    const Image = ({ image }) => {
-        return (
-            <ImageContainer image={image.urls.small} >
-
-
-                <Arrows currentImage={id} allImages={allImages} />
-                <Img src={image.urls.large} />
-            </ImageContainer>
-        )
-    }
 
     return (
         <Wrapper>
             <XButton as={Link} to={lastLocation?.pathname || '/'}>
                 <FontAwesomeIcon icon={faTimes} />
             </XButton>
-            {image && <Image image={image} />}
-            {image && <Post postId={image.post.id}></Post>}
-
+            <Router basename='image'>
+                <Route path='/:id'>
+                    <Page />
+                </Route>
+            </Router>
         </Wrapper>
     )
 }
@@ -74,42 +54,3 @@ const XButton = styled(RoundButton)`
 
 
 
-const ImageContainer = styled.div`
-
-    display:flex;
-    position:relative;
-    z-index:2;
-    top:0;
-    height:100vh;
-    width:calc(100% - 400px);
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color:transparent;
-    border-right: solid 1px ${props => props.theme.borderColor};
-   
-    &::before{
-        content:'';
-        position:absolute;
-        left:50%;
-        top:50%;
-        transform:translate(-50%,-50%) scale(1.1);;
-        z-index:-1;
-        display:block;
-        width:100%;
-        height:100%;
-        background-image:url(${props => props.image});
-        background-position: center;
-        background-size: cover;
-        filter: blur(5px) brightness(.8);
-    }
-
-`
-
-const Img = styled.img`
-   
-    max-width:100%;
-    max-height:100%;
-
-`

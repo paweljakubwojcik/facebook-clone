@@ -16,13 +16,13 @@ export default function Arrows({ currentImage, allImages }) {
         <>
             {prevImage &&
                 <ButtonLeft>
-                    <RoundButton as={Link} to={`/image/${prevImage}`}>
+                <RoundButton as={Link} to={`/${prevImage}`}>
                         <FontAwesomeIcon icon={faArrowLeft} />
                     </RoundButton>
                 </ButtonLeft>}
             {nextImage &&
                 <ButtonRigth>
-                    <RoundButton as={Link} to={`/image/${nextImage}`}>
+                <RoundButton as={Link} to={`/${nextImage}`}>
                         <FontAwesomeIcon icon={faArrowRight} />
                     </RoundButton>
                 </ButtonRigth>}
