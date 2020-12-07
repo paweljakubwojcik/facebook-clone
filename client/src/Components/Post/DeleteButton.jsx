@@ -11,8 +11,6 @@ import { DELETE_POST, GET_POSTS } from '../../Util/GraphQL_Queries'
 export default function DeleteButton({ postId }) {
     const id = postId
 
-    //TODO: tu trzeba koniecznie caching ogarnąć
-
     const { pathname } = useLocation()
     const userId = pathname.split('/')[2];
 
@@ -26,10 +24,15 @@ export default function DeleteButton({ postId }) {
                 }
             })
             const newData = data.getPosts.filter(p => p.id !== id)
+            //telling apollo that i'm taking care of merging fields so it won't call error
+            proxy.evict({
+                fieldName: "getPosts",
+                broadcast: false,
+            });
             proxy.writeQuery({ query: GET_POSTS, variables: { userId }, data: { getPosts: newData } })
         },
         onError(err) {
-            console.log(err)
+            //TODO: HANDLE ERROR
         }
     })
 

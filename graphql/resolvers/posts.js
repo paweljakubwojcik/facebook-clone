@@ -94,7 +94,6 @@ module.exports = {
             return await User.findById(user)
         },
         async images({ id }) {
-            console.log(id)
             return await Image.find({ post: id })
         },
     }

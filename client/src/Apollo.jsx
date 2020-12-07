@@ -10,20 +10,7 @@ const httpLink = createHttpLink({
 
 const cache = new InMemoryCache({
     typePolicies: {
-        getPosts: {
-            merge: false
-        },
-        getUser: {
-            profileImage: {
-                merge(existing, incoming, { mergeObjects }) {
-                    // Correct, thanks to invoking nested merge functions.
-                    return mergeObjects(existing, incoming);
-                }
-            }
-        },
-        deletePost: {
-            merge: false
-        }
+        
     }
 })
 
