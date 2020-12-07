@@ -48,7 +48,7 @@ const ImageContainer = styled.div`
 
     display:flex;
     position:relative;
-    z-index:2;
+    z-index:1;
     top:0;
     height:100vh;
     width:calc(100% - 400px);
@@ -56,8 +56,24 @@ const ImageContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color:transparent;
+    background-color:#000000;
     border-right: solid 1px ${props => props.theme.borderColor};
+
+    &:after{
+        content:'';
+        position:absolute;
+        left:50%;
+        top:50%;
+        transform:translate(-50%,-50%) scale(1.1);;
+        z-index:-1;
+        display:block;
+        width:100%;
+        height:100%;
+        @supports ((-webkit-backdrop-filter: blur(16px)) or (backdrop-filter: blur(16px))) {
+            backdrop-filter: blur(16px);
+            }
+       
+    }
    
     &::before{
         content:'';
@@ -72,7 +88,10 @@ const ImageContainer = styled.div`
         background-image:url(${props => props.image});
         background-position: center;
         background-size: cover;
-        filter: blur(5px) brightness(.8);
+        filter:blur(.5em); 
+        @supports ((-webkit-backdrop-filter: blur(16px)) or (backdrop-filter: blur(16px))) {
+            filter: brightness(.8);
+            }
     }
 
 `
