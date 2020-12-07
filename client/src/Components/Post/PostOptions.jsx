@@ -44,7 +44,7 @@ export default function PostOptions({ postId, isDeletable }) {
             <OptionButton onClick={toggleOpen} ref={optionButton}></OptionButton>
             {open &&
                 <DropDownMenu small ref={dropDownMenu}>
-                {isDeletable && <DeleteButton postId={postId} />}
+                    {isDeletable && <DeleteButton postId={postId} />}
                     <MenuButton >
                         <FontAwesomeIcon icon={faEdit} /> <p>Edit post</p>
                     </MenuButton>

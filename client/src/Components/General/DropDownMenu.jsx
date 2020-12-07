@@ -2,10 +2,10 @@ import styled from 'styled-components'
 
 import React from 'react'
 
-export default function DropDownMenu({ children, small, ...rest }) {
+const DropDownMenu = React.forwardRef(({ children, small, ...rest }, ref) => {
     return (
         <>
-            <Container small={small}>
+            <Container small={small} ref={ref}>
 
                 <Menu {...rest}>
                     {children}
@@ -15,7 +15,9 @@ export default function DropDownMenu({ children, small, ...rest }) {
             <LittleSquare />
         </>
     )
-}
+})
+
+export default DropDownMenu
 
 //TODO: fix positioning of it
 

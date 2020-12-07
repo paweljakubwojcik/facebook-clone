@@ -21,7 +21,7 @@ export default function Posts({ postsData }) {
 
     return (
         <PostsContainer>
-            {loading && [1, 2].map((key) => <SkeletonPost key={key} theme={'dark'} />)}
+            {loading && [1, 2, 3].map((key) => <SkeletonPost key={key} theme={'dark'} />)}
             {posts && posts.map(post => <PostCard key={post.id} post={post} />)}
             {error && <ErrorMessage>I'm sorry, I failed, couldn't find any posts {';('}</ErrorMessage>}
             {isPostsEmpty && <ErrorMessage>This faker haven't post anything yet {`;(`}</ErrorMessage>}

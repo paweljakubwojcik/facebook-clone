@@ -34,6 +34,8 @@ export default function PostContent({ post, noImages }) {
         images,
     } = post
 
+    const renderImages = !!images && !noImages
+
 
     const context = useContext(AuthContext)
 
@@ -65,7 +67,7 @@ export default function PostContent({ post, noImages }) {
 
             </PostCardBody>
 
-            {!noImages && <Images images={images} />}
+            {renderImages && <Images images={images} />}
 
             <PostCardCounters className='postCard__counters' >
                 <LikesCounter likesCount={likesCount} likes={likes} />

@@ -11,6 +11,7 @@ import ElementContainer from '../General/ElementContainer'
 const SkeletonWrapper = styled.div`
     overflow: hidden;
     position:relative;
+    padding:1em .5em;
 `
 const SkeletonBody = styled(PostCardBody)`
 
@@ -21,7 +22,7 @@ const SkeletonHeader = styled(PostCardHeader)`
 
 function SkeletonPost() {
     return (
-        <ElementContainer>
+        <ElementContainer noPadding>
             <SkeletonWrapper className={`skeleton-wrapper`}>
 
                 <SkeletonHeader>
