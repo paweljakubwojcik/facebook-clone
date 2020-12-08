@@ -9,16 +9,25 @@ export default function TopPanel({ loading, user, width }) {
     return (
         <Container>
             {user &&
-                <BackgroundImage img={user?.backgroundImage?.urls?.large || null} width={width} >
-                    <a className={'avatar-link'} href={user?.profileImage?.urls?.large}>
+                <>
+                    <GradientContainer img={user?.backgroundImage?.urls?.medium} >
+                        <BackgroundImage img={user?.backgroundImage?.urls?.large || null} width={width} >
+
+                            <a className={'background-link'} href={user?.backgroundImage?.urls?.large}> </a>
+                    </BackgroundImage>
+                </GradientContainer>
+                <User>
+                    <AvatarLink href={user?.profileImage?.urls?.large}>
                         <Avatar image={user?.profileImage?.urls?.large} large />
-                    </a>
-                <a className={'background-link'} href={user?.backgroundImage?.urls?.large}> </a>
-                </BackgroundImage>}
-            <h2>{user?.username}</h2>
-        </Container>
+                    </AvatarLink>
+                        <h2>{user?.username}</h2>
+                    </User>
+                </>}
+
+        </Container >
     )
 }
+
 
 
 const Container = styled.div`
@@ -29,23 +38,65 @@ const Container = styled.div`
     height:fit-content;
     background-color:${props => props.theme.primaryElementColor};
 
+
+
+`
+
+const User = styled.div`
+    position:relative;
     h2{
         margin:.7em;
         font-size:1.6em;
     }
-   
+
+`
+
+const GradientContainer = styled.div`
+    position:relative;
+    overflow:hidden;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    background-color:#00000000;
+    &::before{
+        content:'';
+        position:absolute;
+        display:block;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        z-index:0;
+        filter:blur(5em);
+        background-image:url(${props => props.img});
+    }
+    &::after{
+        content:'';
+        position:absolute;
+        display:block;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        z-index:0;
+       background:linear-gradient(to top, ${props => props.theme.primaryElementColor} 20%,#00000000);
+    }
+    
+`
+
+const AvatarLink = styled.a`
+        position:absolute;
+        bottom:100%;
+        left:50%;
+        z-index:3;
+        transform: translate(-50%, 1.2em);
 `
 
 const BackgroundImage = styled.div`
     display:block;
     position:relative;
-    & > .avatar-link {
-        position:absolute;
-        bottom:0;
-        left:50%;
-        z-index:3;
-        transform: translate(-50%, 1.5em);
-    }
+    z-index:1;
     background-color:${props => props.theme.secondaryElementColor};
     background-image: url(${props => props.img});
     background-position:center;
@@ -55,6 +106,7 @@ const BackgroundImage = styled.div`
     max-width:${props => props.width}px;
     height:300px;
     min-height:160px;
+    box-shadow:${props => props.theme.standardShadow};
 
     .background-link{
         position:absolute;

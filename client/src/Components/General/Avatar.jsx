@@ -30,6 +30,6 @@ const ImageContainer = styled.div`
     background-position:center;
     background-size:cover;
     border-radius:50%;
-    border: solid 5px ${props => props.large || props.big ? props.theme.primaryElementColor : 'none'}; 
+    border: solid 7px ${props => props.large || props.big ? props.theme.primaryElementColor : 'none'}; 
 
 `
