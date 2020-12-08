@@ -7,12 +7,10 @@ const FirebaseContext = createContext({
     storage: null
 })
 
+firebase.initializeApp(config);
+const storage = firebase.storage();
 
 function FirebaseProvider(props) {
-
-    firebase.initializeApp(config);
-    const storage = firebase.storage();
-
     return (
         <FirebaseContext.Provider value={{ storage }} {...props}>
             {props.children}

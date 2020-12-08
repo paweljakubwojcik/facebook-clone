@@ -36,6 +36,11 @@ module.exports = gql`
         medium:String
         large:String
     }
+    input UrlsInput{
+        small:String
+        medium:String
+        large:String
+    }
     type ImageAuthor{
         name: String!
         link: String
@@ -48,6 +53,11 @@ module.exports = gql`
         author: ImageAuthor!
         uploadedBy: String!
         post:Post
+    }
+    input ImageInput{
+        urls:UrlsInput!
+        post:ID!
+        title:String
     }
     type Settings {
         preferredTheme: String,
@@ -119,7 +129,7 @@ module.exports = gql`
         likeComment(postId:ID!,commentId:ID!):Post!
        
         updateSettings(setting:String!,newValue:String!):User!
-        # //TODO: adding/deleting pictures
-        uploadPic(data:String!):Image
+        
+        uploadPicture(ImageInput:ImageInput!):Image!
     }
  `

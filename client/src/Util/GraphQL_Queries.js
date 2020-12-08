@@ -263,3 +263,31 @@ export const GET_IMAGE = gql`
     }
     }
 `
+
+export const ADD_PICTURE = gql`
+    mutation uploadPicture(
+        $post:ID!
+        $small:String!
+        $medium:String!
+        $large:String!
+        $title:String
+    )
+    {
+        uploadPicture(
+            ImageInput:{
+                urls:{
+                    small:$small
+                    medium:$medium
+                    large:$large
+                },
+                post:$post,
+                title:$title
+            }){
+            id
+           urls{
+               small
+           }
+        }
+    }
+
+`

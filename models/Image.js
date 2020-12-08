@@ -18,7 +18,8 @@ const imageSchema = new Schema({
     post: {
         type: Schema.Types.ObjectId,
         ref: 'posts'
-    }
+    },
+    title: String
 })
 
 module.exports = model('Image', imageSchema)

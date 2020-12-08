@@ -1,45 +1,43 @@
 import React, { useContext, useState, useRef } from 'react'
 import styled from 'styled-components'
+import { AuthContext } from '../../../Context/auth'
+import { useForm, useCreatePost } from '../../../Util/Hooks'
+
+
 
 import Avatar from '../../General/Avatar'
 import FormButton from '../../General/FormButton'
-
-import { AuthContext } from '../../../Context/auth'
-import { useForm, useCreatePost } from '../../../Util/Hooks'
 import AddButton from './AddButton'
 import ImagePreview from './ImagePreview'
 import ImagesContainer from '../ImagesContainer'
 
 export default function PostForm({ toggleForm }) {
     const initialState = {
-        body: ''
+        body: '',
+        images: [],
     }
 
     const { user: { username } } = useContext(AuthContext)
     const avatar = localStorage.getItem('avatar')
 
-    const [images, setImages] = useState([])
     const [fileInputVisibility, setFileInputVis] = useState(false);
     const fileInput = useRef(null)
 
-    const { onChange, onSubmit, values } = useForm(createPostCallback, initialState)
+    const { onChange, onSubmit, values, removeValue } = useForm(createPostCallback, initialState)
+
     const [createPost, { error, loading }] = useCreatePost(values, () => {
         values.body = ''
         toggleForm(false)
     })
 
     // only purpose of this function is to call createPost... isn't it sad? 
-    function createPostCallback() {
+    async function createPostCallback() {
         createPost()
     }
 
-    const handleFileInputChange = (e) => {
-        setImages(images => [...images, ...Array.from(e.target.files)])
-        setFileInputVis(false)
-    }
 
     const removeImage = (image) => {
-        setImages(images => images.filter(i => i !== image))
+        removeValue({ images: image })
     }
 
     const handleClick = (e) => {
@@ -48,11 +46,11 @@ export default function PostForm({ toggleForm }) {
         }
     }
 
-    const placeholder = !images ? `Whats on your mind, ${username}?` : `Write something about ${images.length === 1 ? 'this picture' : 'those pictures'}`
+    const placeholder = !values.images ? `Whats on your mind, ${username}?` : `Write something about ${values.images.length === 1 ? 'this picture' : 'those pictures'}`
 
     return (
         <Modal className='modal' onClick={handleClick}>
-            <Form onSubmit={onSubmit}>
+            <Form onSubmit={onSubmit} onChange={onChange}>
                 <h2>Let's fake some posts</h2>
                 <div className='userInfo'>
                     <Avatar image={avatar} />
@@ -66,7 +64,6 @@ export default function PostForm({ toggleForm }) {
 
                 <InputWrapper onDragEnter={() => { setFileInputVis(true) }} >
                     <TextArea
-                        onChange={onChange}
                         aria-label='post'
                         autoFocus
                         name="body"
@@ -79,13 +76,13 @@ export default function PostForm({ toggleForm }) {
                         id="file"
                         type='file'
                         multiple
-                        onChange={handleFileInputChange}
+                        onChange={() => setFileInputVis(false)}
                         onDragLeave={() => { setFileInputVis(false) }} />
                     <Label visibility={fileInputVisibility ? 1 : 0} htmlFor='images'> Drop image here</Label>
                 </InputWrapper>
 
                 <ImagesContainer noCompensation>
-                    {images && images.slice(0, 9).map(image => <ImagePreview file={image} key={image.name} removeImage={removeImage} />)}
+                    {values.images && values.images.slice(0, 9).map(image => <ImagePreview file={image} key={image.name} removeImage={removeImage} />)}
                 </ImagesContainer>
 
                 {error && <ErrorMessage>There was a problem during faking your status, please try later</ErrorMessage>}
