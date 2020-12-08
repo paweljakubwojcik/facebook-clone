@@ -7,7 +7,6 @@
   - [x] adding/deleting comments to posts
   - [x] liking unliking posts
   - [ ] uploading pictures 
-  - [ ] login using third party providers (like google or facebook)
   - [ ] friends
   - [ ] messenger
   - [ ] targeting feed
@@ -34,6 +33,7 @@
 * [Styled Components](https://styled-components.com/)
 * [Font Awesome Icons](https://fontawesome.com/)
 * [Unsplash Api](https://unsplash.com/)
+* [Firebase storage](https://firebase.google.com/docs/storage)
 
 ## mockups
 ![DashBoard](https://user-images.githubusercontent.com/46058997/98292438-ff1f2800-1fac-11eb-9228-25f58f434b87.png)
