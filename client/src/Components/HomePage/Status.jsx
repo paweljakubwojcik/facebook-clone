@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import ElementContainer from '../General/ElementContainer'
 import Avatar from '../General/Avatar'
-import PostForm from '../Post/PostForm'
+import PostForm from '../Post/PostForm/PostForm'
 
 import { AuthContext } from '../../Context/auth'
 

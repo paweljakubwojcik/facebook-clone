@@ -1,9 +1,9 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 
-export default function FormButton({ children, type, primary, loading, loadingMessage, inactive }) {
+export default function FormButton({ children, type, primary, loading, loadingMessage, inactive, ...rest }) {
   return (
-    <StyledButton type={type} primary={primary} loading={loading ? 1 : 0} inactive={inactive ? 1 : 0} aria-label={children}>
+    <StyledButton type={type} primary={primary} loading={loading ? 1 : 0} inactive={inactive ? 1 : 0} aria-label={children} {...rest}>
       {!loading ? children : (loadingMessage || 'Loading...')}
     </StyledButton>
   )
@@ -49,7 +49,7 @@ const StyledButton = styled.button`
     font-weight:bold;
     width:9em;
     height:3em;
-    border-radius:1.5em;
+    border-radius:1em;
     margin:1.3em;
     transition:transform .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     &:hover, &:focus{
