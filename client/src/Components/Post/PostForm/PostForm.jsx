@@ -8,6 +8,7 @@ import { AuthContext } from '../../../Context/auth'
 import { useForm, useCreatePost } from '../../../Util/Hooks'
 import AddButton from './AddButton'
 import ImagePreview from './ImagePreview'
+import ImagesContainer from '../ImagesContainer'
 
 export default function PostForm({ toggleForm }) {
     const initialState = {
@@ -16,8 +17,6 @@ export default function PostForm({ toggleForm }) {
 
     const { user: { username } } = useContext(AuthContext)
     const avatar = localStorage.getItem('avatar')
-
-
 
     const [images, setImages] = useState([])
     const [fileInputVisibility, setFileInputVis] = useState(false);
@@ -82,10 +81,10 @@ export default function PostForm({ toggleForm }) {
                         multiple
                         onChange={handleFileInputChange}
                         onDragLeave={() => { setFileInputVis(false) }} />
-                    <Label visibility={fileInputVisibility ? 1 : 0} for='images'> Drop image here</Label>
+                    <Label visibility={fileInputVisibility ? 1 : 0} htmlFor='images'> Drop image here</Label>
                 </InputWrapper>
 
-                <ImagesContainer>
+                <ImagesContainer noCompensation>
                     {images && images.slice(0, 9).map(image => <ImagePreview file={image} key={image.name} removeImage={removeImage} />)}
                 </ImagesContainer>
 
@@ -112,6 +111,7 @@ const Modal = styled.div`
     justify-content:center;
     align-items:center;
     background-color:#00000044;
+    overflow-y:auto;
 `
 
 const ErrorMessage = styled.p`
@@ -120,6 +120,7 @@ const ErrorMessage = styled.p`
 `
 
 const Form = styled.form`
+    margin:100px 0;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -191,14 +192,5 @@ const InputWrapper = styled.div`
 
     width:100%;
     position:relative;
-
-`
-
-const ImagesContainer = styled.div`
-
-    display:grid;
-    grid-template-columns: repeat(auto-fit,minmax(33%,1fr));
-    width:100%;
-    flex-wrap:wrap;
 
 `

@@ -17,7 +17,8 @@ import TimeStamp from './TimeStamp'
 
 import UserLink from './UserLink'
 import LikesCounter from './LikesCounter'
-import Images from './Images'
+import ImagesContainer from './ImagesContainer'
+import PictureLink from '../General/PictureLink'
 
 export default function PostContent({ post, noImages }) {
 
@@ -67,7 +68,7 @@ export default function PostContent({ post, noImages }) {
 
             </PostCardBody>
 
-            {renderImages && <Images images={images} />}
+            {renderImages && <ImagesContainer>{images.map(img => <PictureLink picture={img} key={img.id || img.name} />)}</ImagesContainer>}
 
             <PostCardCounters className='postCard__counters' >
                 <LikesCounter likesCount={likesCount} likes={likes} />
@@ -110,7 +111,9 @@ export const PostCardBody = styled.div`
     width:100%;
     margin: 1em 0;
     padding: 0 .2em;
+    
 `
+
 
 const PostCardCounters = styled.div`
     display:flex;

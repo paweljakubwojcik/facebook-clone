@@ -24,7 +24,7 @@ export default function ImagePreview({ file, removeImage }) {
 
     return (
 
-        <Container onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+        <Container onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onTouchStart={() => setHover(hover => !hover)}>
             <PlaceHolder>
                 <FontAwesomeIcon icon={faFileImage} />
             </PlaceHolder>

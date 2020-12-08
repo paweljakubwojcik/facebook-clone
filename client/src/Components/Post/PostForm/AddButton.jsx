@@ -57,6 +57,9 @@ const StyledButton = styled(RoundButton)`
             color:${props => props.theme.primaryColor};
         }
     }
+    @media (max-width:700px){
+        width:max-content;
+    }
 `
 
 const Text = styled.p`
