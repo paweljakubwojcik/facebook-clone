@@ -4,6 +4,7 @@ import { LastLocationProvider } from 'react-router-last-location';
 
 import { AuthContext } from './Context/auth'
 import { ThemesProvider } from './Context/theme'
+import { FirebaseProvider } from './Firebase/FirebaseContext'
 
 import Home from './Components/HomePage/Home'
 import Login from './Components/LoginPage/Login'
@@ -19,30 +20,30 @@ export default function App() {
 
 
   return (
-    <ThemesProvider >
-
-      <Router>
-        <LastLocationProvider>
-          <NavBar setForm={setForm} />
-          <Route exact path='/' >
-            {user ? (
-              <>
-                <Home />
-              </>
-            ) : (
-                <Login whichForm={whichForm} setForm={setForm} />
-              )}
-          </Route>
-          <Route exact path='/profile/:id' >
-            <Profile />
-          </Route>
-          <Route path='/image' >
-            <ImagePage />
-          </Route>
-        </LastLocationProvider>
-      </Router>
-
-    </ThemesProvider>
+    <FirebaseProvider>
+      <ThemesProvider >
+        <Router>
+          <LastLocationProvider>
+            <NavBar setForm={setForm} />
+            <Route exact path='/' >
+              {user ? (
+                <>
+                  <Home />
+                </>
+              ) : (
+                  <Login whichForm={whichForm} setForm={setForm} />
+                )}
+            </Route>
+            <Route exact path='/profile/:id' >
+              <Profile />
+            </Route>
+            <Route path='/image' >
+              <ImagePage />
+            </Route>
+          </LastLocationProvider>
+        </Router>
+      </ThemesProvider>
+    </FirebaseProvider>
   )
 }
 
