@@ -1,6 +1,6 @@
 import { useState, useContext } from "react"
 import { ADD_POST, GET_POSTS, ADD_PICTURE } from './GraphQL_Queries'
-import { useMutation } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 import { FirebaseContext } from '../Firebase/FirebaseContext'
 
 /**
@@ -19,7 +19,6 @@ export const useForm = (callback, initialState = {}) => {
                 setValues({ ...values, [e.target.name]: [...values[e.target.name], ...e.target.files] })
             else
                 setValues({ ...values, [e.target.name]: [...e.target.files] })
-        console.log(values)
     }
 
     const onSubmit = e => {
@@ -52,9 +51,35 @@ export const useCreatePost = (values, callback) => {
 
 
     const [createImage, imageData] = useMutation(ADD_PICTURE, {
-        update: (data) => {
-            console.log('success')
-            console.log(data)
+        update: (proxy, { data: { uploadPicture } }) => {
+            console.log(uploadPicture)
+            const cacheData = proxy.readFragment({
+                id: `Post:${uploadPicture.post.id}`,
+                fragment: gql`
+                    fragment newPost on Post{
+                        images{
+                            id
+                        }
+                    }
+                `,
+            })
+            const oldImages = cacheData.images
+            console.log(oldImages)
+            proxy.writeFragment({
+                id: `${uploadPicture.post.id}`,
+                fragment: gql`
+                    fragment newPost on Post{
+                        images{
+                            id
+                        }
+                    }
+                `,
+                data: {
+                    images: [...oldImages, uploadPicture]
+                }
+            })
+            console.log([...oldImages, uploadPicture.id])
+            console.log('updated')
         },
         onError: (e) => {
             console.log(e)
@@ -62,19 +87,23 @@ export const useCreatePost = (values, callback) => {
     })
 
     const storePicture = async (image, post) => {
-        const storageRef = storageImagesRef.child(`${image.name}.png`);
-        await storageRef.put(image)
-        const url = await storageRef.getDownloadURL()
-        console.log(url)
-        createImage({
-            variables: {
-                small: url,
-                medium: url,
-                large: url,
-                post: post,
-                title: image.name
-            },
-        })
+        try {
+            const storageRef = storageImagesRef.child(`${image.name}`);
+            await storageRef.put(image)
+            const url = await storageRef.getDownloadURL()
+            createImage({
+                variables: {
+                    small: url,
+                    medium: url,
+                    large: url,
+                    post: post,
+                    title: image.name
+                },
+            })
+        } catch (error) {
+            throw new Error(error)
+        }
+
     }
 
     const { body, images } = values
@@ -86,6 +115,7 @@ export const useCreatePost = (values, callback) => {
                 query: GET_POSTS,
                 variables: {}
             })
+
             const updatedPosts = [createPost, ...cacheData.getPosts]
             proxy.writeQuery({ query: GET_POSTS, data: { getPosts: updatedPosts } })
             images?.forEach(img => storePicture(img, createPost.id))

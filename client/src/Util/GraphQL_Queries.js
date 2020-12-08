@@ -285,7 +285,12 @@ export const ADD_PICTURE = gql`
             }){
             id
            urls{
+               large
+               medium
                small
+           }
+           post{
+               id
            }
         }
     }
