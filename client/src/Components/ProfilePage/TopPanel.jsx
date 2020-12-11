@@ -1,11 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 import Avatar from '../General/Avatar'
 
 export default function TopPanel({ loading, user, width }) {
-
-
     return (
         <Container>
             {user &&
@@ -13,13 +12,13 @@ export default function TopPanel({ loading, user, width }) {
                     <GradientContainer img={user?.backgroundImage?.urls?.medium} >
                         <BackgroundImage img={user?.backgroundImage?.urls?.large || null} width={width} >
 
-                            <a className={'background-link'} href={user?.backgroundImage?.urls?.large}> </a>
-                    </BackgroundImage>
-                </GradientContainer>
-                <User>
-                    <AvatarLink href={user?.profileImage?.urls?.large}>
-                        <Avatar image={user?.profileImage?.urls?.large} large />
-                    </AvatarLink>
+                        <BackgroundLink to={`/images/${user?.backgroundImage?.id}`}> </BackgroundLink>
+                        </BackgroundImage>
+                    </GradientContainer>
+                    <User>
+                    <AvatarLink to={`/images/${user?.profileImage?.id}`}>
+                            <Avatar image={user?.profileImage?.urls?.large} large />
+                        </AvatarLink>
                         <h2>{user?.username}</h2>
                     </User>
                 </>}
@@ -85,12 +84,19 @@ const GradientContainer = styled.div`
     
 `
 
-const AvatarLink = styled.a`
+const AvatarLink = styled(Link)`
         position:absolute;
         bottom:100%;
         left:50%;
         z-index:3;
         transform: translate(-50%, 1.2em);
+`
+
+const BackgroundLink = styled(Link)`
+    position:absolute;
+    z-index:1;
+    width:100%;
+    height:100%;
 `
 
 const BackgroundImage = styled.div`
@@ -107,13 +113,6 @@ const BackgroundImage = styled.div`
     height:300px;
     min-height:160px;
     box-shadow:${props => props.theme.standardShadow};
-
-    .background-link{
-        position:absolute;
-        z-index:1;
-        width:100%;
-        height:100%;
-    }
 
 
     @media (max-width:${props => props.width}px){

@@ -122,12 +122,15 @@ query getUser(  $userId: ID! ){
     id
     username
     backgroundImage{
+                id
                 urls{
+                    small
                     medium
                     large
                 }
             }
     profileImage{
+                id
                 urls{
                     small
                     medium
@@ -151,6 +154,7 @@ query getUser(  $userId: ID! ){
         urls{
             small
             medium
+            large
         }
     }
     friends{
