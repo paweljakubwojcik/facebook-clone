@@ -26,8 +26,8 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
             resizableInput.current.value = ''
         },
         onError(e) {
-            //TODO: handle this error
-            console.log(e)
+            //TODO: handle this error on the front
+            throw e
         }
     })
 

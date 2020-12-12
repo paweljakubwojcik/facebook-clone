@@ -33,6 +33,7 @@ export default function DeleteButton({ postId }) {
         },
         onError(err) {
             //TODO: HANDLE ERROR
+            throw err
         }
     })
 

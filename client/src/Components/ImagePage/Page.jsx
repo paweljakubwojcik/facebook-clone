@@ -13,7 +13,6 @@ import Arrows from './Arrows';
 export default function ImagePage() {
 
     const { id } = useParams()
-    console.log(id)
 
     const { loading, error, data: { getImage: image } = {} } = useQuery(GET_IMAGE, {
         variables: {
