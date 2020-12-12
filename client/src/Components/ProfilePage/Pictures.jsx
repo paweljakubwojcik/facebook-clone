@@ -14,14 +14,15 @@ export default function Pictures({ images }) {
     )
 }
 const ImageContainer = styled.div`
-    display:flex;
-    flex-wrap:wrap;
+    display:grid;
+    grid-template-columns: repeat(auto-fit,minmax(30%,1fr));
+    grid-template-rows: repeat(auto-fit,300px);
+    gap:1em;
     width:100%;
     margin: .5em 0;
 
 `
 const ImageElement = styled.div`
-    display:block;
-    flex-grow:1;
-
+   display:flex;
+   justify-content:center;
 `

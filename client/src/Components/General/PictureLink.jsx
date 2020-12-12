@@ -30,7 +30,7 @@ const PictureContainer = styled(Link)`
 const Picture = styled.div`
     background-position:center;
     background-size:cover;
-    background-image: url(${props => props.img});
+    background-image: url(${props => props.img.replace('(', '\\(').replace(')', '\\)') } );
     width:100%;
     padding-bottom:100%;
     transition: transform .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -42,8 +42,8 @@ const Picture = styled.div`
 `
 
 const PictureFullSize = styled.img`
-     max-height: 100%;
-    min-width: 100%;
+    height: 100%;
+    width: 100%;
     object-fit: cover;
     vertical-align: bottom;
 `
