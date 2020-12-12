@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 import { ThemeContext } from '../../Context/theme'
-import { useMutation, gql } from '@apollo/client'
 //TODO: CHANGING USER PREFERENCES IN DB
 
 import styled from 'styled-components'
@@ -16,17 +15,7 @@ import DropDownMenu from '../General/DropDownMenu'
 
 //TODO: Split functionalities
 export default function UserMenu({ ...rest }) {
-    const { logout, user } = useContext(AuthContext)
-
-    const [logoutUser, { error }] = useMutation(LOGOUT, {
-        variables: {
-            userId: user.id
-        },
-        update: () => {
-            logout()
-            history.push('/')
-        }
-    })
+    const { logout } = useContext(AuthContext)
 
     const { changeTheme, currentTheme } = useContext(ThemeContext)
     const history = useHistory()
@@ -45,7 +34,8 @@ export default function UserMenu({ ...rest }) {
     }
 
     const handleLogout = () => {
-        logoutUser()
+        logout()
+        history.push('/')
     }
 
     const handleRadioButtonClick = (e) => {
@@ -115,13 +105,6 @@ export default function UserMenu({ ...rest }) {
         </DropDownMenu>
     )
 }
-
-const LOGOUT = gql`
-    mutation logout( $userId:ID! ){
-        logout( userId:$userId )
-        }
-
-`
 
 const RadioButtonsGroup = styled.div`
     .label{

@@ -10,8 +10,12 @@ const initialState = {
 // to ensure that refreshng wont logout the user
 if (localStorage.getItem('token')) {
     const decodedToken = jwtDecode(localStorage.getItem('token'))
-    initialState.user = decodedToken
-    console.log(decodedToken)
+    if (decodedToken.exp * 1000 < Date.now())
+        localStorage.removeItem('token')
+    else {
+        initialState.user = decodedToken
+        console.log(decodedToken)
+    }
 
 }
 

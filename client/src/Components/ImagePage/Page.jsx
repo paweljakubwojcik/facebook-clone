@@ -25,8 +25,6 @@ export default function ImagePage() {
     const Image = ({ image }) => {
         return (
             <ImageContainer image={image.urls.small} >
-
-
                 <Arrows currentImage={id} allImages={allImages} />
                 <Img src={image.urls.large} />
             </ImageContainer>
