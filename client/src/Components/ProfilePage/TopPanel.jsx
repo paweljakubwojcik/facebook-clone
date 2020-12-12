@@ -12,11 +12,11 @@ export default function TopPanel({ loading, user, width }) {
                     <GradientContainer img={user?.backgroundImage?.urls?.medium} >
                         <BackgroundImage img={user?.backgroundImage?.urls?.large || null} width={width} >
 
-                        <BackgroundLink to={`/images/${user?.backgroundImage?.id}`}> </BackgroundLink>
+                        <BackgroundLink to={`/image/${user?.backgroundImage?.id}`}> </BackgroundLink>
                         </BackgroundImage>
                     </GradientContainer>
                     <User>
-                    <AvatarLink to={`/images/${user?.profileImage?.id}`}>
+                    <AvatarLink to={`/image/${user?.profileImage?.id}`}>
                             <Avatar image={user?.profileImage?.urls?.large} large />
                         </AvatarLink>
                         <h2>{user?.username}</h2>

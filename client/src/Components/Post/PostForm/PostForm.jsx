@@ -1,7 +1,8 @@
 import React, { useContext, useState, useRef } from 'react'
 import styled from 'styled-components'
 import { AuthContext } from '../../../Context/auth'
-import { useForm, useCreatePost } from '../../../Util/Hooks'
+import { useForm } from '../../../Util/Hooks/useForm'
+import { useCreatePost } from '../../../Util/Hooks/useCreatePost'
 
 
 
@@ -21,20 +22,23 @@ export default function PostForm({ toggleForm }) {
     const avatar = localStorage.getItem('avatar')
 
     const [fileInputVisibility, setFileInputVis] = useState(false);
+    const [fileInputHover, setFileInputHover] = useState(false);
     const fileInput = useRef(null)
+    const modal = useRef(null)
 
     const { onChange, onSubmit, values, removeValue } = useForm(createPostCallback, initialState)
 
-    const [createPost, { error, loading }] = useCreatePost(values, () => {
+    const [createPost, errors, loading] = useCreatePost(values, callback)
+    //
+    function callback() {
         values.body = ''
         toggleForm(false)
-    })
+    }
 
     // only purpose of this function is to call createPost... isn't it sad? 
     async function createPostCallback() {
         createPost()
     }
-
 
     const removeImage = (image) => {
         removeValue({ images: image })
@@ -46,10 +50,21 @@ export default function PostForm({ toggleForm }) {
         }
     }
 
-    const placeholder = !values.images ? `Whats on your mind, ${username}?` : `Write something about ${values.images.length === 1 ? 'this picture' : 'those pictures'}`
+    const handleModalOnDrag = (e) => {
+        if (modal.current === e.target)
+            setFileInputVis(false)
+    }
+
+    const placeholder = values.images.length === 0 ?
+        `Whats on your mind, ${username}?` :
+        `Write something about ${values.images.length === 1 ? 'this picture' : 'those pictures'}`
 
     return (
-        <Modal className='modal' onClick={handleClick}>
+        <Modal className='modal'
+            ref={modal}
+            onClick={handleClick}
+            onDragEnter={() => { setFileInputVis(true) }}
+            onDragLeave={handleModalOnDrag}>
             <Form onSubmit={onSubmit} onChange={onChange}>
                 <h2>Let's fake some posts</h2>
                 <div className='userInfo'>
@@ -62,7 +77,7 @@ export default function PostForm({ toggleForm }) {
                     />
                 </div>
 
-                <InputWrapper onDragEnter={() => { setFileInputVis(true) }} >
+                <InputWrapper onDragEnter={() => { setFileInputVis(true) }}>
                     <TextArea
                         aria-label='post'
                         autoFocus
@@ -76,16 +91,20 @@ export default function PostForm({ toggleForm }) {
                         id="file"
                         type='file'
                         multiple
-                        onChange={() => setFileInputVis(false)}
-                        onDragLeave={() => { setFileInputVis(false) }} />
-                    <Label visibility={fileInputVisibility ? 1 : 0} htmlFor='images'> Drop image here</Label>
+                        accept='image/*'
+                        onChange={() => { setFileInputVis(false); setFileInputHover(false) }}
+                        onDragEnter={() => { setFileInputHover(true) }}
+                        onDragLeave={() => { setFileInputHover(false) }} />
+                    <Label visibility={fileInputVisibility ? 1 : 0}
+                        hover={fileInputHover ? 1 : 0}
+                        htmlFor='images'> Drop images here</Label>
                 </InputWrapper>
 
                 <ImagesContainer noCompensation>
                     {values.images && values.images.slice(0, 9).map(image => <ImagePreview file={image} key={image.name} removeImage={removeImage} />)}
                 </ImagesContainer>
 
-                {error && <ErrorMessage>There was a problem during faking your status, please try later</ErrorMessage>}
+                {errors && <ErrorMessage>There was a problem during faking your status, please try later</ErrorMessage>}
 
                 <FormButton primary inactive={values.body.trim().length === 0} loading={loading} loadingMessage={'Posting'}>Post</FormButton>
 
@@ -154,6 +173,27 @@ const TextArea = styled.textarea`
         height:100px;
 `
 
+const Label = styled.label`
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    opacity:${props => props.visibility ? '.9' : "0"};
+    background-color:${props => props.theme.primaryColor};
+    font-weight:bold;
+    border-radius: .5em;
+    pointer-events:none;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    transition: color .3s, background-color .3s;
+    color:${props => props.hover ? props.theme.primaryColor : ''};
+    background-color:${props => props.hover ? props.theme.primaryFontColor : ''};
+
+`
+
 const FileInput = styled.input`
 
     position:absolute;
@@ -162,32 +202,17 @@ const FileInput = styled.input`
     opacity:0;
     width:100%;
     height:100%;
-    
+
     z-index:${props => props.visibility ? '1' : "-1"};
 
+        
 `
 
-const Label = styled.label`
-
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    opacity:${props => props.visibility ? '.6' : "0"};
-    background-color:${props => props.theme.primaryColor};
-    border-radius: .5em;
-    pointer-events:none;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-`
 
 const InputWrapper = styled.div`
 
     width:100%;
     position:relative;
+   
 
 `

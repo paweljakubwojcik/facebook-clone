@@ -10,7 +10,13 @@ const httpLink = createHttpLink({
 
 const cache = new InMemoryCache({
     typePolicies: {
-        
+        Image: {
+            
+        },
+        Urls: {
+            merge: true,
+            keyFields: ["small"]
+        }
     }
 })
 
