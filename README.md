@@ -6,7 +6,7 @@
   - [x] adding/deleting post
   - [x] adding/deleting comments to posts
   - [x] liking unliking posts
-  - [ ] uploading pictures 
+  - [x] uploading pictures 
   - [ ] friends
   - [ ] messenger
   - [ ] targeting feed
@@ -24,6 +24,7 @@
   - [x] posts section
   - [ ] adding/deleting pictures
 - [ ] messenger
+- [x] single pic/post page 
 
 
 ## tech so far used:
