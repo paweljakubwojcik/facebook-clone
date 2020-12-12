@@ -7,7 +7,7 @@ import Input from './Input'
 import FormButton from '../General/FormButton'
 import { Form } from './Form'
 
-import { useForm } from '../../Util/Hooks'
+import { useForm } from '../../Util/Hooks/useForm'
 import { AuthContext } from '../../Context/auth'
 import { REGISTER_USER } from '../../Util/GraphQL_Queries'
 

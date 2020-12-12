@@ -59,6 +59,10 @@ module.exports = {
             try {
                 const post = await Post.findById(postId)
                 if (user.username === post.username) {
+
+                    const images = await Image.find({ post: postId })
+                    Promise.all(Array.from(images).map(image => image.delete()))
+
                     await post.delete()
                     return 'post deleted succesfully'
                 } else {

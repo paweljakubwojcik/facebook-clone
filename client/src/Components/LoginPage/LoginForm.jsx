@@ -9,7 +9,7 @@ import { Form } from './Form'
 import Input from './Input'
 import FormButton from '../General/FormButton'
 
-import { useForm } from '../../Util/Hooks'
+import { useForm } from '../../Util/Hooks/useForm'
 import { LOGIN_USER } from '../../Util/GraphQL_Queries'
 
 export default function LoginForm({ setForm }) {

@@ -15,7 +15,6 @@ const cache = new InMemoryCache({
         },
         Urls: {
             merge: true,
-            keyFields: ["small"]
         }
     }
 })
