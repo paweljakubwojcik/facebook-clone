@@ -21,13 +21,16 @@ export default function Status() {
     }
 
     return (
-        <ElementContainer>
-            <Container className='status__container'>
-                <Avatar image={profileImage} className="status__avatar"></Avatar>
-                <StatusInput className='status__input' type="text" onClick={handleOnclick} > O czym myślisz {username}?</StatusInput>
-                {isFormOpen && <PostForm toggleForm={toggleForm}></PostForm>}
-            </Container>
-        </ElementContainer>
+        <>
+            <ElementContainer>
+                <Container className='status__container'>
+                    <Avatar image={profileImage} className="status__avatar"></Avatar>
+                    <StatusInput className='status__input' type="text" onClick={handleOnclick} > O czym myślisz {username}?</StatusInput>
+
+                </Container>
+            </ElementContainer>
+            {isFormOpen && <PostForm toggleForm={toggleForm}></PostForm>}
+        </>
     )
 }
 

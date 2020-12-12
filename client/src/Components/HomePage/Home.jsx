@@ -36,7 +36,6 @@ const Container = styled.main`
 `
 const Feed = styled.section`
   position:relative;
-  z-index:0;
     display:flex;
     flex-shrink:1;
     flex-direction:column;

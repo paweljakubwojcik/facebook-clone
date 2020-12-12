@@ -3,14 +3,16 @@ import styled from 'styled-components'
 import { AuthContext } from '../../../Context/auth'
 import { useForm } from '../../../Util/Hooks/useForm'
 import { useCreatePost } from '../../../Util/Hooks/useCreatePost'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFileImage, faTimes } from '@fortawesome/free-solid-svg-icons'
 
-
-
+import ScrollContainer from './ScrollContainer'
 import Avatar from '../../General/Avatar'
 import FormButton from '../../General/FormButton'
 import AddButton from './AddButton'
 import ImagePreview from './ImagePreview'
 import ImagesContainer from '../ImagesContainer'
+import { RoundButton } from '../../General/Buttons'
 
 export default function PostForm({ toggleForm }) {
     const initialState = {
@@ -25,6 +27,7 @@ export default function PostForm({ toggleForm }) {
     const [fileInputHover, setFileInputHover] = useState(false);
     const fileInput = useRef(null)
     const modal = useRef(null)
+
 
     const { onChange, onSubmit, values, removeValue } = useForm(createPostCallback, initialState)
 
@@ -66,7 +69,12 @@ export default function PostForm({ toggleForm }) {
             onDragEnter={() => { setFileInputVis(true) }}
             onDragLeave={handleModalOnDrag}>
             <Form onSubmit={onSubmit} onChange={onChange}>
-                <h2>Let's fake some posts</h2>
+                <Header>
+                    <h2>Let's fake some posts</h2>
+                    <XButton onClick={() => toggleForm(false)}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </XButton>
+                </Header>
                 <div className='userInfo'>
                     <Avatar image={avatar} />
                     <h3>{username}</h3>
@@ -99,14 +107,22 @@ export default function PostForm({ toggleForm }) {
                         hover={fileInputHover ? 1 : 0}
                         htmlFor='images'> Drop images here</Label>
                 </InputWrapper>
-
-                <ImagesContainer noCompensation>
-                    {values.images && values.images.slice(0, 9).map(image => <ImagePreview file={image} key={image.name} removeImage={removeImage} />)}
-                </ImagesContainer>
+                <ScrollContainer >
+                    <ImagesContainer noCompensation>
+                        {values.images && values.images.map(image => <ImagePreview file={image} key={image.name} removeImage={removeImage} />)}
+                    </ImagesContainer>
+                </ScrollContainer>
 
                 {errors && <ErrorMessage>There was a problem during faking your status, please try later</ErrorMessage>}
 
-                <FormButton primary inactive={values.body.trim().length === 0} loading={loading} loadingMessage={'Posting'}>Post</FormButton>
+                <FormButton
+                    primary
+                    inactive={values.body.trim().length === 0}
+                    loading={loading}
+                    loadingMessage={'Posting'}
+                    style={{ flexShrink: '0' }}
+                >Post
+                </FormButton>
 
             </Form>
         </Modal>
@@ -160,6 +176,11 @@ const Form = styled.form`
         margin:.5em;
     }
 `
+const Header = styled.div`
+    width:100%;
+    position:relative;
+
+`
 
 const TextArea = styled.textarea`
         resize: none;
@@ -208,11 +229,18 @@ const FileInput = styled.input`
         
 `
 
-
 const InputWrapper = styled.div`
 
     width:100%;
     position:relative;
    
+`
+
+const XButton = styled(RoundButton)`
+    position:absolute;
+    right:0;
+    bottom:5px;
 
 `
+
+

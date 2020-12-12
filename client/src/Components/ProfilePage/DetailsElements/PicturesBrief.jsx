@@ -18,7 +18,6 @@ export default function PicturesBrief({ pictures }) {
                     {index === max - 1 && <MoreImages>{imagesLeft}</MoreImages>}
                 </Element>
             )}
-
         </Container>
     )
 }

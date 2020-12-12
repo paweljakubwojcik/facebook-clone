@@ -44,6 +44,8 @@ export default function PostContent({ post, noImages }) {
     const [commentsVisible, setCommentsVisibility] = useState(initialCommentsVisibility)
     const [commentInputFocus, setCommentInputFocus] = useState(false)
 
+    const [foldUp, setFoldUp] = useState(false)
+
     const engageComment = () => {
         setCommentsVisibility(true)
         setCommentInputFocus(true)
@@ -65,7 +67,6 @@ export default function PostContent({ post, noImages }) {
 
             <PostCardBody className='postCard__body'>
                 {body}
-
             </PostCardBody>
 
             {renderImages && <ImagesContainer>{images.map(img => <PictureLink picture={img} key={img.id || img.name} />)}</ImagesContainer>}
