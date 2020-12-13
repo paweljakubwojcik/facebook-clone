@@ -137,7 +137,7 @@ query getUser(  $userId: ID! ){
     profileImage{
                 id
                 urls{
-                    id
+                   
                     small
                     medium
                     large
@@ -169,7 +169,7 @@ query getUser(  $userId: ID! ){
         username
         profileImage{
             urls{
-                id
+                 id
                 medium
             }
         }
@@ -194,6 +194,7 @@ export const LOGIN_USER = gql`
             createdAt
             profileImage{
                 urls{
+                    id
                     medium
                     large
                 }
@@ -224,6 +225,7 @@ export const REGISTER_USER = gql`
             createdAt
             profileImage{
                 urls{
+                    id
                     medium
                     large
                 }
@@ -298,6 +300,7 @@ export const ADD_PICTURE = gql`
             }){
             id
            urls{
+                id
                large
                medium
                small

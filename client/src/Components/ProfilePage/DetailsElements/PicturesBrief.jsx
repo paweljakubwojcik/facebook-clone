@@ -11,8 +11,8 @@ export default function PicturesBrief({ pictures }) {
     return (
         <Container>
             {pictures.slice(0, max).map((picture, index) =>
-                <Element>
-                    <PictureLink key={picture.id} picture={picture} />
+                <Element key={picture.id}>
+                    <PictureLink picture={picture} />
                 </Element>
             )}
         </Container>

@@ -35,13 +35,12 @@ module.exports = {
     Image: {
         post: async ({ post }) => {
             return await Post.findById(post)
+        },
+        urls: ({ urls, id }) => {
+            return { ...urls, id }
         }
     },
-    Urls: {
-        id: ({id}) => {
-           return id
-        }
-    }
+
 
 
 }
