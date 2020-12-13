@@ -16,6 +16,7 @@ query getPosts($userId:ID){
             username
             profileImage{
                     urls{
+                        id
                         small
                         medium
                     }
@@ -43,6 +44,7 @@ query getPosts($userId:ID){
         images{
             id
             urls{
+                id
                 small
                 medium
             }
@@ -65,6 +67,7 @@ export const ADD_POST = gql`
                 id
                 profileImage{
                         urls{
+                            id
                             small
                             medium
                         }
@@ -79,6 +82,7 @@ export const ADD_POST = gql`
                 username
                 profileImage{
                     urls{
+                        id
                         small
                     }
                 }
@@ -108,6 +112,7 @@ export const GET_USERS = gql`
     username
     profileImage{
         urls{
+            id
             medium
             small
             }
@@ -132,6 +137,7 @@ query getUser(  $userId: ID! ){
     profileImage{
                 id
                 urls{
+                    id
                     small
                     medium
                     large
@@ -152,6 +158,7 @@ query getUser(  $userId: ID! ){
         title
         createdAt
         urls{
+            id
             small
             medium
             large
@@ -162,6 +169,7 @@ query getUser(  $userId: ID! ){
         username
         profileImage{
             urls{
+                id
                 medium
             }
         }
@@ -249,6 +257,7 @@ export const GET_IMAGE = gql`
         createdAt
         uploadedBy
         urls{
+            id
             small
             medium
             large

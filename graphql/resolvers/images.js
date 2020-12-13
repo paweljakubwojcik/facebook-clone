@@ -36,6 +36,11 @@ module.exports = {
         post: async ({ post }) => {
             return await Post.findById(post)
         }
+    },
+    Urls: {
+        id: ({id}) => {
+           return id
+        }
     }
 
 

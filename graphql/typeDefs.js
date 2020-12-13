@@ -32,6 +32,7 @@ module.exports = gql`
         username:String!
     }
     type Urls{
+        id:ID
         small:String
         medium:String
         large:String
