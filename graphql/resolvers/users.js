@@ -124,10 +124,10 @@ module.exports = {
             const { _id } = await newUser.save()
 
             const randomTexts = [
-                "Check out my new fake picture",
-                "This is my first picture, uploaded automatically",
-                "My random generated picture from Unsplash.com",
-                "Really nice photo, check out the author",
+                "Check out my new fake pictures",
+                "Those are my first pictures, uploaded automatically",
+                "My random generated pictures from Unsplash.com",
+                "Really nice photos, check out the authors",
             ]
             //creating post associated with pictures
             const newPost = new Post({
