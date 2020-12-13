@@ -88,3 +88,15 @@ export const FilledButton = styled(SquareButton)`
     margin: .5em;
 
 `
+
+export const ShowableButton = styled(RoundButton)`
+    transition: opacity .3s , transform .3s;
+    opacity: 0;
+    transform:scale(0.1);
+
+    ${props => props.parent}:hover &,
+    ${props => props.parent}:focus & {
+        opacity: 1;
+        transform:scale(1);
+    }
+`

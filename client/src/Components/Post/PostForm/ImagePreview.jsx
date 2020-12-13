@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileImage, faTimes } from '@fortawesome/free-solid-svg-icons'
-import { RoundButton } from '../../General/Buttons'
-import { CSSTransition } from 'react-transition-group'
+import { ShowableButton } from '../../General/Buttons'
+
 
 export default function ImagePreview({ file, removeImage }) {
 
@@ -29,11 +29,10 @@ export default function ImagePreview({ file, removeImage }) {
                 <FontAwesomeIcon icon={faFileImage} />
             </PlaceHolder>
             <Image url={url} >
-                <CSSTransition in={hover} timeout={200} unmountOnExit>
-                    <XButton type='button' onClick={() => removeImage(file)}>
-                        <FontAwesomeIcon icon={faTimes} />
-                    </XButton>
-                </CSSTransition>
+                <XButton type='button' onClick={() => removeImage(file)} parent={Container}>
+                    <FontAwesomeIcon icon={faTimes} />
+                </XButton>
+
             </Image>
         </Container>
 
@@ -93,28 +92,10 @@ const Image = styled.div`
     
 `
 
-const XButton = styled(RoundButton)`
+const XButton = styled(ShowableButton)`
     position:absolute;
     top:2%;
     right:2%;
     z-index:3;
-
-    &.enter {
-        opacity: 0;
-        transform:scale(0.1);
-    }
-    &.enter-active {
-        opacity: 1;
-        transform:scale(1);
-        transition:transform 200ms, opacity 200ms;
-    }
-    &.exit {
-        opacity: 1;
-    }
-    &.exit-active {
-        opacity: 0;
-        transform:scale(0.1);
-        transition:transform 200ms, opacity 200ms;
-    }
 `
 

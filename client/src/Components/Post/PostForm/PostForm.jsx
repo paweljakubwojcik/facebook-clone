@@ -4,7 +4,7 @@ import { AuthContext } from '../../../Context/auth'
 import { useForm } from '../../../Util/Hooks/useForm'
 import { useCreatePost } from '../../../Util/Hooks/useCreatePost'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFileImage, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 import ScrollContainer from './ScrollContainer'
 import Avatar from '../../General/Avatar'

@@ -1,24 +1,38 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
 
+import { UserMatchContext } from './Profile'
+import { ShowableButton } from '../General/Buttons'
 import Avatar from '../General/Avatar'
 
 export default function TopPanel({ loading, user, width }) {
+
+    const isViewerTheOwner = useContext(UserMatchContext)
+
     return (
         <Container>
             {user &&
                 <>
                     <GradientContainer img={user?.backgroundImage?.urls?.medium} >
                         <BackgroundImage img={user?.backgroundImage?.urls?.large || null} width={width} >
-
-                        <BackgroundLink to={`/image/${user?.backgroundImage?.id}`}> </BackgroundLink>
+                            <BackgroundLink to={`/image/${user?.backgroundImage?.id}`}></BackgroundLink>
+                            {isViewerTheOwner && <EditButton parent={BackgroundImage}>
+                                <FontAwesomeIcon icon={faEdit} />
+                            </EditButton>}
                         </BackgroundImage>
                     </GradientContainer>
                     <User>
-                    <AvatarLink to={`/image/${user?.profileImage?.id}`}>
-                            <Avatar image={user?.profileImage?.urls?.large} large />
-                        </AvatarLink>
+                        <AvatarContainer>
+                            <AvatarLink to={`/image/${user?.profileImage?.id}`}>
+                                <Avatar image={user?.profileImage?.urls?.large} large />
+                            </AvatarLink>
+                            {isViewerTheOwner && <EditButton parent={AvatarContainer}>
+                                <FontAwesomeIcon icon={faEdit} />
+                            </EditButton>}
+                        </AvatarContainer>
                         <h2>{user?.username}</h2>
                     </User>
                 </>}
@@ -36,9 +50,6 @@ const Container = styled.div`
     width:100%;
     height:fit-content;
     background-color:${props => props.theme.primaryElementColor};
-
-
-
 `
 
 const User = styled.div`
@@ -84,12 +95,17 @@ const GradientContainer = styled.div`
     
 `
 
-const AvatarLink = styled(Link)`
+const AvatarContainer = styled.div`
         position:absolute;
         bottom:100%;
         left:50%;
         z-index:3;
         transform: translate(-50%, 1.2em);
+
+`
+
+const AvatarLink = styled(Link)`
+        
 `
 
 const BackgroundLink = styled(Link)`
@@ -120,4 +136,12 @@ const BackgroundImage = styled.div`
         height:30vw;
     }
 
+`
+
+const EditButton = styled(ShowableButton)`
+    position:absolute;
+    bottom:.5em;
+    right:.5em;
+    z-index:4;
+    
 `
