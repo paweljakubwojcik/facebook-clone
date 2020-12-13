@@ -4,8 +4,9 @@ import PropTypes from 'prop-types'
 
 import { GenericButton } from '../General/Buttons'
 
+const maxImages = 9;
 export default function ImagesContainer({ children, noCompensation }) {
-
+    
     const [fold, setFold] = useState(false)
     const [compensativePadding, setPadding] = useState(null)
     const container = useRef(null)
@@ -16,7 +17,7 @@ export default function ImagesContainer({ children, noCompensation }) {
     }, [container])
 
     useEffect(() => {
-        if (children.length > 9)
+        if (children.length > maxImages)
             setFold(true)
         else
             setFold(false)
@@ -24,12 +25,12 @@ export default function ImagesContainer({ children, noCompensation }) {
 
 
     const foldedContent = (
-        children.slice(0, 9).map((child, index) =>
+        children.slice(0, maxImages).map((child, index) =>
             <ImageElement>
                 {child}
-                {index === 8 &&
+                {index === maxImages - 1 &&
                     <MoreImages onClick={() => setFold(false)}>
-                        {children.length - 9}
+                    {children.length - maxImages}
                     </MoreImages>}
             </ImageElement>
         )
@@ -47,7 +48,7 @@ export default function ImagesContainer({ children, noCompensation }) {
             <ImageContainer ref={container} com={noCompensation ? '' : compensativePadding}>
                 {fold ? foldedContent : unfoldedContent}
             </ImageContainer>
-            {!fold && children.length > 9 && <GenericButton onClick={() => setFold(true)} style={{ marginLeft: 'auto', marginRight: 'auto' }}>show less</GenericButton>}
+            {!fold && children.length > maxImages && <GenericButton onClick={() => setFold(true)} style={{ marginLeft: 'auto', marginRight: 'auto' }}>show less</GenericButton>}
         </>
     )
 }
