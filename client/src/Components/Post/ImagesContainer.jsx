@@ -26,7 +26,7 @@ export default function ImagesContainer({ children, noCompensation }) {
 
     const foldedContent = (
         children.slice(0, maxImages).map((child, index) =>
-            <ImageElement>
+            <ImageElement key={child.key}>
                 {child}
                 {index === maxImages - 1 &&
                     <MoreImages onClick={() => setFold(false)}>
@@ -38,7 +38,7 @@ export default function ImagesContainer({ children, noCompensation }) {
 
     const unfoldedContent = (
         <>
-            {children.map(child => <ImageElement>{child}</ImageElement>)}
+            {children.map(child => <ImageElement key={child.key}>{child}</ImageElement>)}
 
         </>
     )
@@ -54,7 +54,7 @@ export default function ImagesContainer({ children, noCompensation }) {
 }
 
 ImagesContainer.propTypes = {
-    children: PropTypes.arrayOf([PropTypes.element]),
+    children: PropTypes.arrayOf(PropTypes.element),
     noCompensation: PropTypes.bool,
 }
 
