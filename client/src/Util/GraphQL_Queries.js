@@ -16,7 +16,6 @@ query getPosts($userId:ID){
             username
             profileImage{
                     urls{
-                        id
                         small
                         medium
                     }
@@ -312,3 +311,34 @@ export const ADD_PICTURE = gql`
     }
 
 `
+
+export const UPDATE_USER = gql`
+mutation updateUser(
+    $field:String!
+    $newValue:String!
+){
+    updateUser(field: $field, newValue: $newValue){
+        id
+        email
+        username
+        backgroundImage{
+            id
+            post{
+                id
+            }
+            urls{
+                id
+                small
+                medium
+                large
+            }
+        }
+        profileImage{
+            urls{
+                id
+                medium
+                large
+                }
+            }
+    }
+}`

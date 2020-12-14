@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,10 +7,14 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { UserMatchContext } from './Profile'
 import { ShowableButton } from '../General/Buttons'
 import Avatar from '../General/Avatar'
+import ChangeImageForm from './ChangeImageForm'
 
 export default function TopPanel({ loading, user, width }) {
 
     const isViewerTheOwner = useContext(UserMatchContext)
+
+    const [profileForm, toggleProfileForm] = useState(false)
+    const [backgroundForm, toggleBackgroundForm] = useState(false)
 
     return (
         <Container>
@@ -19,22 +23,28 @@ export default function TopPanel({ loading, user, width }) {
                     <GradientContainer img={user?.backgroundImage?.urls?.medium} >
                         <BackgroundImage img={user?.backgroundImage?.urls?.large || null} width={width} >
                             <BackgroundLink to={`/image/${user?.backgroundImage?.id}`}></BackgroundLink>
-                            {isViewerTheOwner && <EditButton parent={BackgroundImage}>
-                                <FontAwesomeIcon icon={faEdit} />
-                            </EditButton>}
+                            {isViewerTheOwner &&
+                                <EditButton parent={BackgroundImage} onClick={() => toggleBackgroundForm(true)} >
+                                    <FontAwesomeIcon icon={faEdit} />
+                                </EditButton>
+                            }
                         </BackgroundImage>
                     </GradientContainer>
+                    {backgroundForm && <ChangeImageForm toggleForm={toggleBackgroundForm} user={user} type='background' />}
                     <User>
                         <AvatarContainer>
                             <AvatarLink to={`/image/${user?.profileImage?.id}`}>
                                 <Avatar image={user?.profileImage?.urls?.large} large />
                             </AvatarLink>
-                            {isViewerTheOwner && <EditButton parent={AvatarContainer}>
-                                <FontAwesomeIcon icon={faEdit} />
-                            </EditButton>}
+                            {isViewerTheOwner &&
+                                <EditButton parent={AvatarContainer} onClick={() => toggleProfileForm(true)}>
+                                    <FontAwesomeIcon icon={faEdit} />
+                                </EditButton>
+                            }
                         </AvatarContainer>
                         <h2>{user?.username}</h2>
                     </User>
+                    {profileForm && <ChangeImageForm toggleForm={toggleProfileForm} user={user} type='profile' />}
                 </>}
 
         </Container >

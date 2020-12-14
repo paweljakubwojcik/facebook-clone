@@ -10,11 +10,17 @@ export const useCreatePost = (values, callback) => {
 
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState(null)
+    const [uploadedPictures, setUploadedPictures] = useState([])
 
     const [deletePost] = useMutation(DELETE_POST)
 
     const [createImage] = useMutation(ADD_PICTURE, {
+        update: (cache, { data: { uploadPicture } }) => {
+            const newImage = uploadPicture.id
+            setUploadedPictures(p => [...p, newImage])
+        },
         onError: (error) => {
+            console.log(error)
             throw error
         }
     })
@@ -34,6 +40,7 @@ export const useCreatePost = (values, callback) => {
                 },
             })
         } catch (error) {
+            console.log(error)
             throw error
         }
 
@@ -56,10 +63,14 @@ export const useCreatePost = (values, callback) => {
                 proxy.writeQuery({ query: GET_POSTS, data: { getPosts: updatedPosts } })
                 callback()
             } catch (error) {
-                console.log(error)
                 setErrors(error)
-                //deleting unsuccesfull post to prevent leackage of data
-                deletePost({ variables: { postId: createPost.id } })
+                try {
+                    //deleting unsuccesfull post to prevent leackage of data
+                    await deletePost({ variables: { postId: createPost.id } })
+                } catch (error) {
+                    throw error
+                }
+                throw error
             } finally {
                 setLoading(false)
             }
@@ -67,6 +78,7 @@ export const useCreatePost = (values, callback) => {
         onError(error) {
             setLoading(false)
             setErrors(error)
+            throw error
         },
         variables: { body }
     })
@@ -76,5 +88,5 @@ export const useCreatePost = (values, callback) => {
         uploadPost()
     }
 
-    return [createPost, errors, loading]
+    return { createPost, errors, loading, uploadedPictures }
 }

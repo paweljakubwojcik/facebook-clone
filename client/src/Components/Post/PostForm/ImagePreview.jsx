@@ -8,7 +8,6 @@ import { ShowableButton } from '../../General/Buttons'
 export default function ImagePreview({ file, removeImage }) {
 
     const [url, setUrl] = useState(null)
-    const [hover, setHover] = useState(false)
 
     const fileReader = new FileReader();
     fileReader.onload = () => {
@@ -24,7 +23,7 @@ export default function ImagePreview({ file, removeImage }) {
 
     return (
 
-        <Container onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onTouchStart={() => setHover(hover => !hover)}>
+        <Container >
             <PlaceHolder>
                 <FontAwesomeIcon icon={faFileImage} />
             </PlaceHolder>

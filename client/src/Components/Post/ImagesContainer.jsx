@@ -54,7 +54,7 @@ export default function ImagesContainer({ children, noCompensation }) {
 }
 
 ImagesContainer.propTypes = {
-    children: PropTypes.arrayOf(PropTypes.element),
+    children: PropTypes.arrayOf(PropTypes.element).isRequired,
     noCompensation: PropTypes.bool,
 }
 

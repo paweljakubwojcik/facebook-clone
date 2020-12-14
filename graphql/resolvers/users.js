@@ -6,6 +6,7 @@ const { UserInputError } = require('apollo-server')
 const { SECRET_KEY } = require('../../config')
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
 const { generateRandomPhoto } = require('../../utils/randomPhoto')
+const checkAuth = require('../../utils/checkAuth')
 
 const User = require('../../models/User')
 const Image = require('../../models/Image')
@@ -161,7 +162,16 @@ module.exports = {
             }
         },
         async updateSettings(_, { setting, newValue }, context, info) {
-            //TODO: updating settings
+            const { id } = checkAuth(context)
+            const user = await User.findById(id)
+            user.settings = { ...user.settings, [setting]: newValue }
+            return await user.save()
+        },
+        async updateUser(_, { field, newValue }, context) {
+            const { id } = checkAuth(context)
+            const user = await User.findByIdAndUpdate(id, { [field]: newValue }, { new: true, useFindAndModify: false })
+            console.log(user)
+            return user
         }
     },
     Query: {

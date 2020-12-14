@@ -2,21 +2,15 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-export default function PictureLink({ picture, fullSize }) {
+export default function PictureLink({ picture, fullSize, ...rest }) {
 
 
-    const render = fullSize ? (
-        <PictureContainer to={`/image/${picture.id}`}>
-            <PictureFullSize src={picture.urls.medium} />
-        </PictureContainer>
-    ) : (
-            <PictureContainer to={`/image/${picture.id}`}>
-                <Picture img={picture.urls.medium}></Picture>
-            </PictureContainer>
-        )
+    const render = fullSize ? (<PictureFullSize src={picture.urls.medium} />) : (<Picture img={picture.urls.medium} />)
 
     return (
-        render
+        <PictureContainer to={`/image/${picture.id}`} {...rest}>
+            { render}
+        </PictureContainer>
     )
 }
 
@@ -26,11 +20,14 @@ const PictureContainer = styled(Link)`
     width:100%;
     overflow:hidden;
     box-shadow:${props => props.theme.standardShadow};
+    &:hover{
+        cursor:pointer;
+    }
 `
 const Picture = styled.div`
     background-position:center;
     background-size:cover;
-    background-image: url(${props => props.img.replace('(', '\\(').replace(')', '\\)') } );
+    background-image: url(${props => props.img.replace('(', '\\(').replace(')', '\\)')} );
     width:100%;
     padding-bottom:100%;
     transition: transform .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);

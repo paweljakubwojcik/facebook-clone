@@ -130,6 +130,7 @@ module.exports = gql`
         likeComment(postId:ID!,commentId:ID!):Post!
        
         updateSettings(setting:String!,newValue:String!):User!
+        updateUser(field:String!, newValue:String!):User!
         
         uploadPicture(ImageInput:ImageInput!):Image!
     }

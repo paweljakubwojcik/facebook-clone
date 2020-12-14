@@ -33,10 +33,22 @@ export const useForm = (callback, initialState = {}) => {
         setValues({ ...values, [key]: filteredValues })
     }
 
+    /**
+     * add a value to state
+     * @param {Obj} value {name: value}
+     */
+    const addValue = (value) => {
+        const key = Object.keys(value)[0]
+        setValues({ ...values, ...value })
+        console.log(values)
+    }
+
+
     return {
         onChange,
         onSubmit,
         values,
         removeValue,
+        addValue,
     }
 }

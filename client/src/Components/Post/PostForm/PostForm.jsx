@@ -1,10 +1,8 @@
-import React, { useContext, useState, useRef } from 'react'
+import React, { useContext, useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { AuthContext } from '../../../Context/auth'
 import { useForm } from '../../../Util/Hooks/useForm'
 import { useCreatePost } from '../../../Util/Hooks/useCreatePost'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 import ScrollContainer from './ScrollContainer'
 import Avatar from '../../General/Avatar'
@@ -12,7 +10,7 @@ import FormButton from '../../General/FormButton'
 import AddButton from './AddButton'
 import ImagePreview from './ImagePreview'
 import ImagesContainer from '../ImagesContainer'
-import { RoundButton } from '../../General/Buttons'
+import ModalForm from '../../General/ModalForm'
 
 export default function PostForm({ toggleForm }) {
     const initialState = {
@@ -26,12 +24,10 @@ export default function PostForm({ toggleForm }) {
     const [fileInputVisibility, setFileInputVis] = useState(false);
     const [fileInputHover, setFileInputHover] = useState(false);
     const fileInput = useRef(null)
-    const modal = useRef(null)
-
 
     const { onChange, onSubmit, values, removeValue } = useForm(createPostCallback, initialState)
 
-    const [createPost, errors, loading] = useCreatePost(values, callback)
+    const {createPost, errors, loading} = useCreatePost(values, callback)
     //
     function callback() {
         values.body = ''
@@ -47,140 +43,110 @@ export default function PostForm({ toggleForm }) {
         removeValue({ images: image })
     }
 
-    const handleClick = (e) => {
-        if (e.target.classList.contains('modal')) {
-            toggleForm(false)
-        }
-    }
+    const handleBodyDrag = (e) => {
+        console.log(e)
 
-    const handleModalOnDrag = (e) => {
-        if (modal.current === e.target)
+        if (e.type === 'dragenter')
+            setFileInputVis(true)
+        if (e.type === 'dragleave' && !e.relatedTarget)
             setFileInputVis(false)
     }
+
+    useEffect(() => {
+        document.body.addEventListener('dragleave', handleBodyDrag)
+        document.body.addEventListener('dragenter', handleBodyDrag)
+
+        return () => {
+            document.body.removeEventListener('dragenter', handleBodyDrag)
+            document.body.removeEventListener('dragleave', handleBodyDrag)
+        }
+    }, [])
+
 
     const placeholder = values.images.length === 0 ?
         `Whats on your mind, ${username}?` :
         `Write something about ${values.images.length === 1 ? 'this picture' : 'those pictures'}`
 
     return (
-        <Modal className='modal'
-            ref={modal}
-            onClick={handleClick}
-            onDragEnter={() => { setFileInputVis(true) }}
-            onDragLeave={handleModalOnDrag}>
-            <Form onSubmit={onSubmit} onChange={onChange}>
-                <Header>
-                    <h2>Let's fake some posts</h2>
-                    <XButton onClick={() => toggleForm(false)}>
-                        <FontAwesomeIcon icon={faTimes} />
-                    </XButton>
-                </Header>
-                <div className='userInfo'>
-                    <Avatar image={avatar} />
-                    <h3>{username}</h3>
-                    <AddButton
-                        style={{ marginLeft: 'auto' }}
-                        type='button'
-                        onClick={(e) => { fileInput.current.click(); e.target.blur() }}
-                    />
-                </div>
+        <ModalForm
+            onChange={onChange}
+            onSubmit={onSubmit}
+            header={'Let\'s fake some posts'}
+            toggleForm={toggleForm}
+        >
+            <UserInfo className='userInfo'>
+                <Avatar image={avatar} />
+                <h3>{username}</h3>
+                <AddButton
+                    style={{ marginLeft: 'auto' }}
+                    type='button'
+                    onClick={(e) => { fileInput.current.click(); e.target.blur() }}
+                />
+            </UserInfo>
 
-                <InputWrapper onDragEnter={() => { setFileInputVis(true) }}>
-                    <TextArea
-                        aria-label='post'
-                        autoFocus
-                        name="body"
-                        id="body"
-                        placeholder={placeholder} />
-                    <FileInput
-                        ref={fileInput}
-                        visibility={fileInputVisibility ? 1 : 0}
-                        name='images'
-                        id="file"
-                        type='file'
-                        multiple
-                        accept='image/*'
-                        onChange={() => { setFileInputVis(false); setFileInputHover(false) }}
-                        onDragEnter={() => { setFileInputHover(true) }}
-                        onDragLeave={() => { setFileInputHover(false) }} />
-                    <Label visibility={fileInputVisibility ? 1 : 0}
-                        hover={fileInputHover ? 1 : 0}
-                        htmlFor='images'> Drop images here</Label>
-                </InputWrapper>
-                <ScrollContainer >
-                    <ImagesContainer noCompensation>
-                        {values.images && values.images.map(image => <ImagePreview file={image} key={image.name} removeImage={removeImage} />)}
-                    </ImagesContainer>
-                </ScrollContainer>
+            <InputWrapper >
+                <TextArea
+                    aria-label='post'
+                    autoFocus
+                    name="body"
+                    id="body"
+                    placeholder={placeholder} />
+                <FileInput
+                    ref={fileInput}
+                    visibility={fileInputVisibility ? 1 : 0}
+                    name='images'
+                    id="file"
+                    type='file'
+                    multiple
+                    accept='image/*'
+                    onChange={() => { setFileInputVis(false); setFileInputHover(false) }}
+                    onDragEnter={() => { setFileInputHover(true) }}
+                    onDragLeave={() => { setFileInputHover(false) }} />
+                <Label visibility={fileInputVisibility ? 1 : 0}
+                    hover={fileInputHover ? 1 : 0}
+                    htmlFor='images'> Drop images here</Label>
+            </InputWrapper>
+            <ScrollContainer >
+                <ImagesContainer noCompensation>
+                    {values.images && values.images.map(image => <ImagePreview file={image} key={image.name} removeImage={removeImage} />)}
+                </ImagesContainer>
+            </ScrollContainer>
 
-                {errors && <ErrorMessage>There was a problem during faking your status, please try later</ErrorMessage>}
+            {errors && <ErrorMessage>There was a problem during faking your status, please try later</ErrorMessage>}
 
-                <FormButton
-                    primary
-                    inactive={values.body.trim().length === 0}
-                    loading={loading}
-                    loadingMessage={'Posting'}
-                    style={{ flexShrink: '0' }}
-                >Post
-                </FormButton>
-
-            </Form>
-        </Modal>
+            <FormButton
+                primary
+                inactive={values.body.trim().length === 0}
+                loading={loading}
+                loadingMessage={'Posting'}
+                style={{ flexShrink: '0' }}
+            >Post</FormButton>
+        </ModalForm>
     )
 }
 
 
 
 // ----------------------- styles here ----------------------------------------------
-const Modal = styled.div`
-    position:fixed;
-    top:0;
-    left:0;
-    z-index:10;
-    width:100vw;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background-color:#00000044;
-    overflow-y:auto;
-`
+
 
 const ErrorMessage = styled.p`
     color:#c22c2c;
     font-size:.8em;
 `
 
-const Form = styled.form`
-    margin:100px 0;
+const UserInfo = styled.div`
+
     display:flex;
-    flex-direction:column;
-    align-items:center;
-    background-color:${props => props.theme.primaryElementColor};
-    padding: 1em 2em;
-    width:500px;
-    border-radius:.5em;
-    h2{
-        padding:.6em;
-        text-align:center;
-        border-bottom:solid 1px #ffffff22;
-        width:100%;
-    }
-    h3{
-        margin:.5em;
-    }
-    .userInfo{
-        display:flex;
         width:100%;
         align-items:center;
         margin:.5em;
+
+    h3{
+        margin:.5em;
     }
 `
-const Header = styled.div`
-    width:100%;
-    position:relative;
 
-`
 
 const TextArea = styled.textarea`
         resize: none;
@@ -236,11 +202,5 @@ const InputWrapper = styled.div`
    
 `
 
-const XButton = styled(RoundButton)`
-    position:absolute;
-    right:0;
-    bottom:5px;
-
-`
 
 

@@ -14,7 +14,9 @@ export default function Post({ postId }) {
 
     return (
         <PostWrapper>
+            {loading && <p>Loading...</p>}
             {post && <PostContent post={post} noImages />}
+            
         </PostWrapper>
     )
 }
@@ -24,7 +26,7 @@ const PostWrapper = styled.div`
 
     position:relative;
     margin-top:60px;
-    padding:.5em;
+    padding:2em .5em;
     background-color:${props => props.theme.primaryElementColor};
     width:400px;
     overflow-y:auto;
@@ -49,6 +51,7 @@ query getPost($postId:ID!){
                 username
                 profileImage{
                         urls{
+                           
                             small
                             medium
                         }

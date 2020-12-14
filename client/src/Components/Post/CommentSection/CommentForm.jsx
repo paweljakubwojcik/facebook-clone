@@ -36,9 +36,13 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
     useEffect(() => {
         resizableInput.current.style.height = '1px'
         resizableInput.current.style.height = resizableInput.current.scrollHeight + 'px'
+
+    }, [body])
+
+    useEffect(() => {
         if (inputFocus)
             resizableInput.current.focus()
-    }, [body, inputFocus])
+    }, [inputFocus])
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -113,11 +117,15 @@ const CommentInput = styled.textarea`
     transition: background-color .3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter .3s;
     &:focus{
         filter:opacity(1);
+        
     }
     &:hover{
         background-color:${props => props.theme.secondaryElementHover};
         filter:opacity(1);
         cursor:pointer;
+    }
+    &:focus:hover{
+        cursor:text;
     }
 
 
