@@ -1,11 +1,7 @@
-import { useState, useContext } from "react"
-import { ADD_POST, GET_POSTS, ADD_PICTURE, DELETE_POST } from '../GraphQL_Queries'
-import { useMutation, gql } from '@apollo/client'
-import { FirebaseContext } from '../../Firebase/FirebaseContext'
+import { useState } from "react"
+import { ADD_POST, GET_POSTS, DELETE_POST } from '../GraphQL_Queries'
+import { useMutation } from '@apollo/client'
 import { useLocation } from 'react-router-dom'
-
-import { useCreateImage } from './useCreateImage'
-
 
 
 /**
