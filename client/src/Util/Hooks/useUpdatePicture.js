@@ -20,6 +20,7 @@ export const useUpdatePicture = (values, callback, field) => {
     const [updateUser] = useMutation(UPDATE_USER, {
         update: async (_, { data: { updateUser: user } }) => {
             setLoading(false)
+            localStorage.setItem('avatar', user.profileImage?.urls?.medium)
             await callback(user)
         },
         onError: (e) => {

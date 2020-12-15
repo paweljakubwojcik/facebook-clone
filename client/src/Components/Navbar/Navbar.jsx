@@ -1,6 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import PropsTypes from 'prop-types'
 import { Link, useLocation } from 'react-router-dom'
+import { useLazyQuery } from '@apollo/client'
+import { GET_USER } from '../../Util/GraphQL_Queries'
 
 import styled from 'styled-components'
 
@@ -20,19 +22,28 @@ export default function Navbar({ setForm }) {
     const location = useLocation()
 
 
+    const [getUser, { data: { getUser: userData } = {} }] = useLazyQuery(GET_USER, {
+        variables: {
+            userId: user?.id
+        }
+    })
+
+    useEffect(() => {
+        if (user)
+            getUser()
+    }, [user])
+
     //navbar shouldn't be rendered on login page
     const shouldRender = location.pathname !== '/' || !!user
 
     const isCovered = location.pathname.split('/').some(el => el === 'image')
 
-    const profileImage = localStorage.getItem('avatar')
-
     const loggingButtons = (
         <>
-            <Link to={`/`} onClick={setForm.bind(this, 'login')}>
+            <Link to={{ pathname: `/`, state: 'login' }} >
                 <FormButton >Login</FormButton>
             </Link>
-            <Link to={`/`} onClick={setForm.bind(this, 'register')}>
+            <Link to={{ pathname: `/`, state: 'register' }} >
                 <FormButton >Register</FormButton>
             </Link>
         </>
@@ -52,10 +63,10 @@ export default function Navbar({ setForm }) {
             {user ? (
                 <>
                     <MediaQuery width={740}>
-                        <UserButton user={{ ...user, profileImage: { urls: { small: profileImage } } }}
+                        {userData && <UserButton user={userData}
                             notLink as={Link}
                             to={`/profile/${user.id}`}
-                        />
+                        />}
                     </MediaQuery>
                     <Menu />
                 </>

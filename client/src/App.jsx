@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { LastLocationProvider } from 'react-router-last-location';
 
@@ -16,22 +16,20 @@ export default function App() {
 
   //checks if user is logged in
   const { user } = useContext(AuthContext)
-  const [whichForm, setForm] = useState('login')
-
 
   return (
     <FirebaseProvider>
       <ThemesProvider >
         <Router>
           <LastLocationProvider>
-            <NavBar setForm={setForm} />
+            <NavBar />
             <Route exact path='/' >
               {user ? (
                 <>
                   <Home />
                 </>
               ) : (
-                  <Login whichForm={whichForm} setForm={setForm} />
+                  <Login />
                 )}
             </Route>
             <Route exact path='/profile/:id' >

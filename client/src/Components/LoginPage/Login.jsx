@@ -1,17 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import { useLocation } from 'react-router-dom'
 
 import UnsplashImage from './UnsplashImage'
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
 
-export default function Login({ whichForm, setForm }) {
+export default function Login() {
 
+    const { state } = useLocation()
+
+    const [whichForm, setForm] = useState(state || 'login')
 
     return (
         <TwoColumnLayout>
             <UnsplashImage></UnsplashImage>
-            { whichForm === 'login' && <LoginForm setForm={setForm} />}
+            {whichForm === 'login' && <LoginForm setForm={setForm} />}
             {whichForm === 'register' && <RegisterForm setForm={setForm} />}
         </TwoColumnLayout>
     )

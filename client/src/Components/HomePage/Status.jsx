@@ -12,9 +12,7 @@ export default function Status() {
 
     const { user: { username } } = useContext(AuthContext)
     const profileImage = localStorage.getItem('avatar')
-
     const [isFormOpen, toggleForm] = useState(false)
-
 
     const handleOnclick = () => {
         toggleForm(true)
