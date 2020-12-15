@@ -2,30 +2,44 @@ import { useState } from "react"
 import { UPDATE_USER } from '../GraphQL_Queries'
 import { useMutation } from '@apollo/client'
 import { useCreatePost } from './useCreatePost'
+import { useCreateImage } from './useCreateImage'
 
-
+const defaultBody = 'I\'ve just changed my profile picture'
 
 export const useUpdatePicture = (values, callback, field) => {
 
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(false)
 
-    const [updateUser, { error }] = useMutation(UPDATE_USER, {
-        update: () => {
+    const [updateUser] = useMutation(UPDATE_USER, {
+        update: async () => {
             setLoading(false)
-            callback()
+            await callback()
         },
         onError: (e) => {
+            setError(e)
             throw e
         }
     })
 
-    const { createPost, uploadedPictures } = useCreatePost({ body: values.body, images: values.image },
-        () => {
-            console.log(uploadedPictures)
-            updateUser({ variables: { field: field, newValue: uploadedPictures[0] } })
-        })
+    const { storePicture } = useCreateImage((uploadedPicture) => {
+        console.log(uploadedPicture)
+        updateUser(
+            {
+                variables: {
+                    field: field,
+                    newValue: uploadedPicture.id
+                }
+            }
+        )
+    })
 
-    const updatePicture = (type) => {
+    const { createPost } = useCreatePost({ body: values.body || defaultBody }, async (post)=>{
+        await storePicture(values.image[0], post.id)
+    })
+
+    
+    const updatePicture = () => {
         setLoading(true)
 
         if (typeof values.image !== 'string')
@@ -37,5 +51,5 @@ export const useUpdatePicture = (values, callback, field) => {
     }
 
 
-    return { updatePicture, loading }
+    return { updatePicture, loading, error }
 }

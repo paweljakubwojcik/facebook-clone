@@ -73,27 +73,30 @@ export const ADD_POST = gql`
                     }
             }
             comments {
-            id
-            body
-            username
-            user{
                 id
+                body
                 username
-                profileImage{
-                    urls{
-                        id
-                        small
+                user{
+                    id
+                    username
+                    profileImage{
+                        urls{
+                            id
+                            small
+                        }
                     }
                 }
+                createdAt
+                id
+                likes{
+                    username
+                    id
+                }
+                likesCount
             }
-            createdAt
-            id
-            likes{
-                username
+            images{
                 id
             }
-            likesCount
-        }
         }
     }
 `

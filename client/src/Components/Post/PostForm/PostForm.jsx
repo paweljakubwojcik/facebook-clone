@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { AuthContext } from '../../../Context/auth'
 import { useForm } from '../../../Util/Hooks/useForm'
 import { useCreatePost } from '../../../Util/Hooks/useCreatePost'
+import { useCreateImage } from '../../../Util/Hooks/useCreateImage'
 
 import ScrollContainer from './ScrollContainer'
 import Avatar from '../../General/Avatar'
@@ -27,9 +28,14 @@ export default function PostForm({ toggleForm }) {
 
     const { onChange, onSubmit, values, removeValue } = useForm(createPostCallback, initialState)
 
-    const {createPost, errors, loading} = useCreatePost(values, callback)
-    //
-    function callback() {
+    const { createPost, errors, loading } = useCreatePost(values, callback)
+    const { storePictures } = useCreateImage()
+
+
+    async function callback(post) {
+        //storing all pictures in firebase storage, throws error 
+        await storePictures(values.images, post.id)
+
         values.body = ''
         toggleForm(false)
     }
@@ -44,8 +50,6 @@ export default function PostForm({ toggleForm }) {
     }
 
     const handleBodyDrag = (e) => {
-        console.log(e)
-
         if (e.type === 'dragenter')
             setFileInputVis(true)
         if (e.type === 'dragleave' && !e.relatedTarget)

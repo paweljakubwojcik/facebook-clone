@@ -30,7 +30,7 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
 
     const field = enumTypes[type]
 
-    const { updatePicture, errors, loading } = useUpdatePicture({ image, body }, callback, field)
+    const { updatePicture, loading } = useUpdatePicture({ image, body }, callback, field)
 
     function addPicture() {
         updatePicture()
@@ -43,7 +43,6 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
     const isFile = typeof image === 'object' && !!image
 
     useEffect(() => {
-        console.log(typeof image)
         if (!isFile) {
             const preview = user.images.filter(img => img.id === image)[0]?.urls?.medium
             setPreview(preview)
@@ -61,11 +60,11 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
         return () => {
 
         }
-    }, [image])
+    }, [image, isFile])
 
 
     return (
-        <ModalForm header={'Update profile picture'}
+        <ModalForm header={`Update ${type} picture`}
             toggleForm={toggleForm}
             onChange={onChange}
             onSubmit={onSubmit}

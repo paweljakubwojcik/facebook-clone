@@ -1,67 +1,50 @@
 import { useState, useContext } from "react"
 import { ADD_POST, GET_POSTS, ADD_PICTURE, DELETE_POST } from '../GraphQL_Queries'
-import { useMutation } from '@apollo/client'
+import { useMutation, gql } from '@apollo/client'
 import { FirebaseContext } from '../../Firebase/FirebaseContext'
+import { useLocation } from 'react-router-dom'
+
+import { useCreateImage } from './useCreateImage'
 
 
+
+/**
+ * @param {{body:string}} values - values for query
+ * @param {(createdPost)=>void} callback - callback to execute efter uploading post , it's called with created post as an argument
+ */
 export const useCreatePost = (values, callback) => {
-    const { storage } = useContext(FirebaseContext)
-    const storageImagesRef = storage.ref().child('images')
 
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState(null)
-    const [uploadedPictures, setUploadedPictures] = useState([])
 
     const [deletePost] = useMutation(DELETE_POST)
 
-    const [createImage] = useMutation(ADD_PICTURE, {
-        update: (cache, { data: { uploadPicture } }) => {
-            const newImage = uploadPicture.id
-            setUploadedPictures(p => [...p, newImage])
-        },
-        onError: (error) => {
-            console.log(error)
-            throw error
-        }
-    })
+    const { body } = values
+    const { pathname } = useLocation()
+    const userId = pathname.split('/')[2]
 
-    const storePicture = async (image, post) => {
-        try {
-            const storageRef = storageImagesRef.child(`${image.name}`);
-            await storageRef.put(image)
-            const url = await storageRef.getDownloadURL()
-            await createImage({
-                variables: {
-                    small: url,
-                    medium: url,
-                    large: url,
-                    post: post,
-                    title: image.name
-                },
-            })
-        } catch (error) {
-            console.log(error)
-            throw error
-        }
-
-    }
-
-    const { body, images } = values
 
     const [uploadPost] = useMutation(ADD_POST, {
         //executed if mutation is succesful
-        async update(proxy, { data: { createPost } }) {
+        async update(proxy, { data: { createPost: newPost } }) {
             try {
                 const cacheData = proxy.readQuery({
                     query: GET_POSTS,
-                    variables: {}
+                    variables: { userId }
                 })
-                //storing all pictures in firebase storage, throws error 
-                await Promise.all(images?.map(img => storePicture(img, createPost.id)))
+
+                // calling callback, after this point there should not be any errors
+                if (callback)
+                    await callback(newPost)
+
                 //updating cache
                 const updatedPosts = [createPost, ...cacheData.getPosts]
-                proxy.writeQuery({ query: GET_POSTS, data: { getPosts: updatedPosts } })
-                callback()
+                proxy.writeQuery({
+                    query: GET_POSTS,
+                    variables: { userId },
+                    data: { getPosts: updatedPosts }
+                })
+
             } catch (error) {
                 setErrors(error)
                 try {
@@ -88,5 +71,5 @@ export const useCreatePost = (values, callback) => {
         uploadPost()
     }
 
-    return { createPost, errors, loading, uploadedPictures }
+    return { createPost, errors, loading }
 }
