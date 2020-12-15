@@ -6,15 +6,21 @@ import { useCreateImage } from './useCreateImage'
 
 const defaultBody = 'I\'ve just changed my profile picture'
 
+/**
+ * 
+ * @param {} values 
+ * @param {function} callback - function to be called after updating picture
+ * @param {'profileImage' or 'backgroundImage'} field 
+ */
 export const useUpdatePicture = (values, callback, field) => {
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
 
     const [updateUser] = useMutation(UPDATE_USER, {
-        update: async () => {
+        update: async (_, { data: { updateUser: user } }) => {
             setLoading(false)
-            await callback()
+            await callback(user)
         },
         onError: (e) => {
             setError(e)
@@ -23,7 +29,6 @@ export const useUpdatePicture = (values, callback, field) => {
     })
 
     const { storePicture } = useCreateImage((uploadedPicture) => {
-        console.log(uploadedPicture)
         updateUser(
             {
                 variables: {
@@ -34,11 +39,11 @@ export const useUpdatePicture = (values, callback, field) => {
         )
     })
 
-    const { createPost } = useCreatePost({ body: values.body || defaultBody }, async (post)=>{
+    const { createPost } = useCreatePost({ body: values.body || defaultBody }, async (post) => {
         await storePicture(values.image[0], post.id)
     })
 
-    
+
     const updatePicture = () => {
         setLoading(true)
 
