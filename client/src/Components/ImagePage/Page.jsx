@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
@@ -6,11 +6,11 @@ import { useQuery } from '@apollo/client'
 
 import { GET_IMAGE } from '../../Util/GraphQL_Queries'
 
-import Post from './Post';
+
 import Arrows from './Arrows';
 
 
-export default function ImagePage() {
+export default function ImagePage({ setPostId }) {
 
     const { id } = useParams()
 
@@ -22,21 +22,27 @@ export default function ImagePage() {
 
     const allImages = image ? image.post.images.map(image => image.id) : null
 
+    useEffect(() => {
+        if (image)
+            setPostId(image.post.id)
+    }, [image])
+
     const Image = ({ image }) => {
         return (
-            <ImageContainer image={image.urls.small} >
+            <>
                 <Arrows currentImage={id} allImages={allImages} />
                 <Img src={image.urls.large} />
-            </ImageContainer>
+            </>
         )
     }
 
     return (
 
-        <>
+
+        <ImageContainer image={image?.urls.small} >
             { image && <Image image={image} />}
-            { image && <Post postId={image.post.id}></Post>}
-        </>
+        </ImageContainer>
+
     )
 }
 

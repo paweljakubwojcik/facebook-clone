@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom'
 import { useLastLocation } from 'react-router-last-location';
@@ -7,13 +7,14 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 import { RoundButton } from '../General/Buttons'
 import Page from './Page';
+import Post from './Post';
 
 
 
 export default function ImagePage() {
 
     const lastLocation = useLastLocation();
-
+    const [postId, setPostId] = useState(null)
 
     return (
         <Wrapper>
@@ -22,9 +23,10 @@ export default function ImagePage() {
             </XButton>
             <Router basename='image'>
                 <Route path='/:id'>
-                    <Page />
+                    <Page setPostId={setPostId} />
                 </Route>
             </Router>
+            { postId && <Post postId={postId}></Post>}
         </Wrapper>
     )
 }
