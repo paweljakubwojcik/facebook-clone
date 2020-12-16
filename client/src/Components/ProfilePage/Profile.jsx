@@ -12,6 +12,7 @@ import ProfileMenu from './ProfileMenu';
 import Posts from './Posts';
 import TopPanel from './TopPanel';
 import Pictures from './Pictures';
+import NotFound from './NotFound';
 
 const width = 1000
 
@@ -47,12 +48,12 @@ export default function Profile() {
         <UserMatchContext.Provider value={isViewerTheOwner}>
             <TopPanel user={user} width={width} />
             <ProfileMenu width={width} contentType={contentType} setContentType={setContentType} user={user}></ProfileMenu>
-            <Content>
+            {user ? <Content>
                 {contentType === contentTypes.POSTS && user && <Posts user={user} setContentType={setContentType} />}
                 {contentType === contentTypes.INFO && user && <><h2>{'INFO'}</h2><div style={{ height: 1000 }}></div></>}
                 {contentType === contentTypes.PICTURES && user && <Pictures images={user.images} />}
                 {contentType === contentTypes.FRIENDS && user && <h2>{'FRIENDS'}</h2>}
-            </Content>
+            </Content> : <NotFound />}
         </UserMatchContext.Provider>
     )
 }

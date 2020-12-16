@@ -64,6 +64,7 @@ const ImageContainer = styled.div`
     align-items: center;
     background-color:#000000;
     border-right: solid 1px ${props => props.theme.borderColor};
+    box-shadow: inset -10px 0 20px -5px ${props => props.theme.shadowColor};
 
     &:after{
         content:'';
