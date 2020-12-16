@@ -25,7 +25,7 @@ export default function ImagePage({ setPostId }) {
     useEffect(() => {
         if (image)
             setPostId(image.post.id)
-    }, [image])
+    }, [image, setPostId])
 
     const Image = ({ image }) => {
         return (
@@ -41,6 +41,7 @@ export default function ImagePage({ setPostId }) {
 
         <ImageContainer image={image?.urls.small} >
             { image && <Image image={image} />}
+            {loading && <p>Loading</p>}
         </ImageContainer>
 
     )

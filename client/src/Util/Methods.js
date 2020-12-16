@@ -42,3 +42,17 @@ export const shuffleArray = (array) => {
 
     return array;
 }
+
+export const generateRandomName = () => Math.random().toString(36).slice(-7) + (+new Date()).toString().slice(-5);
+
+export function readFileAsync(file) {
+    return new Promise((resolve, reject) => {
+        let reader = new FileReader();
+
+        reader.onload = () => {
+            resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    })
+}

@@ -34,7 +34,7 @@ export const useCreatePost = (values, callback) => {
                     await callback(newPost)
 
                 //updating cache
-                const updatedPosts = [createPost, ...cacheData.getPosts]
+                const updatedPosts = [newPost, ...cacheData.getPosts]
                 proxy.writeQuery({
                     query: GET_POSTS,
                     variables: { userId },
@@ -44,8 +44,9 @@ export const useCreatePost = (values, callback) => {
             } catch (error) {
                 setErrors(error)
                 try {
+                    console.log(newPost)
                     //deleting unsuccesfull post to prevent leackage of data
-                    await deletePost({ variables: { postId: createPost.id } })
+                    await deletePost({ variables: { postId: newPost.id } })
                 } catch (error) {
                     throw error
                 }

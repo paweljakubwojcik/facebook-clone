@@ -15,8 +15,7 @@ import Menu from './Menu'
 
 import { AuthContext } from '../../Context/auth'
 
-//TODO: replace set Form prop with state in router
-export default function Navbar({ setForm }) {
+export default function Navbar() {
 
     const { user } = useContext(AuthContext)
     const location = useLocation()
@@ -31,7 +30,7 @@ export default function Navbar({ setForm }) {
     useEffect(() => {
         if (user)
             getUser()
-    }, [user])
+    }, [user, getUser])
 
     //navbar shouldn't be rendered on login page
     const shouldRender = location.pathname !== '/' || !!user
