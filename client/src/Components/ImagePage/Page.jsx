@@ -8,6 +8,7 @@ import { GET_IMAGE } from '../../Util/GraphQL_Queries'
 
 
 import Arrows from './Arrows';
+import ImageLoader from '../General/ImageLoader'
 
 
 export default function ImagePage({ setPostId }) {
@@ -36,14 +37,15 @@ export default function ImagePage({ setPostId }) {
         )
     }
 
+    console.log({ loading, error, image })
     return (
-
 
         <ImageContainer image={image?.urls.small} >
             { image && <Image image={image} />}
-            {loading && <p>Loading</p>}
+            { loading && <ImageLoader />}
+            {error && <p> there have been an error {error.message}</p>}
+            { !image && <ImageLoader> Can't find this picture </ImageLoader>}
         </ImageContainer>
-
     )
 }
 

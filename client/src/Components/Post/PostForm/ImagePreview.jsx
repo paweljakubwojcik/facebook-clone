@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFileImage, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { ShowableButton } from '../../General/Buttons'
+import ImageLoader from '../../General/ImageLoader'
 
 
 export default function ImagePreview({ file, removeImage }) {
@@ -24,14 +25,11 @@ export default function ImagePreview({ file, removeImage }) {
     return (
 
         <Container >
-            <PlaceHolder>
-                <FontAwesomeIcon icon={faFileImage} />
-            </PlaceHolder>
+            <ImageLoader />
             <Image url={url} >
                 <XButton type='button' onClick={() => removeImage(file)} parent={Container}>
                     <FontAwesomeIcon icon={faTimes} />
                 </XButton>
-
             </Image>
         </Container>
 
@@ -46,16 +44,7 @@ const showUp = keyframes`
 }
 `
 
-const pulse = keyframes`
-    0%{
-        filter: opacity(0);
-    },
-    100% {
-        filter:opacity(1);
-    }
-}
 
-`
 
 const Container = styled.div`
     position:relative;
@@ -64,21 +53,7 @@ const Container = styled.div`
 
 `
 
-const PlaceHolder = styled.div`
-font-size:5em;
-    width:100%;
-    height:100%;
-    position:absolute;
-    z-index:-1;
-    left:0;
-    top:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:${props => props.theme.secondaryFontColor};
-    animation: ${pulse} 1s infinite alternate;
 
-`
 
 const Image = styled.div`
     object-fit: cover;
