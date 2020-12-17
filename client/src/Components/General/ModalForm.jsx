@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { RoundButton } from './Buttons'
@@ -39,8 +39,8 @@ export default function ModalForm({ toggleForm, onSubmit, onChange, header, chil
 }
 
 ModalForm.propTypes = {
-    header: PropTypes.string.isRequired, 
-    toggleForm : PropTypes.func.isRequired,
+    header: PropTypes.string.isRequired,
+    toggleForm: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
 }

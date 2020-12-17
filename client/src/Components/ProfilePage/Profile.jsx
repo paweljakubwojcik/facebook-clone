@@ -25,7 +25,7 @@ export default function Profile() {
 
     const isViewerTheOwner = context.user?.id === id
 
-    const { data: { getUser: user } = {} } = useQuery(GET_USER, {
+    const { data: { getUser: user } = {}, loading, error } = useQuery(GET_USER, {
         variables: { userId: id },
     })
 
@@ -46,14 +46,17 @@ export default function Profile() {
 
     return (
         <UserMatchContext.Provider value={isViewerTheOwner}>
-            <TopPanel user={user} width={width} />
-            <ProfileMenu width={width} contentType={contentType} setContentType={setContentType} user={user}></ProfileMenu>
-            {user ? <Content>
-                {contentType === contentTypes.POSTS && user && <Posts user={user} setContentType={setContentType} />}
-                {contentType === contentTypes.INFO && user && <><h2>{'INFO'}</h2><div style={{ height: 1000 }}></div></>}
-                {contentType === contentTypes.PICTURES && user && <Pictures images={user.images} />}
-                {contentType === contentTypes.FRIENDS && user && <h2>{'FRIENDS'}</h2>}
-            </Content> : <NotFound />}
+            {user && <>
+                <TopPanel user={user} width={width} />
+                <ProfileMenu width={width} contentType={contentType} setContentType={setContentType} user={user}></ProfileMenu>
+                <Content>
+                    {contentType === contentTypes.POSTS && <Posts user={user} setContentType={setContentType} />}
+                    {contentType === contentTypes.INFO && <><h2>{'INFO'}</h2><div style={{ height: 1000 }}></div></>}
+                    {contentType === contentTypes.PICTURES && <Pictures images={user.images} />}
+                    {contentType === contentTypes.FRIENDS && <h2>{'FRIENDS'}</h2>}
+                </Content>
+            </>}
+            {error && <NotFound />}
         </UserMatchContext.Provider>
     )
 }

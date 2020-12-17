@@ -14,14 +14,17 @@ export default function NotFound() {
 
 const Container = styled.div`
     position:relative;
-    width:500px;
+    max-width:500px;
     margin: auto;
+    color:${props => props.theme.primaryColor};
     p{
         font-weight:bold;
         position:absolute;
         left:50%;
-        bottom:20%;
+        top:80%;
         transform:translate(-50%,0);
+        font-size:2em;
+        
     }
 
 `

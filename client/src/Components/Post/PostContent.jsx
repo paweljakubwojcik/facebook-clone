@@ -29,7 +29,6 @@ export default function PostContent({ post, noImages }) {
         likesCount,
         comments,
         likes,
-        privacy,
         isDeletable,
         user: { id: userId, username, profileImage },
         images,
@@ -43,8 +42,6 @@ export default function PostContent({ post, noImages }) {
     const initialCommentsVisibility = commentsCount > 3 ? false : true;
     const [commentsVisible, setCommentsVisibility] = useState(initialCommentsVisibility)
     const [commentInputFocus, setCommentInputFocus] = useState(false)
-
-    const [foldUp, setFoldUp] = useState(false)
 
     const engageComment = () => {
         setCommentsVisibility(true)

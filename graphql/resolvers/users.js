@@ -110,6 +110,10 @@ module.exports = {
                 conversations: [],
                 notifications: [],
                 invitations: [],
+                settings: {
+                    prefferedTheme: null,
+                    postDefaultPrivacy: null
+                },
                 info: {
                     joiningDate: new Date().toLocaleDateString(),
                     birthDate: null,
@@ -118,7 +122,6 @@ module.exports = {
                     location: null,
                     job: null,
                 },
-                isOnline: true,
                 lastTimeOnline: new Date().toISOString(),
             })
             //saving user in DB  //TODO error handling? 

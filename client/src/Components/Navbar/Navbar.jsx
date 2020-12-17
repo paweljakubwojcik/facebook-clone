@@ -8,7 +8,7 @@ import styled from 'styled-components'
 
 import FormButton from '../General/FormButton'
 import UserButton from '../General/UserButton'
-import logo from '../../styles/svg/logo.svg'
+import { ReactComponent as Logo } from '../../styles/svg/logo.svg'
 
 
 import Menu from './Menu'
@@ -52,7 +52,7 @@ export default function Navbar() {
         <NavBar className='navBar' isCovered={isCovered}>
             <header>
                 <Link to='/'>
-                    <img src={logo} alt="Fake Facebook" />
+                    <Logo className='img' />
                     <MediaQuery width={400}>
                         {!isCovered && <h1>Fakebook</h1>}
                     </MediaQuery>
@@ -94,6 +94,7 @@ const NavBar = styled.nav`
     background-color: ${props => props.theme.primaryElementColor}; 
     border-bottom: solid 1px ${props => props.theme.borderColor};
     box-shadow: ${props => props.theme.standardShadow};
+    
 
     header{
         margin: .3em auto .3em 1em;
@@ -104,8 +105,9 @@ const NavBar = styled.nav`
         h1{
             margin: 0 1em;
         }
-        img{
+        .img{
             height:40px;
+            color:${props => props.theme.primaryColor};
             ${props => props.isCovered ? 'position:absolute; z-index:3; transform:translateX(100%);' : ''}
             transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
