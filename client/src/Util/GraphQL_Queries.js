@@ -194,6 +194,9 @@ export const LOGIN_USER = gql`
             username
             email
             createdAt
+            settings{
+                preferredTheme
+            }
             profileImage{
                 urls{
                     id

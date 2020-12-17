@@ -46,12 +46,11 @@ function authReducer(state, action) {
 function AuthProvider(props) {
     const [state, dispatch] = useReducer(authReducer, initialState)
 
-
-
     const login = (userData) => {
+        console.log(userData)
         localStorage.setItem('token', userData.token)
         localStorage.setItem('avatar', userData.profileImage.urls.medium)
-        localStorage.setItem('preferredTheme', userData.settings?.preferredTheme ? userData.preferredTheme : '')
+        localStorage.setItem('preferredTheme', userData.settings?.preferredTheme ? userData.settings.preferredTheme : '')
         dispatch({
             type: 'LOGIN',
             payload: userData

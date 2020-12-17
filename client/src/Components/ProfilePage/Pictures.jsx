@@ -21,6 +21,11 @@ const ImageContainer = styled.div`
     width:100%;
     margin: .5em 0;
 
+    @media (max-width:600px){
+        grid-template-columns: repeat(auto-fit,minmax(45%,1fr));
+        grid-template-rows: repeat(auto-fit,200px);
+    }
+
 `
 const ImageElement = styled.div`
    display:flex;

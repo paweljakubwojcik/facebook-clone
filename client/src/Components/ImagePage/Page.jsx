@@ -39,7 +39,6 @@ export default function ImagePage({ setPostId }) {
         <ImageContainer image={image?.urls.small} >
             { image && <Image image={image} />}
             { loading && <ImageLoader />}
-            { error && <p> there have been an error {error.message}</p>}
             { !image && !loading && <ImageLoader> Can't find this picture </ImageLoader>}
         </ImageContainer>
     )
@@ -54,6 +53,7 @@ const ImageContainer = styled.div`
     top:0;
     height:100vh;
     width:calc(100% - 400px);
+    
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -61,6 +61,11 @@ const ImageContainer = styled.div`
     background-color:#000000;
     border-right: solid 1px ${props => props.theme.borderColor};
     box-shadow: inset -10px 0 20px -5px ${props => props.theme.shadowColor};
+
+    @media (max-width:600px){
+        width:100%;
+        height:100vh;
+    }
 
     &:after{
         content:'';

@@ -29,15 +29,14 @@ export default function Profile() {
         variables: { userId: id },
     })
 
-
     const [contentType, setContentType] = useState('posts')
 
-
+    const isMobileDevice = window.matchMedia('(max-width:600px)').matches;
     useEffect(() => {
         //scrolling to the right position after page has load aka user data has been loaded
-        if (user) {
+        if (user && !isMobileDevice) {
             window.scrollTo({
-                top: 150,
+                top: 120,
                 behavior: "smooth",
             })
         }

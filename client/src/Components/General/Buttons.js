@@ -87,6 +87,12 @@ export const FilledButton = styled(SquareButton)`
     }
     margin: .5em;
 
+    @media (max-width:600px){
+        & > span {
+            display:none;
+        }
+    }
+
 `
 
 export const ShowableButton = styled(RoundButton)`

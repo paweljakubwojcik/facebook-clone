@@ -8,7 +8,6 @@ import { FilledButton } from '../General/Buttons'
 import RadioButtons from './RadioButtons'
 import UserButton from '../General/UserButton'
 
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserPlus, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
@@ -55,17 +54,17 @@ export default function ProfileMenu({ width, contentType, setContentType, user }
                                 <UserButton className='user' onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }) }} user={user} notLink />}
                         </CSSTransition>
                     </TransitionGroup>
-
-                    {!isViewerTheOwner && context.user && <Buttons>
-                        <FilledButton>
-                            <FontAwesomeIcon icon={faUserPlus} />
-                            Add to friends
+                    {!isViewerTheOwner && context.user &&
+                        <Buttons>
+                            <FilledButton>
+                                <FontAwesomeIcon icon={faUserPlus} />
+                                <span>Add to friends</span>
                             </FilledButton>
-                        <FilledButton>
-                            <FontAwesomeIcon icon={faEnvelope} />
-                            Send message
-                        </FilledButton>
-                    </Buttons>}
+                            <FilledButton>
+                                <FontAwesomeIcon icon={faEnvelope} />
+                                <span>Send message</span>
+                            </FilledButton>
+                        </Buttons>}
                 </Menu>
             </ContainerBar>
         </>
@@ -131,5 +130,8 @@ const Menu = styled.div`
 const Buttons = styled.div`
     display:flex;
     margin-left:auto;
+    @media (max-width:600px){
+       margin-right:5px;
+    }
 `
 

@@ -69,6 +69,12 @@ const Container = styled.div`
     grid-template-columns: 1fr 60%;
     column-gap:1em;
     width:100%;
+
+
+    @media (max-width:600px){
+        grid-template-columns: 1fr;
+    }
+
 `
 const Details = styled.div`
     & > *{

@@ -6,7 +6,7 @@ import PostContent from '../Post/PostContent'
 
 export default function Post({ postId }) {
 
-    const { loading, error, data: { getPost: post } = {} } = useQuery(GET_POST, {
+    const { loading, data: { getPost: post } = {} } = useQuery(GET_POST, {
         variables: {
             postId
         }
@@ -16,7 +16,7 @@ export default function Post({ postId }) {
         <PostWrapper>
             {loading && <p>Loading...</p>}
             {post && <PostContent post={post} noImages />}
-            
+
         </PostWrapper>
     )
 }
@@ -31,6 +31,12 @@ const PostWrapper = styled.div`
     width:400px;
     overflow-y:auto;
     overflow-x:hidden;
+
+    @media (max-width:600px){
+        width:100%;
+        margin-top:0;
+        height:fit-content;
+    }
 
 `
 

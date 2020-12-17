@@ -89,6 +89,7 @@ const NavBar = styled.nav`
     padding-left:1%;
 
     display:flex;
+  
     width:100%;
     align-items:center;
     background-color: ${props => props.theme.primaryElementColor}; 

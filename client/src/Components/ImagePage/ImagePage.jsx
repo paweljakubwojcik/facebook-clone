@@ -35,7 +35,6 @@ export default function ImagePage() {
 const Wrapper = styled.div`
     display:flex;
     pointer-events:none;
-    grid-auto-flow:row;
     position:absolute;
     top:0;
     left:0;
@@ -43,6 +42,10 @@ const Wrapper = styled.div`
     height:100vh;
     & > * {
         pointer-events:all;
+    }
+    @media (max-width:600px){
+        flex-direction:column;
+         height:fit-content;
     }
 
 `
