@@ -1,5 +1,4 @@
-import { useContext } from 'react'
-import { AuthContext } from '../../Context/auth'
+
 import { gql, useQuery, useMutation } from '@apollo/client'
 
 
@@ -9,10 +8,10 @@ const UPDATE_SETTINGS = gql`
         $setting:String!
         $newValue:String!
     ){
-        updateUser(setting: $setting, newValue: $newValue){
+        updateSettings(setting: $setting, newValue: $newValue){
             id
             settings{
-                prefferedTheme
+                preferredTheme
                 postDefaultPrivacy
             }
         }
@@ -23,13 +22,12 @@ const GET_USER_SETTINGS = gql`
         getUser( userId: $userId,) {
             id
             settings{
-                prefferedTheme
+                preferredTheme
                 postDefaultPrivacy
             }
         }
 }
 `
-
 
 export const useUserSettings = (userId) => {
 

@@ -1,35 +1,26 @@
-import React, { createContext, useReducer } from 'react'
+import React, { createContext, useContext, useReducer, useEffect } from 'react'
 import * as themes from '../styles/themes'
+import { AuthContext } from './auth'
 
 import { ThemeProvider } from 'styled-components'
+import { useUserSettings } from '../Util/Hooks/useUserSettings';
 
-
+//TODO: incorporate enum types into themes #graphql
 
 const systemPrefferedTheme = window.matchMedia('(prefers-color-scheme:light)');
-
-const preferedTheme = localStorage.getItem('preferredTheme') || (systemPrefferedTheme.matches ? 'lightTheme' : 'darkTheme')
-
-const initialState = {
-    theme: themes[preferedTheme],
-    currentTheme: preferedTheme
-}
-
-document.body.style.backgroundColor = themes[initialState.currentTheme].backgroundColor
-document.body.style.color = themes[initialState.currentTheme].primaryFontColor
-
 
 const ThemeContext = createContext({
     currentTheme: null,
     changeTheme: (themeType) => { },
 })
 
-function authReducer(state, action) {
+function themeReducer(state, action) {
     switch (action.type) {
         case 'CHANGE_THEME':
             return {
                 ...state,
                 theme: action.payload.theme,
-                currentTheme: action.payload.name
+                themeName: action.payload.themeName
             }
         default:
             return state;
@@ -37,26 +28,47 @@ function authReducer(state, action) {
 }
 
 function ThemesProvider(props) {
-    const [state, dispatch] = useReducer(authReducer, initialState)
 
-    const { currentTheme } = state
+    const { user } = useContext(AuthContext)
+    const { settings } = useUserSettings(user?.id)
+
+    const preferedTheme = settings?.preferredTheme || (systemPrefferedTheme.matches ? 'lightTheme' : 'darkTheme')
+
+    const initialState = {
+        theme: themes[preferedTheme],
+        themeName: preferedTheme
+    }
+
+
+    const [state, dispatch] = useReducer(themeReducer, initialState)
+    const { themeName } = state
+    document.body.style.backgroundColor = themes[themeName].backgroundColor
+    document.body.style.color = themes[themeName].primaryFontColor
+
 
     const changeTheme = (themeType) => {
         document.body.style.backgroundColor = themes[themeType].backgroundColor
         document.body.style.color = themes[themeType].primaryFontColor
-        localStorage.setItem('preferredTheme', themeType)
         dispatch({
             type: 'CHANGE_THEME',
             payload: {
                 theme: themes[themeType],
-                name: themeType
+                themeName: themeType
             }
         })
     }
 
+    useEffect(() => {
+        if(settings?.preferredTheme)
+        changeTheme(settings?.preferredTheme)
+        return () => {
+
+        }
+    }, [settings])
+
 
     return (
-        <ThemeContext.Provider value={{ changeTheme, currentTheme }} {...props}>
+        <ThemeContext.Provider value={{ changeTheme, themeName }} {...props}>
             <ThemeProvider theme={state.theme}>
                 {props.children}
             </ThemeProvider>

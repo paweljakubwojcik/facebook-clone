@@ -21,10 +21,9 @@ const Container = styled.div`
         font-weight:bold;
         position:absolute;
         left:50%;
-        top:80%;
+        top:90%;
         transform:translate(-50%,0);
         font-size:2em;
-        
     }
 
 `

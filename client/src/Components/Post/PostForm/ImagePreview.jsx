@@ -10,15 +10,14 @@ export default function ImagePreview({ file, removeImage }) {
 
     const [url, setUrl] = useState(null)
 
-    const fileReader = new FileReader();
-    fileReader.onload = () => {
-        const arrayBuffer = fileReader.result
-        const blob = new Blob([arrayBuffer], [file.type])
-        const blobUrl = URL.createObjectURL(blob)
-        setUrl(blobUrl)
-    }
-
     useEffect(() => {
+        const fileReader = new FileReader();
+        fileReader.onload = () => {
+            const arrayBuffer = fileReader.result
+            const blob = new Blob([arrayBuffer], [file.type])
+            const blobUrl = URL.createObjectURL(blob)
+            setUrl(blobUrl)
+        }
         fileReader.readAsArrayBuffer(file)
     }, [file])
 

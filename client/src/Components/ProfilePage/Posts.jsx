@@ -70,7 +70,6 @@ const Container = styled.div`
     column-gap:1em;
     width:100%;
 
-
     @media (max-width:600px){
         grid-template-columns: 1fr;
     }

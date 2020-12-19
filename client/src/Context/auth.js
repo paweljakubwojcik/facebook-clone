@@ -50,7 +50,6 @@ function AuthProvider(props) {
         console.log(userData)
         localStorage.setItem('token', userData.token)
         localStorage.setItem('avatar', userData.profileImage.urls.medium)
-        localStorage.setItem('preferredTheme', userData.settings?.preferredTheme ? userData.settings.preferredTheme : '')
         dispatch({
             type: 'LOGIN',
             payload: userData
@@ -59,7 +58,6 @@ function AuthProvider(props) {
     const logout = () => {
         localStorage.removeItem('token')
         localStorage.removeItem('avatar')
-        localStorage.removeItem('preferredTheme')
         dispatch({
             type: 'LOGOUT',
         })

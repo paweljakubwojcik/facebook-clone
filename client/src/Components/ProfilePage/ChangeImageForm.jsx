@@ -60,7 +60,7 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
         return () => {
 
         }
-    }, [image, isFile])
+    }, [image, isFile, user])
 
 
     return (

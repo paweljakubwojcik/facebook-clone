@@ -18,8 +18,8 @@ export default function InfoBrief({ info }) {
     const getBriefInfo = (wholeInfo) => {
         const info = Object.entries(wholeInfo)
         info.splice(0, 1)
-        //filter infos that are null
-        const infoThatIsNotNull = info.filter(info => info)
+        //filter infos that is null
+        const infoThatIsNotNull = info.filter(([key,info]) => info)
         // return 7 first elements from shufled array
         return shuffleArray(infoThatIsNotNull).splice(0, 7)
     }

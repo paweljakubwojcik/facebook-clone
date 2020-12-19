@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -24,7 +24,8 @@ const buttons = [
 ]
 
 export default function Menu() {
-
+    
+    const menu = useRef(null)
 
     const [activeButton, changeActive] = useState('')
 
@@ -33,14 +34,19 @@ export default function Menu() {
             changeActive('')
         else
             changeActive(e.target.value)
+
+
     }
 
     const closeMenu = (e) => {
+        
         if (!e.target.classList.contains('openMenu')
             && !e.target.classList.contains('menu')
             && !e.target.classList.contains('menu__button')
-            && !document.querySelector('.openMenu')?.contains(e.target))
+            && !menu.current?.contains(e.target)
+            && !e.target.classList.contains('radio_button')) {
             changeActive('')
+        }
     }
 
     useEffect(() => {
@@ -54,7 +60,7 @@ export default function Menu() {
     }, [activeButton])
 
     return (
-        <StyledMenu className='menu'>
+        <StyledMenu className='menu' ref={menu}>
             {buttons.map(({ value, icon }) =>
                 <MenuButton
                     className='menu__button'
