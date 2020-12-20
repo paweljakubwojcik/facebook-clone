@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import { useMutation } from '@apollo/client'
 import { useLocation } from 'react-router-dom'
 
@@ -43,9 +44,17 @@ export default function DeleteButton({ postId }) {
     }
 
     return (
-        <MenuButton onClick={handleOnClick} inactive={loading} className='postCard__button'>
+        <StyledMenuButton onClick={handleOnClick} inactive={loading} className='postCard__button'>
             <FontAwesomeIcon icon={faTrash} />
-            Delete post
-        </MenuButton>
+            <p>Delete post</p>
+        </StyledMenuButton>
     )
 }
+
+const StyledMenuButton = styled(MenuButton)`
+
+&:hover, &:focus {
+    color:${props => props.theme.errorColor};
+}
+
+`

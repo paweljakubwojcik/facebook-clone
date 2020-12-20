@@ -49,7 +49,7 @@ export default function ProfilePreview({ userId, buttons }) {
             {loading && <DotLoader />}
             {!loading && <Container >
                 <Avatar image={profileImage?.urls.medium} big className='avatar' />
-                <h4 className="username">{username}</h4>
+                <UserName>{username}</UserName>
                 <div className='infoContainer' >
                     <p>
                         faker since {info?.joiningDate}
@@ -116,22 +116,10 @@ const Container = styled.div`
     border-radius:inherit;
     overflow:hidden;
     cursor:default;
-
+    
     .avatar{
         grid-column:1;
         grid-row:1/3;
-    }
-
-    .username{
-        grid-column:2;
-        grid-row:1/2;
-        color: #fff;
-        margin:.5em 0em;
-        font-size:1em;
-        font-weight:bold;
-        min-width:100px;
-        text-align:left;
-        align-self:end;
     }
 
     p{
@@ -148,6 +136,20 @@ const Container = styled.div`
         width:max-content;
     }
 
-    
+`
+
+const UserName = styled.h4`
+
+        grid-column:2;
+        grid-row:1/2;
+        color: #fff;
+        margin:.5em 0em;
+        margin:0;
+        font-size:1em;
+        font-weight:bold;
+        min-width:100px;
+        text-align:left;
+        align-self:end;
+
 
 `

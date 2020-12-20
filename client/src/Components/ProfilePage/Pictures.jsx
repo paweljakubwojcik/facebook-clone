@@ -20,6 +20,7 @@ const ImageContainer = styled.div`
     gap:1em;
     width:100%;
     margin: .5em 0;
+    margin-bottom:10%;
 
     @media (max-width:600px){
         grid-template-columns: repeat(auto-fit,minmax(45%,1fr));

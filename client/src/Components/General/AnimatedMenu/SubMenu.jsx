@@ -3,9 +3,9 @@ import styled from 'styled-components'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
-import { RoundButton } from '../General/Buttons'
+import { RoundButton } from '../Buttons'
 
-import { menuOptions } from './menuOptions'
+import { menuOptions } from '../../Navbar/menuOptions'
 
 export default function SubMenu({title, children, setActive}) {
     return (

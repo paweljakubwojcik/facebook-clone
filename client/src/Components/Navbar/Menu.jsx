@@ -24,7 +24,7 @@ const buttons = [
 ]
 
 export default function Menu() {
-    
+
     const menu = useRef(null)
 
     const [activeButton, changeActive] = useState('')
@@ -39,12 +39,13 @@ export default function Menu() {
     }
 
     const closeMenu = (e) => {
-        
+
         if (!e.target.classList.contains('openMenu')
             && !e.target.classList.contains('menu')
             && !e.target.classList.contains('menu__button')
             && !menu.current?.contains(e.target)
-            && !e.target.classList.contains('radio_button')) {
+            && !e.target.classList.contains('radio_button')
+            && !e.target.localName === 'button') {
             changeActive('')
         }
     }

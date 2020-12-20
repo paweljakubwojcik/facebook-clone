@@ -11,6 +11,7 @@ export const darkTheme = {
     shadowColor: "#121215ba",
     standardShadow: "-5px 5px 20px -5px #121215ba",
     borderColor: "#333436",
+    errorColor: '#f75656',
 };
 
 export const lightTheme = {
@@ -26,4 +27,5 @@ export const lightTheme = {
     shadowColor: "#121215ba",
     standardShadow: "-5px 5px 20px -10px #12121599",
     borderColor: "#e3e4e6",
+    errorColor: '#f75656',
 };

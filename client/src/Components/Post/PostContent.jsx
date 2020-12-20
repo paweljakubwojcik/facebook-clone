@@ -25,6 +25,7 @@ export default function PostContent({ post, noImages }) {
     const { body,
         title,
         createdAt,
+        privacy,
         commentsCount,
         id,
         likesCount,
@@ -61,7 +62,7 @@ export default function PostContent({ post, noImages }) {
                     </h4>
                     <TimeStamp time={createdAt} />
                 </header>
-                {context?.user?.username === username && <PostOptions postId={id} isDeletable={isDeletable} />}
+                {context?.user?.username === username && <PostOptions post={{ privacy, id }} isDeletable={isDeletable} />}
             </PostCardHeader>
 
             <PostCardBody className='postCard__body'>

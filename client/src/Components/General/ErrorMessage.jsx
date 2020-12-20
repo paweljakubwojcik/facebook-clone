@@ -26,6 +26,6 @@ export default function ErrorMessage({ modal, textOnly, children }) {
 }
 
 const StyledErrorMessage = styled.p`
-    color:#f75656;
+    color:${props => props.theme.errorColor};
     font-size:.8em;
 `

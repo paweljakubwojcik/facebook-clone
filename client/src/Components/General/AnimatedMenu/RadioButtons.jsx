@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { MenuButton } from '../General/Buttons'
+import { MenuButton } from '../Buttons'
 
-export default function RadioButtons({ handleClick, buttons, name, icon, currentValue }) {
+export default function RadioButtons({ handleClick, buttons, name, icon, currentValue, ...rest }) {
 
     const RadioButton = ({ value, name }) => {
         return (
@@ -22,11 +22,11 @@ export default function RadioButtons({ handleClick, buttons, name, icon, current
     }
 
     return (
-        <RadioButtonsGroup>
-            <div className="label">
+        <RadioButtonsGroup {...rest}>
+            {name && <div className="label">
                 <FontAwesomeIcon className="icon" icon={icon} />
                 <h4> {name} </h4>
-            </div>
+            </div>}
 
             {buttons.map(({ key, value }) =>
                 <RadioButton
