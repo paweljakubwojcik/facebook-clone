@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink, } from '@apollo/client';
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
+import { offsetLimitPagination } from "@apollo/client/utilities"
 import { setContext } from "@apollo/client/link/context";
 
 
@@ -12,6 +13,11 @@ const cache = new InMemoryCache({
     typePolicies: {
         Urls: {
             merge: true,
+        },
+        Query: {
+            fields: {
+                getPosts: offsetLimitPagination(['userId'])
+            }
         }
     }
 })

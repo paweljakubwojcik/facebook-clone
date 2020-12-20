@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const GET_POSTS = gql`
-query getPosts($userId:ID){
-    getPosts(userId:$userId){
+query getPosts($userId:ID, $limit:Int!, $offset:Int!){
+    getPosts(userId:$userId, limit:$limit, offset:$offset){
         body
         title
         commentsCount

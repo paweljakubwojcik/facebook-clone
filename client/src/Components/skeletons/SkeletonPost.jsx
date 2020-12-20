@@ -22,7 +22,7 @@ const SkeletonHeader = styled(PostCardHeader)`
 
 function SkeletonPost() {
     return (
-        <ElementContainer noPadding>
+        <ElementContainer noPadding style={{ margin: '1em 0' }}>
             <SkeletonWrapper className={`skeleton-wrapper`}>
 
                 <SkeletonHeader>

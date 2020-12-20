@@ -16,11 +16,13 @@ query getUser(  $userId: ID! ){
     username
     backgroundImage{
         urls{
+            id
             medium
         }
     }
     profileImage{
         urls{
+            id
             medium
         }
     }

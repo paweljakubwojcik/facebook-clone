@@ -15,6 +15,8 @@ import ImagePreview from './ImagePreview'
 import ImagesContainer from '../ImagesContainer'
 import ModalForm from '../../General/ModalForm'
 
+//TODO: ustawienia prywatności takie fajne jak userMenu
+
 export default function PostForm({ toggleForm }) {
     const initialState = {
         body: '',
@@ -160,13 +162,13 @@ const UserInfo = styled.div`
         align-items:center;
         margin:.5em;
 
-    h3{
-        margin:0;
-    }
+    
 `
 
 const PrivacyContainer = styled.div`
-
+    h3{
+        margin:0;
+    }
     margin: 0 .5em;
 `
 const SelectInputContainer = styled.div`

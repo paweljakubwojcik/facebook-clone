@@ -1,28 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useQuery } from '@apollo/client'
 
 import PostsContainer from '../Post/PostsContainer'
 import ElementContainer from '../General/ElementContainer'
 import { GenericButton } from '../General/Buttons'
 import contentTypes from './contentTypes'
 
-
-import { GET_POSTS } from '../../Util/GraphQL_Queries'
 import InfoBrief from './DetailsElements/InfoBrief'
 import PicturesBrief from './DetailsElements/PicturesBrief'
 
 
 export default function Posts({ user, setContentType }) {
 
-    //gets every post written by user
-    const postsData = useQuery(GET_POSTS, {
-        variables: {
-            userId: user.id
-        }
-    })
 
-    
     return (
         <Container>
             <Details>
@@ -36,7 +26,7 @@ export default function Posts({ user, setContentType }) {
 
                 </DetailsElement>
             </Details>
-            <PostsContainer postsData={postsData} />
+            <PostsContainer userId={user.id} />
         </Container>
     )
 }

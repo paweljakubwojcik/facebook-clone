@@ -1,28 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useQuery } from '@apollo/client';
+
 
 
 import Status from './Status'
 import PostsContainer from '../Post/PostsContainer';
 import ContactList from './ContactList';
 
-import { GET_POSTS } from '../../Util/GraphQL_Queries'
-
-
-
 
 export default function Home() {
-
-  // without any variables it gets all posts from DB
-  const postsData = useQuery(GET_POSTS);
-
 
   return (
     <Container>
       <Feed>
         <Status />
-        <PostsContainer postsData={postsData} />
+        <PostsContainer />
       </Feed>
       <ContactList />
     </Container>
