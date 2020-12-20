@@ -23,6 +23,7 @@ import PictureLink from '../General/PictureLink'
 export default function PostContent({ post, noImages }) {
 
     const { body,
+        title,
         createdAt,
         commentsCount,
         id,
@@ -55,7 +56,8 @@ export default function PostContent({ post, noImages }) {
                 <Avatar image={profileImage?.urls?.small} />
                 <header>
                     <h4>
-                        <UserLink userId={userId}>{username}</UserLink>
+                        <UserLink userId={userId} style={{ marginRight: '0.3em' }}>{username}</UserLink>
+                        {title && <PostTitle>{title}</PostTitle>}
                     </h4>
                     <TimeStamp time={createdAt} />
                 </header>
@@ -104,7 +106,17 @@ export const PostCardHeader = styled.div`
         margin:  0 .5em;
         
     }
+    h4{
+        display:flex;
+        flex-wrap:wrap;
+    }
 `
+
+const PostTitle = styled.div`
+    font-weight:300;
+
+`
+
 export const PostCardBody = styled.div`
     width:100%;
     margin: 1em 0;

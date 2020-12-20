@@ -5,7 +5,7 @@ import PopUpElement from '../General/PopUpElement'
 import ProfilePreview from '../General/ProfilePreview'
 
 
-export default function UserLink({ userId, children }) {
+export default function UserLink({ userId, children, ...rest }) {
 
     const [isHovered, setHover] = useState(false)
 
@@ -19,7 +19,8 @@ export default function UserLink({ userId, children }) {
 
     return (
         <Container onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}>
+            onMouseLeave={handleMouseLeave}
+            {...rest}>
             <StyledLink to={`/profile/${userId}`}
             >
                 {children}

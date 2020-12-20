@@ -4,6 +4,7 @@ export const GET_POSTS = gql`
 query getPosts($userId:ID){
     getPosts(userId:$userId){
         body
+        title
         commentsCount
         id
         createdAt
@@ -16,6 +17,7 @@ query getPosts($userId:ID){
             username
             profileImage{
                     urls{
+                        id
                         small
                         medium
                     }
@@ -54,9 +56,10 @@ query getPosts($userId:ID){
 
 // graphQL query
 export const ADD_POST = gql`
-    mutation createPost( $body:String! ){
-        createPost( body:$body ){
+    mutation createPost( $body:String , $privacy:Privacy, $title:String){
+        createPost( body:$body,privacy:$privacy,title:$title ){
             body
+            title
             commentsCount
             id
             createdAt
@@ -173,6 +176,7 @@ query getUser(  $userId: ID! ){
             urls{
                  id
                 medium
+                small
             }
         }
     }

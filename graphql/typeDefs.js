@@ -5,7 +5,8 @@ module.exports = gql`
 
     type Post{
         id:ID!
-        body:String!
+        body:String
+        title:String
         createdAt:String!
         username:String!
         user:User!
@@ -13,7 +14,7 @@ module.exports = gql`
         likes:[Like]!
         commentsCount:Int!
         likesCount:Int!
-        privacy:String
+        privacy:Privacy
         isDeletable:Boolean
         images: [Image]
     }
@@ -62,7 +63,12 @@ module.exports = gql`
     }
     type Settings {
         preferredTheme: String,
-        postDefaultPrivacy: String,
+        postDefaultPrivacy: Privacy,
+    }
+    enum Privacy{
+        PUBLIC
+        PRIVATE
+        FRIENDS_ONLY
     }
     type Invitation {
         id:ID!
@@ -120,7 +126,7 @@ module.exports = gql`
         register(registerInput:RegisterInput): User!
         login(username: String!, password: String!): User!
         logout(userId:ID!): ID!
-        createPost(body:String!):Post!
+        createPost(body:String, title:String, privacy:Privacy):Post!
         deletePost(postId:ID!):String!
         
         createComment(postId:ID!,body:String!): Post!

@@ -9,6 +9,7 @@ export const useForm = (callback, initialState = {}) => {
     const [values, setValues] = useState(initialState)
 
     const onChange = (e) => {
+        console.log(values)
         if (e.target.type !== 'file')
             setValues({ ...values, [e.target.name]: e.target.value })
         else

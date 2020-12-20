@@ -137,6 +137,7 @@ query getUser(  $userId: ID! ){
     username
     profileImage{
         urls{
+            id
             small
             medium
         }

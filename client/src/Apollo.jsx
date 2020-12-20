@@ -11,7 +11,7 @@ const httpLink = createHttpLink({
 const cache = new InMemoryCache({
     typePolicies: {
         Urls: {
-            merge: true
+            merge: true,
         }
     }
 })

@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom'
 
 
 /**
- * @param {{body:string}} values - values for query
+ * @param {{body:string, title:string}} values - values for query
  * @param {(createdPost)=>void} callback - callback to execute efter uploading post , it's called with created post as an argument
  */
 export const useCreatePost = (values, callback) => {
@@ -15,7 +15,7 @@ export const useCreatePost = (values, callback) => {
 
     const [deletePost] = useMutation(DELETE_POST)
 
-    const { body } = values
+    const { body, title, privacy } = values
     const { pathname } = useLocation()
     const userId = pathname.split('/')[2]
 
@@ -44,7 +44,6 @@ export const useCreatePost = (values, callback) => {
             } catch (error) {
                 setErrors(error)
                 try {
-                    console.log(newPost)
                     //deleting unsuccesfull post to prevent leackage of data
                     await deletePost({ variables: { postId: newPost.id } })
                 } catch (error) {
@@ -60,7 +59,7 @@ export const useCreatePost = (values, callback) => {
             setErrors(error)
             throw error
         },
-        variables: { body }
+        variables: { body, title, privacy }
     })
 
     const createPost = () => {

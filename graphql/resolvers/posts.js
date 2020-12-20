@@ -29,18 +29,20 @@ module.exports = {
     },
 
     Mutation: {
-        async createPost(_, { body }, context) {
+        async createPost(_, { body, title, privacy = 'PUBLIC' }, context) {
             //check if user is authenitaced
             const user = checkAuth(context)
             //if check auth fails to confirm token, error is being thrown
             // so if get to this blok of code thats means [user] definetly exists
-
-            if (body.trim() === "") {
-                throw new Error('Post body must not be empty')
-            }
+            if (body && !title)
+                if (body.trim() === "") {
+                    throw new Error('Post body must not be empty')
+                }
 
             const newPost = new Post({
                 body,
+                title,
+                privacy,
                 user: user.id,
                 username: user.username,
                 createdAt: new Date().toISOString(),

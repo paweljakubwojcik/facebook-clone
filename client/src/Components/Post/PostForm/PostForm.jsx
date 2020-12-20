@@ -4,6 +4,8 @@ import { AuthContext } from '../../../Context/auth'
 import { useForm } from '../../../Util/Hooks/useForm'
 import { useCreatePost } from '../../../Util/Hooks/useCreatePost'
 import { useCreateImage } from '../../../Util/Hooks/useCreateImage'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye } from '@fortawesome/free-solid-svg-icons'
 
 import ScrollContainer from './ScrollContainer'
 import Avatar from '../../General/Avatar'
@@ -80,7 +82,19 @@ export default function PostForm({ toggleForm }) {
         >
             <UserInfo className='userInfo'>
                 <Avatar image={avatar} />
-                <h3>{username}</h3>
+                <PrivacyContainer>
+                    <h3>{username}</h3>
+                    <SelectInputContainer>
+                        <FontAwesomeIcon icon={faEye} style={{ fontSize: '.8em' }} />
+                        <SelectInput name={'privacy'}>
+                            <option value="PRIVATE">Private</option>
+                            <option value="PUBLIC">Public</option>
+                            <option value="FRIENDS_ONLY">Friends only</option>
+                        </SelectInput>
+                    </SelectInputContainer>
+
+                </PrivacyContainer>
+
                 <AddButton
                     style={{ marginLeft: 'auto' }}
                     type='button'
@@ -147,8 +161,41 @@ const UserInfo = styled.div`
         margin:.5em;
 
     h3{
-        margin:.5em;
+        margin:0;
     }
+`
+
+const PrivacyContainer = styled.div`
+
+    margin: 0 .5em;
+`
+const SelectInputContainer = styled.div`
+    display:flex;
+    align-items:center;
+    color: ${props => props.theme.secondaryFontColor};
+
+`
+
+const SelectInput = styled.select`
+
+    background-color:transparent;
+    font-family:inherit;
+    color:inherit;
+    border:none;
+    appearance: none;
+    font-weight:bold;
+    cursor: pointer;
+    position:relative;
+    &::after{
+        display:block;
+        
+        content:'p';
+        color:blue;
+    }
+    option{
+        background-color:transparent;
+    }
+
 `
 
 
