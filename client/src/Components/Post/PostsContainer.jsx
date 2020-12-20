@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useQuery } from '@apollo/client';
 
 import PostCard from './PostCard';
 import SkeletonPost from '../skeletons/SkeletonPost'
 import ErrorMessage from '../General/ErrorMessage'
+import NotFound from '../General/NotFound'
 import { GET_POSTS } from '../../Util/GraphQL_Queries'
 import { useIntersectionObserver } from '../../Util/Hooks/useIntersectionObserver';
 
@@ -14,22 +15,29 @@ export default function Posts({ userId }) {
         threshold: .7
     })
 
+    const [canFetchMore, setCanFetchMore] = useState(true)
+
     // without any variables it gets all posts from DB
     const { loading, error, data: { getPosts: posts } = {}, fetchMore } = useQuery(GET_POSTS, {
         variables: {
             userId,
             offset: 0,
-            limit: 3
+            limit: 6
         },
-        notifyOnNetworkStatusChange: true
+       
     });
     const isPostsEmpty = posts?.length === 0
 
-    function handleIntersect() {
+    async function handleIntersect() {
+
         fetchMore({
             variables: {
                 offset: posts?.length || 0
             }
+        }).then(({ data: { getPosts: newPosts } }) => {
+            //when all posts have been fetched
+            if (newPosts.length === 0)
+                setCanFetchMore(false)
         })
     }
 
@@ -43,9 +51,9 @@ export default function Posts({ userId }) {
         <PostsContainer>
             {posts && posts.map(post => <PostCard key={post.id} post={post} />)}
             {loading && [1, 2].map((key) => <SkeletonPost key={key} theme={'dark'} />)}
-            {error && <ErrorMessage>I'm sorry, I failed, couldn't find any posts {';('}</ErrorMessage>}
+            { error && <NotFound message={'Couldn\'t find any content'} />}
             {isPostsEmpty && <ErrorMessage>This faker haven't post anything yet {`;(`}</ErrorMessage>}
-            {!loading && !error && <Dummy ref={setRef}> {[1, 2].map((key) => <SkeletonPost key={key} theme={'dark'} />)}</Dummy>}
+            {!loading && !error && canFetchMore && <Dummy ref={setRef}> {[1, 2].map((key) => <SkeletonPost key={key} theme={'dark'} />)}</Dummy>}
         </PostsContainer>
     )
 }

@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import ElementContainer from './ElementContainer'
 import Avatar from './Avatar'
 import { FilledButton } from '../General/Buttons'
+import DotLoader from './DotLoader';
 
 const GET_USER_DETAILS = gql`
 query getUser(  $userId: ID! ){
@@ -37,7 +38,7 @@ query getUser(  $userId: ID! ){
 
 export default function ProfilePreview({ userId, buttons }) {
 
-    const { data: { getUser: { profileImage, username, backgroundImage, info } = {} } = {} } = useQuery(GET_USER_DETAILS, {
+    const { data: { getUser: { profileImage, username, backgroundImage, info } = {} } = {}, loading } = useQuery(GET_USER_DETAILS, {
         variables: {
             userId
         }
@@ -45,9 +46,9 @@ export default function ProfilePreview({ userId, buttons }) {
 
     return (
         <ElementContainer >
-            <Container >
+            {loading && <DotLoader />}
+            {!loading && <Container >
                 <Avatar image={profileImage?.urls.medium} big className='avatar' />
-
                 <h4 className="username">{username}</h4>
                 <div className='infoContainer' >
                     <p>
@@ -62,7 +63,7 @@ export default function ProfilePreview({ userId, buttons }) {
                     }
                 </div>
                 <LittleBackground image={backgroundImage?.urls.medium} />
-            </Container>
+            </Container>}
         </ElementContainer>
     )
 }
@@ -104,7 +105,7 @@ const Container = styled.div`
     position:relative;
     z-index:4;
     min-height:120px;
-    //min-width:300px;
+    min-width:200px;
     display:grid;
     column-gap:.7em;
     grid-template-columns:1fr 2fr;

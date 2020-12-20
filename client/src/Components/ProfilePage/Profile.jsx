@@ -12,7 +12,8 @@ import ProfileMenu from './ProfileMenu';
 import Posts from './Posts';
 import TopPanel from './TopPanel';
 import Pictures from './Pictures';
-import NotFound from './NotFound';
+import NotFound from '../General/NotFound';
+import DotLoader from '../General/DotLoader';
 
 const width = 1000
 
@@ -55,7 +56,12 @@ export default function Profile() {
                     {contentType === contentTypes.FRIENDS && <h2>{'FRIENDS'}</h2>}
                 </Content>
             </>}
-            {error && <NotFound />}
+            {error && <NotFound message={'Faker not found'} />}
+            {loading &&
+                <Content style={{ minHeight: '80vh' }}>
+                    <DotLoader pulse/>
+                </Content>
+            }
         </UserMatchContext.Provider>
     )
 }

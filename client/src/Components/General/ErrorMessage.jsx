@@ -4,15 +4,24 @@ import styled from 'styled-components'
 import ElementContainer from './ElementContainer'
 
 
-export default function ErrorMessage({ modal, children }) {
+export default function ErrorMessage({ modal, textOnly, children }) {
 
+
+    const error = (
+        <StyledErrorMessage>
+            {children}
+        </StyledErrorMessage>
+    )
 
     return (
-        <ElementContainer>
-            <StyledErrorMessage>
-                {children}
-            </StyledErrorMessage>
-        </ElementContainer>
+
+        textOnly
+            ?
+            error
+            :
+            <ElementContainer>
+                {error}
+            </ElementContainer>
     )
 }
 

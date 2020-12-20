@@ -5,6 +5,7 @@ import PropsTypes from 'prop-types'
 
 import Avatar from '../../General/Avatar'
 import { SquareButton } from '../../General/Buttons'
+import ErrorMessage from '../../General/ErrorMessage'
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -16,7 +17,7 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
 
     const [body, setBody] = useState('')
 
-    const [createPost] = useMutation(ADD_COMMENT, {
+    const [createComment, { error }] = useMutation(ADD_COMMENT, {
         variables: {
             body,
             postId
@@ -28,6 +29,7 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
         onError(e) {
             //TODO: handle this error on the front
             throw e
+
         }
     })
 
@@ -44,9 +46,14 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
             resizableInput.current.focus()
     }, [inputFocus])
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault()
-        createPost()
+        try {
+            await createComment()
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
     const onChange = (e) => {
@@ -54,13 +61,16 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
     }
 
     return (
-        <Form onSubmit={onSubmit}>
-            <Avatar image={avatarImage} />
-            <CommentInput ref={resizableInput} rows="1" onChange={onChange} onBlur={() => setFocus(false)} />
-            <SquareButton className='sendComment'>
-                <FontAwesomeIcon icon={faPaperPlane} />
-            </SquareButton>
-        </Form>
+        <>
+            <Form onSubmit={onSubmit}>
+                <Avatar image={avatarImage} />
+                <CommentInput ref={resizableInput} rows="1" onChange={onChange} onBlur={() => setFocus(false)} />
+                <SquareButton className='sendComment'>
+                    <FontAwesomeIcon icon={faPaperPlane} />
+                </SquareButton>
+            </Form>
+            {error && <ErrorMessage textOnly>Comment cant be empty</ErrorMessage>}
+        </>
     )
 }
 

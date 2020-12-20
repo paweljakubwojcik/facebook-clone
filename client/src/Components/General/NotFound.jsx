@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import { ReactComponent as NotFoundImage } from '../../styles/svg/undraw_starry_window_ppm0.svg'
 
 
-export default function NotFound() {
+export default function NotFound({ message }) {
     return (
         <Container>
             <NotFoundImage style={{ width: '100%' }} />
-            <p>Faker not found</p>
+            <p>{message}</p>
         </Container>
     )
 }
@@ -23,7 +23,8 @@ const Container = styled.div`
         left:50%;
         top:90%;
         transform:translate(-50%,0);
-        font-size:2em;
+        font-size:1.5em;
+        width:max-content;
     }
 
 `
