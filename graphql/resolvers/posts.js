@@ -13,7 +13,6 @@ module.exports = {
                     posts = await Post.find({ user: userId }, null, { sort: { createdAt: -1 }, skip: offset, limit: limit })
                 else
                     posts = await Post.find({}, null, { sort: { createdAt: -1 }, skip: offset, limit: limit }); //Get posts and sort them
-                console.log(userId)
                 return posts
             } catch (err) {
                 throw new Error(err)

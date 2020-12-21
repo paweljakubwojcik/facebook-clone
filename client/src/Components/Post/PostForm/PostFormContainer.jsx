@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { AuthContext } from '../../../Context/auth'
-
+import { useUserSettings } from '../../../Util/Hooks/useUserSettings'
 import PostForm from './PostForm'
 
 import Modal from '../../General/Modal'
@@ -15,13 +15,20 @@ export default function PostFormContainer({ toggleForm, ...rest }) {
 
     const [active, setActive] = useState('main')
 
+    const { user: { id } } = useContext(AuthContext)
+    const { settings: { postDefaultPrivacy: privacy } = {} } = useUserSettings(id)
+    const [options, setOptions] = useState(
+        {
+            privacy
+        }
+    )
+
 
     const PrivacyMenu = () => {
-        const { user } = useContext(AuthContext)
-
 
         const handleClick = (e) => {
             e.target.blur()
+            setOptions(options => { return { ...options, privacy: e.target.value } })
         }
 
         const buttons = [
@@ -45,7 +52,7 @@ export default function PostFormContainer({ toggleForm, ...rest }) {
                     <RadioButtons
                         handleClick={handleClick}
                         buttons={buttons}
-                        currentValue={'PRIVATE'}
+                        currentValue={options.privacy}
                         name={''}
                         icon={null}
                         style={{ fontSize: '1.2em' }}
@@ -64,7 +71,7 @@ export default function PostFormContainer({ toggleForm, ...rest }) {
                 <AnimatedMenu
                     active={active}
                     setActive={setActive}
-                    main={<PostForm toggleForm={toggleForm} value={'main'} setActive={setActive} />}
+                    main={<PostForm toggleForm={toggleForm} value={'main'} setActive={setActive} postOptions={options} />}
                     subMenus={[
                         <PrivacyMenu value={'options'} />
                     ]}

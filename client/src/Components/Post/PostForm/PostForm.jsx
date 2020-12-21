@@ -4,6 +4,7 @@ import { AuthContext } from '../../../Context/auth'
 import { useForm } from '../../../Util/Hooks/useForm'
 import { useCreatePost } from '../../../Util/Hooks/useCreatePost'
 import { useCreateImage } from '../../../Util/Hooks/useCreateImage'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 
@@ -17,14 +18,19 @@ import Form from '../../General/Form'
 
 //TODO: ustawienia prywatności takie fajne jak userMenu
 
-export default function PostForm({ toggleForm, setActive }) {
-    const initialState = {
-        body: '',
-        images: [],
-    }
+export default function PostForm({ toggleForm, setActive, postOptions }) {
+
 
     const { user: { username } } = useContext(AuthContext)
     const avatar = localStorage.getItem('avatar')
+
+
+
+    const initialState = {
+        body: '',
+        images: [],
+        privacy: postOptions.privacy
+    }
 
     const [fileInputVisibility, setFileInputVis] = useState(false);
     const [fileInputHover, setFileInputHover] = useState(false);
@@ -87,10 +93,10 @@ export default function PostForm({ toggleForm, setActive }) {
                 <PrivacyContainer>
                     <h3>{username}</h3>
                     <SelectInputContainer>
-                        <FontAwesomeIcon icon={faEye} style={{ fontSize: '.8em' }} />
-                        <SelectInput name={'privacy'} onClick={() => setActive('options')}>
-                            <option value="PRIVATE">Private</option>
+                        <SelectInput name={'privacy'} onClick={() => setActive('options')} type='button'>
+                            {(postOptions.privacy.slice(0, 1) + postOptions.privacy.slice(1).toLowerCase()).replace('_', ' ')}
                         </SelectInput>
+                        <FontAwesomeIcon icon={faEye} style={{ fontSize: '.8em', margin: '0 .5em' }} />
                     </SelectInputContainer>
 
                 </PrivacyContainer>
@@ -176,7 +182,7 @@ const SelectInputContainer = styled.div`
 
 `
 
-const SelectInput = styled.select`
+const SelectInput = styled.button`
 
     background-color:transparent;
     font-family:inherit;
@@ -186,14 +192,10 @@ const SelectInput = styled.select`
     font-weight:bold;
     cursor: pointer;
     position:relative;
-    &::after{
-        display:block;
-        
-        content:'p';
-        color:blue;
-    }
-    option{
-        background-color:transparent;
+    padding:0;
+    transition: color .4s;
+    &:hover,&:focus{
+        color:${props => props.theme.primaryColor};
     }
 
 `

@@ -173,7 +173,6 @@ module.exports = {
         async updateUser(_, { field, newValue }, context) {
             const { id } = checkAuth(context)
             const user = await User.findByIdAndUpdate(id, { [field]: newValue }, { new: true, useFindAndModify: false })
-            console.log(user)
             return user
         }
     },
