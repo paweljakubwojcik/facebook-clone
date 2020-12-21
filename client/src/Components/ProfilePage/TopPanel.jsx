@@ -8,6 +8,7 @@ import { UserMatchContext } from './Profile'
 import { ShowableButton } from '../General/Buttons'
 import Avatar from '../General/Avatar'
 import ChangeImageForm from './ChangeImageForm'
+import { useIntersectionObserver } from '../../Util/Hooks/useIntersectionObserver'
 
 export default function TopPanel({ loading, user, width }) {
 
@@ -15,6 +16,18 @@ export default function TopPanel({ loading, user, width }) {
 
     const [profileForm, toggleProfileForm] = useState(false)
     const [backgroundForm, toggleBackgroundForm] = useState(false)
+    const [avatarOpacity, setAvatarOpacity] = useState(1)
+
+
+    const array = new Array(50).fill(1)
+    const thresholds = array.map((a, i) => i / 50);
+    const [setRef] = useIntersectionObserver({
+        threshold: thresholds
+    },
+        ({ intersectionRatio: ratio }) => {
+            setAvatarOpacity(ratio * 1.5 - .5)
+        }
+    )
 
     return (
         <Container>
@@ -34,7 +47,7 @@ export default function TopPanel({ loading, user, width }) {
                     <User>
                         <AvatarContainer>
                             <AvatarLink to={`/image/${user?.profileImage?.id}`}>
-                                <Avatar image={user?.profileImage?.urls?.large} large />
+                                <Avatar image={user?.profileImage?.urls?.large} large ref={setRef} style={{ opacity: avatarOpacity }} />
                             </AvatarLink>
                             {isViewerTheOwner &&
                                 <EditButton parent={AvatarContainer} onClick={() => toggleProfileForm(true)}>

@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react'
 
 
-
+/**
+ * 
+ * @param {*} options 
+ * @param {*} callback 
+ * @returns [setRef , visible]
+ */
 export const useIntersectionObserver = (options, callback) => {
     const [ref, setRef] = useState(null)
     const [visible, setVisible] = useState(false)
@@ -9,6 +14,8 @@ export const useIntersectionObserver = (options, callback) => {
     useEffect(() => {
         const observer = new IntersectionObserver(([entry]) => {
             setVisible(entry.isIntersecting)
+            if (callback)
+                callback(entry)
         }, options)
         if (ref)
             observer.observe(ref)
@@ -18,7 +25,7 @@ export const useIntersectionObserver = (options, callback) => {
                 observer.unobserve(ref)
         }
 
-    }, [ref, visible, options])
+    }, [ref, visible, options, callback])
 
 
     return [setRef, visible]

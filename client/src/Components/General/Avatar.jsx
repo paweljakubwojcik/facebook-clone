@@ -1,18 +1,18 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import styled from 'styled-components';
 
 import defaultUserImage from '../../styles/svg/user-solid.svg'
 
 
 
-export default function Avatar({ image, altText, big, large }) {
+const Avatar = forwardRef(({ image, altText, big, large, ...rest }, ref) => {
 
     return (
-        <>
-            <ImageContainer big={big} large={large} img={image || defaultUserImage} className="avatar" />
-        </>
+        <ImageContainer big={big} large={large} img={image || defaultUserImage} className="avatar" ref={ref} {...rest} />
     )
-}
+})
+
+export default Avatar
 
 Avatar.defaultProps = {
     image: defaultUserImage,
@@ -31,5 +31,5 @@ const ImageContainer = styled.div`
     background-size:cover;
     border-radius:50%;
     border: solid 7px ${props => props.large || props.big ? props.theme.primaryElementColor : 'none'}; 
-
+    
 `
