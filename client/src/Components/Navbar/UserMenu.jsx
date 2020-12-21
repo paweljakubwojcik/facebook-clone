@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
 import { ThemeContext } from '../../Context/theme'
@@ -36,7 +37,7 @@ export default function UserMenu({ ...rest }) {
             history.push('/')
         }
         return (
-            <>
+            <SubMenuContainer>
                 <MenuButton onClick={() => setActive(menuOptions.DISPLAY_PREFERENCES)} >
                     <FontAwesomeIcon className="icon" icon={faMoon} />
                     <p>Display Preferences</p>
@@ -51,7 +52,7 @@ export default function UserMenu({ ...rest }) {
                     <FontAwesomeIcon className="icon" icon={faSignOutAlt} />
                     <p>Log Out</p>
                 </MenuButton>
-            </>)
+            </SubMenuContainer>)
     }
 
     const DisplayMenu = () => {
@@ -77,15 +78,17 @@ export default function UserMenu({ ...rest }) {
         ]
 
         return (
-            <SubMenu title={'Display Settings'} setActive={setActive} >
-                <RadioButtons
-                    handleClick={handleClick}
-                    buttons={buttons}
-                    currentValue={themeName}
-                    name={'Theme'}
-                    icon={faMoon}
-                />
-            </SubMenu>
+            <SubMenuContainer>
+                <SubMenu title={'Display Settings'} setActive={setActive} >
+                    <RadioButtons
+                        handleClick={handleClick}
+                        buttons={buttons}
+                        currentValue={themeName}
+                        name={'Theme'}
+                        icon={faMoon}
+                    />
+                </SubMenu>
+            </SubMenuContainer>
         )
     }
 
@@ -115,15 +118,17 @@ export default function UserMenu({ ...rest }) {
         ]
 
         return (
-            <SubMenu title={'Post Options'} setActive={setActive} >
-                <RadioButtons
-                    handleClick={handleClick}
-                    buttons={buttons}
-                    currentValue={settings?.postDefaultPrivacy}
-                    name={'Default Visibility'}
-                    icon={faEye}
-                />
-            </SubMenu>
+            <SubMenuContainer>
+                <SubMenu title={'Post Options'} setActive={setActive} >
+                    <RadioButtons
+                        handleClick={handleClick}
+                        buttons={buttons}
+                        currentValue={settings?.postDefaultPrivacy}
+                        name={'Default Visibility'}
+                        icon={faEye}
+                    />
+                </SubMenu>
+            </SubMenuContainer>
         )
     }
 
@@ -142,3 +147,9 @@ export default function UserMenu({ ...rest }) {
     )
 }
 
+const SubMenuContainer = styled.div`
+
+    padding:.5em;
+    width:max-content;
+
+`

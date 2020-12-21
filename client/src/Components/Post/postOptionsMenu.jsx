@@ -27,12 +27,12 @@ export default function PostOptionsMenu({ isDeletable, post }) {
 
     const MainMenu = () => {
         return (
-            <>
+            <SubMenuContainer>
                 <MenuButton onClick={() => setActive(menuTypes.PRIVACY)} >
                     <FontAwesomeIcon icon={faEdit} /> <p>PrivacySettings</p>
                 </MenuButton>
                 {isDeletable && <DeleteButton postId={post.id} />}
-            </>)
+            </SubMenuContainer>)
     }
 
     const PrivacyMenu = () => {
@@ -59,16 +59,18 @@ export default function PostOptionsMenu({ isDeletable, post }) {
         ]
 
         return (
-            <SubMenu title={'Privacy'} setActive={setActive} >
-                <RadioButtons
-                    handleClick={handleClick}
-                    buttons={buttons}
-                    currentValue={post.privacy}
-                    name={''}
-                    icon={null}
-                    style={{ fontSize: '1.2em' }}
-                />
-            </SubMenu>
+            <SubMenuContainer>
+                <SubMenu title={'Privacy'} setActive={setActive} >
+                    <RadioButtons
+                        handleClick={handleClick}
+                        buttons={buttons}
+                        currentValue={post.privacy}
+                        name={''}
+                        icon={null}
+                        style={{ fontSize: '1.2em' }}
+                    />
+                </SubMenu>
+            </SubMenuContainer>
         )
     }
 
@@ -84,7 +86,12 @@ export default function PostOptionsMenu({ isDeletable, post }) {
                 ]}
             />
         </DropDownMenu>
-
-
     )
 }
+
+
+const SubMenuContainer = styled.div`
+
+    padding:.5em;
+
+`

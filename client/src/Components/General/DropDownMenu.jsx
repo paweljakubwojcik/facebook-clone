@@ -32,7 +32,6 @@ const Container = styled.div`
 const Menu = styled.div`
     display:flex;
     flex-direction:column;
-    padding:.5em;
     font-size:.8em;
     width:max-content;
     background-color: ${props => props.theme.primaryElementColor};

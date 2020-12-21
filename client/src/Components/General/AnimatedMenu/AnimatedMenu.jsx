@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { CSSTransition } from 'react-transition-group'
 import useResizeObserver from '../../../Util/Hooks/useResizeObserver'
 
+const timeout = 500;
+
 export default function AnimatedMenu({ active, setActive, main, subMenus, ...rest }) {
 
     const [height, setHeight] = useState(null)
@@ -11,13 +13,18 @@ export default function AnimatedMenu({ active, setActive, main, subMenus, ...res
 
 
     const calcHeight = (el) => {
-        console.log('change')
-        const height = el.offsetHeight + parseFloat(getComputedStyle(el.parentElement).paddingTop) + parseFloat(getComputedStyle(el.parentElement).paddingBottom);
-        setHeight(height)
+        console.log(el)
+        if (el) {
+            const height = el.offsetHeight + parseFloat(getComputedStyle(el.parentElement).paddingTop) + parseFloat(getComputedStyle(el.parentElement).paddingBottom);
+            setHeight(height)
+        }
     }
 
     useResizeObserver({
-        callback: () => calcHeight(animationContainer.current),
+        callback: (element) => {
+            if (element && !element.classList.contains('menu-primary-exit'))
+                calcHeight(element)
+        },
         element: animationContainer
     })
 
@@ -27,7 +34,7 @@ export default function AnimatedMenu({ active, setActive, main, subMenus, ...res
             <CSSTransition
                 in={active === main.props.value}
                 appear
-                timeout={500}
+                timeout={timeout}
                 classNames='menu-primary'
                 onEnter={calcHeight}
             >
@@ -42,7 +49,7 @@ export default function AnimatedMenu({ active, setActive, main, subMenus, ...res
                     in={active === menu.props.value}
                     onEnter={calcHeight}
                     unmountOnExit
-                    timeout={500}
+                    timeout={timeout}
                     classNames='menu-secondary'
                 >
                     <AnimationContainer >
@@ -56,7 +63,7 @@ export default function AnimatedMenu({ active, setActive, main, subMenus, ...res
 
 const Container = styled.div`
 
-transition: min-height .5s, height .5s;
+transition: min-height ${timeout}ms, height ${timeout}ms;
  overflow:hidden;
  position:relative;
  min-width:16em;
@@ -72,7 +79,7 @@ width:100%;
 &.menu-primary-enter-active {
     
     transform: translateX(0);
-    transition: transform 500ms;
+    transition: transform ${timeout}ms;
 }
 &.menu-primary-exit {
     position:absolute;
@@ -81,12 +88,12 @@ width:100%;
 &.menu-primary-exit-active {
     position:absolute;
     transform: translateX(-110%);
-    transition: transform 500ms;
+    transition: transform ${timeout}ms;
 }
 &.menu-primary-exit-done {
     position:absolute;
     transform: translateX(-110%);
-    transition: transform 500ms;
+    transition: transform ${timeout}ms;
 }
 
 &.menu-secondary-enter {
@@ -96,7 +103,7 @@ width:100%;
 &.menu-secondary-enter-active {
     
     transform: translateX(0);
-    transition: transform 500ms;
+    transition: transform ${timeout}ms;
 }
 &.menu-secondary-exit {
     top:0;
@@ -106,7 +113,7 @@ width:100%;
 &.menu-secondary-exit-active {
    
     transform: translateX(110%);
-    transition: transform 500ms;
+    transition: transform ${timeout}ms;
 }
 
 

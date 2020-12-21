@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 
 const useResizeObserver = ({ callback, element }) => {
 
-    console.log({ callback, element })
-
     const current = element && element.current;
 
     const observer = useRef(null);
@@ -17,8 +15,8 @@ const useResizeObserver = ({ callback, element }) => {
             observer.current.unobserve(current);
         }
 
-        observer.current = new ResizeObserver(callback);
-        console.log(observer.current)
+        observer.current = new ResizeObserver(() => callback(element.current));
+
         observe()
 
         return () => {
@@ -32,7 +30,7 @@ const useResizeObserver = ({ callback, element }) => {
     const observe = () => {
         if (element && element.current && observer.current) {
             observer.current.observe(element.current);
-            console.log(element.current)
+
         }
     };
 
