@@ -19,8 +19,6 @@ const DropDownMenu = React.forwardRef(({ children, small, ...rest }, ref) => {
 
 export default DropDownMenu
 
-//TODO: fix positioning of it
-
 const Container = styled.div`
     position:absolute;
     z-index:3;

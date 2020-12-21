@@ -8,6 +8,8 @@ import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons'
 import UserMenu from './UserMenu'
 import { RoundButton } from '../General/Buttons'
 
+import { checkIfContains } from '../../Util/Methods'
+
 const buttons = [
     {
         value: 'messenger',
@@ -39,13 +41,10 @@ export default function Menu() {
     }
 
     const closeMenu = (e) => {
-        //TODO: Replace it with checikng bound rect
         if (!e.target.classList.contains('openMenu')
             && !e.target.classList.contains('menu')
             && !e.target.classList.contains('menu__button')
-            && !menu.current?.contains(e.target)
-            && !e.target.classList.contains('radio_button')
-            && e.target.localName !== 'button') {
+            && !checkIfContains(menu.current, e)) {
             changeActive('')
         }
     }
@@ -61,7 +60,7 @@ export default function Menu() {
     }, [activeButton])
 
     return (
-        <StyledMenu className='menu' ref={menu}>
+        <StyledMenu className='menu' >
             {buttons.map(({ value, icon }) =>
                 <MenuButton
                     className='menu__button'
@@ -72,7 +71,7 @@ export default function Menu() {
                     <FontAwesomeIcon className='icon' icon={icon} />
                 </MenuButton>
             )}
-            {activeButton === buttons[2].value && <UserMenu className='openMenu' />}
+            {activeButton === buttons[2].value && <UserMenu className='openMenu' ref={menu} />}
         </StyledMenu>
     )
 }

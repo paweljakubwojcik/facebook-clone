@@ -56,3 +56,12 @@ export function readFileAsync(file) {
         reader.readAsDataURL(file);
     })
 }
+
+export const checkIfContains = (element, coordinates) => {
+    const { clientX: x, clientY: y } = coordinates
+    const { top, bottom, left, right } = element.getBoundingClientRect()
+    if (x > left && x < right && y > top && y < bottom)
+        return true
+    else
+        return false
+}

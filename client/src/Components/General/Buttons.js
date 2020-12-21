@@ -72,6 +72,9 @@ export const MenuButton = styled(SquareButton)`
     }
     color: ${props => props.theme.primaryFontColor};
     font-weight:lighter;
+    p{
+        margin-right:auto;
+    }
 
 `
 

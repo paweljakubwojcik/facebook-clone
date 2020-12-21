@@ -61,7 +61,7 @@ const RadioButtonElement = styled(MenuButton)`
         width:1.4em;
         height:1.4em;
         border-radius:50%;
-        margin:.5em;
+        margin:.4em 2em;
         span{
             margin:0;
             content:'';

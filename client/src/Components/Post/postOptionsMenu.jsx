@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, forwardRef } from 'react'
 import styled from 'styled-components'
 import { AuthContext } from '../../Context/auth'
 
@@ -20,7 +20,7 @@ const menuTypes = {
     PRIVACY: 'privacy',
 }
 
-export default function PostOptionsMenu({ isDeletable, post }) {
+const PostOptionsMenu = forwardRef(({ isDeletable, post }, ref) => {
 
     const [active, setActive] = useState(menuTypes.MAIN)
 
@@ -36,6 +36,7 @@ export default function PostOptionsMenu({ isDeletable, post }) {
     }
 
     const PrivacyMenu = () => {
+        //TODO: FUNCTIONALITY
         const { user } = useContext(AuthContext)
 
 
@@ -76,7 +77,7 @@ export default function PostOptionsMenu({ isDeletable, post }) {
 
 
     return (
-        <DropDownMenu >
+        <DropDownMenu ref={ref}>
             <AnimatedMenu
                 active={active}
                 setActive={setActive}
@@ -87,8 +88,9 @@ export default function PostOptionsMenu({ isDeletable, post }) {
             />
         </DropDownMenu>
     )
-}
+})
 
+export default PostOptionsMenu
 
 const SubMenuContainer = styled.div`
 

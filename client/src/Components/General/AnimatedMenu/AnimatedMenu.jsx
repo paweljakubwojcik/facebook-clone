@@ -13,7 +13,6 @@ export default function AnimatedMenu({ active, setActive, main, subMenus, ...res
 
 
     const calcHeight = (el) => {
-        console.log(el)
         if (el) {
             const height = el.offsetHeight + parseFloat(getComputedStyle(el.parentElement).paddingTop) + parseFloat(getComputedStyle(el.parentElement).paddingBottom);
             setHeight(height)
@@ -22,7 +21,8 @@ export default function AnimatedMenu({ active, setActive, main, subMenus, ...res
 
     useResizeObserver({
         callback: (element) => {
-            if (element && !element.classList.contains('menu-primary-exit'))
+            //we dont wanna cast this function onto node that exits the view
+            if (element && !element.classList.contains('menu-primary-exit') && !element.classList.contains('menu-secondary-exit'))
                 calcHeight(element)
         },
         element: animationContainer

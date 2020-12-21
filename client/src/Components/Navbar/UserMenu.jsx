@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { forwardRef, useContext, useState } from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
@@ -21,7 +21,7 @@ import { menuOptions } from './menuOptions'
 
 
 
-export default function UserMenu({ ...rest }) {
+const UserMenu = forwardRef(({ ...rest }, ref) => {
 
 
     const history = useHistory()
@@ -133,7 +133,7 @@ export default function UserMenu({ ...rest }) {
     }
 
     return (
-        <DropDownMenu {...rest}>
+        <DropDownMenu {...rest} ref={ref}>
             <AnimatedMenu
                 active={active}
                 setActive={setActive}
@@ -145,11 +145,14 @@ export default function UserMenu({ ...rest }) {
             />
         </DropDownMenu>
     )
-}
+})
+
+export default UserMenu
 
 const SubMenuContainer = styled.div`
 
     padding:.5em;
     width:max-content;
+    width:100%;
 
 `

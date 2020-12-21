@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { RoundButton, MenuButton } from '../General/Buttons'
+import { RoundButton } from '../General/Buttons'
 import PostOptionsMenu from './postOptionsMenu'
+
+import { checkIfContains } from '../../Util/Methods'
 
 export default function PostOptions({ post, isDeletable }) {
 
@@ -18,8 +20,7 @@ export default function PostOptions({ post, isDeletable }) {
     const closePostMenu = (e) => {
         if (e.target !== dropDownMenu.current
             && e.target !== optionButton.current
-            && !(dropDownMenu.current?.contains(e.target))
-            && e.target.localName !== 'button')
+            && !checkIfContains(dropDownMenu.current, e))
             setopen(false)
 
     }
@@ -38,7 +39,7 @@ export default function PostOptions({ post, isDeletable }) {
         <>
             <OptionButton onClick={toggleOpen} ref={optionButton}></OptionButton>
             {open &&
-                <PostOptionsMenu isDeletable={isDeletable} post={post} />
+                <PostOptionsMenu isDeletable={isDeletable} post={post} ref={dropDownMenu} />
             }
         </>
     )
