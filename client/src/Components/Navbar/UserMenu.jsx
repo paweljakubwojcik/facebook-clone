@@ -13,9 +13,11 @@ import { faSignOutAlt, faMoon, faAddressCard, faEye, faChevronRight } from '@for
 import SubMenu from '../General/AnimatedMenu/SubMenu'
 import RadioButtons from '../General/AnimatedMenu/RadioButtons'
 import AnimatedMenu from '../General/AnimatedMenu/AnimatedMenu'
+import DropDownMenu from '../General/DropDownMenu'
 import { MenuButton } from '../General/Buttons'
 
 import { menuOptions } from './menuOptions'
+
 
 
 export default function UserMenu({ ...rest }) {
@@ -126,15 +128,17 @@ export default function UserMenu({ ...rest }) {
     }
 
     return (
-        <AnimatedMenu
-            active={active}
-            setActive={setActive}
-            main={<MainMenu value={menuOptions.MAIN} />}
-            subMenus={[
-                <DisplayMenu value={menuOptions.DISPLAY_PREFERENCES} />,
-                <PostMenu value={menuOptions.POST_OPTIONS} />
-            ]}
-        />
+        <DropDownMenu {...rest}>
+            <AnimatedMenu
+                active={active}
+                setActive={setActive}
+                main={<MainMenu value={menuOptions.MAIN} />}
+                subMenus={[
+                    <DisplayMenu value={menuOptions.DISPLAY_PREFERENCES} />,
+                    <PostMenu value={menuOptions.POST_OPTIONS} />
+                ]}
+            />
+        </DropDownMenu>
     )
 }
 

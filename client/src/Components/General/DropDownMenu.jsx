@@ -32,7 +32,6 @@ const Container = styled.div`
 const Menu = styled.div`
     display:flex;
     flex-direction:column;
-    position:relative;
     padding:.5em;
     font-size:.8em;
     width:max-content;
@@ -40,9 +39,6 @@ const Menu = styled.div`
     border-radius:.5em;
     border: solid 1px  ${props => props.theme.borderColor};
     box-shadow: ${props => props.theme.standardShadow};
-    overflow:hidden;
-    transition: height .5s;
-
 `
 
 const LittleSquare = styled.div`

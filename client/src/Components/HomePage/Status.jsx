@@ -3,9 +3,9 @@ import styled from 'styled-components'
 
 import ElementContainer from '../General/ElementContainer'
 import Avatar from '../General/Avatar'
-import PostForm from '../Post/PostForm/PostForm'
 
 import { AuthContext } from '../../Context/auth'
+import PostFormContainer from '../Post/PostForm/PostFormContainer'
 
 
 export default function Status() {
@@ -27,7 +27,7 @@ export default function Status() {
 
                 </Container>
             </ElementContainer>
-            {isFormOpen && <PostForm toggleForm={toggleForm}></PostForm>}
+            {isFormOpen && <PostFormContainer toggleForm={toggleForm}></PostFormContainer>}
         </>
     )
 }

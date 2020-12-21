@@ -11,6 +11,7 @@ import { faEdit, faEye } from '@fortawesome/free-solid-svg-icons'
 import AnimatedMenu from '../General/AnimatedMenu/AnimatedMenu'
 import SubMenu from '../General/AnimatedMenu/SubMenu'
 import RadioButtons from '../General/AnimatedMenu/RadioButtons'
+import DropDownMenu from '../General/DropDownMenu'
 
 
 
@@ -73,14 +74,16 @@ export default function PostOptionsMenu({ isDeletable, post }) {
 
 
     return (
-        <AnimatedMenu
-            active={active}
-            setActive={setActive}
-            main={<MainMenu value={menuTypes.MAIN} />}
-            subMenus={[
-                <PrivacyMenu value={menuTypes.PRIVACY} />
-            ]}
-        />
+        <DropDownMenu >
+            <AnimatedMenu
+                active={active}
+                setActive={setActive}
+                main={<MainMenu value={menuTypes.MAIN} />}
+                subMenus={[
+                    <PrivacyMenu value={menuTypes.PRIVACY} />
+                ]}
+            />
+        </DropDownMenu>
 
 
     )

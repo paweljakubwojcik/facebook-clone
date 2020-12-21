@@ -13,11 +13,11 @@ import FormButton from '../../General/FormButton'
 import AddButton from './AddButton'
 import ImagePreview from './ImagePreview'
 import ImagesContainer from '../ImagesContainer'
-import ModalForm from '../../General/ModalForm'
+import Form from '../../General/Form'
 
 //TODO: ustawienia prywatności takie fajne jak userMenu
 
-export default function PostForm({ toggleForm }) {
+export default function PostForm({ toggleForm, setActive }) {
     const initialState = {
         body: '',
         images: [],
@@ -76,7 +76,7 @@ export default function PostForm({ toggleForm }) {
         `Write something about ${values.images.length === 1 ? 'this picture' : 'those pictures'}`
 
     return (
-        <ModalForm
+        <Form
             onChange={onChange}
             onSubmit={onSubmit}
             header={'Let\'s fake some posts'}
@@ -88,10 +88,8 @@ export default function PostForm({ toggleForm }) {
                     <h3>{username}</h3>
                     <SelectInputContainer>
                         <FontAwesomeIcon icon={faEye} style={{ fontSize: '.8em' }} />
-                        <SelectInput name={'privacy'}>
+                        <SelectInput name={'privacy'} onClick={() => setActive('options')}>
                             <option value="PRIVATE">Private</option>
-                            <option value="PUBLIC">Public</option>
-                            <option value="FRIENDS_ONLY">Friends only</option>
                         </SelectInput>
                     </SelectInputContainer>
 
@@ -141,7 +139,7 @@ export default function PostForm({ toggleForm }) {
                 loadingMessage={'Posting'}
                 style={{ flexShrink: '0' }}
             >Post</FormButton>
-        </ModalForm>
+        </Form>
     )
 }
 

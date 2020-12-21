@@ -39,13 +39,13 @@ export default function Menu() {
     }
 
     const closeMenu = (e) => {
-
+        //TODO: Replace it with checikng bound rect
         if (!e.target.classList.contains('openMenu')
             && !e.target.classList.contains('menu')
             && !e.target.classList.contains('menu__button')
             && !menu.current?.contains(e.target)
             && !e.target.classList.contains('radio_button')
-            && !e.target.localName === 'button') {
+            && e.target.localName !== 'button') {
             changeActive('')
         }
     }
