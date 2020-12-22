@@ -7,9 +7,8 @@
   - [x] adding/deleting comments to posts
   - [x] liking unliking posts
   - [x] uploading pictures 
-  - [ ] friends
-  - [ ] messenger
-  - [ ] targeting feed
+  - [x] friends
+  - [ ] messenger 
 #### front
 - [x] register/login page
 - [x] user context
@@ -22,9 +21,11 @@
 - [ ] user details page
   - [x] hero image
   - [x] posts section
-  - [ ] adding/deleting pictures
-- [ ] messenger
-- [x] single pic/post page 
+  - [x] adding/deleting pictures
+  -[ ] images pagination
+- [x] single pic/post page
+- [ ] Notifications
+
 
 
 ## tech so far used:
