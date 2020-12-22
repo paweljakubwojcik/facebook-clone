@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useMutation, gql, useQuery } from '@apollo/client'
 import { INVITE_USER, ACCEPT_INVITATION, DECLINE_INVITATION } from '../../Util/GraphQL_Queries'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserPlus, faEnvelope, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faUserPlus, faEnvelope, faCheck, faTimes, faEye } from '@fortawesome/free-solid-svg-icons'
 import { FilledButton } from '../General/Buttons'
 import DotLoader from '../General/DotLoader'
 
@@ -82,12 +81,13 @@ export default function ActionButtons({ user, context, seeProfile }) {
         const isInviting = !!contextUser?.invitations.find(inv => inv.from === user.id)
         const isFriend = !!user.friends.find(friend => friend.id === context.user.id)
         setBools({ isInvited, isInviting, isFriend })
-        console.log('something changes')
         return () => {
 
         }
     }, [contextUser, user.invitations, contextUser?.invitations, user.id, user.friends, context.user.id])
 
+
+    // TODO: rewrite this component so it make sense
     return (
         <>
             {isInvited &&
@@ -142,7 +142,7 @@ export default function ActionButtons({ user, context, seeProfile }) {
             {!isInviting &&
                 (seeProfile ?
                     <FilledButton as={Link} to={`/profile/${user.id}`}>
-                        <FontAwesomeIcon icon={faEnvelope} />
+                        <FontAwesomeIcon icon={faEye} />
                         <span>See Profile</span>
                     </FilledButton>
                     :

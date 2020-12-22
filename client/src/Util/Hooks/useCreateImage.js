@@ -93,7 +93,7 @@ export const useCreateImage = (callback) => {
                 variables: {
                     ...urls,
                     post: post,
-                    title: image.name
+                    title: image.name + generateRandomName()
                 },
             })
         } catch (error) {

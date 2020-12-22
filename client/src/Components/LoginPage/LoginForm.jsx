@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { useMutation } from '@apollo/client'
 
@@ -13,7 +12,6 @@ import { useForm } from '../../Util/Hooks/useForm'
 import { LOGIN_USER } from '../../Util/GraphQL_Queries'
 
 export default function LoginForm({ setForm }) {
-    const history = useHistory()
     const context = useContext(AuthContext)
 
     const [errors, setErrors] = useState({})
@@ -32,8 +30,7 @@ export default function LoginForm({ setForm }) {
         update(proxy, { data: { login: userData } }) {
             //adds user data to context
             context.login(userData)
-            setErrors({})
-            history.push('/')
+           
         },
         onError(err) {
             if (err.graphQLErrors[0])
