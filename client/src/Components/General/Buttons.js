@@ -81,11 +81,11 @@ export const MenuButton = styled(SquareButton)`
 export const FilledButton = styled(SquareButton)`
 
     color: ${props => props.theme.primaryFontColor};
-    background-color:${props => props.theme.roundButtonColor};
+    background-color:${props => props.active ? props.theme.primaryColor : props.theme.roundButtonColor};
     display:flex;
     &:hover,
     &:focus{
-        background-color:${props => props.theme.primaryColor};
+        background-color:${props => props.red ? props.theme.errorColor : props.theme.primaryColor};
         text-decoration:none;
     }
     margin: .5em;

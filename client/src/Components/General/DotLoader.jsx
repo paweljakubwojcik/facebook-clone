@@ -1,14 +1,14 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 
-export default function DotLoader({ pulse }) {
-    return (
-        <Loader pulse={pulse ? 1 : 0}>
-            <span></span>
-            <span></span>
-            <span></span>
-        </Loader>
-    )
+export default function DotLoader({ pulse, ...rest }) {
+  return (
+    <Loader {...rest} pulse={pulse ? 1 : 0} >
+      <span></span>
+      <span></span>
+      <span></span>
+    </Loader>
+  )
 }
 
 

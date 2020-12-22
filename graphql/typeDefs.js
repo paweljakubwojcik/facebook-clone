@@ -72,7 +72,7 @@ module.exports = gql`
     }
     type Invitation {
         id:ID!
-        from: User!
+        from: ID!
         date: String!
     }
     type Notification {
@@ -142,6 +142,7 @@ module.exports = gql`
         uploadPicture(ImageInput:ImageInput!):Image!
 
         inviteUser(userId:ID!):User!
-        acceptInvitation(invitationId:ID!):User!
+        acceptInvitation(from:ID!):User!
+        declineInvitation(from:ID!):User!
     }
  `

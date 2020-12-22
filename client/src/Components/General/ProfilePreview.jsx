@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types';
 import styled from 'styled-components'
 import { useQuery, gql } from '@apollo/client'
+import { AuthContext } from '../../Context/auth'
 import { Link } from 'react-router-dom'
 
 
@@ -9,6 +10,7 @@ import ElementContainer from './ElementContainer'
 import Avatar from './Avatar'
 import { FilledButton } from '../General/Buttons'
 import DotLoader from './DotLoader';
+import ActionButtons from '../ProfilePage/ActionButtons';
 
 const GET_USER_DETAILS = gql`
 query getUser(  $userId: ID! ){
@@ -32,13 +34,22 @@ query getUser(  $userId: ID! ){
         location
         job
     }
+    friends{
+        id
+    }
+    invitations{
+        id
+        from
+    }
 }
 }
 `
 
 export default function ProfilePreview({ userId, buttons }) {
 
-    const { data: { getUser: { profileImage, username, backgroundImage, info } = {} } = {}, loading } = useQuery(GET_USER_DETAILS, {
+    const context = useContext(AuthContext)
+
+    const { data: { getUser: user } = {}, loading } = useQuery(GET_USER_DETAILS, {
         variables: {
             userId
         }
@@ -48,21 +59,19 @@ export default function ProfilePreview({ userId, buttons }) {
         <ElementContainer >
             {loading && <DotLoader />}
             {!loading && <Container >
-                <Avatar image={profileImage?.urls.medium} big className='avatar' />
-                <UserName>{username}</UserName>
+                <Avatar image={user.profileImage?.urls.medium} big className='avatar' />
+                <UserName>{user.username}</UserName>
                 <div className='infoContainer' >
                     <p>
-                        faker since {info?.joiningDate}
+                        faker since {user.info?.joiningDate}
                     </p>
                     {buttons &&
-                        <Buttons>
-                            {buttons.includes('see profile') && <FilledButton as={Link} to={`/profile/${userId}`}> See profile </FilledButton>}
-                            {buttons.includes('add to friends') && <FilledButton > Add to friends </FilledButton>}
-                            {buttons.includes('send message') && <FilledButton > Send message </FilledButton>}
+                        <Buttons >
+                            <ActionButtons user={user} context={context} seeProfile />
                         </Buttons>
                     }
                 </div>
-                <LittleBackground image={backgroundImage?.urls.medium} />
+                <LittleBackground image={user.backgroundImage?.urls.medium} />
             </Container>}
         </ElementContainer>
     )
@@ -78,7 +87,7 @@ const Buttons = styled.div`
 
     display:flex;
     //flex-wrap:wrap;
-    font-size:.8em;
+    font-size:.7em;
     display:grid;
     grid-template-columns:1fr 1fr;
     column-gap: .4em;

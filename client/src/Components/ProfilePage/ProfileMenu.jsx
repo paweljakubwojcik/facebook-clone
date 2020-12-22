@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useRef, useContext } from 'react'
 import styled from 'styled-components'
+
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { UserMatchContext } from './Profile'
 import { AuthContext } from '../../Context/auth'
 
-import { FilledButton } from '../General/Buttons'
+
 import RadioButtons from './RadioButtons'
 import UserButton from '../General/UserButton'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserPlus, faEnvelope } from '@fortawesome/free-solid-svg-icons'
+
+import ActionButtons from './ActionButtons'
 
 let navBarHeight;
 
@@ -55,21 +56,22 @@ export default function ProfileMenu({ width, contentType, setContentType, user }
                         </CSSTransition>
                     </TransitionGroup>
                     {!isViewerTheOwner && context.user &&
-                        <Buttons>
-                            <FilledButton>
-                                <FontAwesomeIcon icon={faUserPlus} />
-                                <span>Add to friends</span>
-                            </FilledButton>
-                            <FilledButton>
-                                <FontAwesomeIcon icon={faEnvelope} />
-                                <span>Send message</span>
-                            </FilledButton>
+                        <Buttons >
+                            <ActionButtons context={context} user={user} />
                         </Buttons>}
                 </Menu>
             </ContainerBar>
         </>
     )
 }
+
+const Buttons = styled.div`
+    display:flex;
+    margin-left:auto;
+    @media (max-width:600px){
+       margin-right:5px;
+    }
+`
 
 const ContainerBar = styled.div`
     width:100%;
@@ -127,11 +129,5 @@ const Menu = styled.div`
     }
 `
 
-const Buttons = styled.div`
-    display:flex;
-    margin-left:auto;
-    @media (max-width:600px){
-       margin-right:5px;
-    }
-`
+
 

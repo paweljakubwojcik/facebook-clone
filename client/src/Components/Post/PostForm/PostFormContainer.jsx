@@ -19,7 +19,7 @@ export default function PostFormContainer({ toggleForm, ...rest }) {
     const { settings: { postDefaultPrivacy: privacy } = {} } = useUserSettings(id)
     const [options, setOptions] = useState(
         {
-            privacy
+            privacy: privacy || 'PUBLIC'
         }
     )
 

@@ -24,7 +24,6 @@ module.exports = {
                 filter = { ...filter, $or: [{ privacy: 'PUBLIC' }, { privacy: 'PRIVATE', user: user.id }] }
 
             try {
-                console.log(filter)
                 const posts = await Post.find(filter, null, { sort: { createdAt: -1 }, skip: offset, limit: limit })
                 return posts
             } catch (err) {

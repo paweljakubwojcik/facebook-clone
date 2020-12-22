@@ -58,19 +58,6 @@ module.exports = {
                 token
             }
         },
-
-        async logout(_, { userId }) {
-            try {
-                const user = await User.findById(userId)
-                user.isOnline = false
-                const res = await user.save()
-                return 'logged out'
-            } catch (error) {
-                throw new Error(error)
-            }
-
-        },
-
         async register(_, { registerInput: { username, email, password, confirmPassword } }, context, info) {
             // validate user data
             const { valid, errors } = validateRegisterInput(username, email, password, confirmPassword)
@@ -174,6 +161,71 @@ module.exports = {
             const { id } = checkAuth(context)
             const user = await User.findByIdAndUpdate(id, { [field]: newValue }, { new: true, useFindAndModify: false })
             return user
+        },
+        async inviteUser(_, { userId }, context) {
+            const { id: invitatorId } = checkAuth(context)
+
+            try {
+                const user = await User.findById(userId)
+                const invitator = await User.findById(invitatorId)
+                console.log(invitator)
+                user.invitations.push({
+                    from: invitator.id,
+                    date: new Date().toISOString(),
+                    isSeen: false
+                })
+                return await user.save()
+            } catch (error) {
+                return error
+            }
+        },
+        async acceptInvitation(_, { from }, context) {
+            const user = checkAuth(context)
+            try {
+                const invitator = await User.findById(from)
+                const invitee = await User.findById(user.id)
+
+                invitee.friends.push(invitator)
+                console.log(invitee.invitations)
+
+                // != because 'inv.from' has diffrent type than 'from'
+                const filteredInv = invitee.invitations.filter(inv => inv.from != from)
+                invitee.invitations = filteredInv
+
+                invitator.friends.push(invitee)
+                invitator.notifications.push({
+                    body: `${user.username} has accepted you as a fake friend!`,
+                    isSeen: false,
+                    createdAt: new Date().toISOString()
+                })
+
+                await invitee.save()
+                return await invitator.save()
+
+            } catch (error) {
+                return error
+            }
+        },
+        async declineInvitation(_, { from }, context) {
+            const user = checkAuth(context)
+            try {
+                const invitator = await User.findById(from)
+                const invitee = await User.findById(user.id)
+
+                invitee.invitations = invitee.invitations.filter(inv => inv.from != from)
+
+                invitator.notifications.push({
+                    body: `${user.username} has declined your friendship request`,
+                    isSeen: false,
+                    createdAt: new Date().toISOString()
+                })
+
+                await invitee.save()
+                return await invitator.save()
+
+            } catch (error) {
+                return error
+            }
         }
     },
     Query: {
@@ -203,6 +255,10 @@ module.exports = {
         },
         images: async ({ id }) => {
             return await Image.find({ uploadedBy: id })
+        },
+        friends: async ({ friends }) => {
+            const data = await Promise.all(friends.map(friend => User.findById(friend)))
+            return data
         }
     }
 

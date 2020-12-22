@@ -193,6 +193,10 @@ query getUser(  $userId: ID! ){
             }
         }
     }
+    invitations{
+        from
+        id
+    }
 }
 }
 `
@@ -363,5 +367,59 @@ mutation updateUser(
                 large
                 }
             }
+    }
+}`
+
+export const INVITE_USER = gql`
+mutation inviteUser(
+   $userId:ID!
+){
+    inviteUser(userId:$userId){
+        id
+        email
+        username
+       invitations{
+            id
+            date
+            from
+       }
+    }
+}`
+
+export const ACCEPT_INVITATION = gql`
+mutation acceptInvitation(
+   $from:ID!
+){
+   acceptInvitation(from:$from){
+        id
+        username
+       invitations{
+            id
+            date
+            from
+       }
+       friends{
+           id
+           username
+       }
+    }
+}`
+
+export const DECLINE_INVITATION = gql`
+mutation declineInvitation(
+   $from:ID!
+){
+   declineInvitation(from:$from){
+        id
+        username
+       invitations{
+            id
+            date
+            from
+       }
+       friends{
+           id
+           username
+       }
     }
 }`
