@@ -16,8 +16,6 @@ import ImagePreview from './ImagePreview'
 import ImagesContainer from '../ImagesContainer'
 import Form from '../../General/Form'
 
-//TODO: ustawienia prywatności takie fajne jak userMenu
-
 export default function PostForm({ toggleForm, setActive, postOptions }) {
 
 
@@ -36,7 +34,7 @@ export default function PostForm({ toggleForm, setActive, postOptions }) {
     const [fileInputHover, setFileInputHover] = useState(false);
     const fileInput = useRef(null)
 
-    const { onChange, onSubmit, values, removeValue } = useForm(createPostCallback, initialState)
+    const { onChange, onSubmit, values, removeValue, addValue } = useForm(createPostCallback, initialState)
 
     const { createPost, errors, loading } = useCreatePost(values, callback)
     const { storePictures } = useCreateImage()
@@ -76,6 +74,11 @@ export default function PostForm({ toggleForm, setActive, postOptions }) {
         }
     }, [])
 
+    //that's weird way of adding value to form, but I haven't thought of it before so I had to choose: those couple lines or rewrite whole form component
+    useEffect(() => {
+        addValue({ privacy: postOptions.privacy })
+    }, [postOptions])
+
 
     const placeholder = values.images.length === 0 ?
         `Whats on your mind, ${username}?` :
@@ -93,7 +96,7 @@ export default function PostForm({ toggleForm, setActive, postOptions }) {
                 <PrivacyContainer>
                     <h3>{username}</h3>
                     <SelectInputContainer>
-                        <SelectInput name={'privacy'} onClick={() => setActive('options')} type='button'>
+                        <SelectInput name={'privacy'} onClick={() => setActive('options')} type='button' >
                             {(postOptions.privacy.slice(0, 1) + postOptions.privacy.slice(1).toLowerCase()).replace('_', ' ')}
                         </SelectInput>
                         <FontAwesomeIcon icon={faEye} style={{ fontSize: '.8em', margin: '0 .5em' }} />

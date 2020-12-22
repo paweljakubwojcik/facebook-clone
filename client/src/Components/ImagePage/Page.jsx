@@ -39,7 +39,7 @@ export default function ImagePage({ setPostId }) {
         <ImageContainer image={image?.urls.small} >
             { image && <Image image={image} />}
             { loading && <ImageLoader />}
-            { !image && !loading && <ImageLoader> Can't find this picture </ImageLoader>}
+            { ((!image && !loading) || error) && <ImageLoader> Can't find this picture </ImageLoader>}
         </ImageContainer>
     )
 }

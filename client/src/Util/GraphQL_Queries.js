@@ -110,6 +110,19 @@ export const DELETE_POST = gql`
         }
 `
 
+export const EDIT_POST = gql`
+    mutation deletePost( $postId:ID!, $field:String!, $newValue:String! ){
+        editPost( postId:$postId, field:$field, newValue:$newValue ){
+            id
+            privacy
+            body
+            username
+        }
+        }
+`
+
+
+
 export const GET_USERS = gql`
 {
  getUsers {

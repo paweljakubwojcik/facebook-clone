@@ -128,6 +128,7 @@ module.exports = gql`
         logout(userId:ID!): ID!
         createPost(body:String, title:String, privacy:Privacy):Post!
         deletePost(postId:ID!):String!
+        editPost(postId:ID!,field:String!, newValue:String!):Post!
         
         createComment(postId:ID!,body:String!): Post!
         deleteComment(postId:ID!,commentId:ID!):Post!
@@ -139,5 +140,8 @@ module.exports = gql`
         updateUser(field:String!, newValue:String!):User!
         
         uploadPicture(ImageInput:ImageInput!):Image!
+
+        inviteUser(userId:ID!):User!
+        acceptInvitation(invitationId:ID!):User!
     }
  `

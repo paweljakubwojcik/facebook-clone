@@ -6,13 +6,26 @@ const checkAuth = require('../../utils/checkAuth')
 
 module.exports = {
     Query: {
-        async getPosts(_, { userId, limit, offset }) {
+        async getPosts(_, { userId, limit, offset }, context) {
+            // if user Id => search only posts if user===userId
+            // if !context.user => search only public posts
+            // if context.user => search 1. first posts that fuser.friends.contains(context.user)
+            //                           2. if posts.length < limit => search for public posts
+            // timeLimit for friends posts
+            // if userId === context.user show all posts 
+            const user = checkAuth(context)
+
+            let filter = {}
+            if (userId)
+                filter.user = userId
+            if (!user)
+                filter.privacy = 'PUBLIC'
+            if (user)
+                filter = { ...filter, $or: [{ privacy: 'PUBLIC' }, { privacy: 'PRIVATE', user: user.id }] }
+
             try {
-                let posts;
-                if (userId)
-                    posts = await Post.find({ user: userId }, null, { sort: { createdAt: -1 }, skip: offset, limit: limit })
-                else
-                    posts = await Post.find({}, null, { sort: { createdAt: -1 }, skip: offset, limit: limit }); //Get posts and sort them
+                console.log(filter)
+                const posts = await Post.find(filter, null, { sort: { createdAt: -1 }, skip: offset, limit: limit })
                 return posts
             } catch (err) {
                 throw new Error(err)
@@ -94,6 +107,23 @@ module.exports = {
                 throw new UserInputError(e)
             }
         },
+
+        async editPost(_, { postId, field, newValue }, context) {
+            const { username } = checkAuth(context)
+            try {
+                const post = await Post.findById(postId)
+
+                if (post.username === username) {
+                    post[field] = newValue
+                    return await post.save()
+                }
+                else
+                    throw AuthenticationError('User is not owner of the post')
+
+            } catch (error) {
+                throw new Error(e)
+            }
+        }
     },
     Post: {
         async user({ user }) {

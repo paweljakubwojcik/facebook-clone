@@ -1,13 +1,15 @@
 import React, { useState, useContext, forwardRef } from 'react'
 import styled from 'styled-components'
 import { AuthContext } from '../../Context/auth'
+import { useMutation } from '@apollo/client'
+import { EDIT_POST } from '../../Util/GraphQL_Queries'
 
 
-import { RoundButton, MenuButton } from '../General/Buttons'
+import { MenuButton } from '../General/Buttons'
 import DeleteButton from './DeleteButton'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import AnimatedMenu from '../General/AnimatedMenu/AnimatedMenu'
 import SubMenu from '../General/AnimatedMenu/SubMenu'
 import RadioButtons from '../General/AnimatedMenu/RadioButtons'
@@ -36,12 +38,24 @@ const PostOptionsMenu = forwardRef(({ isDeletable, post }, ref) => {
     }
 
     const PrivacyMenu = () => {
-        //TODO: FUNCTIONALITY
-        const { user } = useContext(AuthContext)
-
+        const [editPost, { data }] = useMutation(EDIT_POST, {
+            update: (cache, data) => {
+                console.log(data)
+            },
+            onError: (e) => {
+                console.log(e)
+            }
+        })
 
         const handleClick = (e) => {
             e.target.blur()
+            editPost({
+                variables: {
+                    postId: post.id,
+                    field: 'privacy',
+                    newValue: e.target.value
+                }
+            })
         }
 
         const buttons = [
