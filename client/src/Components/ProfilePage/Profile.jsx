@@ -22,9 +22,10 @@ export const UserMatchContext = createContext(false)
 export default function Profile() {
     const context = useContext(AuthContext)
 
-    const { id } = useParams();
+    const params = useParams();
+    const id = params.id.replace('-', ' ')
 
-    const isViewerTheOwner = context.user?.id === id
+    const isViewerTheOwner = context.user?.id === id || context.user?.username === id
 
     const { data: { getUser: user } = {}, loading, error } = useQuery(GET_USER, {
         variables: { userId: id },
@@ -59,7 +60,7 @@ export default function Profile() {
             {error && <NotFound message={'Faker not found'} />}
             {loading &&
                 <Content style={{ minHeight: '80vh' }}>
-                    <DotLoader pulse/>
+                    <DotLoader pulse />
                 </Content>
             }
         </UserMatchContext.Provider>

@@ -76,6 +76,7 @@ export default function PostForm({ toggleForm, setActive, postOptions }) {
 
     //that's weird way of adding value to form, but I haven't thought of it before so I had to choose: those couple lines or rewrite whole form component
     useEffect(() => {
+        console.log('rerender')
         addValue({ privacy: postOptions.privacy })
     }, [postOptions])
 
