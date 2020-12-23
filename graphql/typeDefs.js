@@ -72,7 +72,7 @@ module.exports = gql`
     }
     type Invitation {
         id:ID!
-        from: ID!
+        from: User!
         date: String!
     }
     type Notification {
@@ -80,6 +80,7 @@ module.exports = gql`
         body: String,
         createdAt: String,
         isSeen: Boolean,
+        from:User
     }
     type UserInfo{
         joiningDate: String
@@ -105,6 +106,7 @@ module.exports = gql`
         invitations:[Invitation]!
         friends:[User]!
         notifications:[Notification]!
+        notificationCount:Int!
         info:UserInfo!
     }
     

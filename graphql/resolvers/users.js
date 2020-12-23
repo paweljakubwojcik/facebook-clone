@@ -194,7 +194,15 @@ module.exports = {
 
                 invitator.friends.push(invitee)
                 invitator.notifications.push({
+                    from: invitee.id,
                     body: `${user.username} has accepted you as a fake friend!`,
+                    isSeen: false,
+                    createdAt: new Date().toISOString()
+                })
+
+                invitee.notifications.push({
+                    from: invitator.id,
+                    body: `you and ${invitator.username} have became friends!`,
                     isSeen: false,
                     createdAt: new Date().toISOString()
                 })
@@ -242,7 +250,12 @@ module.exports = {
                 const user = await User.findById(userId)
                 return user
             } catch (err) {
-                throw new Error(err)
+                try {
+                    const user = await User.findOne({ username: userId })
+                    return user
+                } catch (error) {
+                    throw new Error(err)
+                }
             }
         }
     },
@@ -259,6 +272,16 @@ module.exports = {
         friends: async ({ friends }) => {
             const data = await Promise.all(friends.map(friend => User.findById(friend)))
             return data
+        },
+    },
+    Invitation: {
+        from: async ({ from }) => {
+            return await User.findById(from)
+        }
+    },
+    Notification: {
+        from: async ({ from }) => {
+            return await User.findById(from)
         }
     }
 

@@ -194,9 +194,13 @@ query getUser(  $userId: ID! ){
         }
     }
     invitations{
-        from
+        from{
+            id
+            username
+        }
         id
     }
+    notificationCount
 }
 }
 `
@@ -396,7 +400,9 @@ mutation acceptInvitation(
        invitations{
             id
             date
-            from
+            from{
+                id
+            }
        }
        friends{
            id
@@ -415,7 +421,9 @@ mutation declineInvitation(
        invitations{
             id
             date
-            from
+            from{
+                id
+            }
        }
        friends{
            id

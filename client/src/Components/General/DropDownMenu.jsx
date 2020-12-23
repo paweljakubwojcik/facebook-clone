@@ -12,7 +12,7 @@ const DropDownMenu = React.forwardRef(({ children, small, ...rest }, ref) => {
                 </Menu>
 
             </Container>
-            <LittleSquare />
+           
         </>
     )
 })

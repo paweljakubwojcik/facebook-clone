@@ -39,7 +39,10 @@ query getUser(  $userId: ID! ){
     }
     invitations{
         id
-        from
+        from{
+            id
+            username
+        }
     }
 }
 }

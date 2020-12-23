@@ -13,7 +13,10 @@ const GET_USER_FRIENDS = gql`
    query getUser($userId:ID!){
        getUser(userId:$userId){
            invitations{
-               from
+               from{
+                   id
+                   username
+               }
                id
            },
            friends{
@@ -77,8 +80,8 @@ export default function ActionButtons({ user, context, seeProfile }) {
 
 
     useEffect(() => {
-        const isInvited = !!user.invitations.find(inv => inv.from === context.user.id)
-        const isInviting = !!contextUser?.invitations.find(inv => inv.from === user.id)
+        const isInvited = !!user.invitations.find(inv => inv.from.id === context.user.id)
+        const isInviting = !!contextUser?.invitations.find(inv => inv.from.id === user.id)
         const isFriend = !!user.friends.find(friend => friend.id === context.user.id)
         setBools({ isInvited, isInviting, isFriend })
         return () => {

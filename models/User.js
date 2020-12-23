@@ -34,7 +34,10 @@ const userSchema = new Schema({
             body: String,
             createdAt: String,
             isSeen: Boolean,
-
+            from: {
+                type: Schema.Types.ObjectId,
+                ref: 'users'
+            },
         }
     ],
     profileImage: {

@@ -9,23 +9,28 @@ import UserMenu from './UserMenu'
 import { RoundButton } from '../General/Buttons'
 
 import { checkIfContains } from '../../Util/Methods'
+import Notifications from './Notifications'
 
-const buttons = [
-    {
-        value: 'messenger',
-        icon: faFacebookMessenger
-    },
-    {
-        value: 'notification',
-        icon: faBell
-    },
-    {
-        value: 'usermenu',
-        icon: faCaretDown
-    },
-]
 
-export default function Menu() {
+
+export default function Menu({ counters }) {
+
+    console.log(counters)
+    const buttons = [
+        {
+            value: 'messenger',
+            icon: faFacebookMessenger
+        },
+        {
+            value: 'notification',
+            icon: faBell,
+            counter: counters.notifications
+        },
+        {
+            value: 'usermenu',
+            icon: faCaretDown
+        },
+    ]
 
     const menu = useRef(null)
 
@@ -61,17 +66,20 @@ export default function Menu() {
 
     return (
         <StyledMenu className='menu' >
-            {buttons.map(({ value, icon }) =>
+            {buttons.map(({ value, icon, counter }) =>
                 <MenuButton
                     className='menu__button'
                     key={value}
                     value={value}
                     onClick={(e) => { e.target.blur(); toggleActive(e) }}
-                    active={value === activeButton ? 1 : 0} aria-label={value}>
+                    active={value === activeButton ? 1 : 0} aria-label={value}
+                    counter={counter}
+                >
                     <FontAwesomeIcon className='icon' icon={icon} />
                 </MenuButton>
             )}
             {activeButton === buttons[2].value && <UserMenu className='openMenu' ref={menu} />}
+            {activeButton === buttons[1].value && <Notifications className='openMenu' ref={menu} />}
         </StyledMenu>
     )
 }
@@ -85,4 +93,24 @@ const StyledMenu = styled.menu`
     position:relative;
 `
 
-const MenuButton = RoundButton
+const MenuButton = styled(RoundButton)`
+
+    position:relative;
+    &::after{
+        ${props => props.counter ? `content:'${props.counter}'` : ''};
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        font-size:.5em;
+        padding:.3em;
+        position:absolute;
+        background-color: ${props => props.theme.primaryColor};
+        width:1em;
+        height:1em;
+        border-radius:50%;
+        top:-10%;
+        right:-10%;
+    }
+
+
+`

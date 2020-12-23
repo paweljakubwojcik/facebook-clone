@@ -21,7 +21,7 @@ module.exports = {
             if (!user)
                 filter.privacy = 'PUBLIC'
             if (user)
-                filter = { ...filter, $or: [{ privacy: 'PUBLIC' }, { privacy: 'PRIVATE', user: user.id }] }
+                filter = { ...filter, $or: [{ privacy: 'PUBLIC' }, { privacy: 'PRIVATE', user: user.id }, { privacy: 'FRIENDS_ONLY' }] }
 
             try {
                 const posts = await Post.find(filter, null, { sort: { createdAt: -1 }, skip: offset, limit: limit })
@@ -88,7 +88,7 @@ module.exports = {
         },
 
         async likePost(_, { postId }, context) {
-            const { username } = checkAuth(context)
+            const { username, id } = checkAuth(context)
             try {
                 const post = await Post.findById(postId)
                 if (post.likes.find(like => like.username === username)) {

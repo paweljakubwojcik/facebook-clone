@@ -67,7 +67,7 @@ export default function Navbar() {
                             to={`/profile/${user.id}`}
                         />}
                     </MediaQuery>
-                    <Menu />
+                    <Menu counters={{ messages: 0, notifications: userData?.notificationCount }} />
                 </>
             ) : loggingButtons}
         </NavBar>
