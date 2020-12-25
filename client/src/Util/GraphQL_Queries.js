@@ -385,37 +385,19 @@ mutation inviteUser(
        invitations{
             id
             date
-            from
-       }
-    }
-}`
-
-export const ACCEPT_INVITATION = gql`
-mutation acceptInvitation(
-   $from:ID!
-){
-   acceptInvitation(from:$from){
-        id
-        username
-       invitations{
-            id
-            date
             from{
                 id
             }
        }
-       friends{
-           id
-           username
-       }
     }
 }`
 
-export const DECLINE_INVITATION = gql`
-mutation declineInvitation(
+export const ANSWER_INVITATION = gql`
+mutation answerInvitation(
    $from:ID!
+   $answer:Answer!
 ){
-   declineInvitation(from:$from){
+   answerInvitation(from:$from, answer:$answer){
         id
         username
        invitations{

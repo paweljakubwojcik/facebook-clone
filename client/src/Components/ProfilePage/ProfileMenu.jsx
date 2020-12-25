@@ -57,7 +57,7 @@ export default function ProfileMenu({ width, contentType, setContentType, user }
                     </TransitionGroup>
                     {!isViewerTheOwner && context.user &&
                         <Buttons >
-                            <ActionButtons context={context} user={user} />
+                            <ActionButtons user={user} />
                         </Buttons>}
                 </Menu>
             </ContainerBar>

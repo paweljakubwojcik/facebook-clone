@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useMutation, gql, useQuery } from '@apollo/client'
-import { INVITE_USER, ACCEPT_INVITATION, DECLINE_INVITATION } from '../../Util/GraphQL_Queries'
+import React, { useContext } from 'react'
+
+import { gql, useQuery, useMutation } from '@apollo/client'
+import { AuthContext } from '../../Context/auth'
+import { INVITE_USER, ANSWER_INVITATION } from '../../Util/GraphQL_Queries'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserPlus, faEnvelope, faCheck, faTimes, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faUserPlus, faCheck, faTimes, faEye } from '@fortawesome/free-solid-svg-icons'
+
 import { FilledButton } from '../General/Buttons'
 import DotLoader from '../General/DotLoader'
+
+
 
 const GET_USER_FRIENDS = gql`
 
    query getUser($userId:ID!){
        getUser(userId:$userId){
+           id
            invitations{
                from{
                    id
@@ -27,17 +32,40 @@ const GET_USER_FRIENDS = gql`
 
 `
 
-export default function ActionButtons({ user, context, seeProfile }) {
+export default function ActionButtons({ user }) {
+
+    const context = useContext(AuthContext)
 
     const { data: { getUser: contextUser } = {} } = useQuery(GET_USER_FRIENDS, {
         variables: { userId: context.user.id }
     })
 
-    const [{ isInvited, isInviting, isFriend }, setBools] = useState({ isInvited: false, isInviting: false, isFriend: false })
+    const isFriend = !!user.friends.find(friend => friend.id === contextUser?.id)
+    const isInviting = !!contextUser?.invitations.find(inv => inv.from.id === user.id)
+    const isInvited = !!user.invitations.find(inv => inv.from.id === contextUser?.id)
 
-    const [inviteFriend, inviteData] = useMutation(INVITE_USER, {
+    let state = 'NOT_FRIEND'
+    if (isFriend) state = 'FRIEND'
+    if (isInviting) state = 'INVITING'
+    if (isInvited) state = 'INVITED'
+
+    return (
+        <>
+            {state === 'NOT_FRIEND' && <AddFriend userId={user.id} />}
+            {state === 'FRIEND' && <FriendButton />}
+            {state === 'INVITED' && <RequestSent />}
+            {state === 'INVITING' && <AnswerToInvitation from={user.id} />}
+
+        </>
+    )
+}
+
+
+function AddFriend({ userId }) {
+
+    const [inviteFriend, { loading }] = useMutation(INVITE_USER, {
         variables: {
-            userId: user.id
+            userId
         },
         update: (cache, data) => {
             console.log(data)
@@ -47,114 +75,83 @@ export default function ActionButtons({ user, context, seeProfile }) {
         }
     })
 
-    const [acceptFriend, acceptData] = useMutation(ACCEPT_INVITATION, {
-        variables: {
-            from: user.id
-        },
-        update: (cache, data) => {
-            setBools(bools => { return { ...bools, isInviting: false } })
-        },
-        onError: (error) => {
-            console.log(error)
-        }
-    })
-
-    const [declineFriend, declineData] = useMutation(DECLINE_INVITATION, {
-        variables: {
-            from: user.id
-        },
-        update: (cache, data) => {
-            console.log(data)
-            setBools(bools => { return { ...bools, isInviting: false } })
-        },
-        onError: (error) => {
-            console.log(error)
-        }
-    })
-
-    const hanldeInvite = (e) => {
+    const handleInvite = (e) => {
         e.target.blur()
         console.log('invite')
         inviteFriend()
     }
 
-
-    useEffect(() => {
-        const isInvited = !!user.invitations.find(inv => inv.from.id === context.user.id)
-        const isInviting = !!contextUser?.invitations.find(inv => inv.from.id === user.id)
-        const isFriend = !!user.friends.find(friend => friend.id === context.user.id)
-        setBools({ isInvited, isInviting, isFriend })
-        return () => {
-
-        }
-    }, [contextUser, user.invitations, contextUser?.invitations, user.id, user.friends, context.user.id])
-
-
-    // TODO: rewrite this component so it make sense
     return (
-        <>
-            {isInvited &&
-                <FilledButton style={{ pointerEvents: 'none' }} active>
-                    <FontAwesomeIcon icon={faCheck} />
-                    <span>Request sent</span>
-                </FilledButton>}
-            {isInviting && !isFriend &&
-                <>
-                    <FilledButton onClick={acceptFriend}>
-                        {acceptData.loading ?
-                            <DotLoader style={{ fontSize: '.6em' }} />
-                            :
-                            <>
-                                <FontAwesomeIcon icon={faCheck} />
-                                <span>Accept</span>
-                            </>
-                        }
-                    </FilledButton>
-                    <FilledButton red onClick={declineFriend}>
-                        {declineData.loading ?
-                            <DotLoader style={{ fontSize: '.6em' }} />
-                            :
-                            <>
-                                <FontAwesomeIcon icon={faTimes} />
-                                <span>Decline invitation</span>
-                            </>
-                        }
-                    </FilledButton>
-
-                </>
-            }
-            {isFriend &&
-                <FilledButton style={{ pointerEvents: 'none' }} active>
-                    <FontAwesomeIcon icon={faCheck} />
-                    <span>Friend</span>
-                </FilledButton>}
+        <FilledButton onClick={handleInvite}>
             {
-                !isInvited && !isFriend && !isInviting &&
-                <FilledButton onClick={hanldeInvite}>
-                    {
-                        !inviteData.loading ?
-                            <>
-                                <FontAwesomeIcon icon={faUserPlus} />
-                                <span>Add friend</span>
-                            </>
-                            :
-                            <DotLoader style={{ fontSize: '.6em' }} />
-                    }
-                </FilledButton>
-            }
-            {!isInviting &&
-                (seeProfile ?
-                    <FilledButton as={Link} to={`/profile/${user.id}`}>
-                        <FontAwesomeIcon icon={faEye} />
-                        <span>See Profile</span>
-                    </FilledButton>
+                !loading ?
+                    <>
+                        <FontAwesomeIcon icon={faUserPlus} />
+                        <span>Add friend</span>
+                    </>
                     :
-                    <FilledButton>
-                        <FontAwesomeIcon icon={faEnvelope} />
-                        <span>Send message</span>
-                    </FilledButton>)
+                    <DotLoader style={{ fontSize: '.6em' }} />
             }
-        </>
+        </FilledButton>
+    )
+}
+
+const FriendButton = () => {
+    return (
+        <FilledButton style={{ pointerEvents: 'none' }} as='div'>
+            <FontAwesomeIcon icon={faCheck} />
+            <span>Friend</span>
+        </FilledButton>
+    )
+}
+
+const RequestSent = () => {
+    return (
+        <FilledButton style={{ pointerEvents: 'none' }} active as='div'>
+            <FontAwesomeIcon icon={faCheck} />
+            <span>Request sent</span>
+        </FilledButton>
+    )
+}
+
+function AnswerToInvitation({ from }) {
+
+    const [answerToInvitation, { loading, error }] = useMutation(ANSWER_INVITATION, {
+        update: (cache, data) => {
+            console.log(data)
+        },
+        onError: (error) => {
+            console.log(error)
+        }
+    })
+
+    const handleAnswer = (answer) => {
+        answerToInvitation({
+            variables: {
+                from,
+                answer
+            }
+        })
+    }
+
+    return (
+        loading ?
+            <DotLoader style={{ fontSize: '.6em' }} />
+            :
+            <>
+                <FilledButton onClick={() => handleAnswer('ACCEPT')}>
+
+                    <FontAwesomeIcon icon={faCheck} />
+                    <span>Accept</span>
+
+                </FilledButton>
+                <FilledButton red onClick={() => handleAnswer('DECLINE')}>
+
+                    <FontAwesomeIcon icon={faTimes} />
+                    <span>Decline</span>
+                </FilledButton>
+            </>
+
     )
 }
 

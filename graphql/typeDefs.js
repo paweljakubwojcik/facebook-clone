@@ -70,6 +70,10 @@ module.exports = gql`
         PRIVATE
         FRIENDS_ONLY
     }
+    enum Answer{
+        ACCEPT
+        DECLINE
+    }
     type Invitation {
         id:ID!
         from: User!
@@ -144,7 +148,6 @@ module.exports = gql`
         uploadPicture(ImageInput:ImageInput!):Image!
 
         inviteUser(userId:ID!):User!
-        acceptInvitation(from:ID!):User!
-        declineInvitation(from:ID!):User!
+        answerInvitation(from:ID!,answer:Answer!):[User!]
     }
  `

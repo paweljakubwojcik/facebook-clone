@@ -179,58 +179,58 @@ module.exports = {
                 return error
             }
         },
-        async acceptInvitation(_, { from }, context) {
+        async answerInvitation(_, { from, answer }, context) {
             const user = checkAuth(context)
+
             try {
                 const invitator = await User.findById(from)
                 const invitee = await User.findById(user.id)
+                const response = []
+                switch (answer) {
+                    case 'ACCEPT':
 
-                invitee.friends.push(invitator)
-                console.log(invitee.invitations)
+                        invitee.friends.push(invitator)
+        
+                        // != because 'inv.from' has diffrent type than 'from'
+                        const filteredInv = invitee.invitations.filter(inv => inv.from != from)
+                        invitee.invitations = filteredInv
 
-                // != because 'inv.from' has diffrent type than 'from'
-                const filteredInv = invitee.invitations.filter(inv => inv.from != from)
-                invitee.invitations = filteredInv
+                        invitator.friends.push(invitee)
+                        invitator.notifications.push({
+                            from: invitee.id,
+                            body: `${user.username} has accepted you as a fake friend!`,
+                            isSeen: false,
+                            createdAt: new Date().toISOString()
+                        })
 
-                invitator.friends.push(invitee)
-                invitator.notifications.push({
-                    from: invitee.id,
-                    body: `${user.username} has accepted you as a fake friend!`,
-                    isSeen: false,
-                    createdAt: new Date().toISOString()
-                })
+                        invitee.notifications.push({
+                            from: invitator.id,
+                            body: `you and ${invitator.username} have became friends!`,
+                            isSeen: false,
+                            createdAt: new Date().toISOString()
+                        })
 
-                invitee.notifications.push({
-                    from: invitator.id,
-                    body: `you and ${invitator.username} have became friends!`,
-                    isSeen: false,
-                    createdAt: new Date().toISOString()
-                })
 
-                await invitee.save()
-                return await invitator.save()
+                        response.push(await invitee.save())
+                        response.push(await invitator.save())
+                        return response
 
-            } catch (error) {
-                return error
-            }
-        },
-        async declineInvitation(_, { from }, context) {
-            const user = checkAuth(context)
-            try {
-                const invitator = await User.findById(from)
-                const invitee = await User.findById(user.id)
+                    case 'DECLINE':
 
-                invitee.invitations = invitee.invitations.filter(inv => inv.from != from)
+                        invitee.invitations = invitee.invitations.filter(inv => inv.from != from)
 
-                invitator.notifications.push({
-                    body: `${user.username} has declined your friendship request`,
-                    isSeen: false,
-                    createdAt: new Date().toISOString()
-                })
+                        invitator.notifications.push({
+                            body: `${user.username} has declined your friendship request`,
+                            isSeen: false,
+                            createdAt: new Date().toISOString()
+                        })
+                        response.push(await invitee.save())
+                        response.push(await invitator.save())
+                        return response
 
-                await invitee.save()
-                return await invitator.save()
-
+                    default:
+                        break;
+                }
             } catch (error) {
                 return error
             }
