@@ -65,3 +65,15 @@ export const checkIfContains = (element, coordinates) => {
     else
         return false
 }
+
+export function replaceJSX(str, find, replace) {
+    let parts = str.split(find);
+    let result = [];
+    for (let i = 0; i < parts.length; i++) {
+        result.push(parts[i]);
+        result.push(replace);
+    }
+    result.pop()
+
+    return result.map((element, i) => <div style={{ display: 'inline' }} key={i}> {element}</div>)
+}

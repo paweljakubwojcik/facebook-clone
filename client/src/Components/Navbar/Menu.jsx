@@ -15,7 +15,6 @@ import Notifications from './Notifications'
 
 export default function Menu({ counters }) {
 
-    console.log(counters)
     const buttons = [
         {
             value: 'messenger',
@@ -79,7 +78,7 @@ export default function Menu({ counters }) {
                 </MenuButton>
             )}
             {activeButton === buttons[2].value && <UserMenu className='openMenu' ref={menu} />}
-            {activeButton === buttons[1].value && <Notifications className='openMenu' ref={menu} />}
+            {activeButton === buttons[1].value && <Notifications className='openMenu' ref={menu} toggleActive={changeActive} />}
         </StyledMenu>
     )
 }
@@ -111,6 +110,4 @@ const MenuButton = styled(RoundButton)`
         top:-10%;
         right:-10%;
     }
-
-
 `

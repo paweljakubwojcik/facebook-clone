@@ -2,12 +2,13 @@ import React, { useContext } from 'react'
 
 import { gql, useQuery, useMutation } from '@apollo/client'
 import { AuthContext } from '../../Context/auth'
-import { INVITE_USER, ANSWER_INVITATION } from '../../Util/GraphQL_Queries'
+import { INVITE_USER } from '../../Util/GraphQL_Queries'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserPlus, faCheck, faTimes, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faUserPlus, faCheck } from '@fortawesome/free-solid-svg-icons'
 
 import { FilledButton } from '../General/Buttons'
+import AnswerToInvitation from '../General/ActionButtons/AnswerToInvitation'
 import DotLoader from '../General/DotLoader'
 
 
@@ -114,45 +115,6 @@ const RequestSent = () => {
     )
 }
 
-function AnswerToInvitation({ from }) {
 
-    const [answerToInvitation, { loading, error }] = useMutation(ANSWER_INVITATION, {
-        update: (cache, data) => {
-            console.log(data)
-        },
-        onError: (error) => {
-            console.log(error)
-        }
-    })
-
-    const handleAnswer = (answer) => {
-        answerToInvitation({
-            variables: {
-                from,
-                answer
-            }
-        })
-    }
-
-    return (
-        loading ?
-            <DotLoader style={{ fontSize: '.6em' }} />
-            :
-            <>
-                <FilledButton onClick={() => handleAnswer('ACCEPT')}>
-
-                    <FontAwesomeIcon icon={faCheck} />
-                    <span>Accept</span>
-
-                </FilledButton>
-                <FilledButton red onClick={() => handleAnswer('DECLINE')}>
-
-                    <FontAwesomeIcon icon={faTimes} />
-                    <span>Decline</span>
-                </FilledButton>
-            </>
-
-    )
-}
 
 

@@ -149,5 +149,6 @@ module.exports = gql`
 
         inviteUser(userId:ID!):User!
         answerInvitation(from:ID!,answer:Answer!):[User!]
+        markNotificationSeen(notificationId:ID!):User!
     }
  `

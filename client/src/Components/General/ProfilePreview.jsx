@@ -1,8 +1,7 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types';
 import styled from 'styled-components'
 import { useQuery, gql } from '@apollo/client'
-import { AuthContext } from '../../Context/auth'
 import { Link } from 'react-router-dom'
 
 
@@ -10,7 +9,7 @@ import ElementContainer from './ElementContainer'
 import Avatar from './Avatar'
 import { FilledButton } from '../General/Buttons'
 import DotLoader from './DotLoader';
-import ActionButtons from '../ProfilePage/ActionButtons';
+
 
 const GET_USER_DETAILS = gql`
 query getUser(  $userId: ID! ){
@@ -48,9 +47,7 @@ query getUser(  $userId: ID! ){
 }
 `
 
-export default function ProfilePreview({ userId, buttons }) {
-
-    const context = useContext(AuthContext)
+export default function ProfilePreview({ userId }) {
 
     const { data: { getUser: user } = {}, loading } = useQuery(GET_USER_DETAILS, {
         variables: {
@@ -68,11 +65,11 @@ export default function ProfilePreview({ userId, buttons }) {
                     <p>
                         faker since {user.info?.joiningDate}
                     </p>
-                    {buttons &&
-                        <Buttons >
-                            <ActionButtons user={user} context={context} seeProfile />
-                        </Buttons>
-                    }
+                    <Buttons >
+                        <FilledButton as={Link} to={`/profile/${user.id}`}>
+                            <span> See profile </span>
+                        </FilledButton>
+                    </Buttons>
                 </div>
                 <LittleBackground image={user.backgroundImage?.urls.medium} />
             </Container>}
@@ -81,7 +78,6 @@ export default function ProfilePreview({ userId, buttons }) {
 }
 
 ProfilePreview.propTypes = {
-    buttons: PropTypes.arrayOf(PropTypes.oneOf(['see profile', 'add to friends', 'send message'])),
     userId: PropTypes.string
 }
 
@@ -146,6 +142,7 @@ const Container = styled.div`
     .infoContainer{
         align-self:start;
         width:max-content;
+        font-weight:normal;
     }
 
 `

@@ -39,7 +39,7 @@ export default function UserButton({ user, notLink, onClick, ...rest }) {
             <HoverWrapper top={popUpPosition}>
                 {!notLink && (
                     <PopUpElement isVisible={isHovered}>
-                        <ProfilePreview userId={user.id} buttons={['add to friends', 'see profile']} />
+                        <ProfilePreview userId={user.id} />
                     </PopUpElement>
                 )}
             </HoverWrapper>

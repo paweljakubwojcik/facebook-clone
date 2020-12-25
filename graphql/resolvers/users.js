@@ -111,7 +111,7 @@ module.exports = {
                 },
                 lastTimeOnline: new Date().toISOString(),
             })
-            //saving user in DB  //TODO error handling? 
+            //saving user in DB  
             const { _id } = await newUser.save()
 
             const randomTexts = [
@@ -168,7 +168,6 @@ module.exports = {
             try {
                 const user = await User.findById(userId)
                 const invitator = await User.findById(invitatorId)
-                console.log(invitator)
                 user.invitations.push({
                     from: invitator.id,
                     date: new Date().toISOString(),
@@ -190,22 +189,22 @@ module.exports = {
                     case 'ACCEPT':
 
                         invitee.friends.push(invitator)
-        
+
                         // != because 'inv.from' has diffrent type than 'from'
                         const filteredInv = invitee.invitations.filter(inv => inv.from != from)
                         invitee.invitations = filteredInv
 
                         invitator.friends.push(invitee)
-                        invitator.notifications.push({
+                        invitator.notifications.unshift({
                             from: invitee.id,
-                            body: `${user.username} has accepted you as a fake friend!`,
+                            body: `$user has accepted you as a fake friend!`,
                             isSeen: false,
                             createdAt: new Date().toISOString()
                         })
 
-                        invitee.notifications.push({
+                        invitee.notifications.unshift({
                             from: invitator.id,
-                            body: `you and ${invitator.username} have became friends!`,
+                            body: `You and $user have became friends!`,
                             isSeen: false,
                             createdAt: new Date().toISOString()
                         })
@@ -219,8 +218,9 @@ module.exports = {
 
                         invitee.invitations = invitee.invitations.filter(inv => inv.from != from)
 
-                        invitator.notifications.push({
-                            body: `${user.username} has declined your friendship request`,
+                        invitator.notifications.unshift({
+                            from: invitee.id,
+                            body: `$user has declined your friendship request`,
                             isSeen: false,
                             createdAt: new Date().toISOString()
                         })
@@ -231,6 +231,17 @@ module.exports = {
                     default:
                         break;
                 }
+            } catch (error) {
+                return error
+            }
+        },
+        markNotificationSeen: async (_, { notificationId }, context) => {
+            const { id } = checkAuth(context)
+            try {
+                const user = await User.findById(id)
+                const index = user.notifications.findIndex(n => n.id === notificationId)
+                user.notifications[index].isSeen = true
+                return await user.save()
             } catch (error) {
                 return error
             }
@@ -252,7 +263,10 @@ module.exports = {
             } catch (err) {
                 try {
                     const user = await User.findOne({ username: userId })
-                    return user
+                    if (!user)
+                        return new Error('user not found')
+                    else
+                        return user
                 } catch (error) {
                     throw new Error(err)
                 }

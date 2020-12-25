@@ -5,7 +5,7 @@ import PopUpElement from '../General/PopUpElement'
 import ProfilePreview from '../General/ProfilePreview'
 
 
-export default function UserLink({ userId, children, ...rest }) {
+export default function UserLink({ userId, children, showRight = true, ...rest }) {
 
     const [isHovered, setHover] = useState(false)
 
@@ -26,7 +26,7 @@ export default function UserLink({ userId, children, ...rest }) {
                 {children}
 
             </StyledLink>
-            <PopUpElement isVisible={isHovered} showRight>
+            <PopUpElement isVisible={isHovered} showRight={showRight}>
                 {userId && <ProfilePreview userId={userId} />}
             </PopUpElement>
         </Container>
@@ -34,6 +34,7 @@ export default function UserLink({ userId, children, ...rest }) {
 }
 
 const Container = styled.div`
+    display:inline-block;
     position:relative;
 `
 

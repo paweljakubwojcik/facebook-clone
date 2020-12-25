@@ -413,3 +413,19 @@ mutation answerInvitation(
        }
     }
 }`
+
+export const MARK_SEEN = gql`
+
+mutation markNotificationSeen( $notificationId:ID!){
+    markNotificationSeen(notificationId:$notificationId){
+        id
+        username
+        notifications{
+            id
+            isSeen
+        }
+        notificationCount
+    }
+}
+
+`
