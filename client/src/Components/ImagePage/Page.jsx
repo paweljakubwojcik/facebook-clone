@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
+import ProgressiveImage from 'react-progressive-image'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 
@@ -30,10 +31,13 @@ export default function ImagePage({ setPostId }) {
         return (
             <>
                 <Arrows currentImage={id} allImages={allImages} />
-                <Img src={image.urls.large} />
+                <ProgressiveImage src={image.urls.large} placeholder={image.urls.small}>
+                    {src => <Img src={src} />}
+                </ProgressiveImage>
             </>
         )
     }
+
     return (
 
         <ImageContainer image={image?.urls.small} >
@@ -105,8 +109,8 @@ const ImageContainer = styled.div`
 `
 
 const Img = styled.img`
-   
     max-width:100%;
     max-height:100%;
 
 `
+
