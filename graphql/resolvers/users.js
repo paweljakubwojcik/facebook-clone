@@ -99,7 +99,7 @@ module.exports = {
                 invitations: [],
                 settings: {
                     prefferedTheme: null,
-                    postDefaultPrivacy: null
+                    postDefaultPrivacy: 'PUBLIC'
                 },
                 info: {
                     joiningDate: new Date().toLocaleDateString(),
@@ -123,6 +123,7 @@ module.exports = {
             //creating post associated with pictures
             const newPost = new Post({
                 user: _id,
+                privacy: 'PRIVATE',
                 username,
                 body: randomTexts[Math.floor(Math.random() * randomTexts.length)],
                 createdAt: new Date().toISOString(),

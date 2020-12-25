@@ -8,6 +8,7 @@ import contentTypes from './contentTypes'
 
 import InfoBrief from './DetailsElements/InfoBrief'
 import PicturesBrief from './DetailsElements/PicturesBrief'
+import FriendsBrief from './DetailsElements/FriendsBrief'
 
 
 export default function Posts({ user, setContentType }) {
@@ -23,7 +24,7 @@ export default function Posts({ user, setContentType }) {
                     <PicturesBrief pictures={user.images} />
                 </DetailsElement>
                 <DetailsElement name={contentTypes.FRIENDS} setContentType={setContentType}>
-
+                    <FriendsBrief friends={user.friends} />
                 </DetailsElement>
             </Details>
             <PostsContainer userId={user.id} />

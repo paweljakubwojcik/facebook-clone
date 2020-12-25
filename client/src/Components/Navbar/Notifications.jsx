@@ -3,15 +3,16 @@ import styled from 'styled-components'
 import { AuthContext } from '../../Context/auth'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import moment from 'moment'
+import { replaceJSX } from '../../Util/Methods'
+import { useHistory } from 'react-router-dom'
+import { MARK_SEEN } from '../../Util/GraphQL_Queries'
+
 
 import DotLoader from '../General/DotLoader'
 import DropDownMenu from '../General/DropDownMenu'
 import Avatar from '../General/Avatar'
 import NotFound from '../General/NotFound'
 import AnswerToInvitation from '../General/ActionButtons/AnswerToInvitation'
-import { replaceJSX } from '../../Util/Methods'
-import { Link, useHistory } from 'react-router-dom'
-import { MARK_SEEN } from '../../Util/GraphQL_Queries'
 
 const GET_NOTIFICATIONS = gql`
     query getUset($userId:ID!){
@@ -85,7 +86,7 @@ const Notifications = forwardRef(({ userId, toggleActive, ...rest }, ref) => {
         <DropDownMenu {...rest} ref={ref}>
             <Container>
                 {loading && <DotLoader style={{ margin: '2em', width: '10em' }} />}
-                {getUser && [...notifications, ...invitations]}
+                {getUser && [...notifications, ...invitations].sort(({ props: { date: a } }, { props: { date: b } }) => moment(b).unix() - moment(a).unix())}
                 {error && <NotFound message={'Something went wrong'} />}
             </Container>
         </DropDownMenu>
@@ -190,6 +191,7 @@ const ElementContainer = styled.div`
     color: ${props => props.theme.primaryFontColor};
     filter:contrast(${props => props.isSeen ? '.7' : '1'});
     border-bottom: solid 1px ${props => props.theme.borderColor};
+    transition: background-color .2s ;
     &:hover{
         cursor: pointer;
         background-color: ${props => props.theme.activeButtonColor};
@@ -224,7 +226,7 @@ const NotSeenIndicator = styled.div`
     border-radius:50%;
     transform: translateY(-50%);
     background-color:${props => props.theme.primaryColor};
-    transition: transform .4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: transform .3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     &:hover,
     &:focus{
         cursor:pointer;
