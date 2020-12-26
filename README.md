@@ -8,6 +8,7 @@
   - [x] liking unliking posts
   - [x] uploading pictures 
   - [x] friends
+  - [x] targetted feed
   - [ ] messenger 
 #### front
 - [x] register/login page
@@ -24,7 +25,7 @@
   - [x] adding/deleting pictures
   -[ ] images pagination
 - [x] single pic/post page
-- [ ] Notifications
+- [x] Notifications
 
 
 
