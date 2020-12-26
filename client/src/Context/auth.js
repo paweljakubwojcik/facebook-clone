@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from 'react'
 
 import jwtDecode from 'jwt-decode'
-
+import { useApolloClient } from '@apollo/client'
 
 const initialState = {
     user: null
@@ -14,7 +14,7 @@ if (localStorage.getItem('token')) {
         localStorage.removeItem('token')
     else {
         initialState.user = decodedToken
-        console.log(decodedToken)
+
     }
 
 }
@@ -45,9 +45,10 @@ function authReducer(state, action) {
 
 function AuthProvider(props) {
     const [state, dispatch] = useReducer(authReducer, initialState)
+    const client = useApolloClient()
 
     const login = (userData) => {
-        console.log(userData)
+
         localStorage.setItem('token', userData.token)
         localStorage.setItem('avatar', userData.profileImage.urls.medium)
         dispatch({
@@ -58,6 +59,7 @@ function AuthProvider(props) {
     const logout = () => {
         localStorage.removeItem('token')
         localStorage.removeItem('avatar')
+        client.clearStore()
         dispatch({
             type: 'LOGOUT',
         })
