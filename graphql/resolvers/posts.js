@@ -2,33 +2,44 @@ const { AuthenticationError, UserInputError } = require('apollo-server')
 const Post = require('../../models/Post');
 const User = require('../../models/User');
 const Image = require('../../models/Image');
-const checkAuth = require('../../utils/checkAuth')
+const checkAuth = require('../../utils/checkAuth');
+const comments = require('./comments');
 
 module.exports = {
     Query: {
         async getPosts(_, { userId, limit, offset }, context) {
-            // if user Id => search only posts if user===userId
+            // if user Id => search all posts if user===userId
             // if !context.user => search only public posts
             // if context.user => search 1. first posts that fuser.friends.contains(context.user)
             //                           2. if posts.length < limit => search for public posts
             // timeLimit for friends posts
             // if userId === context.user show all posts 
-            const user = checkAuth(context)
-
             let filter = {}
-            if (userId)
-                filter.user = userId
-            if (!user)
-                filter.privacy = 'PUBLIC'
-            if (user)
-                filter = { ...filter, $or: [{ privacy: 'PUBLIC' }, { privacy: 'PRIVATE', user: user.id }, { privacy: 'FRIENDS_ONLY' }] }
-
             try {
-                const posts = await Post.find(filter, null, { sort: { createdAt: -1 }, skip: offset, limit: limit })
-                return posts
-            } catch (err) {
-                throw new Error(err)
+                const user = checkAuth(context)
+                if (userId)
+                    filter.user = userId
+                if (user) {
+                    const { friends } = await User.findById(user.id)
+                    filter = {
+                        ...filter,
+                        $or: [{ privacy: 'PUBLIC' },
+                        { privacy: ['PRIVATE', 'FRIENDS_ONLY'], user: user.id },
+                        { privacy: ['FRIENDS_ONLY'], user: friends }]
+                    }
+                }
+            } catch (error) {
+                if (!user)
+                    filter.privacy = 'PUBLIC'
+            } finally {
+                try {
+                    const posts = await Post.find(filter, null, { sort: { createdAt: -1 }, skip: offset, limit: limit })
+                    return posts
+                } catch (err) {
+                    throw new Error(err)
+                }
             }
+
         },
         async getPost(_, { postId }) {
             try {
@@ -38,6 +49,16 @@ module.exports = {
                 throw new Error("Post not found")
             }
         },
+        async getComments(_, { postId, offset, limit }) {
+            try {
+                const post = await Post.findById(postId);
+                const comments = Post.comments.slice(offset, offset + limit)
+                post.comments = comments
+                return post
+            } catch (err) {
+                throw new Error("Post not found")
+            }
+        }
     },
 
     Mutation: {

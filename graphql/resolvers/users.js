@@ -236,17 +236,6 @@ module.exports = {
                 return error
             }
         },
-        markNotificationSeen: async (_, { notificationId }, context) => {
-            const { id } = checkAuth(context)
-            try {
-                const user = await User.findById(id)
-                const index = user.notifications.findIndex(n => n.id === notificationId)
-                user.notifications[index].isSeen = true
-                return await user.save()
-            } catch (error) {
-                return error
-            }
-        }
     },
     Query: {
         getUsers: async () => {
@@ -294,10 +283,4 @@ module.exports = {
             return await User.findById(from)
         }
     },
-    Notification: {
-        from: async ({ from }) => {
-            return await User.findById(from)
-        }
-    }
-
 }

@@ -2,6 +2,7 @@ const postsResorvels = require('./posts')
 const usersResorvels = require('./users')
 const commentsResorvels = require('./comments')
 const imagesResolvers = require('./images')
+const notificationsResolvers = require('./notifications')
 
 module.exports = {
     Post: {
@@ -20,8 +21,8 @@ module.exports = {
     Invitation: {
         ...usersResorvels.Invitation,
     },
-    Notification:{
-        ...usersResorvels.Notification,
+    Notification: {
+        ...notificationsResolvers.Notification,
     },
     Image: {
         ...imagesResolvers.Image,
@@ -31,12 +32,14 @@ module.exports = {
         ...postsResorvels.Query,
         ...commentsResorvels.Query,
         ...usersResorvels.Query,
-        ...imagesResolvers.Query
+        ...imagesResolvers.Query,
+        ...notificationsResolvers.Query
     },
     Mutation: {
         ...usersResorvels.Mutation,
         ...postsResorvels.Mutation,
         ...commentsResorvels.Mutation,
-        ...imagesResolvers.Mutation
+        ...imagesResolvers.Mutation,
+        ...notificationsResolvers.Mutation
     }
 }

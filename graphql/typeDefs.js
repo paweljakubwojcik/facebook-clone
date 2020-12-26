@@ -123,10 +123,12 @@ module.exports = gql`
     type Query{
         getPosts(userId:ID,limit:Int!,offset:Int!):[Post]
         getPost(postId:ID!): Post
+        getComments(postId:ID!,limit:Int!,offset:Int!):Post!
         getUsers: [User]
         getUser(userId:ID!): User
-        getImages(userId:ID!):[Image]
+        getImages(userId:ID!, limit:Int!, offset:Int!):[Image]
         getImage(imageId:ID!):Image
+        notifications(limit:Int!, offset:Int!):User!
     }
     type Mutation{
         register(registerInput:RegisterInput): User!
