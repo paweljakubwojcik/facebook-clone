@@ -20,7 +20,10 @@ const cache = new InMemoryCache({
             }
         },
         User: {
-            merge: true
+            merge: true,
+            fields: {
+                notifications: offsetLimitPagination()
+            }
         }
     }
 })

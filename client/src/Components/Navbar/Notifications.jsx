@@ -15,8 +15,8 @@ import NotFound from '../General/NotFound'
 import AnswerToInvitation from '../General/ActionButtons/AnswerToInvitation'
 
 const GET_NOTIFICATIONS = gql`
-    query getUset($userId:ID!){
-        getUser(userId:$userId){
+    query notifications($limit:Int!, $offset:Int!){
+        notifications(limit:$limit, offset:$offset){
             id
             notifications{
                 body
@@ -53,40 +53,51 @@ const GET_NOTIFICATIONS = gql`
 
 `
 
+const limit = 7
+
+const Notifications = forwardRef(({ userId, ...rest }, ref) => {
 
 
-const Notifications = forwardRef(({ userId, toggleActive, ...rest }, ref) => {
-
-    const { user } = useContext(AuthContext)
-
-    const { data: { getUser } = {}, loading, error } = useQuery(GET_NOTIFICATIONS, {
+    const { data: { notifications: fetchedUser } = {}, loading, error, fetchMore } = useQuery(GET_NOTIFICATIONS, {
         variables: {
-            userId: user.id
-        }
+            limit,
+            offset: 0,
+        },
+        onError: (e) => {
+            throw e
+        },
+        onCompleted: (data) => console.log(data)
     })
 
-    const notifications = getUser?.notifications.map(notification =>
+    const notifications = fetchedUser?.notifications?.map(notification =>
         <Notification
             notification={notification}
             key={notification.id}
             date={notification.createdAt}
-            toggleActive={toggleActive}
         />)
 
-    const invitations = getUser?.invitations.map(invitation =>
+    const invitations = fetchedUser?.invitations?.map(invitation =>
         <Invitation
             invitation={invitation}
             key={invitation.id}
             date={invitation.date}
-            toggleActive={toggleActive}
         />)
 
+    const handleScroll = (e) => {
+        const { scrollTop, scrollTopMax } = e.target
+        if (scrollTop === scrollTopMax)
+            fetchMore({
+                variables: {
+                    offset: notifications.length
+                }
+            })
+    }
 
     return (
         <DropDownMenu {...rest} ref={ref}>
-            <Container>
+            <Container onScroll={handleScroll}>
                 {loading && <DotLoader style={{ margin: '2em', width: '10em' }} />}
-                {getUser && [...notifications, ...invitations].sort(({ props: { date: a } }, { props: { date: b } }) => moment(b).unix() - moment(a).unix())}
+                {fetchedUser && [...notifications, ...invitations].sort(({ props: { date: a } }, { props: { date: b } }) => moment(b).unix() - moment(a).unix())}
                 {error && <NotFound message={'Something went wrong'} />}
             </Container>
         </DropDownMenu>
@@ -96,26 +107,42 @@ const Notifications = forwardRef(({ userId, toggleActive, ...rest }, ref) => {
 export default Notifications
 
 
-const Notification = ({ notification, date, toggleActive }) => {
+const Notification = ({ notification, date }) => {
     return (
-        <Content data={notification} date={date} toggleActive={toggleActive}>
+        <Content data={notification} date={date} >
             {notification.body}
         </Content>
     )
 }
-const Invitation = ({ invitation, date, toggleActive }) => {
+const Invitation = ({ invitation, date }) => {
     return (
-        <Content data={invitation} date={date} buttons={<AnswerToInvitation from={invitation.from?.id} />} toggleActive={toggleActive}>
+        <Content data={invitation} date={date} buttons={<AnswerToInvitation from={invitation.from?.id} />} >
             {`${invitation.from?.username} wants to become your friend !`}
         </Content>
     )
 }
 
-const Content = ({ data, children, date, buttons, toggleActive }) => {
+const Content = ({ data, children, date, buttons }) => {
 
     const [markSeen] = useMutation(MARK_SEEN, {
         variables: {
             notificationId: data.id
+        },
+        onError: (e) => console.log(e),
+        update: (cache) => {
+            cache.writeFragment({
+                id: `Notification:${data.id}`,
+                fragment: gql`
+                    fragment MyNotification on Notification {
+                    id
+                    isSeen
+                    }
+                `,
+                data: {
+                    isSeen: true
+                }
+            })
+
         }
     })
 
@@ -123,13 +150,14 @@ const Content = ({ data, children, date, buttons, toggleActive }) => {
 
     const handleClick = () => {
         markSeen()
+
         history.push(`/profile/${data.from?.id}`)
-        toggleActive('')
+
     }
 
     return (
         <div style={{ position: 'relative' }}>
-            <ElementContainer isSeen={data.isSeen} onClick={handleClick}>
+            <ElementContainer isSeen={data.isSeen} onClick={handleClick} >
                 <Avatar image={data.from?.profileImage?.urls?.small} />
                 <ContentContainer>
                     <Title>

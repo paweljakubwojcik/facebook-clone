@@ -420,10 +420,6 @@ mutation markNotificationSeen( $notificationId:ID!){
     markNotificationSeen(notificationId:$notificationId){
         id
         username
-        notifications{
-            id
-            isSeen
-        }
         notificationCount
     }
 }

@@ -1,15 +1,11 @@
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const { UserInputError } = require('apollo-server')
 
-const { SECRET_KEY } = require('../../config')
-const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
-const { generateRandomPhoto } = require('../../utils/randomPhoto')
 const checkAuth = require('../../utils/checkAuth')
 
 const User = require('../../models/User')
-const Image = require('../../models/Image')
-const Post = require('../../models/Post')
+
+const dayjs = require('dayjs')
+//import dayjs from 'dayjs' // ES 2015
+dayjs().format()
 
 module.exports = {
     Mutation: {
@@ -26,12 +22,19 @@ module.exports = {
         }
     },
     Query: {
-        notifications: async ({ limit, offset }, context) => {
-            const { id } = checkAuth(context)
-            const user = await User.findById(id)
-            const notifications = user.notifications
-            user.notifications = notifications.slice(offset, offset + limit)
-            return user
+        notifications: async (_, { limit, offset }, context) => {
+            try {
+                const { id } = checkAuth(context)
+                const user = await User.findById(id)
+                const notifications = user.notifications.sort(({ createdAt: a }, { createdAt: b }) => {
+                    return dayjs(b).unix() - dayjs(a).unix()
+                })
+                user.notifications = notifications.slice(offset, offset + limit)
+                return user
+            } catch (error) {
+                return error
+            }
+
         }
     },
     Notification: {

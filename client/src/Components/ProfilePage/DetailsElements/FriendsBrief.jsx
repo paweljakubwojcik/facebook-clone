@@ -6,7 +6,6 @@ const max = 9
 
 export default function FriendsBrief({ friends }) {
 
-    console.log(friends)
     return (
         <Container>
             {friends.slice(0, max).map((friend, index) =>
@@ -33,7 +32,7 @@ const FriendLink = styled.div`
 const Container = styled.div`
     margin: 1em 0;
     display:grid;
-    grid-template-columns: repeat(auto-fit,minmax(30%,1fr));
+    grid-template-columns: repeat(3,minmax(30%,1fr));
     gap:1em;
 
 `

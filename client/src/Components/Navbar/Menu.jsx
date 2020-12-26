@@ -78,7 +78,7 @@ export default function Menu({ counters }) {
                 </MenuButton>
             )}
             {activeButton === buttons[2].value && <UserMenu className='openMenu' ref={menu} />}
-            {activeButton === buttons[1].value && <Notifications className='openMenu' ref={menu} toggleActive={changeActive} />}
+            {activeButton === buttons[1].value && <Notifications className='openMenu' ref={menu} />}
         </StyledMenu>
     )
 }
