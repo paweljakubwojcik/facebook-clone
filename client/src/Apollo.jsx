@@ -16,7 +16,8 @@ const cache = new InMemoryCache({
         },
         Query: {
             fields: {
-                getPosts: offsetLimitPagination(['userId'])
+                getPosts: offsetLimitPagination(['userId']),
+                getUsers: offsetLimitPagination()
             }
         },
         User: {

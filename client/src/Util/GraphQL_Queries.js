@@ -124,8 +124,8 @@ export const EDIT_POST = gql`
 
 
 export const GET_USERS = gql`
-{
- getUsers {
+query getUser(  $limit:Int!, $offset:Int! ){
+ getUsers(limit:$limit, offset:$offset) {
     id
     username
     profileImage{

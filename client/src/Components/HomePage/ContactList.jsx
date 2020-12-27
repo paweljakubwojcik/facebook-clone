@@ -1,28 +1,58 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components'
 
 import UserButton from '../General/UserButton'
 import SkeletonUserButton from '../skeletons/SkeletonUserButton'
+import ErrorMessage from '../General/ErrorMessage'
 
 import { GET_USERS } from '../../Util/GraphQL_Queries'
-
-
+import { useIntersectionObserver } from '../../Util/Hooks/useIntersectionObserver';
 
 
 export default function ContactList() {
 
+    const [setRef, visible] = useIntersectionObserver({
+        threshold: .7
+    })
+
+    const [canFetchMore, setCanFetchMore] = useState(true)
+
     //it gets every user from database
-    const { loading, error, data: { getUsers: users } = {} } = useQuery(GET_USERS);
+    const { loading, error, data: { getUsers: users } = {}, fetchMore } = useQuery(GET_USERS, {
+        variables: {
+            offset: 0,
+            limit: 10,
+        }
+    });
+
+    async function handleIntersect() {
+
+        fetchMore({
+            variables: {
+                offset: users.length || 0
+            }
+        }).then(({ data: { getUsers: newData } }) => {
+            //when all posts have been fetched
+            if (newData.length === 0)
+                setCanFetchMore(false)
+        })
+    }
+
+    useEffect(() => {
+        if (visible)
+            handleIntersect()
+    }, [visible])
 
     return (
 
         <Container>
             <ScrollWrapper>
-                <h2>Kontakty</h2>
+                <h2>Contacts</h2>
                 {users && users.map(user => <UserButton key={user.id} user={user} />)}
                 {loading && [0, 1, 2, 3].map(key => <SkeletonUserButton key={key} />)}
-                {/* TODO: error handling */}
+                {error && <ErrorMessage >{'Couldn\'t find any friends'}</ErrorMessage>}
+                {!loading && !error && canFetchMore && <Dummy ref={setRef}> {[1, 2].map((key) => <SkeletonUserButton key={key} theme={'dark'} />)}</Dummy>}
             </ScrollWrapper>
         </Container>
     )
@@ -84,5 +114,14 @@ const ScrollWrapper = styled.div`
         background-color: ${props => props.theme.secondaryFontColor};
         border-radius: 20px;
         }
+
+`
+
+const Dummy = styled.div`
+
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    background-color:transparent;
 
 `

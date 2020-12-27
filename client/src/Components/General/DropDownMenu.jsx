@@ -38,20 +38,3 @@ const Menu = styled.div`
     box-shadow: ${props => props.theme.standardShadow};
 `
 
-const LittleSquare = styled.div`
-
-        position:absolute;
-        z-index:100;
-        display:block;
-        background-color:inherit;
-        width:10px;
-        height:10px;
-        transform-origin:center center;
-        transform:rotate(45deg) translate(0,-70%);
-        top:100%;
-        right:1em;
-        
-       // box-shadow:inherit;
-        border-top: solid 1px  ${props => props.theme.borderColor};
-        border-left: solid 1px  ${props => props.theme.borderColor};
-`

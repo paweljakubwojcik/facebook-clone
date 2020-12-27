@@ -238,9 +238,11 @@ module.exports = {
         },
     },
     Query: {
-        getUsers: async () => {
+        getUsers: async (_, { offset, limit }, context) => {
+            const { id } = checkAuth(context)
             try {
-                const users = await User.find().sort({ lastTimeOnline: -1 }); //Get users and sort them by activity
+                const user = await User.findById(id)
+                const users = await User.find({ _id: user.friends }, null, { skip: offset, limit: limit }); // gets only users that are friends
                 return users
             } catch (err) {
                 throw new Error(err)

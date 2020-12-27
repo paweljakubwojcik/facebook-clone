@@ -124,7 +124,7 @@ module.exports = gql`
         getPosts(userId:ID,limit:Int!,offset:Int!):[Post]
         getPost(postId:ID!): Post
         getComments(postId:ID!,limit:Int!,offset:Int!):Post!
-        getUsers: [User]
+        getUsers(limit:Int,offset:Int): [User]
         getUser(userId:ID!): User
         getImages(userId:ID!, limit:Int!, offset:Int!):[Image]
         getImage(imageId:ID!):Image
