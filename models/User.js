@@ -33,7 +33,10 @@ const userSchema = new Schema({
         {
             body: String,
             createdAt: String,
-            isSeen: Boolean,
+            isSeen: {
+                type: Boolean,
+                default: false
+            },
             from: {
                 type: Schema.Types.ObjectId,
                 ref: 'users'

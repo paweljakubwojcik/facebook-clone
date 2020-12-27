@@ -188,25 +188,26 @@ module.exports = {
                 const response = []
                 switch (answer) {
                     case 'ACCEPT':
-
-                        invitee.friends.push(invitator)
+                        //push invitator to friendlist of invitee
+                        if (!invitee.friends.includes(invitator.id))
+                            invitee.friends.push(invitator)
+                        //and vice versa
+                        if (!invitator.friends.includes(invitee.id))
+                            invitator.friends.push(invitee)
 
                         // != because 'inv.from' has diffrent type than 'from'
                         const filteredInv = invitee.invitations.filter(inv => inv.from != from)
                         invitee.invitations = filteredInv
 
-                        invitator.friends.push(invitee)
                         invitator.notifications.unshift({
                             from: invitee.id,
                             body: `$user has accepted you as a fake friend!`,
-                            isSeen: false,
                             createdAt: new Date().toISOString()
                         })
 
                         invitee.notifications.unshift({
                             from: invitator.id,
                             body: `You and $user have became friends!`,
-                            isSeen: false,
                             createdAt: new Date().toISOString()
                         })
 
@@ -222,7 +223,6 @@ module.exports = {
                         invitator.notifications.unshift({
                             from: invitee.id,
                             body: `$user has declined your friendship request`,
-                            isSeen: false,
                             createdAt: new Date().toISOString()
                         })
                         response.push(await invitee.save())

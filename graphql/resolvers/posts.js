@@ -23,9 +23,11 @@ module.exports = {
                     const { friends } = await User.findById(user.id)
                     filter = {
                         ...filter,
-                        $or: [{ privacy: 'PUBLIC' },
-                        { privacy: ['PRIVATE', 'FRIENDS_ONLY'], user: user.id },
-                        { privacy: ['FRIENDS_ONLY'], user: friends }]
+                        $or: [
+                            { privacy: 'PUBLIC' },
+                            { privacy: ['PRIVATE', 'FRIENDS_ONLY'], user: user.id },
+                            { privacy: ['FRIENDS_ONLY'], user: friends }
+                        ]
                     }
                 }
             } catch (error) {
