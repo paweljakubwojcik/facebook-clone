@@ -3,7 +3,6 @@ import moment from 'moment'
 import styled from 'styled-components'
 
 import PopUpElement from '../General/PopUpElement'
-import PopUpList from './PopUpList'
 
 
 export default function TimeStamp({ time }) {

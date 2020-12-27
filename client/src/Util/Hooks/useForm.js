@@ -9,7 +9,6 @@ export const useForm = (callback, initialState = {}) => {
     const [values, setValues] = useState(initialState)
 
     const onChange = (e) => {
-        console.log(values)
         if (e.target.type !== 'file')
             setValues({ ...values, [e.target.name]: e.target.value })
         else
@@ -39,9 +38,8 @@ export const useForm = (callback, initialState = {}) => {
      * @param {Obj} value {name: value}
      */
     const addValue = (value) => {
-        const key = Object.keys(value)[0]
+
         setValues({ ...values, ...value })
-        console.log(values)
     }
 
 

@@ -43,7 +43,7 @@ export default function Profile() {
             })
         }
 
-    }, [user])
+    }, [user, isMobileDevice])
 
     return (
         <UserMatchContext.Provider value={isViewerTheOwner}>

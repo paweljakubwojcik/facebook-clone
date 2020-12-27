@@ -1,6 +1,5 @@
-import React, { useState, useContext, forwardRef } from 'react'
+import React, { useState, forwardRef } from 'react'
 import styled from 'styled-components'
-import { AuthContext } from '../../Context/auth'
 import { useMutation } from '@apollo/client'
 import { EDIT_POST } from '../../Util/GraphQL_Queries'
 
@@ -38,7 +37,7 @@ const PostOptionsMenu = forwardRef(({ isDeletable, post }, ref) => {
     }
 
     const PrivacyMenu = () => {
-        const [editPost, { data }] = useMutation(EDIT_POST, {
+        const [editPost] = useMutation(EDIT_POST, {
             update: (cache, data) => {
                 console.log(data)
             },
