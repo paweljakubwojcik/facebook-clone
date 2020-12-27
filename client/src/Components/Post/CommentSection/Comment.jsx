@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useQuery, gql, useMutation } from '@apollo/client'
+import { BASE_COMMENT_FRAGMENT } from '../../../Util/GraphQL_Queries'
 import { AuthContext } from '../../../Context/auth'
 import moment from 'moment'
 
@@ -174,7 +175,7 @@ mutation likeComment($postId:ID! , $commentId:ID!){
     ){
         id
         comments{
-            id
+             ...BaseComment
             likes{
                 id
                 }
@@ -182,4 +183,5 @@ mutation likeComment($postId:ID! , $commentId:ID!){
         }
     }
 }
+${BASE_COMMENT_FRAGMENT}
 `

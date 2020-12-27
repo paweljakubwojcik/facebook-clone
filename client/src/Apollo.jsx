@@ -14,6 +14,9 @@ const cache = new InMemoryCache({
         Urls: {
             merge: true,
         },
+        Post: {
+            merge: true
+        },
         Query: {
             fields: {
                 getPosts: offsetLimitPagination(['userId']),

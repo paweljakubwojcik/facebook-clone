@@ -1,5 +1,23 @@
 import { gql } from '@apollo/client'
 
+export const BASE_COMMENT_FRAGMENT = gql`
+    fragment BaseComment on Comment {
+            id
+            body
+            username
+            createdAt
+            likesCount
+            user{
+                username
+                id
+            }
+            likes{
+                id
+                username
+            }
+    }
+  `
+
 export const GET_POSTS = gql`
 query getPosts($userId:ID, $limit:Int!, $offset:Int!){
     getPosts(userId:$userId, limit:$limit, offset:$offset){
@@ -24,19 +42,7 @@ query getPosts($userId:ID, $limit:Int!, $offset:Int!){
                 }
         }
         comments {
-            id
-            body
-            username
-            createdAt
-            likesCount
-            user{
-                username
-                id
-            }
-            likes{
-                id
-                username
-            }
+            ...BaseComment
         }
         likes {
             id
@@ -52,6 +58,8 @@ query getPosts($userId:ID, $limit:Int!, $offset:Int!){
         }
     }
 }
+
+${BASE_COMMENT_FRAGMENT}
 `
 
 // graphQL query

@@ -24,7 +24,7 @@ export default function Posts({ userId }) {
             offset: 0,
             limit: 6
         },
-       
+
     });
     const isPostsEmpty = posts?.length === 0
 
@@ -45,7 +45,6 @@ export default function Posts({ userId }) {
         if (visible)
             handleIntersect()
     }, [visible])
-
 
     return (
         <PostsContainer>
