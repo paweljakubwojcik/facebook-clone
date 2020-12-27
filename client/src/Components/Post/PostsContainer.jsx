@@ -18,7 +18,7 @@ export default function Posts({ userId }) {
     const [canFetchMore, setCanFetchMore] = useState(true)
 
     // without any variables it gets all posts from DB
-    const { loading, error, data: { getPosts: posts } = {}, fetchMore } = useQuery(GET_POSTS, {
+    const { loading, error, data: { getPosts: posts } = {}, fetchMore, refetch } = useQuery(GET_POSTS, {
         variables: {
             userId,
             offset: 0,
@@ -41,10 +41,16 @@ export default function Posts({ userId }) {
         })
     }
 
+    console.log(posts)
+
     useEffect(() => {
         if (visible)
             handleIntersect()
     }, [visible])
+
+    useEffect(() => {
+        refetch()
+    }, [])
 
     return (
         <PostsContainer>

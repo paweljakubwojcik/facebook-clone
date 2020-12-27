@@ -50,16 +50,6 @@ module.exports = {
             } catch (err) {
                 throw new Error("Post not found")
             }
-        },
-        async getComments(_, { postId, offset, limit }) {
-            try {
-                const post = await Post.findById(postId);
-                const comments = Post.comments.slice(offset, offset + limit)
-                post.comments = comments
-                return post
-            } catch (err) {
-                throw new Error("Post not found")
-            }
         }
     },
 
