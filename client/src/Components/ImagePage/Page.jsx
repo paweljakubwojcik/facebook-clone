@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import ProgressiveImage from 'react-progressive-image'
 import { useParams } from 'react-router-dom'
@@ -27,24 +27,25 @@ export default function ImagePage({ setPostId }) {
             setPostId(image.post.id)
     }, [image, setPostId])
 
-    const Image = ({ image }) => {
-        return (
-            <>
-                <Arrows currentImage={id} allImages={allImages} />
-                <ProgressiveImage src={image.urls.large} placeholder={image.urls.small}>
-                    {src => <Img src={src} />}
-                </ProgressiveImage>
-            </>
-        )
-    }
-
     return (
-
         <ImageContainer image={image?.urls.small} >
-            { image && <Image image={image} />}
+            { image &&
+                <>
+                    <Arrows currentImage={id} allImages={allImages} />
+                    <Image image={image} />
+                </>}
             { loading && <ImageLoader />}
             { ((!image && !loading) || error) && <ImageLoader> Can't find this picture </ImageLoader>}
         </ImageContainer>
+    )
+}
+
+const Image = ({ image }) => {
+    const [loaded, setLoaded] = useState(false)
+    return (
+        <>
+            <Img src={image.urls.large} onLoad={() => setLoaded(true)} loaded={loaded} />
+        </>
     )
 }
 
@@ -111,6 +112,8 @@ const ImageContainer = styled.div`
 const Img = styled.img`
     max-width:100%;
     max-height:100%;
+    transition:opacity .2s;
+    opacity:${props => props.loaded ? '1' : '0'};
 
 `
 

@@ -32,6 +32,7 @@ export default function Arrows({ currentImage, allImages }) {
 
 const ButtonLeft = styled.div`
     position:absolute;
+    z-index:3;
     transform:translateY(-50%);
     top:50%;
     left:1em;
@@ -39,6 +40,7 @@ const ButtonLeft = styled.div`
 
 const ButtonRigth = styled.div`
     position:absolute;
+     z-index:3;
     transform:translateY(-50%);
     top:50%;
     right:1em;
