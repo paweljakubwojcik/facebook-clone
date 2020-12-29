@@ -5,6 +5,7 @@ import { LastLocationProvider } from 'react-router-last-location';
 import { AuthContext } from './Context/auth'
 import { ThemesProvider } from './Context/theme'
 import { FirebaseProvider } from './Firebase/FirebaseContext'
+import { GlobalStyles } from './styles/global_styles'
 
 import Home from './Components/HomePage/Home'
 import Login from './Components/LoginPage/Login'
@@ -20,6 +21,7 @@ export default function App() {
   return (
     <FirebaseProvider>
       <ThemesProvider >
+        <GlobalStyles />
         <Router>
           <LastLocationProvider>
             <NavBar />

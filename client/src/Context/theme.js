@@ -42,13 +42,8 @@ function ThemesProvider(props) {
 
     const [state, dispatch] = useReducer(themeReducer, initialState)
     const { themeName } = state
-    document.body.style.backgroundColor = themes[themeName].backgroundColor
-    document.body.style.color = themes[themeName].primaryFontColor
-
 
     const changeTheme = (themeType) => {
-        document.body.style.backgroundColor = themes[themeType].backgroundColor
-        document.body.style.color = themes[themeType].primaryFontColor
         dispatch({
             type: 'CHANGE_THEME',
             payload: {

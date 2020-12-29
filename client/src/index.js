@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/index.css';
 import Apollo from './Apollo'
 import reportWebVitals from './reportWebVitals';
 

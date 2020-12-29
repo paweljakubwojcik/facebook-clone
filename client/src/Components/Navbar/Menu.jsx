@@ -48,6 +48,7 @@ export default function Menu({ counters }) {
         if (!e.target.classList.contains('openMenu')
             && !e.target.classList.contains('menu')
             && !e.target.classList.contains('menu__button')
+            && menu.current
             && !checkIfContains(menu.current, e)) {
             changeActive('')
         }

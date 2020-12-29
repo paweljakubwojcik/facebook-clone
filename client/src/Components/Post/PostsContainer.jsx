@@ -13,7 +13,7 @@ export default function Posts({ userId }) {
 
     const [setRef, visible] = useIntersectionObserver({
         threshold: .7
-    })
+    }, handleIntersect)
 
     const [canFetchMore, setCanFetchMore] = useState(true)
 
@@ -29,7 +29,6 @@ export default function Posts({ userId }) {
     const isPostsEmpty = posts?.length === 0
 
     async function handleIntersect() {
-
         fetchMore({
             variables: {
                 offset: posts?.length || 0
@@ -40,13 +39,6 @@ export default function Posts({ userId }) {
                 setCanFetchMore(false)
         })
     }
-
-    console.log(posts)
-
-    useEffect(() => {
-        if (visible)
-            handleIntersect()
-    }, [visible])
 
     useEffect(() => {
         refetch()
