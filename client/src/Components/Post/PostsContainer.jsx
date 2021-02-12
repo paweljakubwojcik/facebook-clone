@@ -21,7 +21,6 @@ export default function Posts({ userId }) {
     const { loading, error, data: { getPosts: posts } = {}, fetchMore, refetch } = useQuery(GET_POSTS, {
         variables: {
             userId,
-            offset: 0,
             limit: 6
         },
 
@@ -31,7 +30,7 @@ export default function Posts({ userId }) {
     async function handleIntersect() {
         fetchMore({
             variables: {
-                offset: posts?.length || 0
+                cursor: posts[posts.length - 1].id
             }
         }).then(({ data: { getPosts: newPosts } }) => {
             //when all posts have been fetched
@@ -43,6 +42,7 @@ export default function Posts({ userId }) {
     useEffect(() => {
         refetch()
     }, [])
+
 
     return (
         <PostsContainer>

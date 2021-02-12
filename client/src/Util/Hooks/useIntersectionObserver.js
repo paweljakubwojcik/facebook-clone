@@ -14,7 +14,7 @@ export const useIntersectionObserver = (options, callback) => {
     useEffect(() => {
         const observer = new IntersectionObserver(([entry]) => {
             setVisible(entry.isIntersecting)
-            if (callback)
+            if (callback && entry.isIntersecting)
                 callback(entry)
         }, options)
         if (ref)

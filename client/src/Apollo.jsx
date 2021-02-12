@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
-import { offsetLimitPagination } from "@apollo/client/utilities"
+import { offsetLimitPagination, relayStylePagination } from "@apollo/client/utilities"
 import { setContext } from "@apollo/client/link/context";
 
 
@@ -19,7 +19,25 @@ const cache = new InMemoryCache({
         },
         Query: {
             fields: {
-                getPosts: offsetLimitPagination(['userId']),
+                getPosts: {
+                    keyArgs: ["userId"],
+
+                    merge(existing, incoming, { readField }) {
+                        const merged = { ...existing };
+                        incoming.forEach(item => {
+                            merged[readField("id", item)] = item;
+                        });
+
+                        return merged;
+                    },
+
+                    // Return all items stored so far, to avoid ambiguities
+                    // about the order of the items.
+                    read(existing) {
+                        return existing && Object.values(existing);
+                    }
+                },
+
                 getUsers: offsetLimitPagination()
             }
         },

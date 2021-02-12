@@ -121,7 +121,7 @@ module.exports = gql`
         email:String!
     }
     type Query{
-        getPosts(userId:ID,limit:Int!,offset:Int!):[Post]
+        getPosts(userId:ID,limit:Int!,cursor:ID):[Post]
         getPost(postId:ID!): Post
         getUsers(limit:Int!,offset:Int!): [User]
         getUser(userId:ID!): User

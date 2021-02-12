@@ -19,8 +19,8 @@ export const BASE_COMMENT_FRAGMENT = gql`
   `
 
 export const GET_POSTS = gql`
-query getPosts($userId:ID, $limit:Int!, $offset:Int!){
-    getPosts(userId:$userId, limit:$limit, offset:$offset){
+query getPosts($userId:ID, $limit:Int!, $cursor:ID){
+    getPosts(userId:$userId, limit:$limit, cursor:$cursor){
         body
         title
         commentsCount
@@ -84,32 +84,20 @@ export const ADD_POST = gql`
                     }
             }
             comments {
-                id
-                body
-                username
-                user{
-                    id
-                    username
-                    profileImage{
-                        urls{
-                            id
-                            small
-                        }
-                    }
-                }
-                createdAt
-                id
-                likes{
-                    username
-                    id
-                }
-                likesCount
+            ...BaseComment
             }
+            
             images{
                 id
+                urls{
+                    id
+                    small
+                    medium
+            }
             }
         }
     }
+    ${BASE_COMMENT_FRAGMENT}
 `
 
 export const DELETE_POST = gql`

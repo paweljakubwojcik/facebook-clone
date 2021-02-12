@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { ADD_POST, GET_POSTS, DELETE_POST } from '../GraphQL_Queries'
-import { useMutation } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 import { useLocation } from 'react-router-dom'
 
 
@@ -38,7 +38,8 @@ export const useCreatePost = (values, callback) => {
                 proxy.writeQuery({
                     query: GET_POSTS,
                     variables: { userId },
-                    data: { getPosts: updatedPosts }
+                    data: { getPosts: updatedPosts },
+                    broadcast: false,
                 })
 
             } catch (error) {

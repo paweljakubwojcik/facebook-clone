@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import ProgressiveImage from 'react-progressive-image'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 

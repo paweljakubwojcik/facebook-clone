@@ -7,7 +7,7 @@ const comments = require('./comments');
 
 module.exports = {
     Query: {
-        async getPosts(_, { userId, limit, offset }, context) {
+        async getPosts(_, { userId, limit, cursor }, context) {
             // if user Id => search all posts if user===userId
             // if !context.user => search only public posts
             // if context.user => search 1. first posts that fuser.friends.contains(context.user)
@@ -35,8 +35,10 @@ module.exports = {
                     filter.privacy = 'PUBLIC'
             } finally {
                 try {
-                    const posts = await Post.find(filter, null, { sort: { createdAt: -1 }, skip: offset, limit: limit })
-                    return posts
+                    const posts = await Post.find(filter, null, { sort: { createdAt: -1 } })
+                    const cursorIndex = posts.findIndex(post => post._id.toString() === cursor) // not defined cursor => return -1
+                    const next = cursorIndex + 1 // to not return the cursor second time, also this take care of situation when cursor is not defined
+                    return posts.slice(next, next + limit)
                 } catch (err) {
                     throw new Error(err)
                 }
