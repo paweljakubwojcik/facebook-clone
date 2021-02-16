@@ -21,7 +21,7 @@ export default function Navbar() {
     const location = useLocation()
 
 
-    const [getUser, { data: { getUser: userData } = {} }] = useLazyQuery(GET_USER, {
+    const [getUser, { data: { user: userData } = {} }] = useLazyQuery(GET_USER, {
         variables: {
             userId: user?.id
         }
@@ -63,7 +63,8 @@ export default function Navbar() {
                 <>
                     <MediaQuery width={740}>
                         {userData && <UserButton user={userData}
-                            notLink as={Link}
+                            notLink
+                            as={Link}
                             to={`/profile/${user.id}`}
                         />}
                     </MediaQuery>

@@ -19,7 +19,7 @@ export default function ContactList() {
     const [canFetchMore, setCanFetchMore] = useState(true)
 
     //it gets every user from database
-    const { loading, error, data: { getUsers: users } = {}, fetchMore } = useQuery(GET_USERS, {
+    const { loading, error, data: { users } = {}, fetchMore } = useQuery(GET_USERS, {
         variables: {
             offset: 0,
             limit: 10,
@@ -32,7 +32,7 @@ export default function ContactList() {
             variables: {
                 offset: users.length || 0
             }
-        }).then(({ data: { getUsers: newData } }) => {
+        }).then(({ data: { users: newData } }) => {
             //when all posts have been fetched
             if (newData.length === 0)
                 setCanFetchMore(false)

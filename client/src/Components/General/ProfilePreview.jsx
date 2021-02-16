@@ -12,8 +12,8 @@ import DotLoader from './DotLoader';
 
 
 const GET_USER_DETAILS = gql`
-query getUser(  $userId: ID! ){
- getUser( userId: $userId,) {
+query user(  $userId: ID! ){
+ user( userId: $userId,) {
     id
     username
     backgroundImage{
@@ -49,7 +49,7 @@ query getUser(  $userId: ID! ){
 
 export default function ProfilePreview({ userId }) {
 
-    const { data: { getUser: user } = {}, loading } = useQuery(GET_USER_DETAILS, {
+    const { data: { user } = {}, loading } = useQuery(GET_USER_DETAILS, {
         variables: {
             userId
         }

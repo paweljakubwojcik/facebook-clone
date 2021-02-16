@@ -6,7 +6,7 @@ import PostContent from '../Post/PostContent'
 
 export default function Post({ postId }) {
 
-    const { loading, data: { getPost: post } = {} } = useQuery(GET_POST, {
+    const { loading, data: { post } = {} } = useQuery(GET_POST, {
         variables: {
             postId
         }
@@ -41,8 +41,8 @@ const PostWrapper = styled.div`
 `
 
 const GET_POST = gql`
-query getPost($postId:ID!){
-    getPost(postId:$postId){
+query post($postId:ID!){
+    post(postId:$postId){
         
             body
             commentsCount

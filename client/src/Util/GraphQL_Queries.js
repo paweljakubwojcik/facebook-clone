@@ -19,8 +19,8 @@ export const BASE_COMMENT_FRAGMENT = gql`
   `
 
 export const GET_POSTS = gql`
-query getPosts($userId:ID, $limit:Int!, $cursor:ID){
-    getPosts(userId:$userId, limit:$limit, cursor:$cursor){
+query posts($userId:ID, $limit:Int!, $cursor:ID){
+    posts(userId:$userId, limit:$limit, cursor:$cursor){
         body
         title
         commentsCount
@@ -120,8 +120,8 @@ export const EDIT_POST = gql`
 
 
 export const GET_USERS = gql`
-query getUser(  $limit:Int!, $offset:Int! ){
- getUsers(limit:$limit, offset:$offset) {
+query user(  $limit:Int!, $offset:Int! ){
+ users(limit:$limit, offset:$offset) {
     id
     username
     profileImage{
@@ -136,8 +136,8 @@ query getUser(  $limit:Int!, $offset:Int! ){
 }
 `
 export const GET_USER = gql`
-query getUser(  $userId: ID! ){
- getUser( userId: $userId,) {
+query user(  $userId: ID! ){
+ user( userId: $userId,) {
     id
     username
     backgroundImage{
@@ -278,8 +278,8 @@ export const LIKE_POST = gql`
 `
 
 export const GET_IMAGE = gql`
-    query getImage(  $imageId: ID! ){
-        getImage(imageId: $imageId){
+    query image(  $imageId: ID! ){
+        image(imageId: $imageId){
         id
         title
         createdAt

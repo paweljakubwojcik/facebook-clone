@@ -13,7 +13,7 @@ export default function ImagePage({ setPostId }) {
 
     const { id } = useParams()
 
-    const { loading, error, data: { getImage: image } = {} } = useQuery(GET_IMAGE, {
+    const { loading, error, data: { image } = {} } = useQuery(GET_IMAGE, {
         variables: {
             imageId: id
         }

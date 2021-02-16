@@ -19,7 +19,7 @@ const UPDATE_SETTINGS = gql`
 
 const GET_USER_SETTINGS = gql`
     query getUser(  $userId: ID! ){
-        getUser( userId: $userId,) {
+        user( userId: $userId,) {
             id
             settings{
                 preferredTheme

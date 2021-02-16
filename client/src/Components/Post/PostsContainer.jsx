@@ -18,7 +18,7 @@ export default function Posts({ userId }) {
     const [canFetchMore, setCanFetchMore] = useState(true)
 
     // without any variables it gets all posts from DB
-    const { loading, error, data: { getPosts: posts } = {}, fetchMore, refetch } = useQuery(GET_POSTS, {
+    const { loading, error, data: { posts } = {}, fetchMore, refetch } = useQuery(GET_POSTS, {
         variables: {
             userId,
             limit: 6
@@ -32,7 +32,7 @@ export default function Posts({ userId }) {
             variables: {
                 cursor: posts[posts.length - 1].id
             }
-        }).then(({ data: { getPosts: newPosts } }) => {
+        }).then(({ data: { posts: newPosts } }) => {
             //when all posts have been fetched
             if (newPosts.length === 0)
                 setCanFetchMore(false)
