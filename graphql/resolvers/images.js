@@ -22,7 +22,7 @@ module.exports = {
         }
     },
     Query: {
-        getImage: async (_, { imageId }) => {
+        image: async (_, { imageId }) => {
             try {
                 const image = await Image.findById(imageId)
                 return image

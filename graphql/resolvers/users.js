@@ -238,7 +238,7 @@ module.exports = {
         },
     },
     Query: {
-        getUsers: async (_, { offset, limit }, context) => {
+        users: async (_, { offset, limit }, context) => {
             const { id } = checkAuth(context)
             try {
                 const user = await User.findById(id)
@@ -248,7 +248,7 @@ module.exports = {
                 throw new Error(err)
             }
         },
-        getUser: async (parent, { userId }) => {
+        user: async (parent, { userId }) => {
             try {
                 const user = await User.findById(userId)
                 return user

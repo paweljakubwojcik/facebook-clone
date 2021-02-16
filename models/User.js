@@ -51,8 +51,6 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'images'
     },
-    isOnline: Boolean,
-    lastTimeOnline: String,
     conversations: [
         {
             type: Schema.Types.ObjectId,

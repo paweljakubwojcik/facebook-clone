@@ -7,7 +7,7 @@ const comments = require('./comments');
 
 module.exports = {
     Query: {
-        async getPosts(_, { userId, limit, cursor }, context) {
+        async posts(_, { userId, limit, cursor }, context) {
             // if user Id => search all posts if user===userId
             // if !context.user => search only public posts
             // if context.user => search 1. first posts that fuser.friends.contains(context.user)
@@ -45,7 +45,7 @@ module.exports = {
             }
 
         },
-        async getPost(_, { postId }) {
+        async post(_, { postId }) {
             try {
                 const post = await Post.findById(postId); //Post from mongoose Schemes
                 return post
