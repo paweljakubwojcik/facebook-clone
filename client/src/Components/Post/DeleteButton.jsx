@@ -25,13 +25,13 @@ export default function DeleteButton({ postId }) {
                     userId // if it's undefined it's like passing an empty object
                 }
             })
-            const newData = data.getPosts.filter(p => p.id !== id)
+            const newData = data.posts.filter(p => p.id !== id)
             //telling apollo that i'm taking care of merging fields so it won't call error
             proxy.evict({
-                fieldName: "getPosts",
+                fieldName: "posts",
                 broadcast: false,
             });
-            proxy.writeQuery({ query: GET_POSTS, variables: { userId }, data: { getPosts: newData } })
+            proxy.writeQuery({ query: GET_POSTS, variables: { userId }, data: { posts: newData } })
         },
         onError(err) {
             //TODO: HANDLE ERROR

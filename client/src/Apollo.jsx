@@ -4,6 +4,8 @@ import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@ap
 import { offsetLimitPagination, relayStylePagination } from "@apollo/client/utilities"
 import { setContext } from "@apollo/client/link/context";
 
+import dayjs from 'dayjs'
+
 
 const httpLink = createHttpLink({
     uri: 'http://localhost:5000',
@@ -19,7 +21,7 @@ const cache = new InMemoryCache({
         },
         Query: {
             fields: {
-                getPosts: {
+                posts: {
                     keyArgs: ["userId"],
 
                     merge(existing, incoming, { readField }) {
@@ -33,12 +35,18 @@ const cache = new InMemoryCache({
 
                     // Return all items stored so far, to avoid ambiguities
                     // about the order of the items.
-                    read(existing) {
-                        return existing && Object.values(existing);
+                    read(existing, { readField }) {
+                        if (existing) {
+                            let sorted = Object.values(existing)
+                            sorted.sort((b, a) => { return dayjs(readField('createdAt', a)).unix() - dayjs(readField('createdAt', b)).unix() })
+                            console.log({ existing, sorted })
+                            return sorted
+                        }
+                        return false
                     }
                 },
 
-                getUsers: offsetLimitPagination()
+                users: offsetLimitPagination()
             }
         },
         User: {

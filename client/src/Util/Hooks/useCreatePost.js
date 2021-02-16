@@ -34,12 +34,11 @@ export const useCreatePost = (values, callback) => {
                     await callback(newPost)
 
                 //updating cache
-                const updatedPosts = [newPost, ...cacheData.getPosts]
+                const updatedPosts = [newPost, ...cacheData.posts]
                 proxy.writeQuery({
                     query: GET_POSTS,
                     variables: { userId },
-                    data: { getPosts: updatedPosts },
-                    broadcast: false,
+                    data: { posts: updatedPosts },
                 })
 
             } catch (error) {
