@@ -5,6 +5,8 @@ const Image = require('../../models/Image');
 const checkAuth = require('../../utils/checkAuth');
 const comments = require('./comments');
 
+const { savePictureToDB } = require('./common');
+
 module.exports = {
     Query: {
         async posts(_, { userId, limit, cursor }, context) {
@@ -56,7 +58,7 @@ module.exports = {
     },
 
     Mutation: {
-        async createPost(_, { body, title, privacy = 'PUBLIC' }, context) {
+        async createPost(_, { body, title, privacy = 'PUBLIC', images }, context) {
             //check if user is authenitaced
             const user = checkAuth(context)
             //if check auth fails to confirm token, error is being thrown
@@ -65,6 +67,9 @@ module.exports = {
                 if (body.trim() === "") {
                     throw new Error('Post body must not be empty')
                 }
+
+
+
 
             const newPost = new Post({
                 body,
@@ -79,6 +84,10 @@ module.exports = {
             })
 
             const post = await newPost.save()
+
+            const savedImages = await Promise.all(
+                images.map(img => savePictureToDB(img, user, { post }))
+            )
 
             return post
         },

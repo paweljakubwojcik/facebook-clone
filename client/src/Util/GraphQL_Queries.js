@@ -64,8 +64,8 @@ ${BASE_COMMENT_FRAGMENT}
 
 // graphQL query
 export const ADD_POST = gql`
-    mutation createPost( $body:String , $privacy:Privacy, $title:String){
-        createPost( body:$body,privacy:$privacy,title:$title ){
+    mutation createPost( $body:String , $privacy:Privacy, $title:String, $images:[Upload] ){
+        createPost( body:$body,privacy:$privacy,title:$title, images:$images ){
             body
             title
             commentsCount

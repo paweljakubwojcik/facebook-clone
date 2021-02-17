@@ -2,7 +2,7 @@ import { useState } from "react"
 
 /**
  *
- * @param {*} callback - a function to be executed on submit
+ * @param {Function} callback - a function to be executed on submit
  * @param {*} initialState - inital state for the form values
  */
 export const useForm = (callback, initialState = {}) => {
@@ -16,6 +16,8 @@ export const useForm = (callback, initialState = {}) => {
                 setValues({ ...values, [e.target.name]: [...values[e.target.name], ...e.target.files] })
             else
                 setValues({ ...values, [e.target.name]: [...e.target.files] })
+
+
     }
 
     const onSubmit = e => {

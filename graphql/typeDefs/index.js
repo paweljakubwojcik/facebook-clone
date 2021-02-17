@@ -7,7 +7,7 @@ const user = require('./user')
 
 //setting up GraphQL
 const index = gql`
-
+    
     type Query
 
     type Mutation

@@ -15,8 +15,9 @@ export const useCreatePost = (values, callback) => {
 
     const [deletePost] = useMutation(DELETE_POST)
 
-    const { body, title, privacy } = values
+    const { body, title, privacy, images } = values
     const { pathname } = useLocation()
+    //TODO: change it to authContext !!!
     const userId = pathname.split('/')[2]
 
 
@@ -59,7 +60,7 @@ export const useCreatePost = (values, callback) => {
             setErrors(error)
             throw error
         },
-        variables: { body, title, privacy }
+        variables: { body, title, privacy, images }
     })
 
     const createPost = () => {

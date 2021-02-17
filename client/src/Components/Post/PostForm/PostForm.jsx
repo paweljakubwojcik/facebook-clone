@@ -34,7 +34,13 @@ export default function PostForm({ toggleForm, setActive, postOptions }) {
     const [fileInputHover, setFileInputHover] = useState(false);
     const fileInput = useRef(null)
 
-    const { onChange, onSubmit, values, removeValue, addValue } = useForm(createPostCallback, initialState)
+    const {
+        onChange,
+        onSubmit,
+        values,
+        removeValue,
+        addValue
+    } = useForm(createPostCallback, initialState)
 
     const { createPost, errors, loading } = useCreatePost(values, callback)
     const { storePictures } = useCreateImage()
@@ -42,7 +48,7 @@ export default function PostForm({ toggleForm, setActive, postOptions }) {
 
     async function callback(post) {
         //storing all pictures in firebase storage, throws error 
-        await storePictures(values.images, post.id)
+        // await storePictures(values.images, post.id)
 
         values.body = ''
         toggleForm(false)
@@ -136,7 +142,7 @@ export default function PostForm({ toggleForm, setActive, postOptions }) {
             </InputWrapper>
             <ScrollContainer >
                 <ImagesContainer noCompensation>
-                    {values.images && values.images.map(image => <ImagePreview file={image} key={image.name} removeImage={removeImage} />)}
+                    {values.images && Array.from(values.images).map(image => <ImagePreview file={image} key={image.name} removeImage={removeImage} />)}
                 </ImagesContainer>
             </ScrollContainer>
 

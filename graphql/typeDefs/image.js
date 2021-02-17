@@ -14,6 +14,7 @@ module.exports = gql`
 
     type Urls{
         id:ID!
+        thumbnail:String
         small:String
         medium:String
         large:String
