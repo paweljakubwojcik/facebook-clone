@@ -1,8 +1,7 @@
 
 const admin = require("firebase-admin");
-const path = require('path')
-const fs = require('fs')
 const sharp = require('sharp');
+const generateRandomString = require('../utils/generateRandomString')
 
 let serviceAccount = require("./config.json")
 
@@ -20,25 +19,17 @@ const sizes = {
     large: 1920,
 }
 
-
-module.exports.uploadPictures = async (images = []) => {
-
-    const urls = []
-
-    await Promise.all(
-        images.map(async (file) => {
-            const res = await uploadPicture(file)
-            urls.push(res)
-        })
-    )
-    console.log(urls)
-}
-
-
+/**
+ * uploads imagege file to firebase storage in 4 sizes, 
+ * and returns name of file as on the storage, and object containing public urls to all sizes
+ * 
+ * @param {Promise<File>} image - an object of type Upload (Apollo Graphql schema)
+ * @returns {{urls: {large: String, medium:String, small: String, thumbnail:String}, filename: String}} data
+ */
 module.exports.uploadPicture = async function uploadPicture(image) {
-    //TODO: add hash to prevent duplications
-    const { createReadStream, filename, mimetype, encoding } = await image
+    const { createReadStream, filename: name, mimetype, encoding } = await image
 
+    const filename = `${generateRandomString()}_${name.trim().replace(/([() ])/g, "")}`
     const urls = {}
 
     try {
@@ -53,7 +44,7 @@ module.exports.uploadPicture = async function uploadPicture(image) {
                     })
 
                     pipeline
-                        .resize(size, size)
+                        .resize({ width: size })
                         .pipe(uploadStream)
 
                     createReadStream().pipe(pipeline)
@@ -75,6 +66,10 @@ module.exports.uploadPicture = async function uploadPicture(image) {
 }
 
 //TODO: to test this function
+/**
+ * deletes an file from bucket
+ * @param {String} filename - name of file as is on storage,
+ */
 module.exports.deletePicture = async (filename) => {
     try {
         await Promise.all(

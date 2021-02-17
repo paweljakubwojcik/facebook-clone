@@ -1,6 +1,6 @@
 
-const Image = require('../../models/Image')
-const { uploadPicture } = require('../../services/firebaseStorage')
+const Image = require('../../../models/Image')
+const { uploadPicture } = require('../../../services/firebaseStorage')
 
 module.exports.savePictureToDB = async (
     image,

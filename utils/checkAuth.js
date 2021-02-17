@@ -6,7 +6,7 @@ const { SECRET_KEY } = require('../config')
 /**
  * Checking if the validation token is valid, if so returns a User object
  * if not, throws an Error
- * @param {*} context - an object provided by apollo server
+ * @param {Object} context - an object provided by apollo server
  * @returns {Object} validated user
  */
 module.exports = (context) => {

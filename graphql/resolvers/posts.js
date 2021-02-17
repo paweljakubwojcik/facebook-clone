@@ -5,7 +5,7 @@ const Image = require('../../models/Image');
 const checkAuth = require('../../utils/checkAuth');
 const comments = require('./comments');
 
-const { savePictureToDB } = require('./common');
+const { savePictureToDB } = require('./methods/savePictureToDB');
 
 module.exports = {
     Query: {
