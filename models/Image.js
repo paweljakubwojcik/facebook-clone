@@ -5,6 +5,7 @@ const imageSchema = new Schema({
         large: String,
         medium: String,
         small: String,
+        thumbnail: String
     },
     createdAt: String,
     author: {
@@ -19,7 +20,8 @@ const imageSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'posts'
     },
-    title: String
+    title: String,
+    filename: String
 })
 
 module.exports = model('Image', imageSchema)

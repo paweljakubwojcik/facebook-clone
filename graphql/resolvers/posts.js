@@ -6,6 +6,7 @@ const checkAuth = require('../../utils/checkAuth');
 const comments = require('./comments');
 
 const { savePictureToDB } = require('./methods/savePictureToDB');
+const { deletePicture } = require('../../services/firebaseStorage');
 
 module.exports = {
     Query: {
@@ -71,23 +72,27 @@ module.exports = {
 
 
 
-            const newPost = new Post({
-                body,
-                title,
-                privacy,
-                user: user.id,
-                username: user.username,
-                createdAt: new Date().toISOString(),
-                likes: [],
-                comments: [],
-                isDeletable: true,
-            })
+            try {
+                const newPost = new Post({
+                    body,
+                    title,
+                    privacy,
+                    user: user.id,
+                    username: user.username,
+                    createdAt: new Date().toISOString(),
+                    likes: [],
+                    comments: [],
+                    isDeletable: true,
+                })
 
-            const post = await newPost.save()
+                const post = await newPost.save()
 
-            const savedImages = await Promise.all(
-                images.map(img => savePictureToDB(img, user, { post }))
-            )
+                const savedImages = await Promise.all(
+                    images.map(img => savePictureToDB(img, user, { post }))
+                )
+            } catch (e) {
+                throw e
+            }
 
             return post
         },
@@ -99,7 +104,8 @@ module.exports = {
                 if (user.username === post.username) {
 
                     const images = await Image.find({ post: postId })
-                    Promise.all(Array.from(images).map(image => image.delete()))
+                    await Promise.all(Array.from(images).map(({ filename }) => deletePicture(filename)))
+                    await Promise.all(Array.from(images).map(image => image.delete()))
 
                     await post.delete()
                     return 'post deleted succesfully'
@@ -152,8 +158,8 @@ module.exports = {
         async user({ user }) {
             return await User.findById(user)
         },
-        async images({ id }) {
-            return await Image.find({ post: id })
+        async images({ id, images }) {
+            return images.length ? images : await Image.find({ post: id })
         },
     }
 }
