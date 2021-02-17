@@ -5,21 +5,27 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "preinstall": "npx npm-force-resolutions"
   },
   "author": "Me",
   "license": "ISC",
   "dependencies": {
-    "apollo-server": "^2.19.0",
+    "apollo-server": "^2.21.0",
+    "apollo-server-express": "^2.21.0",
     "bcryptjs": "^2.4.3",
-    "dayjs": "^1.9.7",
-    "graphql": "^15.4.0",
+    "dayjs": "^1.10.4",
+    "firebase-admin": "^9.5.0",
+    "graphql": "^15.5.0",
+    "graphql-upload-minimal": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
-    "mongoose": "^5.10.11",
+    "mongoose": "^5.11.16",
     "node-fetch": "^2.6.1",
-    "react-router-dom": "^5.2.0",
-    "styled-components": "^5.2.1",
     "unsplash-js": "^6.3.0"
+  },
+  "resolutions": {
+    "fs-capacitor": "6.2.0",
+    "graphql-upload": "11.0.0"
   }
 }
