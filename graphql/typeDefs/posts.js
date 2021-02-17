@@ -9,7 +9,7 @@ module.exports = gql`
     }
 
     extend type Mutation {
-        createPost(body:String, title:String, privacy:Privacy):Post!
+        createPost(body:String, title:String, privacy:Privacy, images:[Upload] ): Post!
         deletePost(postId:ID!):String!
         editPost(postId:ID!,field:String!, newValue:String!):Post!
         

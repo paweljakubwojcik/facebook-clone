@@ -3,12 +3,13 @@ import React from 'react';
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
 import { offsetLimitPagination, relayStylePagination } from "@apollo/client/utilities"
 import { setContext } from "@apollo/client/link/context";
+import { createUploadLink } from 'apollo-upload-client';
 
 import dayjs from 'dayjs'
 
 
-const httpLink = createHttpLink({
-    uri: 'http://localhost:5000',
+const httpLink = createUploadLink({
+    uri: 'http://localhost:5000/graphql',
 });
 
 const cache = new InMemoryCache({

@@ -14,7 +14,7 @@ const index = gql`
         
  `
 
- module.exports = [index, posts, image, user, notification]
+module.exports = [index, posts, image, user, notification]
 
 
 
