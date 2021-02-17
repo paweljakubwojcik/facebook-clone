@@ -73,15 +73,16 @@ module.exports.uploadPicture = async function uploadPicture(image) {
 module.exports.deletePicture = async (filename) => {
     try {
         await Promise.all(
-            Object.entries(sizes).map(([key, size]) =>
-                new Promise((res, rej) => {
+            Object.entries(sizes).map(
+                ([key, size]) =>
+                    new Promise((res, rej) => {
 
-                    const filenameWithPrefix = `${key}__${filename}`
+                        const filenameWithPrefix = `${key}__${filename}`
 
-                    bucket.file(filenameWithPrefix).delete()
-                        .then(() => { res() })
-                        .catch((e) => { rej(e) })
-                })
+                        bucket.file(filenameWithPrefix).delete()
+                            .then(() => { res() })
+                            .catch((e) => { rej(e) })
+                    })
             )
         )
     } catch (e) {
