@@ -65,9 +65,8 @@ module.exports.uploadPicture = async function uploadPicture(image) {
     return { urls, filename }
 }
 
-//TODO: to test this function
 /**
- * deletes an file from bucket
+ * deletes a file from bucket
  * @param {String} filename - name of file as is on storage,
  */
 module.exports.deletePicture = async (filename) => {

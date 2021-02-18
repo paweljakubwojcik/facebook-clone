@@ -1,7 +1,7 @@
 
 import { gql, useQuery, useMutation } from '@apollo/client'
 
-
+//TODO: this hook should only have like updateSettings
 
 const UPDATE_SETTINGS = gql`
     mutation updateSettings(
@@ -18,7 +18,7 @@ const UPDATE_SETTINGS = gql`
 }`
 
 const GET_USER_SETTINGS = gql`
-    query getUser(  $userId: ID! ){
+    query user(  $userId: ID! ){
         user( userId: $userId,) {
             id
             settings{

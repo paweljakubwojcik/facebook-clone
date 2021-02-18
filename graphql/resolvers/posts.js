@@ -90,11 +90,13 @@ module.exports = {
                 const savedImages = await Promise.all(
                     images.map(img => savePictureToDB(img, user, { post }))
                 )
+
+                return post
             } catch (e) {
                 throw e
             }
 
-            return post
+
         },
 
         async deletePost(_, { postId }, context) {
