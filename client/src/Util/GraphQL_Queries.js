@@ -2,70 +2,28 @@ import { gql } from '@apollo/client'
 
 export const BASE_COMMENT_FRAGMENT = gql`
     fragment BaseComment on Comment {
-            id
-            body
-            username
-            createdAt
-            likesCount
-            user{
-                username
-                id
-            }
-            likes{
-                id
-                username
-            }
-    }
-  `
-
-export const GET_POSTS = gql`
-query posts($userId:ID, $limit:Int!, $cursor:ID){
-    posts(userId:$userId, limit:$limit, cursor:$cursor){
-        body
-        title
-        commentsCount
         id
+        body
+        username
         createdAt
         likesCount
-        username
-        privacy
-        isDeletable
-        user{
-            id
+        user {
             username
-            profileImage{
-                    urls{
-                        id
-                        small
-                        medium
-                    }
-                }
-        }
-        comments {
-            ...BaseComment
+            id
         }
         likes {
             id
             username
         }
-        images{
-            id
-            urls{
-                id
-                small
-                medium
-            }
-        }
     }
-}
-
-${BASE_COMMENT_FRAGMENT}
 `
 
-// graphQL query
-export const ADD_POST = gql`
-    mutation createPost( $body:String , $privacy:Privacy, $title:String, $images:[Upload] ){
-        createPost( body:$body,privacy:$privacy,title:$title, images:$images ){
+export const GET_POSTS = gql`
+    query posts($userId: ID, $limit: Int!, $cursor: ID) {
+        posts(
+            userId: $userId
+            paginationData: { limit: $limit, cursor: $cursor }
+        ) {
             body
             title
             commentsCount
@@ -73,27 +31,81 @@ export const ADD_POST = gql`
             createdAt
             likesCount
             username
-            user{
+            privacy
+            isDeletable
+            user {
                 id
-                profileImage{
-                        urls{
-                            id
-                            small
-                            medium
-                        }
+                username
+                profileImage {
+                    urls {
+                        id
+                        small
+                        medium
                     }
+                }
             }
             comments {
-            ...BaseComment
+                ...BaseComment
             }
-            
-            images{
+            likes {
                 id
-                urls{
+                username
+            }
+            images {
+                id
+                urls {
                     id
                     small
                     medium
+                }
             }
+        }
+    }
+
+    ${BASE_COMMENT_FRAGMENT}
+`
+
+// graphQL query
+export const ADD_POST = gql`
+    mutation createPost(
+        $body: String
+        $privacy: Privacy
+        $title: String
+        $images: [Upload]
+    ) {
+        createPost(
+            body: $body
+            privacy: $privacy
+            title: $title
+            images: $images
+        ) {
+            body
+            title
+            commentsCount
+            id
+            createdAt
+            likesCount
+            username
+            user {
+                id
+                profileImage {
+                    urls {
+                        id
+                        small
+                        medium
+                    }
+                }
+            }
+            comments {
+                ...BaseComment
+            }
+            images {
+                id
+                urls {
+                    id
+                    small
+                    medium
+                }
             }
         }
     }
@@ -101,125 +113,115 @@ export const ADD_POST = gql`
 `
 
 export const DELETE_POST = gql`
-    mutation deletePost( $postId:ID! ){
-        deletePost( postId:$postId )
-        }
+    mutation deletePost($postId: ID!) {
+        deletePost(postId: $postId)
+    }
 `
 
 export const EDIT_POST = gql`
-    mutation editPost( $postId:ID!, $field:String!, $newValue:String! ){
-        editPost( postId:$postId, field:$field, newValue:$newValue ){
+    mutation editPost($postId: ID!, $field: String!, $newValue: String!) {
+        editPost(postId: $postId, field: $field, newValue: $newValue) {
             id
             privacy
             body
             username
         }
-        }
+    }
 `
-
-
 
 export const GET_USERS = gql`
-query user(  $limit:Int!, $offset:Int! ){
- users(limit:$limit, offset:$offset) {
-    id
-    username
-    profileImage{
-        urls{
-            id
-            medium
-            small
-            }
-      
-        }
-    }
-}
-`
-export const GET_USER = gql`
-query user(  $userId: ID! ){
- user( userId: $userId,) {
-    id
-    username
-    backgroundImage{
-                id
-                urls{
-                    small
-                    medium
-                    large
-                }
-            }
-    profileImage{
-                id
-                urls{
-                   
-                    small
-                    medium
-                    large
-                }
-            }
-    
-    info{
-        joiningDate
-        birthDate
-        age 
-        sex
-        description
-        location
-        job
-    }
-    images{
-        id
-        title
-        createdAt
-        urls{
-            id
-            small
-            medium
-            large
-        }
-    }
-    friends{
-        id
-        username
-        profileImage{
-            urls{
-                 id
-                medium
-                small
-            }
-        }
-    }
-    invitations{
-        from{
+    query user($limit: Int!, $offset: Int!) {
+        users(limit: $limit, offset: $offset) {
             id
             username
+            profileImage {
+                urls {
+                    id
+                    medium
+                    small
+                }
+            }
         }
-        id
     }
-    notificationCount
-}
-}
+`
+export const GET_USER = gql`
+    query user($userId: ID!) {
+        user(userId: $userId) {
+            id
+            username
+            backgroundImage {
+                id
+                urls {
+                    small
+                    medium
+                    large
+                }
+            }
+            profileImage {
+                id
+                urls {
+                    small
+                    medium
+                    large
+                }
+            }
+
+            info {
+                joiningDate
+                birthDate
+                age
+                sex
+                description
+                location
+                job
+            }
+            images {
+                id
+                title
+                createdAt
+                urls {
+                    id
+                    small
+                    medium
+                    large
+                }
+            }
+            friends {
+                id
+                username
+                profileImage {
+                    urls {
+                        id
+                        medium
+                        small
+                    }
+                }
+            }
+            invitations {
+                from {
+                    id
+                    username
+                }
+                id
+            }
+            notificationCount
+        }
+    }
 `
 
 export const LOGIN_USER = gql`
-    mutation login(
-        $username: String!
-        $password: String!
-    ){
-        login(
-                username: $username,
-                password: $password,
-        ){
+    mutation login($username: String!, $password: String!) {
+        login(username: $username, password: $password) {
             id
             token
             username
             email
             createdAt
-            settings{
+            settings {
                 preferredTheme
             }
-            profileImage{
-                urls{
+            profileImage {
+                urls {
                     id
                     medium
                     large
@@ -235,22 +237,22 @@ export const REGISTER_USER = gql`
         $email: String!
         $password: String!
         $confirmPassword: String!
-    ){
+    ) {
         register(
             registerInput: {
-                username: $username,
-                email: $email,
-                password: $password,
-                confirmPassword:$confirmPassword,
+                username: $username
+                email: $email
+                password: $password
+                confirmPassword: $confirmPassword
             }
-        ){
+        ) {
             id
             token
             username
             email
             createdAt
-            profileImage{
-                urls{
+            profileImage {
+                urls {
                     id
                     medium
                     large
@@ -261,163 +263,149 @@ export const REGISTER_USER = gql`
 `
 
 export const LIKE_POST = gql`
-    mutation likePost($postId:ID!)
-    {
-        likePost(postId:$postId){
+    mutation likePost($postId: ID!) {
+        likePost(postId: $postId) {
             id
-            likes{
+            likes {
                 id
                 createdAt
                 username
             }
             body
             likesCount
-            }
         }
-
+    }
 `
 
 export const GET_IMAGE = gql`
-    query image(  $imageId: ID! ){
-        image(imageId: $imageId){
-        id
-        title
-        createdAt
-        uploadedBy
-        urls{
+    query image($imageId: ID!) {
+        image(imageId: $imageId) {
             id
-            small
-            medium
-            large
-            }
-        author{
-            name
-            link
-            }
-        
-        post{
-            id
-            images{
-                id
-            }
-        }
-    }
-    }
-`
-
-export const ADD_PICTURE = gql`
-    mutation uploadPicture(
-        $post:ID!
-        $small:String!
-        $medium:String!
-        $large:String!
-        $title:String
-    )
-    {
-        uploadPicture(
-            ImageInput:{
-                urls:{
-                    small:$small
-                    medium:$medium
-                    large:$large
-                },
-                post:$post,
-                title:$title
-            }){
-            id
-           urls{
-                id
-               large
-               medium
-               small
-           }
-           post{
-               id
-           }
-        }
-    }
-
-`
-
-export const UPDATE_USER = gql`
-mutation updateUser(
-    $field:String!
-    $newValue:String!
-){
-    updateUser(field: $field, newValue: $newValue){
-        id
-        email
-        username
-        backgroundImage{
-            id
-            post{
-                id
-            }
-            urls{
+            title
+            createdAt
+            uploadedBy
+            urls {
                 id
                 small
                 medium
                 large
             }
-        }
-        profileImage{
-            urls{
+            author {
+                name
+                link
+            }
+
+            post {
                 id
-                medium
-                large
+                images {
+                    id
                 }
             }
+        }
     }
-}`
+`
+
+export const ADD_PICTURE = gql`
+    mutation uploadPicture(
+        $post: ID!
+        $small: String!
+        $medium: String!
+        $large: String!
+        $title: String
+    ) {
+        uploadPicture(
+            ImageInput: {
+                urls: { small: $small, medium: $medium, large: $large }
+                post: $post
+                title: $title
+            }
+        ) {
+            id
+            urls {
+                id
+                large
+                medium
+                small
+            }
+            post {
+                id
+            }
+        }
+    }
+`
+
+export const UPDATE_USER = gql`
+    mutation updateUser($field: String!, $newValue: String!) {
+        updateUser(field: $field, newValue: $newValue) {
+            id
+            email
+            username
+            backgroundImage {
+                id
+                post {
+                    id
+                }
+                urls {
+                    id
+                    small
+                    medium
+                    large
+                }
+            }
+            profileImage {
+                urls {
+                    id
+                    medium
+                    large
+                }
+            }
+        }
+    }
+`
 
 export const INVITE_USER = gql`
-mutation inviteUser(
-   $userId:ID!
-){
-    inviteUser(userId:$userId){
-        id
-        email
-        username
-       invitations{
+    mutation inviteUser($userId: ID!) {
+        inviteUser(userId: $userId) {
             id
-            date
-            from{
+            email
+            username
+            invitations {
                 id
+                date
+                from {
+                    id
+                }
             }
-       }
+        }
     }
-}`
+`
 
 export const ANSWER_INVITATION = gql`
-mutation answerInvitation(
-   $from:ID!
-   $answer:Answer!
-){
-   answerInvitation(from:$from, answer:$answer){
-        id
-        username
-       invitations{
+    mutation answerInvitation($from: ID!, $answer: Answer!) {
+        answerInvitation(from: $from, answer: $answer) {
             id
-            date
-            from{
+            username
+            invitations {
                 id
+                date
+                from {
+                    id
+                }
             }
-       }
-       friends{
-           id
-           username
-       }
+            friends {
+                id
+                username
+            }
+        }
     }
-}`
+`
 
 export const MARK_SEEN = gql`
-
-mutation markNotificationSeen( $notificationId:ID!){
-    markNotificationSeen(notificationId:$notificationId){
-        id
-        username
-        notificationCount
+    mutation markNotificationSeen($notificationId: ID!) {
+        markNotificationSeen(notificationId: $notificationId) {
+            id
+            username
+            notificationCount
+        }
     }
-}
-
 `

@@ -1,10 +1,12 @@
-
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { UserInputError } = require('apollo-server')
 
 const { SECRET_KEY } = require('../../config')
-const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
+const {
+    validateRegisterInput,
+    validateLoginInput,
+} = require('../../utils/validators')
 const { generateRandomPhoto } = require('../../utils/randomPhoto')
 const checkAuth = require('../../utils/checkAuth')
 
@@ -13,7 +15,7 @@ const Image = require('../../models/Image')
 const Post = require('../../models/Post')
 
 /**
- * 
+ *
  * @param {Object} user user for which session token is generated
  * @returns token
  */
@@ -25,25 +27,28 @@ function generateToken(user) {
             username: user.username,
         },
         SECRET_KEY,
-        { expiresIn: '2h' })
+        { expiresIn: '2h' }
+    )
 }
 
 module.exports = {
     Mutation: {
         async login(_, { username, password }) {
-            const { errors, valid } = validateLoginInput(username, password);
+            const { errors, valid } = validateLoginInput(username, password)
             //when inputs are not valid
             if (!valid) {
                 throw new UserInputError('Errors', { errors })
             }
             //finding user in DB
             const user = await User.findOne({ username })
-            if (!user) { //when user isnt found
+            if (!user) {
+                //when user isnt found
                 errors.username = 'User not found'
                 throw new UserInputError('User not found', { errors })
             }
             const match = await bcrypt.compare(password, user.password)
-            if (!match) { //when password is invalid
+            if (!match) {
+                //when password is invalid
                 errors.password = 'Wrong password'
                 throw new UserInputError('Wrong password', { errors })
             }
@@ -55,16 +60,26 @@ module.exports = {
             return {
                 ...user._doc,
                 id: user._id,
-                token
+                token,
             }
         },
-        async register(_, { registerInput: { username, email, password, confirmPassword } }, context, info) {
+        async register(
+            _,
+            { registerInput: { username, email, password, confirmPassword } },
+            context,
+            info
+        ) {
             // validate user data
-            const { valid, errors } = validateRegisterInput(username, email, password, confirmPassword)
+            const { valid, errors } = validateRegisterInput(
+                username,
+                email,
+                password,
+                confirmPassword
+            )
             if (!valid) {
                 throw new UserInputError('Errors', { errors })
             }
-            // Make sure user with same username or email doesn't already exist 
+            // Make sure user with same username or email doesn't already exist
             const user = await User.findOne({ $or: [{ username }, { email }] })
             if (user) {
                 if (user.username === username) {
@@ -72,8 +87,8 @@ module.exports = {
                     throw new UserInputError('Username is taken', {
                         //payloads for front end to display messages
                         errors: {
-                            username: 'This username is taken'
-                        }
+                            username: 'This username is taken',
+                        },
                     })
                 }
                 if (user.email === email) {
@@ -81,8 +96,8 @@ module.exports = {
                     throw new UserInputError('Email already registered', {
                         //payloads for front end to display messages
                         errors: {
-                            email: 'Email already registered, forgot password?'
-                        }
+                            email: 'Email already registered, forgot password?',
+                        },
                     })
                 }
             }
@@ -99,7 +114,7 @@ module.exports = {
                 invitations: [],
                 settings: {
                     prefferedTheme: null,
-                    postDefaultPrivacy: 'PUBLIC'
+                    postDefaultPrivacy: 'PUBLIC',
                 },
                 info: {
                     joiningDate: new Date().toLocaleDateString(),
@@ -111,21 +126,22 @@ module.exports = {
                 },
                 lastTimeOnline: new Date().toISOString(),
             })
-            //saving user in DB  
+            //saving user in DB
             const { _id } = await newUser.save()
 
             const randomTexts = [
-                "Check out my new fake pictures",
-                "Those are my first pictures, uploaded automatically",
-                "My random generated pictures from Unsplash.com",
-                "Really nice photos, check out the authors",
+                'Check out my new fake pictures',
+                'Those are my first pictures, uploaded automatically',
+                'My random generated pictures from Unsplash.com',
+                'Really nice photos, check out the authors',
             ]
             //creating post associated with pictures
             const newPost = new Post({
                 user: _id,
                 privacy: 'PRIVATE',
                 username,
-                body: randomTexts[Math.floor(Math.random() * randomTexts.length)],
+                body:
+                    randomTexts[Math.floor(Math.random() * randomTexts.length)],
                 createdAt: new Date().toISOString(),
                 likes: [],
                 comments: [],
@@ -135,8 +151,16 @@ module.exports = {
             const { _id: postId } = await newPost.save()
 
             //generate random backgroundImage and avatar pic
-            const backgroundImage = await generateRandomPhoto('background', _id, postId)
-            const profileImage = await generateRandomPhoto('avatar', _id, postId)
+            const backgroundImage = await generateRandomPhoto(
+                'background',
+                _id,
+                postId
+            )
+            const profileImage = await generateRandomPhoto(
+                'avatar',
+                _id,
+                postId
+            )
 
             newUser.backgroundImage = backgroundImage
             newUser.profileImage = profileImage
@@ -149,7 +173,7 @@ module.exports = {
             return {
                 ...res._doc,
                 id: res._id,
-                token
+                token,
             }
         },
         async updateSettings(_, { setting, newValue }, context, info) {
@@ -160,7 +184,11 @@ module.exports = {
         },
         async updateUser(_, { field, newValue }, context) {
             const { id } = checkAuth(context)
-            const user = await User.findByIdAndUpdate(id, { [field]: newValue }, { new: true, useFindAndModify: false })
+            const user = await User.findByIdAndUpdate(
+                id,
+                { [field]: newValue },
+                { new: true, useFindAndModify: false }
+            )
             return user
         },
         async inviteUser(_, { userId }, context) {
@@ -172,7 +200,7 @@ module.exports = {
                 user.invitations.push({
                     from: invitator.id,
                     date: new Date().toISOString(),
-                    isSeen: false
+                    isSeen: false,
                 })
                 return await user.save()
             } catch (error) {
@@ -196,41 +224,43 @@ module.exports = {
                             invitator.friends.push(invitee)
 
                         // != because 'inv.from' has diffrent type than 'from'
-                        const filteredInv = invitee.invitations.filter(inv => inv.from != from)
+                        const filteredInv = invitee.invitations.filter(
+                            (inv) => inv.from != from
+                        )
                         invitee.invitations = filteredInv
 
                         invitator.notifications.unshift({
                             from: invitee.id,
                             body: `$user has accepted you as a fake friend!`,
-                            createdAt: new Date().toISOString()
+                            createdAt: new Date().toISOString(),
                         })
 
                         invitee.notifications.unshift({
                             from: invitator.id,
                             body: `You and $user have became friends!`,
-                            createdAt: new Date().toISOString()
+                            createdAt: new Date().toISOString(),
                         })
-
 
                         response.push(await invitee.save())
                         response.push(await invitator.save())
                         return response
 
                     case 'DECLINE':
-
-                        invitee.invitations = invitee.invitations.filter(inv => inv.from != from)
+                        invitee.invitations = invitee.invitations.filter(
+                            (inv) => inv.from != from
+                        )
 
                         invitator.notifications.unshift({
                             from: invitee.id,
                             body: `$user has declined your friendship request`,
-                            createdAt: new Date().toISOString()
+                            createdAt: new Date().toISOString(),
                         })
                         response.push(await invitee.save())
                         response.push(await invitator.save())
                         return response
 
                     default:
-                        break;
+                        break
                 }
             } catch (error) {
                 return error
@@ -242,7 +272,10 @@ module.exports = {
             const { id } = checkAuth(context)
             try {
                 const user = await User.findById(id)
-                const users = await User.find({ _id: user.friends }, null, { skip: offset, limit: limit }); // gets only users that are friends
+                const users = await User.find({ _id: user.friends }, null, {
+                    skip: offset,
+                    limit: limit,
+                }) // gets only users that are friends
                 return users
             } catch (err) {
                 throw new Error(err)
@@ -255,15 +288,13 @@ module.exports = {
             } catch (err) {
                 try {
                     const user = await User.findOne({ username: userId })
-                    if (!user)
-                        return new Error('user not found')
-                    else
-                        return user
+                    if (!user) return new Error('user not found')
+                    else return user
                 } catch (error) {
                     throw new Error(err)
                 }
             }
-        }
+        },
     },
     User: {
         profileImage: async ({ profileImage }) => {
@@ -276,13 +307,15 @@ module.exports = {
             return await Image.find({ uploadedBy: id })
         },
         friends: async ({ friends }) => {
-            const data = await Promise.all(friends.map(friend => User.findById(friend)))
+            const data = await Promise.all(
+                friends.map((friend) => User.findById(friend))
+            )
             return data
         },
     },
     Invitation: {
         from: async ({ from }) => {
             return await User.findById(from)
-        }
+        },
     },
 }

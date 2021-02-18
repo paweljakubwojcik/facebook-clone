@@ -10,7 +10,7 @@ const { deletePicture } = require('../../services/firebaseStorage')
 
 module.exports = {
     Query: {
-        async posts(_, { userId, limit, cursor }, context) {
+        async posts(_, { userId, paginationData: { limit, cursor } }, context) {
             // if user Id => search all posts if user===userId
             // if !context.user => search only public posts
             // if context.user => search 1. first posts that fuser.friends.contains(context.user)

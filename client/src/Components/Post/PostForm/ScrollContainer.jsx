@@ -8,7 +8,6 @@ export default function ScrollContainer({ children }) {
 
     useEffect(() => {
         const height = scrollContainer.current.clientWidth
-        console.log(height)
         setScrollHeight(height)
         return () => {
 
