@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useForm } from '../../Util/Hooks/useForm'
 import { useUpdatePicture } from '../../Util/Hooks/useUpdatePicture'
+import useResizableInput from '../../Util/Hooks/useResizableInput'
 
 import ModalForm from '../General/ModalForm'
 
@@ -62,6 +63,7 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
         }
     }, [image, isFile, user])
 
+    const resizableInput = useResizableInput({ maxHeight: 120 })
 
     return (
         <ModalForm header={`Update ${type} picture`}
@@ -90,7 +92,7 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
             ) : (
                     <>
                         {preview && <ProfilePreview img={preview} round={type === 'profile'} />}
-                        {isFile && <ResizableInput body={body} />}
+                        {isFile && <Input ref={resizableInput} rows="1" name={'body'} placeholder={'say something about this image'} />}
                         <Buttons>
                             {!loading && <SquareButton type='button' onClick={() => addValue({ image: null })}>Cancel</SquareButton>}
                             <FormButton primary type='submit' loading={loading}>Save</FormButton>
@@ -99,21 +101,6 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
 
                 )}
         </ModalForm>
-    )
-}
-
-const ResizableInput = ({ body }) => {
-
-    const resizableInput = useRef(null)
-
-    useEffect(() => {
-        resizableInput.current.style.height = '1px'
-        const height = resizableInput.current.scrollHeight < 120 ? resizableInput.current.scrollHeight : 120
-        resizableInput.current.style.height = height + 'px'
-    }, [body])
-
-    return (
-        <Input ref={resizableInput} name='body' rows="1" placeholder='say something about this picture' />
     )
 }
 

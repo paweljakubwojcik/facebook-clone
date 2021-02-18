@@ -10,6 +10,7 @@ import { BASE_COMMENT_FRAGMENT } from '../../../Util/GraphQL_Queries'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import useResizableInput from '../../../Util/Hooks/useResizableInput'
 
 
 export default function CommentForm({ props: { postId, inputFocus, setFocus } }) {
@@ -34,13 +35,7 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
         }
     })
 
-    const resizableInput = useRef(null)
-
-    useEffect(() => {
-        resizableInput.current.style.height = '1px'
-        resizableInput.current.style.height = resizableInput.current.scrollHeight + 'px'
-
-    }, [body])
+    const resizableInput = useResizableInput()
 
     useEffect(() => {
         if (inputFocus)
