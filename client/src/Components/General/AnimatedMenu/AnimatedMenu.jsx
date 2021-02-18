@@ -10,8 +10,6 @@ export default function AnimatedMenu({ active, setActive, main, subMenus, ...res
     const [height, setHeight] = useState(null)
     const animationContainer = useRef(null)
 
-
-
     const calcHeight = (el) => {
         if (el) {
             const height = el.offsetHeight + parseFloat(getComputedStyle(el.parentElement).paddingTop) + parseFloat(getComputedStyle(el.parentElement).paddingBottom);
@@ -22,7 +20,7 @@ export default function AnimatedMenu({ active, setActive, main, subMenus, ...res
     useResizeObserver({
         callback: (element) => {
             //we dont wanna cast this function onto node that exits the view
-            if (element && !element.classList.contains('menu-primary-exit') && !element.classList.contains('menu-secondary-exit'))
+            if (element && !element.classList.contains('menu-exit'))
                 calcHeight(element)
         },
         element: animationContainer
@@ -35,12 +33,12 @@ export default function AnimatedMenu({ active, setActive, main, subMenus, ...res
                 in={active === main.props.value}
                 appear
                 timeout={timeout}
-                classNames='menu-primary'
+                classNames='menu'
                 onEnter={calcHeight}
             >
-                <AnimationContainer ref={animationContainer} >
+                <AnimationContainer.Primary ref={animationContainer} >
                     {main}
-                </AnimationContainer>
+                </AnimationContainer.Primary>
             </CSSTransition>
 
             {subMenus.map(menu => (
@@ -50,11 +48,11 @@ export default function AnimatedMenu({ active, setActive, main, subMenus, ...res
                     onEnter={calcHeight}
                     unmountOnExit
                     timeout={timeout}
-                    classNames='menu-secondary'
+                    classNames='menu'
                 >
-                    <AnimationContainer >
+                    <AnimationContainer.Secondary >
                         {menu}
-                    </AnimationContainer>
+                    </AnimationContainer.Secondary>
                 </CSSTransition>
             ))}
         </Container>
@@ -62,59 +60,56 @@ export default function AnimatedMenu({ active, setActive, main, subMenus, ...res
 }
 
 const Container = styled.div`
-
-transition: min-height ${timeout}ms, height ${timeout}ms;
- overflow:hidden;
- position:relative;
- min-width:16em;
+    transition: min-height ${timeout}ms, height ${timeout}ms;
+    overflow:hidden;
+    position:relative;
+    min-width:16em;
 `
 
 const AnimationContainer = styled.div`
-width:100%;
+    width:100%;   
+`
 
-&.menu-primary-enter {
-    
-  transform: translateX(-110%);
-}
-&.menu-primary-enter-active {
-    
-    transform: translateX(0);
-    transition: transform ${timeout}ms;
-}
-&.menu-primary-exit {
-    position:absolute;
-    transform: translateX(0);
-}
-&.menu-primary-exit-active {
-    position:absolute;
-    transform: translateX(-110%);
-    transition: transform ${timeout}ms;
-}
-&.menu-primary-exit-done {
-    position:absolute;
-    transform: translateX(-110%);
-    transition: transform ${timeout}ms;
-}
+AnimationContainer.Primary = styled(AnimationContainer)`
+    &.menu-enter {
+        transform: translateX(-110%);
+    }
+    &.menu-enter-active {
+        transform: translateX(0);
+        transition: transform ${timeout}ms;
+    }
+    &.menu-exit {
+        position:absolute;
+        transform: translateX(0);
+    }
+    &.menu-exit-active {
+        position:absolute;
+        transform: translateX(-110%);
+        transition: transform ${timeout}ms;
+    }
+    &.menu-exit-done {
+        position:absolute;
+        transform: translateX(-110%);
+        transition: transform ${timeout}ms;
+    }
+`
 
-&.menu-secondary-enter {
-  
-  transform: translateX(110%);
-}
-&.menu-secondary-enter-active {
-    
-    transform: translateX(0);
-    transition: transform ${timeout}ms;
-}
-&.menu-secondary-exit {
-    top:0;
-    position:absolute;
-    transform: translateX(0);
-}
-&.menu-secondary-exit-active {
-   
-    transform: translateX(110%);
-    transition: transform ${timeout}ms;
-}
+AnimationContainer.Secondary = styled(AnimationContainer)`
+    &.menu-enter {
+        transform: translateX(110%);
+    }
+    &.menu-enter-active {
 
-
+        transform: translateX(0);
+        transition: transform ${timeout}ms;
+    }
+    &.menu-exit {
+        top:0;
+        position:absolute;
+        transform: translateX(0);
+    }
+    &.menu-exit-active {
+        transform: translateX(110%);
+        transition: transform ${timeout}ms;
+    }
 `

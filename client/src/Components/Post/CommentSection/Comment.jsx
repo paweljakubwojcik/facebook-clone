@@ -15,7 +15,7 @@ export default function Comment({ comment, postId }) {
     const { id: userId, username } = comment.user
 
     //because getting all info about user straight in posts query qoused some problems
-    const { data: { getUser: { profileImage } = {} } = {} } = useQuery(GET_USER_PIC, {
+    const { data: { user: { profileImage } = {} } = {} } = useQuery(GET_USER_PIC, {
         variables: {
             userId
         }
@@ -27,7 +27,7 @@ export default function Comment({ comment, postId }) {
             commentId: comment.id
         },
         update() {
-
+            console.log('comment deleted')
         }
     })
 
@@ -37,6 +37,7 @@ export default function Comment({ comment, postId }) {
             commentId: comment.id
         },
         update() {
+            console.log('comment liked')
         }
     })
 
@@ -132,8 +133,8 @@ const Buttons = styled.div`
 `
 
 const GET_USER_PIC = gql`
-query getUser(  $userId: ID! ){
- getUser( userId: $userId,) {
+query user(  $userId: ID! ){
+ user( userId: $userId,) {
     id
     username
     profileImage{

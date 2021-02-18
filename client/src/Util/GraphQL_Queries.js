@@ -107,7 +107,7 @@ export const DELETE_POST = gql`
 `
 
 export const EDIT_POST = gql`
-    mutation deletePost( $postId:ID!, $field:String!, $newValue:String! ){
+    mutation editPost( $postId:ID!, $field:String!, $newValue:String! ){
         editPost( postId:$postId, field:$field, newValue:$newValue ){
             id
             privacy
