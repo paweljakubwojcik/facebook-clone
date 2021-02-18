@@ -1,20 +1,33 @@
 const { gql } = require('apollo-server')
 
-const posts = require('./posts')
-const image = require('./image')
-const notification = require('./notification')
-const user = require('./user')
-
 //setting up GraphQL
 const index = gql`
     
     type Query
 
     type Mutation
+
+    enum SortDirection{
+        ASCENDING
+        DESCENDING
+    }
+
+    input CursorBasedPagination{
+        limit:Int
+        cursor:ID
+        sortBy: String
+        sort: SortDirection
+    }
         
  `
 
-module.exports = [index, posts, image, user, notification]
+module.exports = [
+    index,
+    require('./posts'),
+    require('./image'),
+    require('./notification'),
+    require('./user'),
+]
 
 
 

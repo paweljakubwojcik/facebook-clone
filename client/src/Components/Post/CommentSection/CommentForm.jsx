@@ -60,7 +60,13 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
         <>
             <Form onSubmit={onSubmit}>
                 <Avatar image={avatarImage} />
-                <CommentInput ref={resizableInput} rows="1" onChange={onChange} onBlur={() => setFocus(false)} />
+                <CommentInput
+                    ref={resizableInput}
+                    name='body'
+                    rows="1"
+                    onChange={onChange}
+                    onBlur={() => setFocus(false)}
+                />
                 <SquareButton className='sendComment'>
                     <FontAwesomeIcon icon={faPaperPlane} />
                 </SquareButton>

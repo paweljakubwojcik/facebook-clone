@@ -1,12 +1,12 @@
 const { AuthenticationError, UserInputError } = require('apollo-server')
-const Post = require('../../models/Post');
-const User = require('../../models/User');
-const Image = require('../../models/Image');
-const checkAuth = require('../../utils/checkAuth');
-const comments = require('./comments');
+const Post = require('../../models/Post')
+const User = require('../../models/User')
+const Image = require('../../models/Image')
+const checkAuth = require('../../utils/checkAuth')
+const comments = require('./comments')
 
-const { savePictureToDB } = require('./methods/savePictureToDB');
-const { deletePicture } = require('../../services/firebaseStorage');
+const { savePictureToDB } = require('./methods/savePictureToDB')
+const { deletePicture } = require('../../services/firebaseStorage')
 
 module.exports = {
     Query: {
@@ -16,61 +16,66 @@ module.exports = {
             // if context.user => search 1. first posts that fuser.friends.contains(context.user)
             //                           2. if posts.length < limit => search for public posts
             // timeLimit for friends posts
-            // if userId === context.user show all posts 
+            // if userId === context.user show all posts
             let filter = {}
             try {
                 const user = checkAuth(context)
-                if (userId)
-                    filter.user = userId
+                if (userId) filter.user = userId
                 if (user) {
                     const { friends } = await User.findById(user.id)
                     filter = {
                         ...filter,
                         $or: [
                             { privacy: 'PUBLIC' },
-                            { privacy: ['PRIVATE', 'FRIENDS_ONLY'], user: user.id },
-                            { privacy: ['FRIENDS_ONLY'], user: friends }
-                        ]
+                            {
+                                privacy: ['PRIVATE', 'FRIENDS_ONLY'],
+                                user: user.id,
+                            },
+                            { privacy: ['FRIENDS_ONLY'], user: friends },
+                        ],
                     }
                 }
             } catch (error) {
-                if (!user)
-                    filter.privacy = 'PUBLIC'
+                if (!user) filter.privacy = 'PUBLIC'
             } finally {
                 try {
-                    const posts = await Post.find(filter, null, { sort: { createdAt: -1 } })
-                    const cursorIndex = posts.findIndex(post => post._id.toString() === cursor) // not defined cursor => return -1
+                    const posts = await Post.find(filter, null, {
+                        sort: { createdAt: -1 },
+                    })
+                    const cursorIndex = posts.findIndex(
+                        (post) => post._id.toString() === cursor
+                    ) // not defined cursor => return -1
                     const next = cursorIndex + 1 // to not return the cursor second time, also this take care of situation when cursor is not defined
                     return posts.slice(next, next + limit)
                 } catch (err) {
                     throw new Error(err)
                 }
             }
-
         },
         async post(_, { postId }) {
             try {
-                const post = await Post.findById(postId); //Post from mongoose Schemes
+                const post = await Post.findById(postId) //Post from mongoose Schemes
                 return post
             } catch (err) {
-                throw new Error("Post not found")
+                throw new Error('Post not found')
             }
-        }
+        },
     },
 
     Mutation: {
-        async createPost(_, { body, title, privacy = 'PUBLIC', images }, context) {
+        async createPost(
+            _,
+            { body, title, privacy = 'PUBLIC', images },
+            context
+        ) {
             //check if user is authenitaced
             const user = checkAuth(context)
             //if check auth fails to confirm token, error is being thrown
             // so if get to this blok of code thats means [user] definetly exists
             if (body && !title)
-                if (body.trim() === "") {
+                if (body.trim() === '') {
                     throw new Error('Post body must not be empty')
                 }
-
-
-
 
             try {
                 const newPost = new Post({
@@ -88,15 +93,13 @@ module.exports = {
                 const post = await newPost.save()
 
                 const savedImages = await Promise.all(
-                    images.map(img => savePictureToDB(img, user, { post }))
+                    images.map((img) => savePictureToDB(img, user, { post }))
                 )
 
                 return post
             } catch (e) {
                 throw e
             }
-
-
         },
 
         async deletePost(_, { postId }, context) {
@@ -104,15 +107,22 @@ module.exports = {
             try {
                 const post = await Post.findById(postId)
                 if (user.username === post.username) {
-
                     const images = await Image.find({ post: postId })
-                    await Promise.all(Array.from(images).map(({ filename }) => deletePicture(filename)))
-                    await Promise.all(Array.from(images).map(image => image.delete()))
+                    await Promise.all(
+                        Array.from(images).map(({ filename }) =>
+                            deletePicture(filename)
+                        )
+                    )
+                    await Promise.all(
+                        Array.from(images).map((image) => image.delete())
+                    )
 
                     await post.delete()
                     return 'post deleted succesfully'
                 } else {
-                    throw new AuthenticationError('User is not the owner of the post')
+                    throw new AuthenticationError(
+                        'User is not the owner of the post'
+                    )
                 }
             } catch (e) {
                 throw new Error(e)
@@ -123,13 +133,15 @@ module.exports = {
             const { username, id } = checkAuth(context)
             try {
                 const post = await Post.findById(postId)
-                if (post.likes.find(like => like.username === username)) {
+                if (post.likes.find((like) => like.username === username)) {
                     // Post already liked
-                    post.likes = post.likes.filter(like => like.username !== username)
+                    post.likes = post.likes.filter(
+                        (like) => like.username !== username
+                    )
                 } else {
                     post.likes.push({
                         username,
-                        createdAt: new Date().toISOString()
+                        createdAt: new Date().toISOString(),
                     })
                 }
                 await post.save()
@@ -147,14 +159,12 @@ module.exports = {
                 if (post.username === username) {
                     post[field] = newValue
                     return await post.save()
-                }
-                else
+                } else
                     throw AuthenticationError('User is not owner of the post')
-
             } catch (error) {
                 throw new Error(e)
             }
-        }
+        },
     },
     Post: {
         async user({ user }) {
@@ -163,5 +173,5 @@ module.exports = {
         async images({ id, images }) {
             return images.length ? images : await Image.find({ post: id })
         },
-    }
+    },
 }
