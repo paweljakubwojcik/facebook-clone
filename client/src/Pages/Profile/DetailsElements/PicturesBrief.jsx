@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import PictureLink from '../../General/PictureLink'
+import PictureLink from '../../../Components/General/PictureLink'
 
 
 const max = 9

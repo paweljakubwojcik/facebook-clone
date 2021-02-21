@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/client';
 
 
 import Input from './Input'
-import FormButton from '../General/FormButton'
+import FormButton from '../../Components/General/FormButton'
 import { Form } from './Form'
 
 import { useForm } from '../../Util/Hooks/useForm'

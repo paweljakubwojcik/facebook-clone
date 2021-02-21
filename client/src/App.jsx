@@ -7,11 +7,11 @@ import { ThemesProvider } from './Context/theme'
 import { FirebaseProvider } from './Firebase/FirebaseContext'
 import { GlobalStyles } from './styles/global_styles'
 
-import Home from './Components/HomePage/Home'
-import Login from './Components/LoginPage/Login'
+import Home from './Pages/Home'
+import Login from './Pages/Login'
 import NavBar from './Components/Navbar/Navbar'
-import Profile from './Components/ProfilePage/Profile'
-import ImagePage from './Components/ImagePage/ImagePage'
+import Profile from './Pages/Profile'
+import ImagePage from './Pages/Image'
 
 export default function App() {
 

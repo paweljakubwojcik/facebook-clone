@@ -5,7 +5,7 @@ import { useLastLocation } from 'react-router-last-location'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
-import { RoundButton } from '../General/Buttons'
+import { RoundButton } from '../../Components/General/Buttons'
 import Image from './Image'
 import Post from './Post'
 

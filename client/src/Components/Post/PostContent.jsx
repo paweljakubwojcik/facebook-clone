@@ -21,8 +21,8 @@ import ImagesContainer from './ImagesContainer'
 import PictureLink from '../General/PictureLink'
 
 export default function PostContent({ post, noImages }) {
-
-    const { body,
+    const {
+        body,
         title,
         createdAt,
         privacy,
@@ -38,10 +38,9 @@ export default function PostContent({ post, noImages }) {
 
     const renderImages = !!images && !noImages
 
-
     const context = useContext(AuthContext)
 
-    const initialCommentsVisibility = commentsCount > 3 ? false : true;
+    const initialCommentsVisibility = commentsCount > 3 ? false : true
     const [commentsVisible, setCommentsVisibility] = useState(initialCommentsVisibility)
     const [commentInputFocus, setCommentInputFocus] = useState(false)
 
@@ -52,12 +51,13 @@ export default function PostContent({ post, noImages }) {
 
     return (
         <>
-
-            <PostCardHeader className='postCard__header'>
+            <PostCardHeader>
                 <Avatar image={profileImage?.urls?.small} />
                 <header>
                     <h4>
-                        <UserLink userId={userId} style={{ marginRight: '0.3em' }}>{username}</UserLink>
+                        <UserLink userId={userId} style={{ marginRight: '0.3em' }}>
+                            {username}
+                        </UserLink>
                         {title && <PostTitle>{title}</PostTitle>}
                     </h4>
                     <TimeStamp time={createdAt} />
@@ -65,87 +65,81 @@ export default function PostContent({ post, noImages }) {
                 {context?.user?.username === username && <PostOptions post={{ privacy, id }} isDeletable={isDeletable} />}
             </PostCardHeader>
 
-            <PostCardBody className='postCard__body'>
-                {body}
-            </PostCardBody>
+            <PostCardBody>{body}</PostCardBody>
 
-            {renderImages && <ImagesContainer>{images.map(img => <PictureLink picture={img} key={img.id || img.name} />)}</ImagesContainer>}
+            {renderImages && (
+                <ImagesContainer>
+                    {images.map((img) => (
+                        <PictureLink picture={img} key={img.id || img.name} />
+                    ))}
+                </ImagesContainer>
+            )}
 
-            <PostCardCounters className='postCard__counters' >
+            <PostCardCounters>
                 <LikesCounter likesCount={likesCount} likes={likes} />
-                <GenericButton className="counter comments" onClick={() => setCommentsVisibility(!commentsVisible)}>
+                <GenericButton className="counter" onClick={() => setCommentsVisibility(!commentsVisible)}>
                     {commentsCount} {`Comment${commentsCount !== 1 ? 's' : ''}`}
                 </GenericButton>
             </PostCardCounters>
 
-            {
-                context.user && (
-                    <PostCardButtonsContainer>
-                        <LikeButton postData={{ id, likes }} />
-                        <SquareButton onClick={engageComment} className='postCard__button'>
-                            <FontAwesomeIcon className="icon" icon={faComment} />Comment</SquareButton>
-                    </PostCardButtonsContainer>
-                )
-            }
+            {context.user && (
+                <PostCardButtonsContainer>
+                    <LikeButton postData={{ id, likes }} />
+                    <SquareButton onClick={engageComment}>
+                        <FontAwesomeIcon className="icon" icon={faComment} />
+                        Comment
+                    </SquareButton>
+                </PostCardButtonsContainer>
+            )}
 
             {commentsVisible && <CommentSection comments={comments} postId={id} inputFocus={commentInputFocus} setFocus={setCommentInputFocus} />}
-
         </>
     )
 }
 
 //----------------------styles--------------------------
 export const PostCardHeader = styled.div`
-    position:relative;
-    display:flex;
-    align-items:center;
-    width:100%;
-    header{
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        margin:  0 .5em;
-        
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0 0.5em;
     }
-    h4{
-        display:flex;
-        flex-wrap:wrap;
+    h4 {
+        display: flex;
+        flex-wrap: wrap;
     }
 `
 
 const PostTitle = styled.div`
-    font-weight:300;
-
+    font-weight: 300;
 `
 
 export const PostCardBody = styled.div`
-    width:100%;
+    width: 100%;
     margin: 1em 0;
-    padding: 0 .2em;
-    
+    padding: 0 0.2em;
 `
 
-
 const PostCardCounters = styled.div`
-    display:flex;
-    font-size:.6em;
-    color:${props => props.theme.secondaryFontColor};
-    .counter{
-        margin:1em;
+    display: flex;
+    font-size: 0.6em;
+    color: ${(props) => props.theme.secondaryFontColor};
+    .counter {
+        margin: 1em;
     }
-   
 `
 
 const PostCardButtonsContainer = styled.div`
-    display:flex;
-    justify-content:space-evenly;
-    border-bottom: 1px solid ${props => props.theme.secondaryFontColor};
-    border-top: 1px solid ${props => props.theme.secondaryFontColor};
+    display: flex;
+    justify-content: space-evenly;
+    border-bottom: 1px solid ${(props) => props.theme.secondaryFontColor};
+    border-top: 1px solid ${(props) => props.theme.secondaryFontColor};
     & > * {
-        flex:1;
+        flex: 1;
     }
 `
-
-
-
-

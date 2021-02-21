@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useQuery, gql } from '@apollo/client'
-import PostContent from '../Post/PostContent'
+import PostContent from '../../Components/Post/PostContent'
 
 
 export default function Post({ postId }) {

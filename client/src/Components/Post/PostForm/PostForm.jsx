@@ -9,7 +9,7 @@ import { faEye } from '@fortawesome/free-solid-svg-icons'
 
 import ScrollContainer from './ScrollContainer'
 import Avatar from '../../General/Avatar'
-import FormButton from '../../General/FormButton'
+
 import AddButton from './AddButton'
 import ImagePreview from './ImagePreview'
 import ImagesContainer from '../ImagesContainer'
@@ -61,7 +61,9 @@ export default function PostForm({ toggleForm, setActive, postOptions }) {
             : `Write something about ${values.images.length === 1 ? 'this picture' : 'those pictures'}`
 
     return (
-        <Form onChange={onChange} onSubmit={onSubmit} header={"Let's fake some posts"} toggleForm={toggleForm}>
+        <Form onChange={onChange} onSubmit={onSubmit}>
+            <Form.Header toggleForm={toggleForm}>{"Let's fake some posts"}</Form.Header>
+
             <UserInfo className="userInfo">
                 <Avatar image={avatar} />
                 <PrivacyContainer>
@@ -84,10 +86,10 @@ export default function PostForm({ toggleForm, setActive, postOptions }) {
                 />
             </UserInfo>
 
-            <InputWrapper>
+            <FileInputWrapper>
                 <TextArea aria-label="post" autoFocus name="body" id="body" placeholder={placeholder} />
                 <FileInput ref={fileInput} />
-            </InputWrapper>
+            </FileInputWrapper>
             <ScrollContainer>
                 <ImagesContainer noCompensation>
                     {values.images && Array.from(values.images).map((image) => <ImagePreview file={image} key={image.name} removeImage={removeImage} />)}
@@ -96,9 +98,9 @@ export default function PostForm({ toggleForm, setActive, postOptions }) {
 
             {errors && <ErrorMessage>There was a problem during faking your status, please try later</ErrorMessage>}
 
-            <FormButton primary inactive={values.body.trim().length === 0} loading={loading} loadingMessage={'Posting'} style={{ flexShrink: '0' }}>
+            <Form.Button primary inactive={values.body.trim().length === 0} loading={loading} loadingMessage={'Posting'} style={{ flexShrink: '0' }}>
                 Post
-            </FormButton>
+            </Form.Button>
         </Form>
     )
 }
@@ -158,7 +160,7 @@ const TextArea = styled.textarea`
     height: 100px;
 `
 
-const InputWrapper = styled.div`
+const FileInputWrapper = styled.div`
     width: 100%;
     position: relative;
 `

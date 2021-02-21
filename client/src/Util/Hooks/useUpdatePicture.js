@@ -37,16 +37,11 @@ export const useUpdatePicture = (values, callback, field) => {
         })
     })
 
-    const title = `has uploaded new ${
-        field === 'profileImage' ? 'profile picture' : 'background picture'
-    }`
+    const title = `has uploaded new ${field === 'profileImage' ? 'profile picture' : 'background picture'}`
 
-    const { createPost } = useCreatePost(
-        { body: values.body, privacy: 'PRIVATE', title },
-        async (post) => {
-            await storePicture(values.image[0], post.id)
-        }
-    )
+    const { createPost } = useCreatePost({ body: values.body, privacy: 'PRIVATE', title }, async (post) => {
+        await storePicture(values.image[0], post.id)
+    })
 
     const updatePicture = () => {
         setLoading(true)

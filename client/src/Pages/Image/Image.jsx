@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client'
 import { GET_IMAGE } from '../../Util/GraphQL_Queries'
 
 import Arrows from './Arrows'
-import ImageLoader from '../General/ImageLoader'
+import ImageLoader from '../../Components/General/ImageLoader'
 
 export default function Image({ setPostId }) {
     const { id } = useParams()

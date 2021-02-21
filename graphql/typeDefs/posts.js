@@ -8,12 +8,7 @@ module.exports = gql`
     }
 
     extend type Mutation {
-        createPost(
-            body: String
-            title: String
-            privacy: Privacy
-            images: [Upload]
-        ): Post!
+        createPost(body: String, title: String, privacy: Privacy, images: [Upload]): Post!
         deletePost(postId: ID!): String!
         editPost(postId: ID!, field: String!, newValue: String!): Post!
 
@@ -29,6 +24,7 @@ module.exports = gql`
         body: String
         title: String
         createdAt: String!
+        timestamp: Int!
         username: String!
         user: User!
         comments(paginationData: CursorBasedPagination): [Comment]!
@@ -43,6 +39,7 @@ module.exports = gql`
     type Comment {
         id: ID!
         createdAt: String!
+        timestamp: Int!
         username: String!
         user: User!
         body: String!
@@ -53,6 +50,8 @@ module.exports = gql`
     type Like {
         id: ID!
         createdAt: String!
+        timestamp: Int!
         username: String!
+        user: User!
     }
 `

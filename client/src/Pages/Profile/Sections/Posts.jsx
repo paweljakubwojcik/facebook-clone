@@ -1,19 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import PostsContainer from '../Post/PostsContainer'
-import ElementContainer from '../General/ElementContainer'
-import { GenericButton } from '../General/Buttons'
-import contentTypes from './contentTypes'
+import PostsContainer from '../../../Components/Post/PostsContainer'
+import ElementContainer from '../../../Components/General/ElementContainer'
+import { GenericButton } from '../../../Components/General/Buttons'
+import contentTypes from '../contentTypes'
 
-import InfoBrief from './DetailsElements/InfoBrief'
-import PicturesBrief from './DetailsElements/PicturesBrief'
-import FriendsBrief from './DetailsElements/FriendsBrief'
-
+import InfoBrief from '../DetailsElements/InfoBrief'
+import PicturesBrief from '../DetailsElements/PicturesBrief'
+import FriendsBrief from '../DetailsElements/FriendsBrief'
 
 export default function Posts({ user, setContentType }) {
-
-
     return (
         <Container>
             <Details>
@@ -33,12 +30,11 @@ export default function Posts({ user, setContentType }) {
 }
 
 const DetailsElement = ({ name, children, setContentType }) => {
-
     const handleOnClick = (e) => {
         e.target.blur()
         window.scrollTo({
             top: 150,
-            behavior: "smooth"
+            behavior: 'smooth',
         })
         setContentType(e.target.value)
     }
@@ -47,46 +43,42 @@ const DetailsElement = ({ name, children, setContentType }) => {
         <ElementContainer>
             <Header>
                 <h2>{name.toUpperCase()}</h2>
-                <BlueButton value={name} onClick={handleOnClick}>See All</BlueButton>
+                <BlueButton value={name} onClick={handleOnClick}>
+                    See All
+                </BlueButton>
             </Header>
             {children}
         </ElementContainer>
     )
 }
 
-
 const Container = styled.div`
-    display:grid;
+    display: grid;
     grid-template-columns: 1fr 60%;
-    column-gap:1em;
-    width:100%;
+    column-gap: 1em;
+    width: 100%;
 
-    @media (max-width:600px){
+    @media (max-width: 600px) {
         grid-template-columns: 1fr;
     }
-
 `
 const Details = styled.div`
-    & > *{
-        width:100%;
+    & > * {
+        width: 100%;
     }
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    width:100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 `
 
 const Header = styled.div`
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    border-bottom: solid 1px ${props => props.theme.borderColor};
-
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: solid 1px ${(props) => props.theme.borderColor};
 `
 
 const BlueButton = styled(GenericButton)`
-
-    color : ${props => props.theme.primaryColor};
-
+    color: ${(props) => props.theme.primaryColor};
 `

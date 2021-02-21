@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import { RoundButton } from '../General/Buttons'
+import { RoundButton } from '../../Components/General/Buttons'
 
 export default function Arrows({ currentImage, allImages }) {
 

@@ -3,58 +3,55 @@ import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { RoundButton } from './Buttons'
+import FormButton from './FormButton'
 
+export default function Form({ children, ...rest }) {
+    return <StyledForm {...rest}>{children}</StyledForm>
+}
 
-export default function Form({ toggleForm, onSubmit, onChange, header, children, ...rest }) {
+Form.Header = ({ toggleForm, children, ...rest }) => {
     return (
-        <StyledForm onSubmit={onSubmit} onChange={onChange}>
-            <Header>
-                <h2>{header}</h2>
-                <XButton onClick={() => toggleForm(false)}>
-                    <FontAwesomeIcon icon={faTimes} />
-                </XButton>
-            </Header>
-            {
-                children
-            }
-
-        </StyledForm>
+        <StyledHeader {...rest}>
+            <h2>{children}</h2>
+            <XButton onClick={() => toggleForm(false)}>
+                <FontAwesomeIcon icon={faTimes} />
+            </XButton>
+        </StyledHeader>
     )
 }
 
+Form.Button = FormButton
 
 const StyledForm = styled.form`
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 1em 2em;
-    width:500px;
-    border-radius:.5em;
-    h2{
-        padding:.6em;
-        text-align:center;
-        border-bottom:solid 1px #ffffff22;
-        width:100%;
+    width: 500px;
+    border-radius: 0.5em;
+    h2 {
+        padding: 0.6em;
+        text-align: center;
+        border-bottom: solid 1px #ffffff22;
+        width: 100%;
     }
-    h3{
-        margin:.5em;
+    h3 {
+        margin: 0.5em;
     }
-    .userInfo{
-        display:flex;
-        width:100%;
-        align-items:center;
-        margin:.5em;
+    .userInfo {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        margin: 0.5em;
     }
 `
-const Header = styled.div`
-    width:100%;
-    position:relative;
-
+const StyledHeader = styled.div`
+    width: 100%;
+    position: relative;
 `
 
 const XButton = styled(RoundButton)`
-    position:absolute;
-    right:0;
-    bottom:5px;
-
+    position: absolute;
+    right: 0;
+    bottom: 5px;
 `

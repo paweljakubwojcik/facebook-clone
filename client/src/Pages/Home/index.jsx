@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 
 import Status from './Status'
-import PostsContainer from '../Post/PostsContainer';
+import PostsContainer from '../../Components/Post/PostsContainer';
 import ContactList from './ContactList';
 
 
