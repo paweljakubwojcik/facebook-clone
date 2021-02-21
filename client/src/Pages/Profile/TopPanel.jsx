@@ -1,14 +1,16 @@
 import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 
-import { UserMatchContext } from './index'
 import { ShowableButton } from '../../Components/General/Buttons'
 import Avatar from '../../Components/General/Avatar'
 import ChangeImageForm from './ChangeImageForm'
+
 import { useIntersectionObserver } from '../../Util/Hooks/useIntersectionObserver'
+import { UserMatchContext } from './userMatchContext'
 
 export default function TopPanel({ loading, user, width }) {
     const isViewerTheOwner = useContext(UserMatchContext)

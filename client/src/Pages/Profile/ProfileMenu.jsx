@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from 'react'
 import styled from 'styled-components'
 
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import { UserMatchContext } from './index'
+import { UserMatchContext } from './userMatchContext'
 import { AuthContext } from '../../Context/auth'
 
 import RadioButtons from './RadioButtons'

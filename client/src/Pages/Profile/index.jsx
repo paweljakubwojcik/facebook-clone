@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, createContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import { useParams } from 'react-router-dom'
@@ -13,11 +13,11 @@ import TopPanel from './TopPanel'
 import Pictures from './Sections/Pictures'
 import NotFound from '../../Components/General/NotFound'
 import DotLoader from '../../Components/General/DotLoader'
+
 import contentTypes from './contentTypes'
+import { UserMatchContext } from './userMatchContext'
 
 const width = 1000
-
-export const UserMatchContext = createContext(false)
 
 export default function Profile() {
     const context = useContext(AuthContext)

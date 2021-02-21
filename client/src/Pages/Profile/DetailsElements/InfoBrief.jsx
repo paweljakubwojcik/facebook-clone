@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 import { FilledButton } from '../../../Components/General/Buttons'
 
-import { UserMatchContext } from '..'
+import { UserMatchContext } from '../userMatchContext'
 
 export default function InfoBrief({ info }) {
     const isViewerTheOwner = useContext(UserMatchContext)
