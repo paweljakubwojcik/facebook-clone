@@ -4,9 +4,7 @@ import { useMutation } from '@apollo/client'
 
 import { AuthContext } from '../../Context/auth'
 
-import { Form } from './Form'
-import Input from './Input'
-import FormButton from '../../Components/General/FormButton'
+import Form from './Form'
 
 import { useForm } from '../../Util/Hooks/useForm'
 import { LOGIN_USER } from '../../Util/GraphQL_Queries'
@@ -45,24 +43,22 @@ export default function LoginForm({ setForm }) {
     }
 
     return (
-        <Form className="login__form" onSubmit={onSubmit} novalidate>
-            <h2>Log In</h2>
-            <Input label="Username" type="text" name="username" value={values.username} onChange={onChange} error={errors.username} />
-            <Input label="Password" type="password" name="password" value={values.password} onChange={onChange} error={errors.password} />
+        <Form onSubmit={onSubmit} novalidate>
+            <Form.Title>Log In</Form.Title>
+            <Form.Input label="Username" type="text" name="username" value={values.username} onChange={onChange} error={errors.username} />
+            <Form.Input label="Password" type="password" name="password" value={values.password} onChange={onChange} error={errors.password} />
             {errors.unknown && <ErrorMessage>{errors.unknown}</ErrorMessage>}
-            <FormButton type="submit" primary loading={loading}>
+            <Form.Button type="submit" primary loading={loading}>
                 {error ? 'Try Again' : 'Log In'}
-            </FormButton>
-            <div className="link">
+            </Form.Button>
+            <Form.Row>
                 <p>First time here?</p>
-                <div className="changeForm" role="button" onClick={setForm.bind(this, 'register')}>
-                    Create new account
-                </div>
-            </div>
+                <Form.ChangeFormButton onClick={setForm.bind(this, 'register')}>Create new account</Form.ChangeFormButton>
+            </Form.Row>
             <Providers>
                 <p>Or login using one of the following:</p>
-                <FormButton type="button">Facebook</FormButton>
-                <FormButton type="button">Google</FormButton>
+                <Form.Button type="button">Facebook</Form.Button>
+                <Form.Button type="button">Google</Form.Button>
             </Providers>
         </Form>
     )
