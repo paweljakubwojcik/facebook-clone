@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { useMutation } from '@apollo/client'
 import { EDIT_POST } from '../../Util/GraphQL_Queries'
 
-
 import { MenuButton } from '../General/Buttons'
 import DeleteButton from './DeleteButton'
 
@@ -14,26 +13,23 @@ import SubMenu from '../General/AnimatedMenu/SubMenu'
 import RadioButtons from '../General/AnimatedMenu/RadioButtons'
 import DropDownMenu from '../General/DropDownMenu'
 
-
-
 const menuTypes = {
     MAIN: 'main',
     PRIVACY: 'privacy',
 }
 
 const PostOptionsMenu = forwardRef(({ isDeletable, post }, ref) => {
-
     const [active, setActive] = useState(menuTypes.MAIN)
-
 
     const MainMenu = () => {
         return (
             <SubMenuContainer>
-                <MenuButton onClick={() => setActive(menuTypes.PRIVACY)} >
+                <MenuButton onClick={() => setActive(menuTypes.PRIVACY)}>
                     <FontAwesomeIcon icon={faEdit} /> <p>PrivacySettings</p>
                 </MenuButton>
                 {isDeletable && <DeleteButton postId={post.id} />}
-            </SubMenuContainer>)
+            </SubMenuContainer>
+        )
     }
 
     const PrivacyMenu = () => {
@@ -43,7 +39,7 @@ const PostOptionsMenu = forwardRef(({ isDeletable, post }, ref) => {
             },
             onError: (e) => {
                 console.log(e)
-            }
+            },
         })
 
         const handleClick = (e) => {
@@ -52,29 +48,29 @@ const PostOptionsMenu = forwardRef(({ isDeletable, post }, ref) => {
                 variables: {
                     postId: post.id,
                     field: 'privacy',
-                    newValue: e.target.value
-                }
+                    newValue: e.target.value,
+                },
             })
         }
 
         const buttons = [
             {
                 key: 'Private',
-                value: 'PRIVATE'
+                value: 'PRIVATE',
             },
             {
                 key: 'Public',
-                value: 'PUBLIC'
+                value: 'PUBLIC',
             },
             {
                 key: 'Friends Only',
-                value: 'FRIENDS_ONLY'
-            }
+                value: 'FRIENDS_ONLY',
+            },
         ]
 
         return (
             <SubMenuContainer>
-                <SubMenu title={'Privacy'} setActive={setActive} >
+                <SubMenu title={'Privacy'} setActive={setActive}>
                     <RadioButtons
                         handleClick={handleClick}
                         buttons={buttons}
@@ -88,17 +84,16 @@ const PostOptionsMenu = forwardRef(({ isDeletable, post }, ref) => {
         )
     }
 
-
     return (
         <DropDownMenu ref={ref}>
-            <AnimatedMenu
-                active={active}
-                setActive={setActive}
-                main={<MainMenu value={menuTypes.MAIN} />}
-                subMenus={[
-                    <PrivacyMenu value={menuTypes.PRIVACY} />
-                ]}
-            />
+            <AnimatedMenu active={active} setActive={setActive}>
+                <AnimatedMenu.Primary value={menuTypes.MAIN}>
+                    <MainMenu />
+                </AnimatedMenu.Primary>
+                <AnimatedMenu.Secondary value={menuTypes.PRIVACY}>
+                    <PrivacyMenu />
+                </AnimatedMenu.Secondary>
+            </AnimatedMenu>
         </DropDownMenu>
     )
 })
@@ -106,7 +101,5 @@ const PostOptionsMenu = forwardRef(({ isDeletable, post }, ref) => {
 export default PostOptionsMenu
 
 const SubMenuContainer = styled.div`
-
-    padding:.5em;
-
+    padding: 0.5em;
 `

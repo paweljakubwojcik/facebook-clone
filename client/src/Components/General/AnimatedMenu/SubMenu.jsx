@@ -7,11 +7,11 @@ import { RoundButton } from '../Buttons'
 
 import { menuOptions } from '../../Navbar/menuOptions'
 
-export default function SubMenu({title, children, setActive}) {
+export default function SubMenu({ title, children, setActive }) {
     return (
         <>
             <Header>
-                <RoundButton onClick={() => setActive(menuOptions.MAIN)}>
+                <RoundButton type="button" onClick={() => setActive(menuOptions.MAIN)}>
                     <FontAwesomeIcon icon={faArrowLeft} />
                 </RoundButton>
                 <h3>{title}</h3>
@@ -22,14 +22,12 @@ export default function SubMenu({title, children, setActive}) {
 }
 
 const Header = styled.div`
-
-    display:flex;
-    align-items:center;
-    padding:.4em;
-    h3{
-        pointer-events:none;
-        margin:.5em;
+    display: flex;
+    align-items: center;
+    padding: 0.4em;
+    h3 {
+        pointer-events: none;
+        margin: 0.5em;
     }
-    border-bottom:solid 1px ${props => props.theme.borderColor}; 
-
+    border-bottom: solid 1px ${(props) => props.theme.borderColor};
 `

@@ -7,9 +7,14 @@ import { AuthContext } from '../../Context/auth'
 
 import { useUserSettings } from '../../Util/Hooks/useUserSettings'
 
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt, faMoon, faAddressCard, faEye, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import {
+    faSignOutAlt,
+    faMoon,
+    faAddressCard,
+    faEye,
+    faChevronRight,
+} from '@fortawesome/free-solid-svg-icons'
 
 import SubMenu from '../General/AnimatedMenu/SubMenu'
 import RadioButtons from '../General/AnimatedMenu/RadioButtons'
@@ -19,16 +24,10 @@ import { MenuButton } from '../General/Buttons'
 
 import { menuOptions } from './menuOptions'
 
-
-
 const UserMenu = forwardRef(({ ...rest }, ref) => {
-
-
     const history = useHistory()
 
     const [active, setActive] = useState(menuOptions.MAIN)
-
-
 
     const MainMenu = () => {
         const { logout } = useContext(AuthContext)
@@ -38,12 +37,12 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
         }
         return (
             <SubMenuContainer>
-                <MenuButton onClick={() => setActive(menuOptions.DISPLAY_PREFERENCES)} >
+                <MenuButton onClick={() => setActive(menuOptions.DISPLAY_PREFERENCES)}>
                     <FontAwesomeIcon className="icon" icon={faMoon} />
                     <p>Display Preferences</p>
                     <FontAwesomeIcon className="icon" icon={faChevronRight} />
                 </MenuButton>
-                <MenuButton onClick={() => setActive(menuOptions.POST_OPTIONS)} >
+                <MenuButton onClick={() => setActive(menuOptions.POST_OPTIONS)}>
                     <FontAwesomeIcon className="icon" icon={faAddressCard} />
                     <p>Post Options</p>
                     <FontAwesomeIcon className="icon" icon={faChevronRight} />
@@ -52,7 +51,8 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
                     <FontAwesomeIcon className="icon" icon={faSignOutAlt} />
                     <p>Log Out</p>
                 </MenuButton>
-            </SubMenuContainer>)
+            </SubMenuContainer>
+        )
     }
 
     const DisplayMenu = () => {
@@ -69,17 +69,17 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
         const buttons = [
             {
                 key: 'Dark',
-                value: 'darkTheme'
+                value: 'darkTheme',
             },
             {
                 key: 'Light',
-                value: 'lightTheme'
-            }
+                value: 'lightTheme',
+            },
         ]
 
         return (
             <SubMenuContainer>
-                <SubMenu title={'Display Settings'} setActive={setActive} >
+                <SubMenu title={'Display Settings'} setActive={setActive}>
                     <RadioButtons
                         handleClick={handleClick}
                         buttons={buttons}
@@ -93,7 +93,6 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
     }
 
     const PostMenu = () => {
-
         const { user } = useContext(AuthContext)
         const { setSettings, settings } = useUserSettings(user.id)
 
@@ -105,21 +104,21 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
         const buttons = [
             {
                 key: 'Private',
-                value: 'PRIVATE'
+                value: 'PRIVATE',
             },
             {
                 key: 'Public',
-                value: 'PUBLIC'
+                value: 'PUBLIC',
             },
             {
                 key: 'Friends Only',
-                value: 'FRIENDS_ONLY'
-            }
+                value: 'FRIENDS_ONLY',
+            },
         ]
 
         return (
             <SubMenuContainer>
-                <SubMenu title={'Post Options'} setActive={setActive} >
+                <SubMenu title={'Post Options'} setActive={setActive}>
                     <RadioButtons
                         handleClick={handleClick}
                         buttons={buttons}
@@ -134,15 +133,17 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
 
     return (
         <DropDownMenu {...rest} ref={ref}>
-            <AnimatedMenu
-                active={active}
-                setActive={setActive}
-                main={<MainMenu value={menuOptions.MAIN} />}
-                subMenus={[
-                    <DisplayMenu value={menuOptions.DISPLAY_PREFERENCES} />,
-                    <PostMenu value={menuOptions.POST_OPTIONS} />
-                ]}
-            />
+            <AnimatedMenu active={active} setActive={setActive}>
+                <AnimatedMenu.Primary value={menuOptions.MAIN}>
+                    <MainMenu />
+                </AnimatedMenu.Primary>
+                <AnimatedMenu.Secondary value={menuOptions.DISPLAY_PREFERENCES}>
+                    <DisplayMenu />
+                </AnimatedMenu.Secondary>
+                <AnimatedMenu.Secondary value={menuOptions.POST_OPTIONS}>
+                    <PostMenu />
+                </AnimatedMenu.Secondary>
+            </AnimatedMenu>
         </DropDownMenu>
     )
 })
@@ -150,9 +151,7 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
 export default UserMenu
 
 const SubMenuContainer = styled.div`
-
-    padding:.5em;
-    width:max-content;
-    width:100%;
-
+    padding: 0.5em;
+    width: max-content;
+    width: 100%;
 `
