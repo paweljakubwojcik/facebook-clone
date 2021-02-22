@@ -5,6 +5,7 @@ import { useUpdatePicture } from '../../Util/Hooks/useUpdatePicture'
 import useResizableInput from '../../Util/Hooks/useResizableInput'
 
 import ModalForm from '../../Components/General/ModalForm'
+import Form from '../../Components/General/Form'
 
 import ImagesContainer from '../../Components/Post/ImagesContainer'
 import PictureLink from '../../Components/General/PictureLink'
@@ -66,14 +67,24 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
     const resizableInput = useResizableInput({ maxHeight: 120 })
 
     return (
-        <ModalForm header={`Update ${type} picture`} toggleForm={toggleForm} onChange={onChange} onSubmit={onSubmit}>
+        <ModalForm
+            header={`Update ${type} picture`}
+            toggleForm={toggleForm}
+            onChange={onChange}
+            onSubmit={onSubmit}
+        >
             {!image ? (
                 <>
                     <Tittle>Choose from your pictures</Tittle>
                     <ImagesContainer.ScrollContainer>
                         <ImagesContainer noCompensation>
                             {user.images.map((image) => (
-                                <PictureLink onClick={() => addValue({ image: image.id })} as="div" key={image.id} picture={image} />
+                                <PictureLink
+                                    onClick={() => addValue({ image: image.id })}
+                                    as="div"
+                                    key={image.id}
+                                    picture={image}
+                                />
                             ))}
                         </ImagesContainer>
                     </ImagesContainer.ScrollContainer>
@@ -85,7 +96,14 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
             ) : (
                 <>
                     {preview && <ProfilePreview img={preview} round={type === 'profile'} />}
-                    {isFile && <Input ref={resizableInput} rows="1" name={'body'} placeholder={'say something about this image'} />}
+                    {isFile && (
+                        <Form.TextArea
+                            ref={resizableInput}
+                            rows="1"
+                            name={'body'}
+                            placeholder={'say something about this image'}
+                        />
+                    )}
                     <Buttons>
                         {!loading && (
                             <SquareButton type="button" onClick={() => addValue({ image: null })}>
@@ -101,20 +119,6 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
         </ModalForm>
     )
 }
-
-const Input = styled.textarea`
-    padding: 0.5em 1em;
-    height: 2em;
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-    font-family: inherit;
-    background-color: transparent;
-    border: none;
-    width: 100%;
-    flex-shrink: 0;
-    resize: none;
-`
 
 const Tittle = styled.div`
     margin: 0.5em 0;

@@ -1,15 +1,18 @@
 import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
-import { AuthContext } from '../../../Context/auth'
-import { useUserSettings } from '../../../Util/Hooks/useUserSettings'
 import PostForm from './PostForm'
 
 import Modal from '../../../Components/General/Modal'
 import ElementContainer from '../../../Components/General/ElementContainer'
 import AnimatedMenu from '../../../Components/General/AnimatedMenu/AnimatedMenu'
+import PrivacyMenu from './PrivacyMenu'
+import Form from '../../../Components/General/Form'
 
-import SubMenu from '../../../Components/General/AnimatedMenu/SubMenu'
-import RadioButtons from '../../../Components/General/AnimatedMenu/RadioButtons'
+import { AuthContext } from '../../../Context/auth'
+import { useUserSettings } from '../../../Util/Hooks/useUserSettings'
+
+import { useForm } from '../../../Util/Hooks/useForm'
+import { useCreatePost } from '../../../Util/Hooks/useCreatePost'
 
 export default function PostFormContainer({ toggleForm, ...rest }) {
     const [active, setActive] = useState('main')
@@ -17,59 +20,58 @@ export default function PostFormContainer({ toggleForm, ...rest }) {
     const {
         user: { id },
     } = useContext(AuthContext)
-    const { settings: { postDefaultPrivacy: privacy } = {} } = useUserSettings(id)
-    const [options, setOptions] = useState({
-        privacy: privacy || 'PUBLIC',
-    })
 
-    const PrivacyMenu = () => {
-        const handleClick = (e) => {
-            e.target.blur()
-            setOptions((options) => {
-                return { ...options, privacy: e.target.value }
-            })
-        }
+    const { settings: { postDefaultPrivacy: privacy = 'PUBLIC' } = {} } = useUserSettings(id)
 
-        const buttons = [
-            {
-                key: 'Private',
-                value: 'PRIVATE',
-            },
-            {
-                key: 'Public',
-                value: 'PUBLIC',
-            },
-            {
-                key: 'Friends Only',
-                value: 'FRIENDS_ONLY',
-            },
-        ]
+    const initialState = {
+        body: '',
+        images: [],
+        privacy: privacy,
+    }
 
-        return (
-            <SubMenuContainer>
-                <SubMenu title={'Privacy'} setActive={setActive}>
-                    <RadioButtons
-                        handleClick={handleClick}
-                        buttons={buttons}
-                        currentValue={options.privacy}
-                        name={''}
-                        icon={null}
-                        style={{ fontSize: '1.2em' }}
-                    />
-                </SubMenu>
-            </SubMenuContainer>
-        )
+    const { onChange, onSubmit, values, removeValue, addValue } = useForm(
+        createPostCallback,
+        initialState
+    )
+
+    const { createPost, errors, loading } = useCreatePost(values, callback)
+
+    async function createPostCallback() {
+        createPost()
+    }
+
+    function callback() {
+        values.body = ''
+        toggleForm(false)
     }
 
     return (
         <Modal toggleModal={toggleForm} {...rest}>
             <ElementContainer noPadding style={{ width: '500px' }}>
-                <AnimatedMenu
-                    active={active}
-                    setActive={setActive}
-                    main={<PostForm toggleForm={toggleForm} value={'main'} setActive={setActive} postOptions={options} />}
-                    subMenus={[<PrivacyMenu value={'options'} />]}
-                />
+                <Form onChange={onChange} onSubmit={onSubmit}>
+                    <Form.Header toggleForm={toggleForm}>{"Let's fake some posts"}</Form.Header>
+                    <AnimatedMenu active={active} setActive={setActive}>
+                        <AnimatedMenu.Primary value={'main'}>
+                            <PostForm
+                                setActive={setActive}
+                                toggleForm={toggleForm}
+                                values={values}
+                                removeValue={removeValue}
+                                loading={loading}
+                                errors={errors}
+                            />
+                        </AnimatedMenu.Primary>
+                        <AnimatedMenu.Secondary value={'options'} setActive={setActive}>
+                            <SubMenuContainer>
+                                <PrivacyMenu
+                                    setPrivacy={(privacy) => addValue({ privacy: privacy })}
+                                    setActive={setActive}
+                                    currentPrivacy={values.privacy}
+                                />
+                            </SubMenuContainer>
+                        </AnimatedMenu.Secondary>
+                    </AnimatedMenu>
+                </Form>
             </ElementContainer>
         </Modal>
     )

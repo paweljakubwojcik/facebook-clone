@@ -22,32 +22,45 @@ Form.Header = ({ toggleForm, children, ...rest }) => {
 
 Form.Button = FormButton
 
-const StyledForm = styled.form`
+Form.UserInfo = styled.div`
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin: 0.5em;
+`
+
+Form.TextArea = styled.textarea`
+    resize: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    font-family: inherit;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    height: 120px;
+    padding: 0.5em 1em;
+    flex-shrink: 0;
+`
+
+Form.FlexContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+`
+
+const StyledForm = styled.form`
     padding: 1em 2em;
-    width: 500px;
-    border-radius: 0.5em;
+`
+const StyledHeader = styled.div`
+    width: 100%;
+    position: relative;
     h2 {
         padding: 0.6em;
         text-align: center;
         border-bottom: solid 1px #ffffff22;
         width: 100%;
     }
-    h3 {
-        margin: 0.5em;
-    }
-    .userInfo {
-        display: flex;
-        width: 100%;
-        align-items: center;
-        margin: 0.5em;
-    }
-`
-const StyledHeader = styled.div`
-    width: 100%;
-    position: relative;
 `
 
 const XButton = styled(RoundButton)`

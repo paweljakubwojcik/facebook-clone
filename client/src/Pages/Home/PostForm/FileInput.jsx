@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef, forwardRef } from 'react'
+import React, { useState, useEffect, forwardRef } from 'react'
 import styled from 'styled-components/macro'
 
-export default forwardRef((props, ref) => {
+const FileInput = forwardRef((props, ref) => {
     const [fileInputVisibility, setFileInputVis] = useState(false)
     const [fileInputHover, setFileInputHover] = useState(false)
 
@@ -47,6 +47,13 @@ export default forwardRef((props, ref) => {
         </>
     )
 })
+
+export default FileInput
+
+FileInput.Wrapper = styled.div`
+    width: 100%;
+    position: relative;
+`
 
 const StyledInput = styled.input`
     position: absolute;
