@@ -10,7 +10,6 @@ import ImagesContainer from '../../Components/Post/ImagesContainer'
 import PictureLink from '../../Components/General/PictureLink'
 import FormButton from '../../Components/General/FormButton'
 import { SquareButton } from '../../Components/General/Buttons'
-import ScrollContainer from '../../Components/Post/PostForm/ScrollContainer'
 
 const enumTypes = {
     profile: 'profileImage',
@@ -71,13 +70,13 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
             {!image ? (
                 <>
                     <Tittle>Choose from your pictures</Tittle>
-                    <ScrollContainer>
+                    <ImagesContainer.ScrollContainer>
                         <ImagesContainer noCompensation>
                             {user.images.map((image) => (
                                 <PictureLink onClick={() => addValue({ image: image.id })} as="div" key={image.id} picture={image} />
                             ))}
                         </ImagesContainer>
-                    </ScrollContainer>
+                    </ImagesContainer.ScrollContainer>
                     <FormButton primary type="button" onClick={() => fileInput.current.click()}>
                         Add new
                     </FormButton>

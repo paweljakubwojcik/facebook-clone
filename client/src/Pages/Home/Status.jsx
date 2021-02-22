@@ -5,7 +5,7 @@ import ElementContainer from '../../Components/General/ElementContainer'
 import Avatar from '../../Components/General/Avatar'
 
 import { AuthContext } from '../../Context/auth'
-import PostFormContainer from '../../Components/Post/PostForm/PostFormContainer'
+import PostFormContainer from './PostForm/PostFormContainer'
 
 export default function Status() {
     const {
@@ -21,10 +21,9 @@ export default function Status() {
     return (
         <>
             <ElementContainer>
-                <Container className="status__container">
-                    <Avatar image={profileImage} className="status__avatar"></Avatar>
-                    <StatusInput className="status__input" type="text" onClick={handleOnclick}>
-                        {' '}
+                <Container>
+                    <Avatar image={profileImage}></Avatar>
+                    <StatusInput type="text" onClick={handleOnclick} role="button">
                         O czym myślisz {username}?
                     </StatusInput>
                 </Container>

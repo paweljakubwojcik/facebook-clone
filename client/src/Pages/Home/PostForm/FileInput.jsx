@@ -42,7 +42,6 @@ export default forwardRef((props, ref) => {
                 }}
             />
             <Label visibility={fileInputVisibility ? 1 : 0} hover={fileInputHover ? 1 : 0} htmlFor="images">
-                {' '}
                 Drop images here
             </Label>
         </>

@@ -7,13 +7,12 @@ import { useCreatePost } from '../../../Util/Hooks/useCreatePost'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 
-import ScrollContainer from './ScrollContainer'
-import Avatar from '../../General/Avatar'
+import Avatar from '../../../Components/General/Avatar'
 
 import AddButton from './AddButton'
 import ImagePreview from './ImagePreview'
-import ImagesContainer from '../ImagesContainer'
-import Form from '../../General/Form'
+import ImagesContainer from '../../../Components/Post/ImagesContainer'
+import Form from '../../../Components/General/Form'
 import FileInput from './FileInput'
 
 export default function PostForm({ toggleForm, setActive, postOptions }) {
@@ -51,7 +50,7 @@ export default function PostForm({ toggleForm, setActive, postOptions }) {
     useEffect(() => {
         console.log('rerender')
         addValue({ privacy: postOptions.privacy })
-    }, [postOptions])
+    }, [postOptions, addValue])
 
     const fileInput = useRef(null)
 
@@ -90,11 +89,11 @@ export default function PostForm({ toggleForm, setActive, postOptions }) {
                 <TextArea aria-label="post" autoFocus name="body" id="body" placeholder={placeholder} />
                 <FileInput ref={fileInput} />
             </FileInputWrapper>
-            <ScrollContainer>
+            <ImagesContainer.ScrollContainer>
                 <ImagesContainer noCompensation>
                     {values.images && Array.from(values.images).map((image) => <ImagePreview file={image} key={image.name} removeImage={removeImage} />)}
                 </ImagesContainer>
-            </ScrollContainer>
+            </ImagesContainer.ScrollContainer>
 
             {errors && <ErrorMessage>There was a problem during faking your status, please try later</ErrorMessage>}
 
