@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { ShowableButton } from '../../../Components/General/Buttons'
 import ImageLoader from '../../../Components/General/ImageLoader'
+import FileImage from '../../../Components/General/FileImage'
 
 export default function ImagePreview({ file, removeImage }) {
     const [url, setUrl] = useState(null)
@@ -22,11 +23,15 @@ export default function ImagePreview({ file, removeImage }) {
     return (
         <Container>
             <ImageLoader />
-            <Image url={url}>
-                <XButton type="button" onClick={() => removeImage(file)} parent={Container}>
-                    <FontAwesomeIcon icon={faTimes} />
-                </XButton>
-            </Image>
+            <FileImage file={file}>
+                {(url) => (
+                    <Image url={url}>
+                        <XButton type="button" onClick={() => removeImage(file)} parent={Container}>
+                            <FontAwesomeIcon icon={faTimes} />
+                        </XButton>
+                    </Image>
+                )}
+            </FileImage>
         </Container>
     )
 }

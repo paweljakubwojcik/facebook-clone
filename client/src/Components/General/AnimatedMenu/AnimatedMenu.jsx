@@ -13,23 +13,15 @@ const AnimationContext = createContext({
 
 export default function AnimatedMenu({ children, active, main, subMenus, ...rest }) {
     const [height, setHeight] = useState(null)
-    const animationContainer = useRef(null)
-
     const calcHeight = (el) => {
         if (el) {
             const height =
-                el.offsetHeight + parseFloat(getComputedStyle(el.parentElement).paddingTop) + parseFloat(getComputedStyle(el.parentElement).paddingBottom)
+                el.offsetHeight +
+                parseFloat(getComputedStyle(el.parentElement).paddingTop) +
+                parseFloat(getComputedStyle(el.parentElement).paddingBottom)
             setHeight(height)
         }
     }
-
-    useResizeObserver({
-        callback: (element) => {
-            //we dont wanna cast this function onto node that exits the view
-            if (element && !element.classList.contains('menu-exit')) calcHeight(element)
-        },
-        element: animationContainer,
-    })
 
     return (
         <Container style={{ height: height }} {...rest}>
@@ -58,8 +50,16 @@ const PrimaryMenu = ({ children, value, ...rest }) => {
     })
 
     return (
-        <CSSTransition in={active === value} appear timeout={timeout} classNames="menu" onEnter={calcHeight}>
-            <AnimationContainer.Primary ref={animationContainer}>{children}</AnimationContainer.Primary>
+        <CSSTransition
+            in={active === value}
+            appear
+            timeout={timeout}
+            classNames="menu"
+            onEnter={calcHeight}
+        >
+            <AnimationContainer.Primary ref={animationContainer}>
+                {children}
+            </AnimationContainer.Primary>
         </CSSTransition>
     )
 }
@@ -69,10 +69,29 @@ PrimaryMenu.propTypes = {
 
 const SecondaryMenu = ({ children, value, ...rest }) => {
     const { calcHeight, active } = useContext(AnimationContext)
+    const animationContainer = useRef(null)
+
+    useResizeObserver({
+        callback: (element) => {
+            //we dont wanna cast this function onto node that exits the view
+            if (element && !element.classList.contains('menu-exit')) calcHeight(element)
+        },
+        element: animationContainer,
+    })
 
     return (
-        <CSSTransition key={value} in={active === value} onEnter={calcHeight} unmountOnExit timeout={timeout} classNames="menu">
-            <AnimationContainer.Secondary>{children}</AnimationContainer.Secondary>
+        <CSSTransition
+            key={value}
+            in={active === value}
+            onEnter={calcHeight}
+            unmountOnExit
+            timeout={timeout}
+            classNames="menu"
+            {...rest}
+        >
+            <AnimationContainer.Secondary ref={animationContainer}>
+                {children}
+            </AnimationContainer.Secondary>
         </CSSTransition>
     )
 }

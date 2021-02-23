@@ -2,24 +2,22 @@ const { gql } = require('apollo-server')
 
 //setting up GraphQL
 const index = gql`
-    
     type Query
 
     type Mutation
 
-    enum SortDirection{
+    enum SortDirection {
         ASCENDING
         DESCENDING
     }
 
-    input CursorBasedPagination{
-        limit:Int
-        cursor:ID
+    input CursorBasedPagination {
+        limit: Int
+        cursor: ID
         sortBy: String
         sort: SortDirection
     }
-        
- `
+`
 
 module.exports = [
     index,
@@ -28,6 +26,3 @@ module.exports = [
     require('./notification'),
     require('./user'),
 ]
-
-
-

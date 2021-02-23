@@ -61,7 +61,7 @@ export default function PostFormContainer({ toggleForm, ...rest }) {
                                 errors={errors}
                             />
                         </AnimatedMenu.Primary>
-                        <AnimatedMenu.Secondary value={'options'} setActive={setActive}>
+                        <AnimatedMenu.Secondary value={'options'} >
                             <SubMenuContainer>
                                 <PrivacyMenu
                                     setPrivacy={(privacy) => addValue({ privacy: privacy })}

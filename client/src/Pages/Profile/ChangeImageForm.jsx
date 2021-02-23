@@ -4,13 +4,17 @@ import { useForm } from '../../Util/Hooks/useForm'
 import { useUpdatePicture } from '../../Util/Hooks/useUpdatePicture'
 import useResizableInput from '../../Util/Hooks/useResizableInput'
 
-import ModalForm from '../../Components/General/ModalForm'
+import Modal from '../../Components/General/Modal'
 import Form from '../../Components/General/Form'
+import ElementContainer from '../../Components/General/ElementContainer'
+
+import AnimatedMenu from '../../Components/General/AnimatedMenu/AnimatedMenu'
 
 import ImagesContainer from '../../Components/Post/ImagesContainer'
 import PictureLink from '../../Components/General/PictureLink'
 import FormButton from '../../Components/General/FormButton'
 import { SquareButton } from '../../Components/General/Buttons'
+import FileImage from '../../Components/General/FileImage'
 
 const enumTypes = {
     profile: 'profileImage',
@@ -25,6 +29,7 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
     const initialState = {
         image: null,
     }
+
     const {
         onChange,
         onSubmit,
@@ -52,71 +57,85 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
             setPreview(preview)
         }
         if (isFile) {
-            const fileReader = new FileReader()
-            fileReader.onload = () => {
-                const arrayBuffer = fileReader.result
-                const blob = new Blob([arrayBuffer], [image[0].type])
-                const blobUrl = URL.createObjectURL(blob)
-                setPreview(blobUrl)
-            }
-            fileReader.readAsArrayBuffer(image[0])
+            setPreview(image[0])
         }
         return () => {}
     }, [image, isFile, user])
 
     const resizableInput = useResizableInput({ maxHeight: 120 })
 
+    const [active, setActive] = useState('main')
+    useEffect(() => {
+        setActive(image ? 'imgPreview' : 'main')
+    }, [image])
+
     return (
-        <ModalForm
-            header={`Update ${type} picture`}
-            toggleForm={toggleForm}
-            onChange={onChange}
-            onSubmit={onSubmit}
-        >
-            {!image ? (
-                <>
-                    <Tittle>Choose from your pictures</Tittle>
-                    <ImagesContainer.ScrollContainer>
-                        <ImagesContainer noCompensation>
-                            {user.images.map((image) => (
-                                <PictureLink
-                                    onClick={() => addValue({ image: image.id })}
-                                    as="div"
-                                    key={image.id}
-                                    picture={image}
+        <Modal toggleModal={toggleForm}>
+            <ElementContainer noPadding style={{ width: '500px' }}>
+                <Form onChange={onChange} onSubmit={onSubmit}>
+                    <Form.Header toggleForm={toggleForm}>{`Update ${type} picture`}</Form.Header>
+                    <AnimatedMenu active={active}>
+                        <AnimatedMenu.Primary value={'main'}>
+                            <Form.FlexContainer>
+                                <Tittle>Choose from your pictures</Tittle>
+                                <ImagesContainer.ScrollContainer>
+                                    <ImagesContainer noCompensation>
+                                        {user.images.map((image) => (
+                                            <PictureLink
+                                                onClick={() => addValue({ image: image.id })}
+                                                as="div"
+                                                key={image.id}
+                                                picture={image}
+                                            />
+                                        ))}
+                                    </ImagesContainer>
+                                </ImagesContainer.ScrollContainer>
+                                <FormButton
+                                    primary
+                                    type="button"
+                                    onClick={() => fileInput.current.click()}
+                                >
+                                    Add new
+                                </FormButton>
+                                <UploadImage type="file" ref={fileInput} name="image" />
+                            </Form.FlexContainer>
+                        </AnimatedMenu.Primary>
+
+                        <AnimatedMenu.Secondary
+                            value={'imgPreview'}
+                            onExited={() => addValue({ image: null })}
+                        >
+                            {preview && (
+                                <FileImage file={preview}>
+                                    {(url) => (
+                                        <ProfilePreview img={url} round={type === 'profile'} />
+                                    )}
+                                </FileImage>
+                            )}
+
+                            {isFile && (
+                                <Form.TextArea
+                                    ref={resizableInput}
+                                    rows="1"
+                                    name={'body'}
+                                    placeholder={'say something about this image'}
                                 />
-                            ))}
-                        </ImagesContainer>
-                    </ImagesContainer.ScrollContainer>
-                    <FormButton primary type="button" onClick={() => fileInput.current.click()}>
-                        Add new
-                    </FormButton>
-                    <UploadImage type="file" ref={fileInput} name="image" />
-                </>
-            ) : (
-                <>
-                    {preview && <ProfilePreview img={preview} round={type === 'profile'} />}
-                    {isFile && (
-                        <Form.TextArea
-                            ref={resizableInput}
-                            rows="1"
-                            name={'body'}
-                            placeholder={'say something about this image'}
-                        />
-                    )}
-                    <Buttons>
-                        {!loading && (
-                            <SquareButton type="button" onClick={() => addValue({ image: null })}>
-                                Cancel
-                            </SquareButton>
-                        )}
-                        <FormButton primary type="submit" loading={loading}>
-                            Save
-                        </FormButton>
-                    </Buttons>
-                </>
-            )}
-        </ModalForm>
+                            )}
+                            <Buttons>
+                                {!loading && (
+                                    <SquareButton type="button" onClick={() => setActive('main')}>
+                                        Cancel
+                                    </SquareButton>
+                                )}
+                                <FormButton primary type="submit" loading={loading}>
+                                    Save
+                                </FormButton>
+                            </Buttons>
+                        </AnimatedMenu.Secondary>
+                    </AnimatedMenu>
+                </Form>
+            </ElementContainer>
+        </Modal>
     )
 }
 
@@ -132,12 +151,12 @@ const ProfilePreview = styled.div`
     box-shadow: ${(props) => props.theme.standardShadow};
     background-position: center;
     background-size: cover;
-    background-image: url(${(props) => props.img.replace('(', '\\(').replace(')', '\\)')});
+    background-image: url(${(props) => props.img});
     padding-bottom: 100%;
     border-radius: ${(props) => (props.round ? '50%' : '0')};
 `
 const Buttons = styled.div`
-    margin: 1em 0;
+    padding: 1em 0;
     display: flex;
     width: 100%;
     justify-content: center;
