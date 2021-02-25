@@ -17,12 +17,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import SubMenu from '../General/AnimatedMenu/SubMenu'
-import RadioButtons from '../General/AnimatedMenu/RadioButtons'
+import RadioButtonsGroup from '../General/AnimatedMenu/RadioButtons'
 import AnimatedMenu from '../General/AnimatedMenu/AnimatedMenu'
 import DropDownMenu from '../General/DropDownMenu'
 import { MenuButton } from '../General/Buttons'
 
 import { menuOptions } from './menuOptions'
+import PrivacyMenu from '../General/PrivacyMenu'
 
 const UserMenu = forwardRef(({ ...rest }, ref) => {
     const history = useHistory()
@@ -80,13 +81,14 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
         return (
             <SubMenuContainer>
                 <SubMenu title={'Display Settings'} setActive={setActive}>
-                    <RadioButtons
-                        handleClick={handleClick}
-                        buttons={buttons}
-                        currentValue={themeName}
-                        name={'Theme'}
-                        icon={faMoon}
-                    />
+                    <RadioButtonsGroup currentValue={themeName} name={'Theme'}>
+                        <RadioButtonsGroup.Header icon={faMoon}>Theme</RadioButtonsGroup.Header>
+                        {buttons.map(({ key, value }) => (
+                            <RadioButtonsGroup.Button value={value} onClick={handleClick} key={key}>
+                                {key}
+                            </RadioButtonsGroup.Button>
+                        ))}
+                    </RadioButtonsGroup>
                 </SubMenu>
             </SubMenuContainer>
         )
@@ -94,38 +96,20 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
 
     const PostMenu = () => {
         const { user } = useContext(AuthContext)
+        console.log(user)
         const { setSettings, settings } = useUserSettings(user.id)
 
-        const handleClick = (e) => {
-            e.target.blur()
-            setSettings('postDefaultPrivacy', e.target.value)
-        }
-
-        const buttons = [
-            {
-                key: 'Private',
-                value: 'PRIVATE',
-            },
-            {
-                key: 'Public',
-                value: 'PUBLIC',
-            },
-            {
-                key: 'Friends Only',
-                value: 'FRIENDS_ONLY',
-            },
-        ]
+        console.log(settings)
 
         return (
             <SubMenuContainer>
                 <SubMenu title={'Post Options'} setActive={setActive}>
-                    <RadioButtons
-                        handleClick={handleClick}
-                        buttons={buttons}
-                        currentValue={settings?.postDefaultPrivacy}
-                        name={'Default Visibility'}
-                        icon={faEye}
-                    />
+                    <PrivacyMenu
+                        setPrivacy={(privacy) => setSettings('postDefaultPrivacy', privacy)}
+                        currentPrivacy={settings?.postDefaultPrivacy}
+                    >
+                        <RadioButtonsGroup.Header icon={faEye}>Default privacy</RadioButtonsGroup.Header>
+                    </PrivacyMenu>
                 </SubMenu>
             </SubMenuContainer>
         )

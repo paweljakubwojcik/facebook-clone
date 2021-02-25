@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, createContext } from 'react'
+import React, { useState, useRef, useContext, createContext, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { CSSTransition } from 'react-transition-group'
@@ -6,13 +6,14 @@ import useResizeObserver from '../../../Util/Hooks/useResizeObserver'
 
 const timeout = 500
 
-const AnimationContext = createContext({
+export const AnimationContext = createContext({
     calcHeight: null,
     active: 'main',
 })
 
-export default function AnimatedMenu({ children, active, main, subMenus, ...rest }) {
+export default function AnimatedMenu({ children, active, subMenus, ...rest }) {
     const [height, setHeight] = useState(null)
+
     const calcHeight = (el) => {
         if (el) {
             const height =
@@ -23,12 +24,16 @@ export default function AnimatedMenu({ children, active, main, subMenus, ...rest
         }
     }
 
+    const [main, setMain] = useState('main')
+
     return (
         <Container style={{ height: height }} {...rest}>
             <AnimationContext.Provider
                 value={{
                     calcHeight,
                     active,
+                    main,
+                    setMain,
                 }}
             >
                 {children}
@@ -38,8 +43,12 @@ export default function AnimatedMenu({ children, active, main, subMenus, ...rest
 }
 
 const PrimaryMenu = ({ children, value, ...rest }) => {
-    const { calcHeight, active } = useContext(AnimationContext)
+    const { calcHeight, active, setMain } = useContext(AnimationContext)
     const animationContainer = useRef(null)
+
+    useEffect(() => {
+        setMain(value)
+    }, [value, setMain])
 
     useResizeObserver({
         callback: (element) => {
@@ -66,6 +75,7 @@ const PrimaryMenu = ({ children, value, ...rest }) => {
 PrimaryMenu.propTypes = {
     value: PropTypes.string.isRequired,
 }
+AnimatedMenu.Primary = PrimaryMenu
 
 const SecondaryMenu = ({ children, value, ...rest }) => {
     const { calcHeight, active } = useContext(AnimationContext)
@@ -95,12 +105,15 @@ const SecondaryMenu = ({ children, value, ...rest }) => {
         </CSSTransition>
     )
 }
-
 SecondaryMenu.propTypes = {
     value: PropTypes.string.isRequired,
 }
-AnimatedMenu.Primary = PrimaryMenu
 AnimatedMenu.Secondary = SecondaryMenu
+
+
+
+
+
 
 const Container = styled.div`
     transition: min-height ${timeout}ms, height ${timeout}ms;

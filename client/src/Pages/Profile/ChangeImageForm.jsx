@@ -69,6 +69,8 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
         setActive(image ? 'imgPreview' : 'main')
     }, [image])
 
+    console.log('render')
+
     return (
         <Modal toggleModal={toggleForm}>
             <ElementContainer noPadding style={{ width: '500px' }}>

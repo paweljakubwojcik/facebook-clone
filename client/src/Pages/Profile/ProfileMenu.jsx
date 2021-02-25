@@ -42,7 +42,11 @@ export default function ProfileMenu({ width, contentType, setContentType, user }
                     <TransitionGroup component={null}>
                         <CSSTransition key={sticky} timeout={200} classNames="rollUp">
                             {!sticky ? (
-                                <RadioButtons className="buttons" setContentType={setContentType} contentType={contentType} />
+                                <RadioButtons
+                                    className="buttons"
+                                    setContentType={setContentType}
+                                    contentType={contentType}
+                                />
                             ) : (
                                 <UserButton
                                     className="user"

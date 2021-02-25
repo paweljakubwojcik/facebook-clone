@@ -5,7 +5,9 @@ import PostForm from './PostForm'
 import Modal from '../../../Components/General/Modal'
 import ElementContainer from '../../../Components/General/ElementContainer'
 import AnimatedMenu from '../../../Components/General/AnimatedMenu/AnimatedMenu'
-import PrivacyMenu from './PrivacyMenu'
+import SubMenu from '../../../Components/General/AnimatedMenu/SubMenu'
+
+import PrivacyMenu from '../../../Components/General/PrivacyMenu'
 import Form from '../../../Components/General/Form'
 
 import { AuthContext } from '../../../Context/auth'
@@ -15,7 +17,7 @@ import { useForm } from '../../../Util/Hooks/useForm'
 import { useCreatePost } from '../../../Util/Hooks/useCreatePost'
 
 export default function PostFormContainer({ toggleForm, ...rest }) {
-    const [active, setActive] = useState('main')
+    const [active, setActive] = useState('form')
 
     const {
         user: { id },
@@ -51,7 +53,7 @@ export default function PostFormContainer({ toggleForm, ...rest }) {
                 <Form onChange={onChange} onSubmit={onSubmit}>
                     <Form.Header toggleForm={toggleForm}>{"Let's fake some posts"}</Form.Header>
                     <AnimatedMenu active={active} setActive={setActive}>
-                        <AnimatedMenu.Primary value={'main'}>
+                        <AnimatedMenu.Primary value={'form'}>
                             <PostForm
                                 setActive={setActive}
                                 toggleForm={toggleForm}
@@ -61,13 +63,15 @@ export default function PostFormContainer({ toggleForm, ...rest }) {
                                 errors={errors}
                             />
                         </AnimatedMenu.Primary>
-                        <AnimatedMenu.Secondary value={'options'} >
+                        <AnimatedMenu.Secondary value={'options'}>
                             <SubMenuContainer>
-                                <PrivacyMenu
-                                    setPrivacy={(privacy) => addValue({ privacy: privacy })}
-                                    setActive={setActive}
-                                    currentPrivacy={values.privacy}
-                                />
+                                <SubMenu title={'Privacy'} setActive={setActive}>
+                                    <PrivacyMenu
+                                        setPrivacy={(privacy) => addValue({ privacy: privacy })}
+                                        currentPrivacy={values.privacy}
+                                        style={{ fontSize: '1.2em' }}
+                                    />
+                                </SubMenu>
                             </SubMenuContainer>
                         </AnimatedMenu.Secondary>
                     </AnimatedMenu>

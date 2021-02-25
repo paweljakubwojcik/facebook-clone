@@ -1,17 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { RoundButton } from '../Buttons'
 
-import { menuOptions } from '../../Navbar/menuOptions'
+import { AnimationContext } from './AnimatedMenu'
 
 export default function SubMenu({ title, children, setActive }) {
+    const { main } = useContext(AnimationContext)
+
     return (
         <>
             <Header>
-                <RoundButton type="button" onClick={() => setActive(menuOptions.MAIN)}>
+                <RoundButton type="button" onClick={() => setActive(main)}>
                     <FontAwesomeIcon icon={faArrowLeft} />
                 </RoundButton>
                 <h3>{title}</h3>
