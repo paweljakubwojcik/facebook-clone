@@ -1,72 +1,56 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react'
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import * as themes from '../styles/themes'
 import { AuthContext } from './auth'
 
 import { ThemeProvider } from 'styled-components'
-import { useUserSettings } from '../Util/Hooks/useUserSettings';
+import { useUserSettings } from '../Util/Hooks/useUserSettings'
 
 //TODO: incorporate enum types into themes #graphql
 
-const systemPrefferedTheme = window.matchMedia('(prefers-color-scheme:light)');
+const isSystemThemeLight = window.matchMedia('(prefers-color-scheme:light)')
+const systemPreferedTheme = isSystemThemeLight.matches ? 'lightTheme' : 'darkTheme'
+
+const cookieStoredTheme = localStorage.getItem('theme') // NOTE: if undefined this returns string of value 'undefined'
+
+const initialTheme = cookieStoredTheme !== 'undefined' ? cookieStoredTheme : systemPreferedTheme
 
 const ThemeContext = createContext({
     currentTheme: null,
-    changeTheme: (themeType) => { },
+    changeTheme: (themeName) => {},
 })
 
-function themeReducer(state, action) {
-    switch (action.type) {
-        case 'CHANGE_THEME':
-            return {
-                ...state,
-                theme: action.payload.theme,
-                themeName: action.payload.themeName
-            }
-        default:
-            return state;
-    }
-}
-
 function ThemesProvider(props) {
-
     const { user } = useContext(AuthContext)
-    const { settings } = useUserSettings(user?.id)
-
-    const preferedTheme = settings?.preferredTheme || (systemPrefferedTheme.matches ? 'lightTheme' : 'darkTheme')
+    const { settings, setSettings, error } = useUserSettings(user?.id)
 
     const initialState = {
-        theme: themes[preferedTheme],
-        themeName: preferedTheme
+        theme: themes[initialTheme],
+        themeName: initialTheme,
     }
 
-
-    const [state, dispatch] = useReducer(themeReducer, initialState)
+    const [state, setState] = useState(initialState)
     const { themeName } = state
 
-    const changeTheme = (themeType) => {
-        dispatch({
-            type: 'CHANGE_THEME',
-            payload: {
-                theme: themes[themeType],
-                themeName: themeType
-            }
+    const changeTheme = (themeName) => {
+        setSettings('preferredTheme', themeName, () => {
+            setState({
+                theme: themes[themeName],
+                themeName,
+            })
+            localStorage.setItem('theme', themeName)
         })
     }
 
+    // to make sure theme is consistent across multiple devices
     useEffect(() => {
-        if(settings?.preferredTheme)
-        changeTheme(settings?.preferredTheme)
-        return () => {
-
-        }
-    }, [settings])
-
+        if (settings?.preferredTheme && settings.preferredTheme !== state.themeName)
+            setState({ theme: themes[themeName], themeName })
+        return () => {}
+    }, [settings, setState, state, themeName])
 
     return (
         <ThemeContext.Provider value={{ changeTheme, themeName }} {...props}>
-            <ThemeProvider theme={state.theme}>
-                {props.children}
-            </ThemeProvider>
+            <ThemeProvider theme={state.theme}>{props.children}</ThemeProvider>
         </ThemeContext.Provider>
     )
 }

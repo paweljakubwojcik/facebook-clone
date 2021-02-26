@@ -44,15 +44,23 @@ export default function Profile() {
             })
         }
     }, [user, isMobileDevice])
+    console.log('render')
 
     return (
         <UserMatchContext.Provider value={isViewerTheOwner}>
             {user && (
                 <>
                     <TopPanel user={user} width={width} />
-                    <ProfileMenu width={width} contentType={contentType} setContentType={setContentType} user={user}></ProfileMenu>
+                    <ProfileMenu
+                        width={width}
+                        contentType={contentType}
+                        setContentType={setContentType}
+                        user={user}
+                    ></ProfileMenu>
                     <Content>
-                        {contentType === contentTypes.POSTS && <Posts user={user} setContentType={setContentType} />}
+                        {contentType === contentTypes.POSTS && (
+                            <Posts user={user} setContentType={setContentType} />
+                        )}
                         {contentType === contentTypes.INFO && (
                             <>
                                 <h2>{'INFO'}</h2>

@@ -1,6 +1,5 @@
 import { gql, useQuery, useMutation } from '@apollo/client'
-
-//TODO: this hook should only have like updateSettings
+import { useCallback, useState } from 'react'
 
 const UPDATE_SETTINGS = gql`
     mutation updateSettings($setting: String!, $newValue: String!) {
@@ -33,16 +32,27 @@ export const useUserSettings = (userId) => {
         },
     })
 
+    const [error, setError] = useState(null)
+
     const [updateSettings] = useMutation(UPDATE_SETTINGS)
 
-    const setSettings = (setting, newValue) => {
-        updateSettings({
-            variables: {
-                setting,
-                newValue,
-            },
-        })
-    }
+    const setSettings = useCallback(
+        (setting, newValue, callback = () => {}) => {
+            updateSettings({
+                variables: {
+                    setting,
+                    newValue,
+                },
+                update: () => {
+                    callback()
+                },
+                onError: (e) => {
+                    setError(e)
+                },
+            })
+        },
+        [updateSettings]
+    )
 
-    return { settings, setSettings }
+    return { settings, setSettings, error }
 }

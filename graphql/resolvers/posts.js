@@ -42,9 +42,7 @@ module.exports = {
                     const posts = await Post.find(filter, null, {
                         sort: { createdAt: -1 },
                     })
-                    const cursorIndex = posts.findIndex(
-                        (post) => post._id.toString() === cursor
-                    ) // not defined cursor => return -1
+                    const cursorIndex = posts.findIndex((post) => post._id.toString() === cursor) // not defined cursor => return -1
                     const next = cursorIndex + 1 // to not return the cursor second time, also this take care of situation when cursor is not defined
                     return posts.slice(next, next + limit)
                 } catch (err) {
@@ -63,11 +61,7 @@ module.exports = {
     },
 
     Mutation: {
-        async createPost(
-            _,
-            { body, title, privacy = 'PUBLIC', images },
-            context
-        ) {
+        async createPost(_, { body, title, privacy = 'PUBLIC', images }, context) {
             //check if user is authenitaced
             const user = checkAuth(context)
             //if check auth fails to confirm token, error is being thrown
@@ -91,7 +85,7 @@ module.exports = {
                 })
 
                 const post = await newPost.save()
-
+                
                 const savedImages = await Promise.all(
                     images.map((img) => savePictureToDB(img, user, { post }))
                 )
@@ -109,20 +103,14 @@ module.exports = {
                 if (user.username === post.username) {
                     const images = await Image.find({ post: postId })
                     await Promise.all(
-                        Array.from(images).map(({ filename }) =>
-                            deletePicture(filename)
-                        )
+                        Array.from(images).map(({ filename }) => deletePicture(filename))
                     )
-                    await Promise.all(
-                        Array.from(images).map((image) => image.delete())
-                    )
+                    await Promise.all(Array.from(images).map((image) => image.delete()))
 
                     await post.delete()
                     return 'post deleted succesfully'
                 } else {
-                    throw new AuthenticationError(
-                        'User is not the owner of the post'
-                    )
+                    throw new AuthenticationError('User is not the owner of the post')
                 }
             } catch (e) {
                 throw new Error(e)
@@ -135,9 +123,7 @@ module.exports = {
                 const post = await Post.findById(postId)
                 if (post.likes.find((like) => like.username === username)) {
                     // Post already liked
-                    post.likes = post.likes.filter(
-                        (like) => like.username !== username
-                    )
+                    post.likes = post.likes.filter((like) => like.username !== username)
                 } else {
                     post.likes.push({
                         username,
@@ -159,8 +145,7 @@ module.exports = {
                 if (post.username === username) {
                     post[field] = newValue
                     return await post.save()
-                } else
-                    throw AuthenticationError('User is not owner of the post')
+                } else throw AuthenticationError('User is not owner of the post')
             } catch (error) {
                 throw new Error(e)
             }

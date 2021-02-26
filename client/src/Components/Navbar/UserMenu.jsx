@@ -57,14 +57,11 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
     }
 
     const DisplayMenu = () => {
-        const { user } = useContext(AuthContext)
         const { changeTheme, themeName } = useContext(ThemeContext)
-        const { setSettings } = useUserSettings(user.id)
 
         const handleClick = (e) => {
             e.target.blur()
             changeTheme(e.target.value)
-            setSettings('preferredTheme', e.target.value)
         }
 
         const buttons = [
@@ -96,10 +93,7 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
 
     const PostMenu = () => {
         const { user } = useContext(AuthContext)
-        console.log(user)
         const { setSettings, settings } = useUserSettings(user.id)
-
-        console.log(settings)
 
         return (
             <SubMenuContainer>

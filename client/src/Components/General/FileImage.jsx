@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import propTypes from 'prop-types'
 
 /**
@@ -22,7 +22,7 @@ export default function FileImage({ children, file }) {
         else setUrl(file)
     }, [file])
 
-    return <>{children(url)}</>
+    return children(url)
 }
 
 FileImage.propTypes = {

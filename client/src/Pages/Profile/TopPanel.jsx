@@ -26,7 +26,7 @@ export default function TopPanel({ loading, user, width }) {
             threshold: thresholds,
         },
         ({ intersectionRatio: ratio }) => {
-            setAvatarOpacity(ratio * 1.5 - 0.5)
+            //setAvatarOpacity(ratio * 1.5 - 0.5)
         }
     )
 

@@ -3,10 +3,7 @@ const jwt = require('jsonwebtoken')
 const { UserInputError } = require('apollo-server')
 
 const { SECRET_KEY } = require('../../config')
-const {
-    validateRegisterInput,
-    validateLoginInput,
-} = require('../../utils/validators')
+const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
 const { generateRandomPhoto } = require('../../utils/randomPhoto')
 const checkAuth = require('../../utils/checkAuth')
 
@@ -24,10 +21,8 @@ function generateToken(user) {
         {
             id: user.id,
             email: user.email,
-            username: user.username,
         },
-        SECRET_KEY,
-        { expiresIn: '2h' }
+        SECRET_KEY
     )
 }
 
@@ -140,8 +135,7 @@ module.exports = {
                 user: _id,
                 privacy: 'PRIVATE',
                 username,
-                body:
-                    randomTexts[Math.floor(Math.random() * randomTexts.length)],
+                body: randomTexts[Math.floor(Math.random() * randomTexts.length)],
                 createdAt: new Date().toISOString(),
                 likes: [],
                 comments: [],
@@ -151,16 +145,8 @@ module.exports = {
             const { _id: postId } = await newPost.save()
 
             //generate random backgroundImage and avatar pic
-            const backgroundImage = await generateRandomPhoto(
-                'background',
-                _id,
-                postId
-            )
-            const profileImage = await generateRandomPhoto(
-                'avatar',
-                _id,
-                postId
-            )
+            const backgroundImage = await generateRandomPhoto('background', _id, postId)
+            const profileImage = await generateRandomPhoto('avatar', _id, postId)
 
             newUser.backgroundImage = backgroundImage
             newUser.profileImage = profileImage
@@ -217,16 +203,12 @@ module.exports = {
                 switch (answer) {
                     case 'ACCEPT':
                         //push invitator to friendlist of invitee
-                        if (!invitee.friends.includes(invitator.id))
-                            invitee.friends.push(invitator)
+                        if (!invitee.friends.includes(invitator.id)) invitee.friends.push(invitator)
                         //and vice versa
-                        if (!invitator.friends.includes(invitee.id))
-                            invitator.friends.push(invitee)
+                        if (!invitator.friends.includes(invitee.id)) invitator.friends.push(invitee)
 
                         // != because 'inv.from' has diffrent type than 'from'
-                        const filteredInv = invitee.invitations.filter(
-                            (inv) => inv.from != from
-                        )
+                        const filteredInv = invitee.invitations.filter((inv) => inv.from != from)
                         invitee.invitations = filteredInv
 
                         invitator.notifications.unshift({
@@ -246,9 +228,7 @@ module.exports = {
                         return response
 
                     case 'DECLINE':
-                        invitee.invitations = invitee.invitations.filter(
-                            (inv) => inv.from != from
-                        )
+                        invitee.invitations = invitee.invitations.filter((inv) => inv.from != from)
 
                         invitator.notifications.unshift({
                             from: invitee.id,
@@ -307,9 +287,7 @@ module.exports = {
             return await Image.find({ uploadedBy: id })
         },
         friends: async ({ friends }) => {
-            const data = await Promise.all(
-                friends.map((friend) => User.findById(friend))
-            )
+            const data = await Promise.all(friends.map((friend) => User.findById(friend)))
             return data
         },
     },

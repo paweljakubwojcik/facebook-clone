@@ -4,25 +4,22 @@ import jwtDecode from 'jwt-decode'
 import { useApolloClient } from '@apollo/client'
 
 const initialState = {
-    user: null
+    user: null,
 }
 
 // to ensure that refreshng wont logout the user
 if (localStorage.getItem('token')) {
     const decodedToken = jwtDecode(localStorage.getItem('token'))
-    if (decodedToken.exp * 1000 < Date.now())
-        localStorage.removeItem('token')
+    if (decodedToken.exp * 1000 < Date.now()) localStorage.removeItem('token')
     else {
         initialState.user = decodedToken
-
     }
-
 }
 
 const AuthContext = createContext({
     user: null,
-    login: (userData) => { },
-    logout: () => { }
+    login: (userData) => {},
+    logout: () => {},
 })
 
 function authReducer(state, action) {
@@ -30,16 +27,16 @@ function authReducer(state, action) {
         case 'LOGIN':
             return {
                 ...state,
-                user: action.payload
+                user: action.payload,
             }
         case 'LOGOUT':
             return {
                 ...state,
-                user: null
+                user: null,
             }
 
         default:
-            return state;
+            return state
     }
 }
 
@@ -48,31 +45,22 @@ function AuthProvider(props) {
     const client = useApolloClient()
 
     const login = (userData) => {
-
         localStorage.setItem('token', userData.token)
-        localStorage.setItem('avatar', userData.profileImage.urls.medium)
+        localStorage.setItem('theme', userData.settings.preferredTheme)
         dispatch({
             type: 'LOGIN',
-            payload: userData
+            payload: userData,
         })
     }
     const logout = () => {
-        localStorage.removeItem('token')
-        localStorage.removeItem('avatar')
+        localStorage.clear()
         client.clearStore()
         dispatch({
             type: 'LOGOUT',
         })
     }
 
-    return (
-        <AuthContext.Provider
-            value={{ user: state.user, login, logout }}
-            {...props}
-        />
-    )
+    return <AuthContext.Provider value={{ user: state.user, login, logout }} {...props} />
 }
 
 export { AuthContext, AuthProvider }
-
-
