@@ -27,7 +27,8 @@ export default function RegisterForm({ setForm }) {
             context.login(userData)
         },
         onError(err) {
-            if (err.graphQLErrors[0]) setErrors(err?.graphQLErrors[0]?.extensions?.exception?.errors || {})
+            if (err.graphQLErrors[0])
+                setErrors(err?.graphQLErrors[0]?.extensions?.exception?.errors || {})
         },
         variables: values,
     })
@@ -37,11 +38,32 @@ export default function RegisterForm({ setForm }) {
     }
 
     return (
-        <Form className="register__form" onSubmit={onSubmit} novalidate>
+        <Form onSubmit={onSubmit} novalidate>
             <Form.Title>Register</Form.Title>
-            <Form.Input label="Username" type="text" name="username" value={values.username} onChange={onChange} error={errors.username} />
-            <Form.Input label="Email" type="email" name="email" value={values.email} onChange={onChange} error={errors.email} />
-            <Form.Input label="Password" type="password" name="password" value={values.password} onChange={onChange} error={errors.password} />
+            <Form.Input
+                label="Username"
+                type="text"
+                name="username"
+                value={values.username}
+                onChange={onChange}
+                error={errors.username}
+            />
+            <Form.Input
+                label="Email"
+                type="email"
+                name="email"
+                value={values.email}
+                onChange={onChange}
+                error={errors.email}
+            />
+            <Form.Input
+                label="Password"
+                type="password"
+                name="password"
+                value={values.password}
+                onChange={onChange}
+                error={errors.password}
+            />
             <Form.Input
                 label="Confirm Password"
                 type="password"
@@ -55,7 +77,9 @@ export default function RegisterForm({ setForm }) {
             </Form.Button>
             <Form.Row>
                 <p>Have an account? </p>
-                <Form.ChangeFormButton onClick={setForm.bind(this, 'login')}>Log In</Form.ChangeFormButton>
+                <Form.ChangeFormButton onClick={setForm.bind(this, 'login')}>
+                    Log In
+                </Form.ChangeFormButton>
             </Form.Row>
         </Form>
     )

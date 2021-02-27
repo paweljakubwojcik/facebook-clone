@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 import * as themes from '../styles/themes'
 import { AuthContext } from './auth'
 
@@ -10,9 +10,11 @@ import { useUserSettings } from '../Util/Hooks/useUserSettings'
 const isSystemThemeLight = window.matchMedia('(prefers-color-scheme:light)')
 const systemPreferedTheme = isSystemThemeLight.matches ? 'lightTheme' : 'darkTheme'
 
-const cookieStoredTheme = localStorage.getItem('theme') // NOTE: if undefined this returns string of value 'undefined'
+const cookieStoredTheme = localStorage.getItem('theme') // NOTE: if undefined this sometimes returns string of value 'undefined'
 
-const initialTheme = cookieStoredTheme !== 'undefined' ? cookieStoredTheme : systemPreferedTheme
+const isCookieStoredTheme =
+    cookieStoredTheme !== 'undefined' && cookieStoredTheme !== 'null' && cookieStoredTheme
+const initialTheme = isCookieStoredTheme ? cookieStoredTheme : systemPreferedTheme
 
 const ThemeContext = createContext({
     currentTheme: null,
@@ -21,7 +23,7 @@ const ThemeContext = createContext({
 
 function ThemesProvider(props) {
     const { user } = useContext(AuthContext)
-    const { settings, setSettings, error } = useUserSettings(user?.id)
+    const { settings, setSettings } = useUserSettings(user?.id)
 
     const initialState = {
         theme: themes[initialTheme],

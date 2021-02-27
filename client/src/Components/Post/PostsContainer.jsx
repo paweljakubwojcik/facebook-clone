@@ -31,7 +31,7 @@ export default function Posts({ userId }) {
     async function handleIntersect() {
         fetchMore({
             variables: {
-                cursor: posts[posts.length - 1].id,
+                cursor: !isPostsEmpty ? posts[posts.length - 1].id : null,
             },
         }).then(({ data: { posts: newPosts } }) => {
             //when all posts have been fetched
@@ -48,7 +48,9 @@ export default function Posts({ userId }) {
             {posts && posts.map((post) => <PostCard key={post.id} post={post} />)}
             {loading && [1, 2].map((key) => <SkeletonPost key={key} theme={'dark'} />)}
             {error && <NotFound message={"Couldn't find any content"} />}
-            {isPostsEmpty && <ErrorMessage>This faker haven't post anything yet {`;(`}</ErrorMessage>}
+            {isPostsEmpty && (
+                <ErrorMessage>This faker haven't post anything yet {`;(`}</ErrorMessage>
+            )}
             {!loading && !error && canFetchMore && (
                 <Dummy ref={setRef}>
                     {' '}

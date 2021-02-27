@@ -42,11 +42,11 @@ function authReducer(state, action) {
 
 function AuthProvider(props) {
     const [state, dispatch] = useReducer(authReducer, initialState)
-    const client = useApolloClient()
+    const apollo = useApolloClient()
 
     const login = (userData) => {
         localStorage.setItem('token', userData.token)
-        localStorage.setItem('theme', userData.settings.preferredTheme)
+        localStorage.setItem('theme', userData.settings?.preferredTheme)
         dispatch({
             type: 'LOGIN',
             payload: userData,
@@ -54,7 +54,7 @@ function AuthProvider(props) {
     }
     const logout = () => {
         localStorage.clear()
-        client.clearStore()
+        apollo.clearStore()
         dispatch({
             type: 'LOGOUT',
         })

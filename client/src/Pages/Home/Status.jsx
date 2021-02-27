@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
+import { useQuery, gql } from '@apollo/client'
 
 import ElementContainer from '../../Components/General/ElementContainer'
 import Avatar from '../../Components/General/Avatar'
@@ -7,11 +8,33 @@ import Avatar from '../../Components/General/Avatar'
 import { AuthContext } from '../../Context/auth'
 import PostFormContainer from './PostForm/PostFormContainer'
 
+const GET_USER_INFO = gql`
+    query user($userId: ID!) {
+        user(userId: $userId) {
+            id
+            username
+            profileImage {
+                id
+                urls {
+                    small
+                    medium
+                }
+            }
+        }
+    }
+`
+
 export default function Status() {
     const {
-        user: { username },
+        user: { id },
     } = useContext(AuthContext)
-    const profileImage = localStorage.getItem('avatar')
+
+    const { data: { user: { profileImage, username } = {} } = {} } = useQuery(GET_USER_INFO, {
+        variables: {
+            userId: id,
+        },
+    })
+
     const [isFormOpen, toggleForm] = useState(false)
 
     const handleOnclick = () => {
@@ -22,7 +45,7 @@ export default function Status() {
         <>
             <ElementContainer>
                 <Container>
-                    <Avatar image={profileImage}></Avatar>
+                    <Avatar image={profileImage?.urls?.small}></Avatar>
                     <StatusInput type="text" onClick={handleOnclick} role="button">
                         O czym myślisz {username}?
                     </StatusInput>

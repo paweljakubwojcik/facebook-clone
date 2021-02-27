@@ -20,10 +20,7 @@ export const BASE_COMMENT_FRAGMENT = gql`
 
 export const GET_POSTS = gql`
     query posts($userId: ID, $limit: Int!, $cursor: ID) {
-        posts(
-            userId: $userId
-            paginationData: { limit: $limit, cursor: $cursor }
-        ) {
+        posts(userId: $userId, paginationData: { limit: $limit, cursor: $cursor }) {
             body
             title
             commentsCount
@@ -67,18 +64,8 @@ export const GET_POSTS = gql`
 
 // graphQL query
 export const ADD_POST = gql`
-    mutation createPost(
-        $body: String
-        $privacy: Privacy
-        $title: String
-        $images: [Upload]
-    ) {
-        createPost(
-            body: $body
-            privacy: $privacy
-            title: $title
-            images: $images
-        ) {
+    mutation createPost($body: String, $privacy: Privacy, $title: String, $images: [Upload]) {
+        createPost(body: $body, privacy: $privacy, title: $title, images: $images) {
             body
             title
             commentsCount
@@ -209,26 +196,34 @@ export const GET_USER = gql`
     }
 `
 
-export const LOGIN_USER = gql`
-    mutation login($username: String!, $password: String!) {
-        login(username: $username, password: $password) {
-            id
-            token
-            username
-            email
-            createdAt
-            settings {
-                preferredTheme
-            }
-            profileImage {
-                urls {
-                    id
-                    medium
-                    large
-                }
+const CONTEXT = gql`
+    fragment CONTEXT on User {
+        id
+        token
+        username
+        email
+        createdAt
+        settings {
+            preferredTheme
+        }
+        profileImage {
+            urls {
+                id
+                medium
+                large
             }
         }
     }
+`
+
+export const LOGIN_USER = gql`
+    mutation login($username: String!, $password: String!) {
+        login(username: $username, password: $password) {
+            ...CONTEXT
+        }
+    }
+
+    ${CONTEXT}
 `
 
 export const REGISTER_USER = gql`
@@ -246,20 +241,10 @@ export const REGISTER_USER = gql`
                 confirmPassword: $confirmPassword
             }
         ) {
-            id
-            token
-            username
-            email
-            createdAt
-            profileImage {
-                urls {
-                    id
-                    medium
-                    large
-                }
-            }
+            ...CONTEXT
         }
     }
+    ${CONTEXT}
 `
 
 export const LIKE_POST = gql`
