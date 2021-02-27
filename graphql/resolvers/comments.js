@@ -1,18 +1,18 @@
 const { AuthenticationError, UserInputError } = require('apollo-server')
-const Post = require('../../models/Post');
-const User = require('../../models/User');
+const Post = require('../../models/Post')
+const User = require('../../models/User')
 const checkAuth = require('../../utils/checkAuth')
 
 module.exports = {
     Mutation: {
         createComment: async (_, { postId, body }, context) => {
-            const { username, id } = checkAuth(context)
+            const { id } = checkAuth(context)
 
             if (body.trim() === '') {
                 throw new UserInputError('Empty comment', {
                     errors: {
-                        body: 'Coment body must not be empty'
-                    }
+                        body: 'Coment body must not be empty',
+                    },
                 })
             }
 
@@ -21,54 +21,63 @@ module.exports = {
             if (post) {
                 post.comments.unshift({
                     body,
-                    username,
                     createdAt: new Date().toISOString(),
-                    user: id
+                    timestamp: Date.now(),
+                    user: id,
                 })
-                await post.save()
-                return post
+                return await post.save()
             } else {
                 throw new UserInputError('Post not found')
             }
-
         },
         deleteComment: async (_, { commentId, postId }, context) => {
-            const { username } = checkAuth(context)
+            const { id } = checkAuth(context)
 
             const post = await Post.findById(postId)
 
             if (post) {
-                const commentIndex = post.comments.findIndex(c => c.id === commentId)
+                const commentIndex = post.comments.findIndex((c) => c.id === commentId)
 
-                if (post.comments[commentIndex].username === username) {
+                if (post.comments[commentIndex].user == id) {
                     post.comments.splice(commentIndex, 1)
-                    await post.save()
-                    return post
+
+                    return await post.save()
                 } else {
                     throw new AuthenticationError('Action not allowed')
                 }
             } else {
                 throw new UserInputError('Post not found', {
                     errors: {
-                        post: 'Post doesn\'t exist'
-                    }
+                        post: "Post doesn't exist",
+                    },
                 })
             }
         },
-        async likeComment(_, { postId, commentId }, context) {
-            const { username } = checkAuth(context)
+        //TODO: change to reaction
+        async reactToComment(_, { postId, commentId, type }, context) {
+            const { id } = checkAuth(context)
             try {
                 const post = await Post.findById(postId)
-                const comment = post.comments.find(comment => comment.id === commentId)
+                const comment = post.comments.find((comment) => comment.id === commentId)
                 const indexOfComment = post.comments.indexOf(comment)
-                if (comment.likes.find(like => like.username === username)) {
-                    comment.likes = comment.likes.filter(like => like.username !== username)
+                const reaction = comment.reactions.find((reaction) => reaction.user == id)
+
+                if (reaction) {
+                    comment.reactions = comment.reactions.filter((reaction) => reaction.user != id)
+                    if (reaction.type !== type)
+                        comment.reactions.push({
+                            type,
+                            user: id,
+                            createdAt: new Date().toISOString(),
+                        })
                 } else {
-                    comment.likes.push({
-                        username,
-                        createdAt: new Date().toISOString()
+                    comment.reactions.push({
+                        type,
+                        user: id,
+                        createdAt: new Date().toISOString(),
                     })
                 }
+
                 post.comments[indexOfComment] = comment
 
                 await post.save()
@@ -77,11 +86,10 @@ module.exports = {
                 throw new UserInputError(e)
             }
         },
-
     },
     Comment: {
         async user({ user }) {
             return await User.findById(user)
-        }
-    }
+        },
+    },
 }

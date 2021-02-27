@@ -77,20 +77,23 @@ module.exports = {
                     title,
                     privacy,
                     user: user.id,
-                    username: user.username,
                     createdAt: new Date().toISOString(),
-                    likes: [],
+                    timestamp: Date.now(),
+                    reactions: [],
                     comments: [],
+                    images: [],
                     isDeletable: true,
                 })
 
                 const post = await newPost.save()
-                
+
                 const savedImages = await Promise.all(
                     images.map((img) => savePictureToDB(img, user, { post }))
                 )
 
-                return post
+                post.images = savedImages
+
+                return await post.save()
             } catch (e) {
                 throw e
             }
@@ -100,7 +103,7 @@ module.exports = {
             const user = checkAuth(context)
             try {
                 const post = await Post.findById(postId)
-                if (user.username === post.username) {
+                if (user.id === post.user.toString()) {
                     const images = await Image.find({ post: postId })
                     await Promise.all(
                         Array.from(images).map(({ filename }) => deletePicture(filename))
@@ -117,32 +120,38 @@ module.exports = {
             }
         },
 
-        async likePost(_, { postId }, context) {
-            const { username, id } = checkAuth(context)
+        async reactToPost(_, { postId, type }, context) {
             try {
+                const { id } = checkAuth(context)
                 const post = await Post.findById(postId)
-                if (post.likes.find((like) => like.username === username)) {
-                    // Post already liked
-                    post.likes = post.likes.filter((like) => like.username !== username)
-                } else {
-                    post.likes.push({
-                        username,
+                const addReaction = () => {
+                    post.reactions.push({
+                        type,
                         createdAt: new Date().toISOString(),
+                        timestamp: Date.now(),
+                        user: id,
                     })
                 }
-                await post.save()
-                return post
+                const reaction = post.reactions.find((like) => like.user == id)
+                if (reaction) {
+                    // Post already liked
+                    post.reactions = post.reactions.filter((like) => like.user != id)
+                    if (reaction.type !== type) addReaction()
+                } else {
+                    addReaction()
+                }
+
+                return await post.save()
             } catch (e) {
                 throw new UserInputError(e)
             }
         },
 
         async editPost(_, { postId, field, newValue }, context) {
-            const { username } = checkAuth(context)
+            const { id } = checkAuth(context)
             try {
                 const post = await Post.findById(postId)
-
-                if (post.username === username) {
+                if (post.user.toString() === id) {
                     post[field] = newValue
                     return await post.save()
                 } else throw AuthenticationError('User is not owner of the post')
@@ -157,6 +166,11 @@ module.exports = {
         },
         async images({ id, images }) {
             return images.length ? images : await Image.find({ post: id })
+        },
+    },
+    Reaction: {
+        async user({ user }) {
+            return await User.findById(user)
         },
     },
 }

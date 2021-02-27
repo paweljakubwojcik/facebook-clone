@@ -24,7 +24,7 @@ const sizes = {
  * and returns name of file as on the storage, and object containing public urls to all sizes
  * 
  * @param {Promise<File>} image - an object of type Upload (Apollo Graphql schema)
- * @returns {{urls: {large: String, medium:String, small: String, thumbnail:String}, filename: String}} data
+ * @returns {Promise<{urls: {large: String, medium:String, small: String, thumbnail:String}, filename: String}>} data
  */
 module.exports.uploadPicture = async function uploadPicture(image) {
     const { createReadStream, filename: name, mimetype, encoding } = await image

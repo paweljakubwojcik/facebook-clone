@@ -250,8 +250,8 @@ module.exports = {
     },
     Query: {
         users: async (_, { offset, limit }, context) => {
-            const { id } = checkAuth(context)
             try {
+                const { id } = checkAuth(context)
                 const user = await User.findById(id)
                 const users = await User.find({ _id: user.friends }, null, {
                     skip: offset,

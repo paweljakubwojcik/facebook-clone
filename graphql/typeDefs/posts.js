@@ -15,8 +15,8 @@ module.exports = gql`
         createComment(postId: ID!, body: String!): Post!
         deleteComment(postId: ID!, commentId: ID!): Post!
 
-        likePost(postId: ID!): Post!
-        likeComment(postId: ID!, commentId: ID!): Post!
+        reactToPost(postId: ID!, type: ReactionType!): Post!
+        reactToComment(postId: ID!, commentId: ID!, type: ReactionType!): Post!
     }
 
     type Post {
@@ -25,12 +25,11 @@ module.exports = gql`
         title: String
         createdAt: String!
         timestamp: Int!
-        username: String!
         user: User!
         comments(paginationData: CursorBasedPagination): [Comment]!
-        likes: [Like]!
+        reactions: [Reaction]!
         commentsCount: Int!
-        likesCount: Int!
+        reactionsCount: Int!
         privacy: Privacy
         isDeletable: Boolean
         images: [Image]
@@ -40,18 +39,27 @@ module.exports = gql`
         id: ID!
         createdAt: String!
         timestamp: Int!
-        username: String!
         user: User!
         body: String!
-        likes: [Like]!
-        likesCount: Int!
+        reactions: [Reaction]!
+        reactionsCount: Int!
     }
 
-    type Like {
+    enum ReactionType {
+        LIKE
+        LOVE
+        CARE
+        HAHA
+        WOW
+        SAD
+        ANGRY
+    }
+
+    type Reaction {
         id: ID!
         createdAt: String!
         timestamp: Int!
-        username: String!
         user: User!
+        type: ReactionType
     }
 `

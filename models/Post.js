@@ -1,44 +1,47 @@
 const { model, Schema } = require('mongoose')
 
+const reaction = {
+    createdAt: String,
+    timestamp: Number,
+    type: String,
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+    },
+}
+
 const postSchema = new Schema({
     body: String,
     title: String,
-    username: String,
     createdAt: String,
+    timestamp: Number,
     privacy: String,
     isDeletable: Boolean,
     isEdited: Boolean,
     comments: [
         {
             body: String,
-            username: String,
             createdAt: String,
-            user: String,
-            likes: [
-                {
-                    username: String,
-                    createdAt: String
-                }
-            ],
-        }
+            timestamp: Number,
+            isEdited: Boolean,
+            user: {
+                type: Schema.Types.ObjectId,
+                ref: 'users',
+            },
+            reactions: [reaction],
+        },
     ],
-    likes: [
-        {
-            username: String,
-            createdAt: String
-        }
-    ],
+    reactions: [reaction],
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'users',
     },
     images: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'images'
-        }
-    ]
-
+            ref: 'images',
+        },
+    ],
 })
 
 module.exports = model('Post', postSchema)

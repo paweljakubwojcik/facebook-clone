@@ -7,16 +7,21 @@ const notificationsResolvers = require('./notifications')
 module.exports = {
     Post: {
         commentsCount: (parent) => parent.comments.length,
-        likesCount: (parent) => parent.likes.length,
-        ...postsResorvels.Post
+        reactionsCount: (parent) => parent.reactions.length,
+        ...postsResorvels.Post,
+    },
+    Reaction: {
+        ...postsResorvels.Reaction,
     },
     Comment: {
-        likesCount: (parent) => parent.likes.length,
-        ...commentsResorvels.Comment
+        reactionsCount: (parent) => parent.reactions.length,
+        ...commentsResorvels.Comment,
     },
     User: {
         ...usersResorvels.User,
-        notificationCount: (parent) => parent.notifications.filter(n => !n.isSeen).length + parent.invitations.filter(n => !n.isSeen).length,
+        notificationCount: (parent) =>
+            parent.notifications.filter((n) => !n.isSeen).length +
+            parent.invitations.filter((n) => !n.isSeen).length,
     },
     Invitation: {
         ...usersResorvels.Invitation,
@@ -26,20 +31,20 @@ module.exports = {
     },
     Image: {
         ...imagesResolvers.Image,
-        ...imagesResolvers.Urls
+        ...imagesResolvers.Urls,
     },
     Query: {
         ...postsResorvels.Query,
         ...commentsResorvels.Query,
         ...usersResorvels.Query,
         ...imagesResolvers.Query,
-        ...notificationsResolvers.Query
+        ...notificationsResolvers.Query,
     },
     Mutation: {
         ...usersResorvels.Mutation,
         ...postsResorvels.Mutation,
         ...commentsResorvels.Mutation,
         ...imagesResolvers.Mutation,
-        ...notificationsResolvers.Mutation
-    }
+        ...notificationsResolvers.Mutation,
+    },
 }
