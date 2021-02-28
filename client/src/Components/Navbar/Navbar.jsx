@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import PropsTypes from 'prop-types'
 import { Link, useLocation } from 'react-router-dom'
 import { useLazyQuery } from '@apollo/client'
-import { GET_USER } from '../../Util/GraphQL_Queries'
+import { GET_USER_PIC } from '../../Util/GraphQL_Queries'
 
 import styled from 'styled-components'
 
@@ -18,7 +18,7 @@ export default function Navbar() {
     const { user } = useContext(AuthContext)
     const location = useLocation()
 
-    const [getUser, { data: { user: userData } = {} }] = useLazyQuery(GET_USER, {
+    const [getUser, { data: { user: userData } = {} }] = useLazyQuery(GET_USER_PIC, {
         variables: {
             userId: user?.id,
         },

@@ -1,14 +1,13 @@
-const Unsplash = require('unsplash-js').default;
-const toJson = require('unsplash-js').toJson;
-const fetch = require('node-fetch');
-global.fetch = fetch;
+const Unsplash = require('unsplash-js').default
+const toJson = require('unsplash-js').toJson
+const fetch = require('node-fetch')
+global.fetch = fetch
 const APP_ACCESS_KEY = require('../config.js').UNSPLASH_APP_KEY
 
-const Image = require('../models/Image');
+const Image = require('../models/Image')
 const Post = require('../models/Post')
 
-const unsplash = new Unsplash({ accessKey: APP_ACCESS_KEY });
-
+const unsplash = new Unsplash({ accessKey: APP_ACCESS_KEY })
 
 /**
  *
@@ -18,25 +17,24 @@ const unsplash = new Unsplash({ accessKey: APP_ACCESS_KEY });
  */
 
 module.exports.generateRandomPhoto = async (type, owner, postId) => {
-
-
     let data
     switch (type) {
         case 'background':
             data = await unsplash.photos.getRandomPhoto({ orientation: 'landscape' })
-            break;
+            break
         case 'avatar':
             data = await unsplash.photos.getRandomPhoto({ query: 'person' })
-            break;
+            break
         default:
             data = await unsplash.photos.getRandomPhoto()
-            break;
+            break
     }
 
     const picture = await toJson(data)
 
     const newImage = new Image({
         urls: {
+            thumbnail: picture.urls.thumb,
             small: picture.urls.thumb,
             medium: picture.urls.small,
             large: picture.urls.regular,

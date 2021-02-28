@@ -1,16 +1,15 @@
-import React from 'react';
+import React from 'react'
 
-import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
-import { offsetLimitPagination, relayStylePagination } from "@apollo/client/utilities"
-import { setContext } from "@apollo/client/link/context";
-import { createUploadLink } from 'apollo-upload-client';
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client'
+import { offsetLimitPagination, relayStylePagination } from '@apollo/client/utilities'
+import { setContext } from '@apollo/client/link/context'
+import { createUploadLink } from 'apollo-upload-client'
 
 import dayjs from 'dayjs'
 
-
 const httpLink = createUploadLink({
     uri: 'http://localhost:5000/graphql',
-});
+})
 
 const cache = new InMemoryCache({
     typePolicies: {
@@ -18,20 +17,20 @@ const cache = new InMemoryCache({
             merge: true,
         },
         Post: {
-            merge: true
+            merge: true,
         },
         Query: {
             fields: {
                 posts: {
-                    keyArgs: ["userId"],
+                    keyArgs: ['userId'],
 
                     merge(existing, incoming, { readField }) {
-                        const merged = { ...existing };
-                        incoming.forEach(item => {
-                            merged[readField("id", item)] = item;
-                        });
+                        const merged = { ...existing }
+                        incoming.forEach((item) => {
+                            merged[readField('id', item)] = item
+                        })
 
-                        return merged;
+                        return merged
                     },
 
                     // Return all items stored so far, to avoid ambiguities
@@ -39,45 +38,45 @@ const cache = new InMemoryCache({
                     read(existing, { readField }) {
                         if (existing) {
                             let sorted = Object.values(existing)
-                            sorted.sort((b, a) => { return dayjs(readField('createdAt', a)).unix() - dayjs(readField('createdAt', b)).unix() })
+                            sorted.sort((b, a) => {
+                                return (
+                                    dayjs(readField('createdAt', a)).unix() -
+                                    dayjs(readField('createdAt', b)).unix()
+                                )
+                            })
                             console.log({ existing, sorted })
                             return sorted
                         }
                         return false
-                    }
+                    },
                 },
 
-                users: offsetLimitPagination()
-            }
+                users: offsetLimitPagination(),
+            },
         },
         User: {
             merge: true,
             fields: {
-                notifications: offsetLimitPagination()
-            }
-        }
-    }
+                notifications: offsetLimitPagination(),
+            },
+        },
+    },
 })
 
 const setAuthorizationLink = setContext(() => {
     const token = localStorage.getItem('token')
     return {
         headers: {
-            authorization: token ? `Bearer ${token}` : ''
-        }
+            authorization: token ? `Bearer ${token}` : '',
+        },
     }
 })
 
 const client = new ApolloClient({
     link: setAuthorizationLink.concat(httpLink),
     cache,
-});
-
+})
 
 export default function Apollo(props) {
-    return (
-        <ApolloProvider client={client}>
-            {props.children}
-        </ApolloProvider>
-    );
+    return <ApolloProvider client={client}>{props.children}</ApolloProvider>
 }

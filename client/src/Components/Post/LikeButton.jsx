@@ -11,15 +11,15 @@ import { LIKE_POST } from '../../Util/GraphQL_Queries'
 export default function LikeButton({ postData }) {
     const { user } = useContext(AuthContext)
     const [liked, setLiked] = useState(false)
-    const { id, likes } = postData
+    const { id, reactions } = postData
 
     useEffect(() => {
-        if (user && likes.find(like => like.username === user.username))
+        if (user && reactions.find(like => like.user.id === user.id))
             setLiked(true)
         else
             setLiked(false)
 
-    }, [likes, user])
+    }, [reactions, user])
 
     const [likePost, { loading }] = useMutation(LIKE_POST, {
         variables: { postId: id },

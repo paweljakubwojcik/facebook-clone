@@ -109,7 +109,7 @@ module.exports = {
                 notifications: [],
                 invitations: [],
                 settings: {
-                    prefferedTheme: null,
+                    preferredTheme: null,
                     postDefaultPrivacy: 'PUBLIC',
                 },
                 info: {
@@ -120,7 +120,6 @@ module.exports = {
                     location: null,
                     job: null,
                 },
-                lastTimeOnline: new Date().toISOString(),
             })
             //saving user in DB
             const { _id } = await newUser.save()
@@ -135,12 +134,12 @@ module.exports = {
             const newPost = new Post({
                 user: _id,
                 privacy: 'PRIVATE',
-                username,
                 body: randomTexts[Math.floor(Math.random() * randomTexts.length)],
                 createdAt: new Date().toISOString(),
                 likes: [],
                 comments: [],
-                isDeletable: false,
+                images: [],
+                isDeletable: true,
             })
 
             const { _id: postId } = await newPost.save()
@@ -151,6 +150,8 @@ module.exports = {
 
             newUser.backgroundImage = backgroundImage
             newUser.profileImage = profileImage
+            newPost.images = [backgroundImage._id, profileImage._id]
+            await newPost.save()
 
             //saving user in DB
             const res = await newUser.save()
@@ -253,7 +254,7 @@ module.exports = {
             try {
                 const { id } = checkAuth(context)
                 const user = await User.findById(id)
-                const users = await User.find({ _id: user.friends }, null, {
+                const users = await User.find({}, null, {
                     skip: offset,
                     limit: limit,
                 }) // gets only users that are friends

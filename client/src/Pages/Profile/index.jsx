@@ -29,6 +29,12 @@ export default function Profile() {
 
     const { data: { user } = {}, loading, error } = useQuery(GET_USER, {
         variables: { userId: id },
+        onCompleted: (data) => {
+            console.log(data)
+        },
+        onError: (e) => {
+            console.log(e)
+        },
     })
 
     const [contentType, setContentType] = useState('posts')
@@ -44,7 +50,6 @@ export default function Profile() {
             })
         }
     }, [user, isMobileDevice])
-    console.log('render')
 
     return (
         <UserMatchContext.Provider value={isViewerTheOwner}>

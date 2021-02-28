@@ -46,3 +46,14 @@ export const MARK_SEEN = gql`
         }
     }
 `
+
+export const GET_USER_NOTIFICATIONS = gql`
+    query user($userId: ID!) {
+        user(userId: $userId) {
+            id
+            notifications {
+                id
+            }
+        }
+    }
+`

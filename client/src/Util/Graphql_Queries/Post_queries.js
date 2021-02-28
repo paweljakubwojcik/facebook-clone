@@ -13,6 +13,7 @@ export const BASE_COMMENT_FRAGMENT = gql`
         reactions {
             id
             user {
+                id
                 username
             }
         }
@@ -22,10 +23,10 @@ export const BASE_COMMENT_FRAGMENT = gql`
 export const GET_POSTS = gql`
     query posts($userId: ID, $limit: Int!, $cursor: ID) {
         posts(userId: $userId, paginationData: { limit: $limit, cursor: $cursor }) {
+            id
             body
             title
             commentsCount
-            id
             createdAt
             reactionsCount
             privacy
@@ -38,6 +39,7 @@ export const GET_POSTS = gql`
                         id
                         thumbnail
                         small
+                        large
                     }
                 }
             }
@@ -58,6 +60,7 @@ export const GET_POSTS = gql`
                     id
                     small
                     medium
+                    large
                 }
             }
         }

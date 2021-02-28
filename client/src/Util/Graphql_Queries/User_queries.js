@@ -36,7 +36,6 @@ export const GET_USER = gql`
                     large
                 }
             }
-
             info {
                 joiningDate
                 birthDate
@@ -54,6 +53,7 @@ export const GET_USER = gql`
                     id
                     small
                     medium
+                    large
                 }
             }
             friends {

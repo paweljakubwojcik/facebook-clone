@@ -28,9 +28,9 @@ export default function PostContent({ post, noImages }) {
         privacy,
         commentsCount,
         id,
-        likesCount,
+        reactionsCount,
         comments,
-        likes,
+        reactions,
         isDeletable,
         user: { id: userId, username, profileImage },
         images,
@@ -76,7 +76,7 @@ export default function PostContent({ post, noImages }) {
             )}
 
             <PostCardCounters>
-                <LikesCounter likesCount={likesCount} likes={likes} />
+                <LikesCounter reactionsCount={reactionsCount} reactions={reactions} />
                 <GenericButton className="counter" onClick={() => setCommentsVisibility(!commentsVisible)}>
                     {commentsCount} {`Comment${commentsCount !== 1 ? 's' : ''}`}
                 </GenericButton>
@@ -84,7 +84,7 @@ export default function PostContent({ post, noImages }) {
 
             {context.user && (
                 <PostCardButtonsContainer>
-                    <LikeButton postData={{ id, likes }} />
+                    <LikeButton postData={{ id, reactions }} />
                     <SquareButton onClick={engageComment}>
                         <FontAwesomeIcon className="icon" icon={faComment} />
                         Comment

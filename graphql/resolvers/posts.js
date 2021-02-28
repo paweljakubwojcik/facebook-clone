@@ -165,7 +165,8 @@ module.exports = {
             return await User.findById(user)
         },
         async images({ id, images }) {
-            return images.length ? images : await Image.find({ post: id })
+            if (images.length) return await Promise.all(images.map((img) => Image.findById(img)))
+            return await Image.find({ post: id })
         },
     },
     Reaction: {

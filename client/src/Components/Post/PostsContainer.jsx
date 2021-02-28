@@ -25,6 +25,9 @@ export default function Posts({ userId }) {
             userId,
             limit: 6,
         },
+        onCompleted: (data) => {
+            console.log(data)
+        },
     })
     const isPostsEmpty = posts?.length === 0
 
@@ -39,9 +42,9 @@ export default function Posts({ userId }) {
         })
     }
 
-    useEffect(() => {
+    /* useEffect(() => {
         refetch()
-    }, [])
+    }, []) */
 
     return (
         <PostsContainer>

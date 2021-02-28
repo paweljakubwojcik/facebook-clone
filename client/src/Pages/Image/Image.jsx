@@ -15,7 +15,15 @@ export default function Image({ setPostId }) {
         variables: {
             imageId: id,
         },
+        onCompleted: (data) => {
+            console.log(data)
+        },
+        onError: (e)=>{
+            console.log(e)
+        }
     })
+
+    console.log(loading)
 
     const allImages = image ? image.post.images.map((image) => image.id) : null
 
@@ -32,7 +40,9 @@ export default function Image({ setPostId }) {
                 </>
             )}
             {loading && <ImageLoader />}
-            {((!image && !loading) || error) && <ImageLoader> Can't find this picture </ImageLoader>}
+            {((!image && !loading) || error) && (
+                <ImageLoader> Can't find this picture </ImageLoader>
+            )}
         </ImageContainer>
     )
 }

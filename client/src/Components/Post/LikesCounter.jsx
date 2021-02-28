@@ -8,7 +8,7 @@ import PopUpList from './PopUpList'
 
 // TODO: ograniczyć wyświetlanie gdy likeów jest bardzo dużo
 
-export default function LikesCounter({ likesCount, likes, ...rest }) {
+export default function LikesCounter({ reactionsCount, reactions, ...rest }) {
 
     const [isHovered, setHover] = useState(false)
 
@@ -20,15 +20,15 @@ export default function LikesCounter({ likesCount, likes, ...rest }) {
         setHover(false)
     }
 
-    const areThereAnyLikes = likesCount !== 0;
+    const areThereAnyLikes = reactionsCount !== 0;
     const isVisible = isHovered && areThereAnyLikes;
 
     return (
         <CounterLikes {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} blue={areThereAnyLikes}>
             <FontAwesomeIcon className="icon" icon={faThumbsUp} />
-            {likesCount}
+            {reactionsCount}
             <PopUpElement isVisible={isVisible} showRight>
-                <PopUpList list={likes}></PopUpList>
+                <PopUpList list={reactions}></PopUpList>
             </PopUpElement>
         </CounterLikes>
     )
