@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client'
 
-
 export const GET_USERS = gql`
     query user($limit: Int!, $offset: Int!) {
         users(limit: $limit, offset: $offset) {
@@ -55,7 +54,6 @@ export const GET_USER = gql`
                     id
                     small
                     medium
-                    large
                 }
             }
             friends {
@@ -69,14 +67,42 @@ export const GET_USER = gql`
                     }
                 }
             }
-            invitations {
-                from {
+        }
+    }
+`
+
+export const GET_USER_PIC = gql`
+    query user($userId: ID!) {
+        user(userId: $userId) {
+            id
+            username
+            profileImage {
+                urls {
                     id
-                    username
+                    small
+                    medium
                 }
-                id
             }
-            notificationCount
+        }
+    }
+`
+
+const CONTEXT = gql`
+    fragment CONTEXT on User {
+        id
+        token
+        username
+        email
+        createdAt
+        settings {
+            preferredTheme
+        }
+        profileImage {
+            urls {
+                id
+                medium
+                large
+            }
         }
     }
 `
@@ -84,33 +110,51 @@ export const GET_USER = gql`
 export const LOGIN_USER = gql`
     mutation login($username: String!, $password: String!) {
         login(username: $username, password: $password) {
-            id
-            token
-            username
-            email
-            createdAt
-            settings {
-                preferredTheme
+            ...CONTEXT
+        }
+    }
+
+    ${CONTEXT}
+`
+
+export const REGISTER_USER = gql`
+    mutation register(
+        $username: String!
+        $email: String!
+        $password: String!
+        $confirmPassword: String!
+    ) {
+        register(
+            registerInput: {
+                username: $username
+                email: $email
+                password: $password
+                confirmPassword: $confirmPassword
             }
-            profileImage {
+        ) {
+            ...CONTEXT
+        }
+    }
+    ${CONTEXT}
+`
+export const UPDATE_USER = gql`
+    mutation updateUser($field: String!, $newValue: String!) {
+        updateUser(field: $field, newValue: $newValue) {
+            id
+            email
+            username
+            backgroundImage {
+                id
+                post {
+                    id
+                }
                 urls {
                     id
+                    small
                     medium
                     large
                 }
             }
-        }
-    }
-`
-
-export const REGISTER_USER = gql`
-    mutation register($username: String!, $email: String!, $password: String!, $confirmPassword: String!) {
-        register(registerInput: { username: $username, email: $email, password: $password, confirmPassword: $confirmPassword }) {
-            id
-            token
-            username
-            email
-            createdAt
             profileImage {
                 urls {
                     id
