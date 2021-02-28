@@ -1,39 +1,14 @@
 import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
-import { useQuery, gql } from '@apollo/client'
 
 import ElementContainer from '../../Components/General/ElementContainer'
 import Avatar from '../../Components/General/Avatar'
 
-import { AuthContext } from '../../Context/auth'
+import { CurrentUserContext } from '../../Context/currentUserContext'
 import PostFormContainer from './PostForm/PostFormContainer'
 
-const GET_USER_INFO = gql`
-    query user($userId: ID!) {
-        user(userId: $userId) {
-            id
-            username
-            profileImage {
-                id
-                urls {
-                    small
-                    medium
-                }
-            }
-        }
-    }
-`
-
 export default function Status() {
-    const {
-        user: { id },
-    } = useContext(AuthContext)
-
-    const { data: { user: { profileImage, username } = {} } = {} } = useQuery(GET_USER_INFO, {
-        variables: {
-            userId: id,
-        },
-    })
+    const { username, profileImage } = useContext(CurrentUserContext)
 
     const [isFormOpen, toggleForm] = useState(false)
 

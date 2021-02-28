@@ -1,8 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import PropsTypes from 'prop-types'
 import { Link, useLocation } from 'react-router-dom'
-import { useLazyQuery } from '@apollo/client'
-import { GET_USER_PIC } from '../../Util/GraphQL_Queries'
+
 
 import styled from 'styled-components'
 
@@ -12,21 +11,11 @@ import { ReactComponent as Logo } from '../../styles/svg/logo.svg'
 
 import Menu from './Menu'
 
-import { AuthContext } from '../../Context/auth'
+import { CurrentUserContext } from '../../Context/currentUserContext'
 
 export default function Navbar() {
-    const { user } = useContext(AuthContext)
     const location = useLocation()
-
-    const [getUser, { data: { user: userData } = {} }] = useLazyQuery(GET_USER_PIC, {
-        variables: {
-            userId: user?.id,
-        },
-    })
-
-    useEffect(() => {
-        if (user) getUser()
-    }, [user, getUser])
+    const user = useContext(CurrentUserContext)
 
     //navbar shouldn't be rendered on login page
     const shouldRender = location.pathname !== '/' || !!user
@@ -56,18 +45,10 @@ export default function Navbar() {
                 {user ? (
                     <>
                         <MediaQuery width={740}>
-                            {userData && (
-                                <UserButton
-                                    user={userData}
-                                    notLink
-                                    as={Link}
-                                    to={`/profile/${user.id}`}
-                                />
-                            )}
+                            <UserButton user={user} notLink as={Link} to={`/profile/${user.id}`} />
                         </MediaQuery>
-                        <Menu
-                            counters={{ messages: 0, notifications: userData?.notificationCount }}
-                        />
+                        {/* TODO: fetch for notifications count */}
+                        <Menu counters={{ messages: 0, notifications: user?.notificationCount }} />
                     </>
                 ) : (
                     loggingButtons

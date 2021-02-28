@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { useMutation, gql } from '@apollo/client'
 import PropsTypes from 'prop-types'
@@ -11,35 +11,31 @@ import { BASE_COMMENT_FRAGMENT } from '../../../Util/GraphQL_Queries'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import useResizableInput from '../../../Util/Hooks/useResizableInput'
-
+import { CurrentUserContext } from '../../../Context/currentUserContext'
 
 export default function CommentForm({ props: { postId, inputFocus, setFocus } }) {
-    const avatarImage = localStorage.getItem('avatar')
-
+    const { profileImage } = useContext(CurrentUserContext)
     const [body, setBody] = useState('')
 
     const [createComment, { error }] = useMutation(ADD_COMMENT, {
         variables: {
             body,
-            postId
+            postId,
         },
         update(proxy, { data }) {
-            console.log(data)
             setBody('')
             resizableInput.current.value = ''
         },
         onError(e) {
             //TODO: handle this error on the front
             throw e
-
-        }
+        },
     })
 
     const resizableInput = useResizableInput()
 
     useEffect(() => {
-        if (inputFocus)
-            resizableInput.current.focus()
+        if (inputFocus) resizableInput.current.focus()
     }, [inputFocus])
 
     const onSubmit = async (e) => {
@@ -49,7 +45,6 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
         } catch (error) {
             console.log(error)
         }
-
     }
 
     const onChange = (e) => {
@@ -59,15 +54,15 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
     return (
         <>
             <Form onSubmit={onSubmit}>
-                <Avatar image={avatarImage} />
+                <Avatar image={profileImage.urls.thumbnail} />
                 <CommentInput
                     ref={resizableInput}
-                    name='body'
+                    name="body"
                     rows="1"
                     onChange={onChange}
                     onBlur={() => setFocus(false)}
                 />
-                <SquareButton className='sendComment'>
+                <SquareButton className="sendComment">
                     <FontAwesomeIcon icon={faPaperPlane} />
                 </SquareButton>
             </Form>
@@ -81,7 +76,7 @@ CommentForm.propTypes = {
         postId: PropsTypes.string.isRequired,
         inputFocus: PropsTypes.bool.isRequired,
         setFocus: PropsTypes.func.isRequired,
-    })
+    }),
 }
 
 /*
@@ -95,58 +90,52 @@ using GraphQL Fragments,
 in other words making sure that apollo doesnt need to refetch missing fields 
 */
 const ADD_COMMENT = gql`
-    mutation createComment( $body:String!, $postId:ID! ){
-        createComment( body:$body , postId:$postId){
+    mutation createComment($body: String!, $postId: ID!) {
+        createComment(body: $body, postId: $postId) {
             id
             username
             comments {
-               ...BaseComment
+                ...BaseComment
             }
-           
         }
     }
     ${BASE_COMMENT_FRAGMENT}
 `
 
-
 const Form = styled.form`
-    display:flex;
-    margin:1em 0;
-    align-items:flex-start;
-    position:relative;
-    .sendComment{
-        
-        margin-top:auto;
-        right:2em;
+    display: flex;
+    margin: 1em 0;
+    align-items: flex-start;
+    position: relative;
+    .sendComment {
+        margin-top: auto;
+        right: 2em;
     }
 `
 
 const CommentInput = styled.textarea`
-    flex:1;
-    margin: 0 .5em;
-    border-radius:1em;
-    padding:.5em 1em;
-    box-shadow:none;
-    height:2em;
-    border:none;
-    font-family:inherit;
-    background-color:${props => props.theme.secondaryElementColor};
-    color:${props => props.theme.primaryFontColor};
+    flex: 1;
+    margin: 0 0.5em;
+    border-radius: 1em;
+    padding: 0.5em 1em;
+    box-shadow: none;
+    height: 2em;
+    border: none;
+    font-family: inherit;
+    background-color: ${(props) => props.theme.secondaryElementColor};
+    color: ${(props) => props.theme.primaryFontColor};
     resize: none;
-    filter:opacity(.8);
-    transition: background-color .3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter .3s;
-    &:focus{
-        filter:opacity(1);
-        
+    filter: opacity(0.8);
+    transition: background-color 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s;
+    &:focus {
+        filter: opacity(1);
     }
-    &:hover{
-        background-color:${props => props.theme.secondaryElementHover};
-        filter:opacity(1);
-        cursor:pointer;
+    &:hover {
+        background-color: ${(props) => props.theme.secondaryElementHover};
+        filter: opacity(1);
+        cursor: pointer;
     }
-    &:focus:hover{
-        cursor:text;
+    &:focus:hover {
+        cursor: text;
     }
-
-
 `

@@ -12,14 +12,14 @@ import LikesCounter from '../LikesCounter'
 
 export default function Comment({ comment, postId }) {
     const context = useContext(AuthContext)
-    const { id: userId, username } = comment.user
+    const { id: userId, username, profileImage } = comment.user
 
     //because getting all info about user straight in posts query qoused some problems
-    const { data: { user: { profileImage } = {} } = {} } = useQuery(GET_USER_PIC, {
+    /* const { data: { user: { profileImage } = {} } = {} } = useQuery(GET_USER_PIC, {
         variables: {
             userId,
         },
-    })
+    }) */
 
     const [deleteComment] = useMutation(DELETE_COMMENT, {
         variables: {

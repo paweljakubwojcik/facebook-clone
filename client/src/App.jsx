@@ -4,7 +4,7 @@ import { LastLocationProvider } from 'react-router-last-location'
 
 import { AuthContext } from './Context/auth'
 import { ThemesProvider } from './Context/theme'
-import { FirebaseProvider } from './Firebase/FirebaseContext'
+import { CurrentUserProvider } from './Context/currentUserContext'
 import { GlobalStyles } from './styles/global_styles'
 
 import Home from './Pages/Home'
@@ -17,9 +17,8 @@ export default function App() {
     //checks if user is logged in
     const { user } = useContext(AuthContext)
 
-    console.log(user)
     return (
-        <FirebaseProvider>
+        <CurrentUserProvider>
             <ThemesProvider>
                 <GlobalStyles />
                 <Router>
@@ -43,6 +42,6 @@ export default function App() {
                     </LastLocationProvider>
                 </Router>
             </ThemesProvider>
-        </FirebaseProvider>
+        </CurrentUserProvider>
     )
 }

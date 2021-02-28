@@ -9,6 +9,13 @@ export const BASE_COMMENT_FRAGMENT = gql`
         user {
             username
             id
+            profileImage{
+                id
+                urls{
+                    id
+                    thumbnail
+                }
+            }
         }
         reactions {
             id

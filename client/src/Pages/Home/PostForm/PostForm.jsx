@@ -1,6 +1,5 @@
-import React, { useContext, useRef, useEffect } from 'react'
+import React, { useContext, useRef } from 'react'
 import styled from 'styled-components'
-import { AuthContext } from '../../../Context/auth'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
@@ -12,13 +11,10 @@ import ImagePreview from './ImagePreview'
 import ImagesContainer from '../../../Components/Post/ImagesContainer'
 import Form from '../../../Components/General/Form'
 import FileInput from './FileInput'
+import { CurrentUserContext } from '../../../Context/currentUserContext'
 
 export default function PostForm({ setActive, values, removeValue, loading, errors }) {
-    const {
-        user: { username },
-    } = useContext(AuthContext)
-
-    const avatar = localStorage.getItem('avatar')
+    const { username, profileImage } = useContext(CurrentUserContext)
 
     const removeImage = (image) => {
         removeValue({ images: image })
@@ -35,8 +31,8 @@ export default function PostForm({ setActive, values, removeValue, loading, erro
 
     return (
         <Form.FlexContainer>
-            <Form.UserInfo >
-                <Avatar image={avatar} />
+            <Form.UserInfo>
+                <Avatar image={profileImage.urls.thumbnail} />
                 <PrivacyContainer>
                     <h3>{username}</h3>
                     <SelectInputContainer>

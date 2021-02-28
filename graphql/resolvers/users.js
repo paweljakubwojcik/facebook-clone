@@ -280,6 +280,7 @@ module.exports = {
     },
     User: {
         profileImage: async ({ profileImage }) => {
+            console.log('fetch')
             return await Image.findById(profileImage)
         },
         backgroundImage: async ({ backgroundImage }) => {

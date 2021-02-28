@@ -6,6 +6,7 @@ export const GET_USERS = gql`
             id
             username
             profileImage {
+                id
                 urls {
                     id
                     medium
@@ -15,6 +16,26 @@ export const GET_USERS = gql`
         }
     }
 `
+
+export const GET_CURRENT_USER = gql`
+    query user($userId: ID!) {
+        user(userId: $userId) {
+            id
+            username
+            email
+            profileImage {
+                id
+                urls {
+                    id
+                    thumbnail
+                    small
+                }
+            }
+            notificationCount
+        }
+    }
+`
+
 export const GET_USER = gql`
     query user($userId: ID!) {
         user(userId: $userId) {
@@ -65,22 +86,6 @@ export const GET_USER = gql`
                         medium
                         small
                     }
-                }
-            }
-        }
-    }
-`
-
-export const GET_USER_PIC = gql`
-    query user($userId: ID!) {
-        user(userId: $userId) {
-            id
-            username
-            profileImage {
-                urls {
-                    id
-                    small
-                    medium
                 }
             }
         }
