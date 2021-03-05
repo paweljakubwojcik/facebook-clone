@@ -3,15 +3,19 @@ const usersResorvels = require('./users')
 const commentsResorvels = require('./comments')
 const imagesResolvers = require('./images')
 const notificationsResolvers = require('./notifications')
+const entitiesResolvers = require('./entities')
 
 module.exports = {
+    Entity: {
+        ...entitiesResolvers.Entity,
+    },
     Post: {
         commentsCount: (parent) => parent.comments.length,
         reactionsCount: (parent) => parent.reactions.length,
         ...postsResorvels.Post,
     },
     Reaction: {
-        ...postsResorvels.Reaction,
+        ...entitiesResolvers.Reaction,
     },
     Comment: {
         reactionsCount: (parent) => parent.reactions.length,
@@ -39,6 +43,7 @@ module.exports = {
         ...usersResorvels.Query,
         ...imagesResolvers.Query,
         ...notificationsResolvers.Query,
+        ...entitiesResolvers.Query,
     },
     Mutation: {
         ...usersResorvels.Mutation,
@@ -46,5 +51,6 @@ module.exports = {
         ...commentsResorvels.Mutation,
         ...imagesResolvers.Mutation,
         ...notificationsResolvers.Mutation,
+        ...entitiesResolvers.Mutation,
     },
 }

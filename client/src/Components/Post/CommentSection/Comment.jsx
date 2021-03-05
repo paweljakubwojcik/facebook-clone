@@ -35,6 +35,7 @@ export default function Comment({ comment, postId }) {
         variables: {
             postId,
             commentId: comment.id,
+            type: 'LIKE',
         },
         update() {
             console.log('comment liked')
@@ -44,7 +45,7 @@ export default function Comment({ comment, postId }) {
     const [liked, setLiked] = useState(false)
 
     useEffect(() => {
-        if (context.user && comment.likes.find((like) => like.username === context.user.username))
+        if (context.user && comment.likes.find((like) => like.user.id === context.user.id))
             setLiked(true)
         else setLiked(false)
     }, [comment.likes, context.user])
@@ -56,7 +57,7 @@ export default function Comment({ comment, postId }) {
 
     return (
         <Container>
-            <Avatar image={profileImage?.urls.small} />
+            <Avatar image={profileImage?.urls.thumbnail} />
             <CommentBody>
                 <header>
                     <h4>
@@ -65,11 +66,11 @@ export default function Comment({ comment, postId }) {
                     <Date>{moment(comment.createdAt).fromNow()}</Date>
                 </header>
                 {comment.body}
-                <Buttons blue={comment.likesCount > 0 ? 1 : 0}>
+                <Buttons blue={comment.reactionsCount > 0 ? 1 : 0}>
                     <LikesCounter
                         className="likes"
-                        likesCount={comment.likesCount}
-                        likes={comment.likes}
+                        likesCount={comment.reactionsCount}
+                        likes={comment.reactions}
                     />
                     <GenericButton
                         className="button"

@@ -25,4 +25,5 @@ module.exports = [
     require('./image'),
     require('./notification'),
     require('./user'),
+    require('./entity'),
 ]

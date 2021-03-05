@@ -1,0 +1,49 @@
+const { model, Schema } = require('mongoose')
+
+const reaction = {
+    createdAt: String,
+    timestamp: Number,
+    type: String,
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+    },
+}
+
+const entitySchema = new Schema({
+    type: {
+        type: String,
+        required: true,
+        enum: ['POST', 'COMMENT', 'REPLY'],
+    },
+    body: String,
+    title: String,
+    createdAt: String,
+    timestamp: Number,
+    privacy: String,
+    isDeletable: Boolean,
+    isEdited: Boolean,
+    reactions: [reaction],
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+    },
+    images: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'images',
+        },
+    ],
+    parent: {
+        type: Schema.Types.ObjectId,
+        ref: 'entities',
+    },
+    children: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'entities',
+        },
+    ],
+})
+
+module.exports = model('Entity', entitySchema)

@@ -9,24 +9,27 @@ module.exports = gql`
 
     extend type Mutation {
         createPost(body: String, title: String, privacy: Privacy, images: [Upload]): Post!
-        deletePost(postId: ID!): String!
         editPost(postId: ID!, field: String!, newValue: String!): Post!
 
-        createComment(postId: ID!, body: String!): Post!
-        deleteComment(postId: ID!, commentId: ID!): Post!
+        createComment(postId: ID!, body: String!, image: Upload): Post!
+        createReply(commentId: ID!, body: String!, image: Upload): Comment!
 
         reactToPost(postId: ID!, type: ReactionType!): Post!
+            @deprecated(reason: "Use 'react' instead ")
         reactToComment(postId: ID!, commentId: ID!, type: ReactionType!): Post!
+            @deprecated(reason: "Use 'react' instead ")
+        reactToEntity(id: ID!, type: ReactionType!): Entity!
+            @deprecated(reason: "Use 'react' instead ")
     }
 
-    type Post {
+    type Post implements Entity {
         id: ID!
         body: String
         title: String
         createdAt: String!
         timestamp: Int!
         user: User!
-        comments(paginationData: CursorBasedPagination): [Comment]!
+        comments(paginationData: CursorBasedPagination!): [Comment]!
         reactions: [Reaction]!
         commentsCount: Int!
         reactionsCount: Int!
@@ -35,7 +38,7 @@ module.exports = gql`
         images: [Image]
     }
 
-    type Comment {
+    type Comment implements Entity {
         id: ID!
         createdAt: String!
         timestamp: Int!
@@ -43,23 +46,19 @@ module.exports = gql`
         body: String!
         reactions: [Reaction]!
         reactionsCount: Int!
+        image: Image
+        replies(paginationData: CursorBasedPagination!): [Reply]!
+        repliesCount: Int!
     }
 
-    enum ReactionType {
-        LIKE
-        LOVE
-        CARE
-        HAHA
-        WOW
-        SAD
-        ANGRY
-    }
-
-    type Reaction {
+    type Reply implements Entity {
         id: ID!
         createdAt: String!
         timestamp: Int!
         user: User!
-        type: ReactionType
+        body: String!
+        reactions: [Reaction]!
+        reactionsCount: Int!
+        image: Image
     }
 `

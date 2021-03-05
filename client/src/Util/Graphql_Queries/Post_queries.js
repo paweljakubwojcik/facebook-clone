@@ -133,8 +133,8 @@ export const EDIT_POST = gql`
 `
 
 export const LIKE_POST = gql`
-    mutation likePost($postId: ID!) {
-        likePost(postId: $postId) {
+    mutation reactToPost($postId: ID!, $type: String!) {
+        reactToPost(postId: $postId, type:$type) {
             id
             reactions {
                 id

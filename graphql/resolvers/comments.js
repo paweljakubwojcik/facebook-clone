@@ -1,59 +1,87 @@
 const { AuthenticationError, UserInputError } = require('apollo-server')
 const Post = require('../../models/Post')
+const Entity = require('../../models/Entity')
 const User = require('../../models/User')
 const checkAuth = require('../../utils/checkAuth')
 
 module.exports = {
     Mutation: {
-        createComment: async (_, { postId, body }, context) => {
-            const { id } = checkAuth(context)
+        createComment: async (_, { postId, body, image }, context) => {
+            try {
+                const { id } = checkAuth(context)
 
-            if (body.trim() === '') {
-                throw new UserInputError('Empty comment', {
-                    errors: {
-                        body: 'Coment body must not be empty',
-                    },
-                })
-            }
+                if (body.trim() === '') {
+                    throw new UserInputError('Empty comment', {
+                        errors: {
+                            body: 'Coment body must not be empty',
+                        },
+                    })
+                }
 
-            const post = await Post.findById(postId)
+                const post = await Entity.findById(postId)
+                if (!post) throw new UserInputError('Post not found')
 
-            if (post) {
-                post.comments.unshift({
+                const comment = new Entity({
+                    type: 'COMMENT',
                     body,
                     createdAt: new Date().toISOString(),
                     timestamp: Date.now(),
                     user: id,
+                    images: [],
+                    parent: postId,
+                    children: []
                 })
+
+                const imageId = await savePictureToDB(image, user, { post: comment })
+                comment.images = [imageId]
+
+                const commentId = await comment.save()
+                post.children.unshift(commentId.id)
+
                 return await post.save()
-            } else {
-                throw new UserInputError('Post not found')
+            } catch (err) {
+                return err
             }
         },
-        deleteComment: async (_, { commentId, postId }, context) => {
-            const { id } = checkAuth(context)
+        createReply: async (_, { commentId, body, image }, context) => {
+            try {
+                const { id } = checkAuth(context)
 
-            const post = await Post.findById(postId)
-
-            if (post) {
-                const commentIndex = post.comments.findIndex((c) => c.id === commentId)
-
-                if (post.comments[commentIndex].user == id) {
-                    post.comments.splice(commentIndex, 1)
-
-                    return await post.save()
-                } else {
-                    throw new AuthenticationError('Action not allowed')
+                if (body.trim() === '') {
+                    throw new UserInputError('Empty reply', {
+                        errors: {
+                            body: 'Reply body must not be empty',
+                        },
+                    })
                 }
-            } else {
-                throw new UserInputError('Post not found', {
-                    errors: {
-                        post: "Post doesn't exist",
-                    },
+
+                const comment = await Entity.findById(commentId)
+                if (!post) throw new UserInputError('Post not found')
+
+                const reply = new Entity({
+                    type: 'REPLY',
+                    body,
+                    createdAt: new Date().toISOString(),
+                    timestamp: Date.now(),
+                    user: id,
+                    images: [],
+                    parent: commentId,
                 })
+
+                const imageId = await savePictureToDB(image, user, { post: reply })
+                reply.images = [imageId]
+
+                const replyId = await reply.save()
+                comment.children.unshift(replyId.id)
+
+                return await comment.save()
+            } catch (err) {
+                return err
             }
         },
-        //TODO: change to reaction
+        /**
+         * @deprecated
+         */
         async reactToComment(_, { postId, commentId, type }, context) {
             const { id } = checkAuth(context)
             try {
@@ -90,6 +118,12 @@ module.exports = {
     Comment: {
         async user({ user }) {
             return await User.findById(user)
+        },
+        async replies({ children }, { paginationData: { limit, cursor } }) {
+            const index = children.findIndex((id) => id === cursor)
+            return await Promise.all(
+                children.slice(index, index + limit).map((id) => Entity.findById(id))
+            )
         },
     },
 }
