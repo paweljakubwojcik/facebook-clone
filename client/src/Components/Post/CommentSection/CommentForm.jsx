@@ -14,7 +14,7 @@ import useResizableInput from '../../../Util/Hooks/useResizableInput'
 import { CurrentUserContext } from '../../../Context/currentUserContext'
 
 export default function CommentForm({ props: { postId, inputFocus, setFocus } }) {
-    const { profileImage } = useContext(CurrentUserContext)
+    const { user: { profileImage } = {} } = useContext(CurrentUserContext)
     const [body, setBody] = useState('')
 
     const [createComment, { error }] = useMutation(ADD_COMMENT, {

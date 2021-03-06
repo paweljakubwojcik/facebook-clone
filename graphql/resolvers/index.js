@@ -10,15 +10,12 @@ module.exports = {
         ...entitiesResolvers.Entity,
     },
     Post: {
-        commentsCount: (parent) => parent.comments.length,
-        reactionsCount: (parent) => parent.reactions.length,
         ...postsResorvels.Post,
     },
     Reaction: {
         ...entitiesResolvers.Reaction,
     },
     Comment: {
-        reactionsCount: (parent) => parent.reactions.length,
         ...commentsResorvels.Comment,
     },
     User: {

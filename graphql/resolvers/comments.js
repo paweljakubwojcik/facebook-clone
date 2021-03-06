@@ -29,7 +29,7 @@ module.exports = {
                     user: id,
                     images: [],
                     parent: postId,
-                    children: []
+                    children: [],
                 })
 
                 const imageId = await savePictureToDB(image, user, { post: comment })
@@ -125,5 +125,7 @@ module.exports = {
                 children.slice(index, index + limit).map((id) => Entity.findById(id))
             )
         },
+        reactionsCount: (parent) => parent.reactions.length,
+        repliesCount: (parent) => parent.children.length,
     },
 }

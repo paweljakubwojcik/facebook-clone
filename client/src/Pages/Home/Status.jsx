@@ -8,7 +8,7 @@ import { CurrentUserContext } from '../../Context/currentUserContext'
 import PostFormContainer from './PostForm/PostFormContainer'
 
 export default function Status() {
-    const { username, profileImage } = useContext(CurrentUserContext)
+    const { user: { username, profileImage } = {} } = useContext(CurrentUserContext)
 
     const [isFormOpen, toggleForm] = useState(false)
 

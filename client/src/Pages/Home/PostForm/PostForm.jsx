@@ -14,7 +14,9 @@ import FileInput from './FileInput'
 import { CurrentUserContext } from '../../../Context/currentUserContext'
 
 export default function PostForm({ setActive, values, removeValue, loading, errors }) {
-    const { username, profileImage } = useContext(CurrentUserContext)
+    const {
+        user: { username, profileImage },
+    } = useContext(CurrentUserContext)
 
     const removeImage = (image) => {
         removeValue({ images: image })

@@ -15,7 +15,7 @@ import { CurrentUserContext } from '../../Context/currentUserContext'
 
 export default function Navbar() {
     const location = useLocation()
-    const user = useContext(CurrentUserContext)
+    const {user} = useContext(CurrentUserContext)
 
     //navbar shouldn't be rendered on login page
     const shouldRender = location.pathname !== '/' || !!user

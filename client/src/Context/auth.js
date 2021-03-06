@@ -4,7 +4,7 @@ import jwtDecode from 'jwt-decode'
 import { useApolloClient } from '@apollo/client'
 
 const initialState = {
-    user: null,
+    user: undefined,
 }
 
 // to ensure that refreshng wont logout the user
@@ -17,7 +17,7 @@ if (localStorage.getItem('token')) {
 }
 
 const AuthContext = createContext({
-    user: null,
+    user: undefined,
     login: (userData) => {},
     logout: () => {},
 })

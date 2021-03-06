@@ -146,6 +146,7 @@ module.exports = {
                 children.slice(index, index + limit).map((id) => Entity.findById(id))
             )
         },
+        commentsCount: (parent) => parent.children.length,
+        reactionsCount: (parent) => parent.reactions.length,
     },
-    
 }

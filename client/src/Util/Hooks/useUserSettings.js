@@ -28,7 +28,7 @@ const GET_USER_SETTINGS = gql`
 
 export const useUserSettings = (userId) => {
     const {
-        user: { id },
+        user: { id } = {},
     } = useContext(AuthContext)
 
     const { data: { user: { settings } = {} } = {} } = useQuery(GET_USER_SETTINGS, {

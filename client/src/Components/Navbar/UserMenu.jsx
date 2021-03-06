@@ -24,6 +24,7 @@ import { MenuButton } from '../General/Buttons'
 
 import { menuOptions } from './menuOptions'
 import PrivacyMenu from '../General/PrivacyMenu'
+import { CurrentUserContext } from '../../Context/currentUserContext'
 
 const UserMenu = forwardRef(({ ...rest }, ref) => {
     const history = useHistory()
@@ -92,8 +93,10 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
     }
 
     const PostMenu = () => {
-        const { user } = useContext(AuthContext)
-        const { setSettings, settings } = useUserSettings(user.id)
+        const {
+            user: { settings },
+            setSettings,
+        } = useContext(CurrentUserContext)
 
         return (
             <SubMenuContainer>
@@ -102,7 +105,9 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
                         setPrivacy={(privacy) => setSettings('postDefaultPrivacy', privacy)}
                         currentPrivacy={settings?.postDefaultPrivacy}
                     >
-                        <RadioButtonsGroup.Header icon={faEye}>Default privacy</RadioButtonsGroup.Header>
+                        <RadioButtonsGroup.Header icon={faEye}>
+                            Default privacy
+                        </RadioButtonsGroup.Header>
                     </PrivacyMenu>
                 </SubMenu>
             </SubMenuContainer>

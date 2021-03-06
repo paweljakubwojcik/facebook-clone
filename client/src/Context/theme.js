@@ -1,11 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import * as themes from '../styles/themes'
-import { AuthContext } from './auth'
 
 import { ThemeProvider } from 'styled-components'
-import { useUserSettings } from '../Util/Hooks/useUserSettings'
-
-//TODO: incorporate enum types into themes #graphql
+import { CurrentUserContext } from './currentUserContext'
 
 const isSystemThemeLight = window.matchMedia('(prefers-color-scheme:light)')
 const systemPreferedTheme = isSystemThemeLight.matches ? 'lightTheme' : 'darkTheme'
@@ -22,8 +19,7 @@ const ThemeContext = createContext({
 })
 
 function ThemesProvider(props) {
-    const { user } = useContext(AuthContext)
-    const { settings, setSettings } = useUserSettings(user?.id)
+    const { user: { settings } = {}, setSettings } = useContext(CurrentUserContext)
 
     const initialState = {
         theme: themes[initialTheme],

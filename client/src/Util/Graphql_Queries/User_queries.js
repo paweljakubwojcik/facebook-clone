@@ -31,7 +31,23 @@ export const GET_CURRENT_USER = gql`
                     small
                 }
             }
+            settings {
+                preferredTheme
+                postDefaultPrivacy
+            }
             notificationCount
+        }
+    }
+`
+
+export const UPDATE_SETTINGS = gql`
+    mutation updateSettings($setting: String!, $newValue: String!) {
+        updateSettings(setting: $setting, newValue: $newValue) {
+            id
+            settings {
+                preferredTheme
+                postDefaultPrivacy
+            }
         }
     }
 `
