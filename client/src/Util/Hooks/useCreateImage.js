@@ -2,7 +2,7 @@
 import { useContext } from "react"
 import { ADD_PICTURE } from '../GraphQL_Queries'
 import { useMutation } from '@apollo/client'
-import { FirebaseContext } from '../../Firebase/FirebaseContext'
+
 import { readFileAsync, generateRandomName } from '../Methods'
 
 import Pica from 'pica'

@@ -112,18 +112,8 @@ const CONTEXT = gql`
     fragment CONTEXT on User {
         id
         token
-        username
-        email
-        createdAt
         settings {
             preferredTheme
-        }
-        profileImage {
-            urls {
-                id
-                medium
-                large
-            }
         }
     }
 `

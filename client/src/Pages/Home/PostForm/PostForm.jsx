@@ -11,12 +11,12 @@ import ImagePreview from './ImagePreview'
 import ImagesContainer from '../../../Components/Post/ImagesContainer'
 import Form from '../../../Components/General/Form'
 import FileInput from './FileInput'
-import { CurrentUserContext } from '../../../Context/currentUserContext'
+import { useCurrentUser } from '../../../Util/Hooks/useCurrentUser'
 
 export default function PostForm({ setActive, values, removeValue, loading, errors }) {
     const {
         user: { username, profileImage },
-    } = useContext(CurrentUserContext)
+    } = useCurrentUser()
 
     const removeImage = (image) => {
         removeValue({ images: image })

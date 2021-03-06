@@ -11,10 +11,10 @@ import { BASE_COMMENT_FRAGMENT } from '../../../Util/GraphQL_Queries'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import useResizableInput from '../../../Util/Hooks/useResizableInput'
-import { CurrentUserContext } from '../../../Context/currentUserContext'
+import { useCurrentUser } from '../../../Util/Hooks/useCurrentUser'
 
 export default function CommentForm({ props: { postId, inputFocus, setFocus } }) {
-    const { user: { profileImage } = {} } = useContext(CurrentUserContext)
+    const { user: { profileImage } = {} } = useCurrentUser()
     const [body, setBody] = useState('')
 
     const [createComment, { error }] = useMutation(ADD_COMMENT, {

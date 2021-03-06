@@ -4,12 +4,11 @@ const { UserInputError } = require('apollo-server')
 
 const { SECRET_KEY } = require('../../config')
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
-const { generateRandomPhoto } = require('../../utils/randomPhoto')
+const { createWelcomePost } = require('./methods/createWelcomePost')
 const checkAuth = require('../../utils/checkAuth')
 
 const User = require('../../models/User')
 const Image = require('../../models/Image')
-const Post = require('../../models/Post')
 
 /**
  *
@@ -122,36 +121,7 @@ module.exports = {
                 },
             })
             //saving user in DB
-            const { _id } = await newUser.save()
-
-            const randomTexts = [
-                'Check out my new fake pictures',
-                'Those are my first pictures, uploaded automatically',
-                'My random generated pictures from Unsplash.com',
-                'Really nice photos, check out the authors',
-            ]
-            //creating post associated with pictures
-            const newPost = new Post({
-                user: _id,
-                privacy: 'PRIVATE',
-                body: randomTexts[Math.floor(Math.random() * randomTexts.length)],
-                createdAt: new Date().toISOString(),
-                likes: [],
-                comments: [],
-                images: [],
-                isDeletable: true,
-            })
-
-            const { _id: postId } = await newPost.save()
-
-            //generate random backgroundImage and avatar pic
-            const backgroundImage = await generateRandomPhoto('background', _id, postId)
-            const profileImage = await generateRandomPhoto('avatar', _id, postId)
-
-            newUser.backgroundImage = backgroundImage
-            newUser.profileImage = profileImage
-            newPost.images = [backgroundImage._id, profileImage._id]
-            await newPost.save()
+            await createWelcomePost(await newUser.save())
 
             //saving user in DB
             const res = await newUser.save()

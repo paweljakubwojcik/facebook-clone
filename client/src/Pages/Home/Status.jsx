@@ -4,11 +4,11 @@ import styled from 'styled-components'
 import ElementContainer from '../../Components/General/ElementContainer'
 import Avatar from '../../Components/General/Avatar'
 
-import { CurrentUserContext } from '../../Context/currentUserContext'
+import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 import PostFormContainer from './PostForm/PostFormContainer'
 
 export default function Status() {
-    const { user: { username, profileImage } = {} } = useContext(CurrentUserContext)
+    const { user: { username, profileImage } = {} } = useCurrentUser()
 
     const [isFormOpen, toggleForm] = useState(false)
 

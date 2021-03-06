@@ -24,7 +24,7 @@ import { MenuButton } from '../General/Buttons'
 
 import { menuOptions } from './menuOptions'
 import PrivacyMenu from '../General/PrivacyMenu'
-import { CurrentUserContext } from '../../Context/currentUserContext'
+import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 
 const UserMenu = forwardRef(({ ...rest }, ref) => {
     const history = useHistory()
@@ -96,7 +96,7 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
         const {
             user: { settings },
             setSettings,
-        } = useContext(CurrentUserContext)
+        } = useCurrentUser()
 
         return (
             <SubMenuContainer>

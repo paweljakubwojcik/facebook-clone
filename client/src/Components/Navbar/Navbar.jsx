@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react'
 import PropsTypes from 'prop-types'
 import { Link, useLocation } from 'react-router-dom'
 
-
 import styled from 'styled-components'
 
 import FormButton from '../General/FormButton'
@@ -11,11 +10,13 @@ import { ReactComponent as Logo } from '../../styles/svg/logo.svg'
 
 import Menu from './Menu'
 
-import { CurrentUserContext } from '../../Context/currentUserContext'
+import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 
 export default function Navbar() {
     const location = useLocation()
-    const {user} = useContext(CurrentUserContext)
+    const { user, loading } = useCurrentUser()
+
+    console.log(user)
 
     //navbar shouldn't be rendered on login page
     const shouldRender = location.pathname !== '/' || !!user
@@ -42,17 +43,24 @@ export default function Navbar() {
                         <MediaQuery width={400}>{!isCovered && <h1>Fakebook</h1>}</MediaQuery>
                     </Link>
                 </header>
-                {user ? (
-                    <>
-                        <MediaQuery width={740}>
-                            <UserButton user={user} notLink as={Link} to={`/profile/${user.id}`} />
-                        </MediaQuery>
-                        {/* TODO: fetch for notifications count */}
-                        <Menu counters={{ messages: 0, notifications: user?.notificationCount }} />
-                    </>
-                ) : (
-                    loggingButtons
-                )}
+                {!loading &&
+                    (user ? (
+                        <>
+                            <MediaQuery width={740}>
+                                <UserButton
+                                    user={user}
+                                    notLink
+                                    as={Link}
+                                    to={`/profile/${user.id}`}
+                                />
+                            </MediaQuery>
+                            <Menu
+                                counters={{ messages: 0, notifications: user?.notificationCount }}
+                            />
+                        </>
+                    ) : (
+                        loggingButtons
+                    ))}
             </NavBar>
         )
     )

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 import * as themes from '../styles/themes'
 
 import { ThemeProvider } from 'styled-components'
-import { CurrentUserContext } from './currentUserContext'
+import { useCurrentUser } from '../Util/Hooks/useCurrentUser'
 
 const isSystemThemeLight = window.matchMedia('(prefers-color-scheme:light)')
 const systemPreferedTheme = isSystemThemeLight.matches ? 'lightTheme' : 'darkTheme'
@@ -19,7 +19,7 @@ const ThemeContext = createContext({
 })
 
 function ThemesProvider(props) {
-    const { user: { settings } = {}, setSettings } = useContext(CurrentUserContext)
+    const { user: { settings } = {}, setSettings } = useCurrentUser()
 
     const initialState = {
         theme: themes[initialTheme],

@@ -9,9 +9,9 @@ export const BASE_COMMENT_FRAGMENT = gql`
         user {
             username
             id
-            profileImage{
+            profileImage {
                 id
-                urls{
+                urls {
                     id
                     thumbnail
                 }
@@ -50,7 +50,7 @@ export const GET_POSTS = gql`
                     }
                 }
             }
-            comments {
+            comments(paginationData: { limit: 5 }) {
                 ...BaseComment
             }
             reactions {
@@ -134,7 +134,7 @@ export const EDIT_POST = gql`
 
 export const LIKE_POST = gql`
     mutation reactToPost($postId: ID!, $type: String!) {
-        reactToPost(postId: $postId, type:$type) {
+        reactToPost(postId: $postId, type: $type) {
             id
             reactions {
                 id

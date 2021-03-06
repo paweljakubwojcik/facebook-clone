@@ -10,18 +10,16 @@ import SubMenu from '../../../Components/General/AnimatedMenu/SubMenu'
 import PrivacyMenu from '../../../Components/General/PrivacyMenu'
 import Form from '../../../Components/General/Form'
 
-import { useUserSettings } from '../../../Util/Hooks/useUserSettings'
-
 import { useForm } from '../../../Util/Hooks/useForm'
 import { useCreatePost } from '../../../Util/Hooks/useCreatePost'
-import { CurrentUserContext } from '../../../Context/currentUserContext'
+import { useCurrentUser } from '../../../Util/Hooks/useCurrentUser'
 
 export default function PostFormContainer({ toggleForm, ...rest }) {
     const [active, setActive] = useState('form')
 
-    const { user: { settings: { postDefaultPrivacy: privacy = 'PUBLIC' } = {} } = {} } = useContext(
-        CurrentUserContext
-    )
+    const {
+        user: { settings: { postDefaultPrivacy: privacy = 'PUBLIC' } = {} } = {},
+    } = useCurrentUser()
 
     const initialState = {
         body: '',
