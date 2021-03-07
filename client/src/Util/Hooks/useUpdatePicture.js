@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { UPDATE_USER } from '../GraphQL_Queries'
 import { useMutation } from '@apollo/client'
 import { useCreatePost } from './useCreatePost'
-import { useCreateImage } from './useCreateImage'
 
 //TODO: change this to more generic update userData or something
 
@@ -28,14 +27,14 @@ export const useUpdatePicture = (values, callback, field) => {
         },
     })
 
-    const { storePicture } = useCreateImage((uploadedPicture) => {
+   /*  const { storePicture } = useCreateImage((uploadedPicture) => {
         updateUser({
             variables: {
                 field: field,
                 newValue: uploadedPicture.id,
             },
         })
-    })
+    }) */
 
     const title = `has uploaded new ${
         field === 'profileImage' ? 'profile picture' : 'background picture'
@@ -44,7 +43,7 @@ export const useUpdatePicture = (values, callback, field) => {
     const { createPost } = useCreatePost(
         { body: values.body, privacy: 'PRIVATE', title, images: [] },
         async (post) => {
-            await storePicture(values.image[0], post.id)
+           /*  await storePicture(values.image[0], post.id) */
         }
     )
 

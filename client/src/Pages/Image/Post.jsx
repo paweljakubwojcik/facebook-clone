@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useQuery, gql } from '@apollo/client'
 import PostContent from '../../Components/Post/PostContent'
-
+import { GET_POST} from '../../Util/GraphQL_Queries'
 
 export default function Post({ postId }) {
 
@@ -40,56 +40,3 @@ const PostWrapper = styled.div`
 
 `
 
-const GET_POST = gql`
-query post($postId:ID!){
-    post(postId:$postId){
-        
-            body
-            commentsCount
-            id
-            createdAt
-            likesCount
-            username
-            privacy
-            isDeletable
-            user{
-                id
-                username
-                profileImage{
-                        urls{
-                           
-                            small
-                            medium
-                        }
-                    }
-            }
-            comments {
-                id
-                body
-                username
-                createdAt
-                likesCount
-                user{
-                    username
-                    id
-                }
-                likes{
-                    id
-                    username
-                }
-            }
-            likes {
-                id
-                username
-            }
-            images{
-                id
-                urls{
-                    medium
-                    small
-                }
-            }
-        
-    }
-}
-`

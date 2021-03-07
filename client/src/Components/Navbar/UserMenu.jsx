@@ -24,7 +24,7 @@ import { MenuButton } from '../General/Buttons'
 
 import { menuOptions } from './menuOptions'
 import PrivacyMenu from '../General/PrivacyMenu'
-import { CurrentUserContext } from '../../Context/currentUserContext'
+import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 
 const UserMenu = forwardRef(({ ...rest }, ref) => {
     const history = useHistory()
@@ -93,11 +93,9 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
     }
 
     const PostMenu = () => {
-        const {
-            user: { settings },
-            setSettings,
-        } = useContext(CurrentUserContext)
+        const { user: { settings } = {}, setSettings, loading } = useCurrentUser()
 
+        if (loading) return null
         return (
             <SubMenuContainer>
                 <SubMenu title={'Post Options'} setActive={setActive}>

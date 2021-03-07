@@ -9,9 +9,9 @@ export const BASE_COMMENT_FRAGMENT = gql`
         user {
             username
             id
-            profileImage{
+            profileImage {
                 id
-                urls{
+                urls {
                     id
                     thumbnail
                 }
@@ -27,53 +27,91 @@ export const BASE_COMMENT_FRAGMENT = gql`
     }
 `
 
-export const GET_POSTS = gql`
-    query posts($userId: ID, $limit: Int!, $cursor: ID) {
-        posts(userId: $userId, paginationData: { limit: $limit, cursor: $cursor }) {
+export const POST = gql`
+    fragment PostFragment on Post {
+        id
+        body
+        title
+        commentsCount
+        createdAt
+        reactionsCount
+        privacy
+        isDeletable
+        user {
+            id
+            username
+            profileImage {
+                urls {
+                    id
+                    thumbnail
+                    small
+                    large
+                }
+            }
+        }
+        comments(paginationData: { limit: 5 }) {
             id
             body
-            title
-            commentsCount
             createdAt
             reactionsCount
-            privacy
-            isDeletable
             user {
-                id
                 username
+                id
                 profileImage {
+                    id
                     urls {
                         id
                         thumbnail
-                        small
-                        large
                     }
                 }
             }
-            comments {
-                ...BaseComment
-            }
             reactions {
                 id
-                timestamp
                 user {
                     id
                     username
                 }
             }
-            images {
+        }
+        reactions {
+            id
+            timestamp
+            user {
                 id
-                urls {
-                    id
-                    small
-                    medium
-                    large
-                }
+                username
+            }
+        }
+        images {
+            id
+            urls {
+                id
+                small
+                medium
+                large
             }
         }
     }
+`
+// for some weird reason when attempting to fetch that query with only fragment, query is sending back an empty object
+export const GET_POSTS = gql`
+    query posts($userId: ID, $limit: Int!, $cursor: ID) {
+        posts(userId: $userId, paginationData: { limit: $limit, cursor: $cursor }) {
+           ...PostFragment
+           id
+        }
+    }
 
-    ${BASE_COMMENT_FRAGMENT}
+    ${POST}
+`
+
+export const GET_POST = gql`
+    query post($postId: ID!) {
+        post(postId: $postId) {
+            ...PostFragment
+            id
+        }
+    }
+    ${POST}
 `
 
 // graphQL query
@@ -134,7 +172,7 @@ export const EDIT_POST = gql`
 
 export const LIKE_POST = gql`
     mutation reactToPost($postId: ID!, $type: String!) {
-        reactToPost(postId: $postId, type:$type) {
+        reactToPost(postId: $postId, type: $type) {
             id
             reactions {
                 id

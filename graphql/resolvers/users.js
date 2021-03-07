@@ -4,12 +4,12 @@ const { UserInputError } = require('apollo-server')
 
 const { SECRET_KEY } = require('../../config')
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
+const { createWelcomePost } = require('./methods/createWelcomePost')
 const { generateRandomPhoto } = require('../../utils/randomPhoto')
 const checkAuth = require('../../utils/checkAuth')
 
 const User = require('../../models/User')
 const Image = require('../../models/Image')
-const Post = require('../../models/Post')
 
 /**
  *
@@ -97,71 +97,62 @@ module.exports = {
                     })
                 }
             }
-            // hash password & create auth token
-            password = await bcrypt.hash(password, 12)
-            const newUser = new User({
-                email,
-                username,
-                password,
-                createdAt: new Date().toISOString(),
-                friends: [],
-                conversations: [],
-                notifications: [],
-                invitations: [],
-                settings: {
-                    preferredTheme: null,
-                    postDefaultPrivacy: 'PUBLIC',
-                },
-                info: {
-                    joiningDate: new Date().toLocaleDateString(),
-                    birthDate: null,
-                    sex: null,
-                    description: null,
-                    location: null,
-                    job: null,
-                },
-            })
-            //saving user in DB
-            const { _id } = await newUser.save()
+            try {
+                // hash password & create auth token
+                password = await bcrypt.hash(password, 12)
+                const newUser = new User({
+                    email,
+                    username,
+                    password,
+                    createdAt: new Date().toISOString(),
+                    friends: [],
+                    conversations: [],
+                    notifications: [],
+                    invitations: [],
+                    settings: {
+                        preferredTheme: null,
+                        postDefaultPrivacy: 'PUBLIC',
+                    },
+                    info: {
+                        joiningDate: new Date().toLocaleDateString(),
+                        birthDate: null,
+                        sex: null,
+                        description: null,
+                        location: null,
+                        job: null,
+                    },
+                })
+                const { _id } = await newUser.save()
+              
+                //saving user in DB
+                const newPost = await createWelcomePost(_id)
+                
+                const { _id: postId } = await newPost.save()
+               
+                //generate random backgroundImage and avatar pic
+                const backgroundImage = await generateRandomPhoto('background', _id, postId)
+                const profileImage = await generateRandomPhoto('avatar', _id, postId)
 
-            const randomTexts = [
-                'Check out my new fake pictures',
-                'Those are my first pictures, uploaded automatically',
-                'My random generated pictures from Unsplash.com',
-                'Really nice photos, check out the authors',
-            ]
-            //creating post associated with pictures
-            const newPost = new Post({
-                user: _id,
-                privacy: 'PRIVATE',
-                body: randomTexts[Math.floor(Math.random() * randomTexts.length)],
-                createdAt: new Date().toISOString(),
-                likes: [],
-                comments: [],
-                images: [],
-                isDeletable: true,
-            })
+                newUser.backgroundImage = backgroundImage
+                newUser.profileImage = profileImage
+                newPost.images = [backgroundImage._id, profileImage._id]
+                await newPost.save()
 
-            const { _id: postId } = await newPost.save()
+                //saving user in DB
+                const res = await newUser.save()
 
-            //generate random backgroundImage and avatar pic
-            const backgroundImage = await generateRandomPhoto('background', _id, postId)
-            const profileImage = await generateRandomPhoto('avatar', _id, postId)
+                console.log({ res })
 
-            newUser.backgroundImage = backgroundImage
-            newUser.profileImage = profileImage
-            newPost.images = [backgroundImage._id, profileImage._id]
-            await newPost.save()
-
-            //saving user in DB
-            const res = await newUser.save()
-
-            //creating validation token
-            const token = generateToken(res)
-            return {
-                ...res._doc,
-                id: res._id,
-                token,
+                //creating validation token
+                const token = generateToken(res)
+                return {
+                    ...res._doc,
+                    id: res._id,
+                    token,
+                }
+            } catch (e) {
+                console.log(e)
+                throw e
             }
         },
         async updateSettings(_, { setting, newValue }, context, info) {

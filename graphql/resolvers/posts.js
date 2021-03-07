@@ -56,6 +56,7 @@ module.exports = {
                 }
             } catch (error) {
                 if (!user) filter.privacy = 'PUBLIC'
+                else throw error
             } finally {
                 try {
                     const posts = await Entity.find(filter, null, {

@@ -1,30 +1,7 @@
-import { gql, useQuery, useMutation } from '@apollo/client'
+/* import { gql, useQuery, useMutation } from '@apollo/client'
 import { useCallback, useState, useContext } from 'react'
 import { AuthContext } from '../../Context/auth'
 
-const UPDATE_SETTINGS = gql`
-    mutation updateSettings($setting: String!, $newValue: String!) {
-        updateSettings(setting: $setting, newValue: $newValue) {
-            id
-            settings {
-                preferredTheme
-                postDefaultPrivacy
-            }
-        }
-    }
-`
-
-const GET_USER_SETTINGS = gql`
-    query user($userId: ID!) {
-        user(userId: $userId) {
-            id
-            settings {
-                preferredTheme
-                postDefaultPrivacy
-            }
-        }
-    }
-`
 
 export const useUserSettings = (userId) => {
     const {
@@ -61,3 +38,4 @@ export const useUserSettings = (userId) => {
 
     return { settings, setSettings, error }
 }
+ */

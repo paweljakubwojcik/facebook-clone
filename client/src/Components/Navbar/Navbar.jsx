@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react'
 import PropsTypes from 'prop-types'
 import { Link, useLocation } from 'react-router-dom'
 
-
 import styled from 'styled-components'
 
 import FormButton from '../General/FormButton'
@@ -11,14 +10,14 @@ import { ReactComponent as Logo } from '../../styles/svg/logo.svg'
 
 import Menu from './Menu'
 
-import { CurrentUserContext } from '../../Context/currentUserContext'
+import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 
 export default function Navbar() {
     const location = useLocation()
-    const {user} = useContext(CurrentUserContext)
+    const { user, loading, isLogged } = useCurrentUser()
 
     //navbar shouldn't be rendered on login page
-    const shouldRender = location.pathname !== '/' || !!user
+    const shouldRender = location.pathname !== '/' || isLogged
 
     const isCovered = location.pathname.split('/').some((el) => el === 'image')
 
@@ -33,28 +32,30 @@ export default function Navbar() {
         </>
     )
 
+    console.log({ loading, user, shouldRender })
+
+    if (!shouldRender) return null
+
     return (
-        shouldRender && (
-            <NavBar className="navBar" isCovered={isCovered}>
-                <header>
-                    <Link to="/">
-                        <Logo className="img" />
-                        <MediaQuery width={400}>{!isCovered && <h1>Fakebook</h1>}</MediaQuery>
-                    </Link>
-                </header>
-                {user ? (
+        <NavBar className="navBar" isCovered={isCovered}>
+            <header>
+                <Link to="/">
+                    <Logo className="img" />
+                    <MediaQuery width={400}>{!isCovered && <h1>Fakebook</h1>}</MediaQuery>
+                </Link>
+            </header>
+            {!loading &&
+                (user ? (
                     <>
                         <MediaQuery width={740}>
                             <UserButton user={user} notLink as={Link} to={`/profile/${user.id}`} />
                         </MediaQuery>
-                        {/* TODO: fetch for notifications count */}
                         <Menu counters={{ messages: 0, notifications: user?.notificationCount }} />
                     </>
                 ) : (
                     loggingButtons
-                )}
-            </NavBar>
-        )
+                ))}
+        </NavBar>
     )
 }
 

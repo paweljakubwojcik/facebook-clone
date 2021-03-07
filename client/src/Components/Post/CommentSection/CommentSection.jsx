@@ -29,7 +29,7 @@ export default function CommentSection({ comments, postId, inputFocus, setFocus 
                  </GenericButton>}
             </CommentsContainer>
 
-            { context.user && <CommentForm props={{ inputFocus, setFocus, postId }} />}
+            { context.isLogged && <CommentForm props={{ inputFocus, setFocus, postId }} />}
         </>
     )
 }

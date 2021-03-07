@@ -111,18 +111,17 @@ export const GET_USER = gql`
 const CONTEXT = gql`
     fragment CONTEXT on User {
         id
-        token
         username
-        email
-        createdAt
+        token
         settings {
             preferredTheme
         }
         profileImage {
+            id
             urls {
                 id
-                medium
-                large
+                thumbnail
+                small
             }
         }
     }
