@@ -62,7 +62,7 @@ export default function PostContent({ post, noImages }) {
                     </h4>
                     <TimeStamp time={createdAt} />
                 </header>
-                {context?.user?.username === username && <PostOptions post={{ privacy, id }} isDeletable={isDeletable} />}
+                {context.userId === userId && <PostOptions post={{ privacy, id }} isDeletable={isDeletable} />}
             </PostCardHeader>
 
             <PostCardBody>{body}</PostCardBody>
@@ -82,7 +82,7 @@ export default function PostContent({ post, noImages }) {
                 </GenericButton>
             </PostCardCounters>
 
-            {context.user && (
+            {context.isLogged && (
                 <PostCardButtonsContainer>
                     <LikeButton postData={{ id, reactions }} />
                     <SquareButton onClick={engageComment}>

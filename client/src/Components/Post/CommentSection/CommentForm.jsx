@@ -54,7 +54,7 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
     return (
         <>
             <Form onSubmit={onSubmit}>
-                <Avatar image={profileImage.urls.thumbnail} />
+                <Avatar image={profileImage?.urls?.thumbnail} />
                 <CommentInput
                     ref={resizableInput}
                     name="body"

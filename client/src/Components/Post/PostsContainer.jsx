@@ -42,9 +42,11 @@ export default function Posts({ userId }) {
         })
     }
 
-    /* useEffect(() => {
+    useEffect(() => {
         refetch()
-    }, []) */
+    }, [])
+
+    console.log(posts)
 
     return (
         <PostsContainer>

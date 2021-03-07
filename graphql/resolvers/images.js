@@ -1,5 +1,5 @@
 const Image = require('../../models/Image')
-const Post = require('../../models/Post')
+const Entity = require('../../models/Entity')
 const checkAuth = require('../../utils/checkAuth')
 
 module.exports = {
@@ -34,7 +34,7 @@ module.exports = {
     },
     Image: {
         post: async ({ post }) => {
-            return await Post.findById(post)
+            return await Entity.findById(post)
         },
         urls: ({ urls, id }) => {
             return { ...urls, id }

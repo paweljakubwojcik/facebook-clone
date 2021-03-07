@@ -32,39 +32,30 @@ export default function Navbar() {
         </>
     )
 
+    if (!shouldRender) return null
+
     return (
-        shouldRender && (
-            <NavBar className="navBar" isCovered={isCovered}>
-                <header>
-                    <Link to="/">
-                        <Logo className="img" />
-                        <MediaQuery width={400}>{!isCovered && <h1>Fakebook</h1>}</MediaQuery>
-                    </Link>
-                </header>
-                {!loading &&
-                    (user ? (
-                        <>
-                            <MediaQuery width={740}>
-                                <UserButton
-                                    user={user}
-                                    notLink
-                                    as={Link}
-                                    to={`/profile/${user.id}`}
-                                />
-                            </MediaQuery>
-                            <Menu
-                                counters={{ messages: 0, notifications: user?.notificationCount }}
-                            />
-                        </>
-                    ) : (
-                        loggingButtons
-                    ))}
-            </NavBar>
-        )
+        <NavBar className="navBar" isCovered={isCovered}>
+            <header>
+                <Link to="/">
+                    <Logo className="img" />
+                    <MediaQuery width={400}>{!isCovered && <h1>Fakebook</h1>}</MediaQuery>
+                </Link>
+            </header>
+            {!loading &&
+                (user ? (
+                    <>
+                        <MediaQuery width={740}>
+                            <UserButton user={user} notLink as={Link} to={`/profile/${user.id}`} />
+                        </MediaQuery>
+                        <Menu counters={{ messages: 0, notifications: user?.notificationCount }} />
+                    </>
+                ) : (
+                    loggingButtons
+                ))}
+        </NavBar>
     )
 }
-
-
 
 Navbar.propsTypes = {
     setForm: PropsTypes.func,

@@ -122,29 +122,21 @@ module.exports = {
                         job: null,
                     },
                 })
-                console.log('user created\n')
                 const { _id } = await newUser.save()
-                console.log('user saved in db\n')
+              
                 //saving user in DB
                 const newPost = await createWelcomePost(_id)
-                console.log('post created \n')
+                
                 const { _id: postId } = await newPost.save()
-                console.log('post saved \n')
-
+               
                 //generate random backgroundImage and avatar pic
                 const backgroundImage = await generateRandomPhoto('background', _id, postId)
                 const profileImage = await generateRandomPhoto('avatar', _id, postId)
 
-                console.log('images generated \n')
-
                 newUser.backgroundImage = backgroundImage
                 newUser.profileImage = profileImage
-
-                console.log('images added to user \n')
                 newPost.images = [backgroundImage._id, profileImage._id]
                 await newPost.save()
-
-                console.log('images added to the post \n')
 
                 //saving user in DB
                 const res = await newUser.save()
