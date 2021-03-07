@@ -5,6 +5,7 @@ const { UserInputError } = require('apollo-server')
 const { SECRET_KEY } = require('../../config')
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
 const { createWelcomePost } = require('./methods/createWelcomePost')
+const { generateRandomPhoto } = require('../../utils/randomPhoto')
 const checkAuth = require('../../utils/checkAuth')
 
 const User = require('../../models/User')
@@ -96,42 +97,70 @@ module.exports = {
                     })
                 }
             }
-            // hash password & create auth token
-            password = await bcrypt.hash(password, 12)
-            const newUser = new User({
-                email,
-                username,
-                password,
-                createdAt: new Date().toISOString(),
-                friends: [],
-                conversations: [],
-                notifications: [],
-                invitations: [],
-                settings: {
-                    preferredTheme: null,
-                    postDefaultPrivacy: 'PUBLIC',
-                },
-                info: {
-                    joiningDate: new Date().toLocaleDateString(),
-                    birthDate: null,
-                    sex: null,
-                    description: null,
-                    location: null,
-                    job: null,
-                },
-            })
-            //saving user in DB
-            await createWelcomePost(await newUser.save())
+            try {
+                // hash password & create auth token
+                password = await bcrypt.hash(password, 12)
+                const newUser = new User({
+                    email,
+                    username,
+                    password,
+                    createdAt: new Date().toISOString(),
+                    friends: [],
+                    conversations: [],
+                    notifications: [],
+                    invitations: [],
+                    settings: {
+                        preferredTheme: null,
+                        postDefaultPrivacy: 'PUBLIC',
+                    },
+                    info: {
+                        joiningDate: new Date().toLocaleDateString(),
+                        birthDate: null,
+                        sex: null,
+                        description: null,
+                        location: null,
+                        job: null,
+                    },
+                })
+                console.log('user created\n')
+                const { _id } = await newUser.save()
+                console.log('user saved in db\n')
+                //saving user in DB
+                const newPost = await createWelcomePost(_id)
+                console.log('post created \n')
+                const { _id: postId } = await newPost.save()
+                console.log('post saved \n')
 
-            //saving user in DB
-            const res = await newUser.save()
+                //generate random backgroundImage and avatar pic
+                const backgroundImage = await generateRandomPhoto('background', _id, postId)
+                const profileImage = await generateRandomPhoto('avatar', _id, postId)
 
-            //creating validation token
-            const token = generateToken(res)
-            return {
-                ...res._doc,
-                id: res._id,
-                token,
+                console.log('images generated \n')
+
+                newUser.backgroundImage = backgroundImage
+                newUser.profileImage = profileImage
+
+                console.log('images added to user \n')
+                newPost.images = [backgroundImage._id, profileImage._id]
+                await newPost.save()
+
+                console.log('images added to the post \n')
+
+                //saving user in DB
+                const res = await newUser.save()
+
+                console.log({ res })
+
+                //creating validation token
+                const token = generateToken(res)
+                return {
+                    ...res._doc,
+                    id: res._id,
+                    token,
+                }
+            } catch (e) {
+                console.log(e)
+                throw e
             }
         },
         async updateSettings(_, { setting, newValue }, context, info) {

@@ -14,9 +14,7 @@ import FileInput from './FileInput'
 import { useCurrentUser } from '../../../Util/Hooks/useCurrentUser'
 
 export default function PostForm({ setActive, values, removeValue, loading, errors }) {
-    const {
-        user: { username, profileImage },
-    } = useCurrentUser()
+    const { user: { username, profileImage } = {} } = useCurrentUser()
 
     const removeImage = (image) => {
         removeValue({ images: image })
@@ -34,7 +32,7 @@ export default function PostForm({ setActive, values, removeValue, loading, erro
     return (
         <Form.FlexContainer>
             <Form.UserInfo>
-                <Avatar image={profileImage.urls.thumbnail} />
+                <Avatar image={profileImage?.urls?.thumbnail} />
                 <PrivacyContainer>
                     <h3>{username}</h3>
                     <SelectInputContainer>

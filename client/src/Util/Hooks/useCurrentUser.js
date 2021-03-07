@@ -25,7 +25,7 @@ export const useCurrentUser = (props) => {
         if (isLogged) {
             fetchUserData()
         } else {
-            client.clearStore()
+    
         }
     }, [isLogged, fetchUserData, client])
 
@@ -49,5 +49,5 @@ export const useCurrentUser = (props) => {
         [updateSettings]
     )
 
-    return { user, setSettings, loading }
+    return { user, setSettings, loading, isLogged }
 }

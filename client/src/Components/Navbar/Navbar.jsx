@@ -14,12 +14,10 @@ import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 
 export default function Navbar() {
     const location = useLocation()
-    const { user, loading } = useCurrentUser()
-
-    console.log(user)
+    const { user, loading, isLogged } = useCurrentUser()
 
     //navbar shouldn't be rendered on login page
-    const shouldRender = location.pathname !== '/' || !!user
+    const shouldRender = location.pathname !== '/' || isLogged
 
     const isCovered = location.pathname.split('/').some((el) => el === 'image')
 
@@ -65,6 +63,8 @@ export default function Navbar() {
         )
     )
 }
+
+
 
 Navbar.propsTypes = {
     setForm: PropsTypes.func,

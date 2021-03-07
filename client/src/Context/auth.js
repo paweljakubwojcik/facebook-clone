@@ -12,7 +12,7 @@ if (localStorage.getItem('token')) {
     const decodedToken = jwtDecode(localStorage.getItem('token'))
     if (decodedToken.exp * 1000 < Date.now()) localStorage.removeItem('token')
     else {
-        initialState.user = decodedToken.id
+        initialState.userId = decodedToken.id
     }
 }
 
@@ -20,7 +20,7 @@ const AuthContext = createContext({
     userId: null,
     login: (userData) => {},
     logout: () => {},
-    isLogged: false
+    isLogged: false,
 })
 
 function authReducer(state, action) {
@@ -47,8 +47,9 @@ function authReducer(state, action) {
 function AuthProvider(props) {
     const [state, dispatch] = useReducer(authReducer, initialState)
 
+    const apollo = useApolloClient()
+
     const login = (userData) => {
-        
         dispatch({
             type: 'LOGIN',
             payload: userData,
@@ -58,9 +59,14 @@ function AuthProvider(props) {
         dispatch({
             type: 'LOGOUT',
         })
-        
+        apollo.clearStore()
     }
-    return <AuthContext.Provider value={{ userId: state.userId, login, logout, isLogged: !!state.userId }} {...props} />
+    return (
+        <AuthContext.Provider
+            value={{ userId: state.userId, login, logout, isLogged: !!state.userId }}
+            {...props}
+        />
+    )
 }
 
 export { AuthContext, AuthProvider }
