@@ -32,6 +32,8 @@ export default function Navbar() {
         </>
     )
 
+    console.log({ loading, user, shouldRender })
+
     if (!shouldRender) return null
 
     return (

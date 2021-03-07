@@ -93,11 +93,9 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
     }
 
     const PostMenu = () => {
-        const {
-            user: { settings },
-            setSettings,
-        } = useCurrentUser()
+        const { user: { settings } = {}, setSettings, loading } = useCurrentUser()
 
+        if (loading) return null
         return (
             <SubMenuContainer>
                 <SubMenu title={'Post Options'} setActive={setActive}>

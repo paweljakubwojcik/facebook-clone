@@ -16,11 +16,12 @@ import DotLoader from '../../Components/General/DotLoader'
 
 import contentTypes from './contentTypes'
 import { UserMatchContext } from './userMatchContext'
+import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 
 const width = 1000
 
 export default function Profile() {
-    const context = useContext(AuthContext)
+    const context = useCurrentUser()
 
     const params = useParams()
     const id = params.id.replace('-', ' ')
