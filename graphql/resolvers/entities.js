@@ -55,6 +55,7 @@ module.exports = {
             try {
                 const entity = await Entity.findById(id)
                 if (user.id === entity.user.toString()) {
+                    await deleteEntity(id)
                     return 'post deleted succesfully'
                 } else {
                     throw new AuthenticationError('User is not the owner of the post')

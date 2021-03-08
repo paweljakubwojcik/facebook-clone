@@ -96,8 +96,8 @@ export const POST = gql`
 export const GET_POSTS = gql`
     query posts($userId: ID, $limit: Int!, $cursor: ID) {
         posts(userId: $userId, paginationData: { limit: $limit, cursor: $cursor }) {
-           ...PostFragment
-           id
+            ...PostFragment
+            id
         }
     }
 
@@ -118,42 +118,16 @@ export const GET_POST = gql`
 export const ADD_POST = gql`
     mutation createPost($body: String, $privacy: Privacy, $title: String, $images: [Upload]) {
         createPost(body: $body, privacy: $privacy, title: $title, images: $images) {
-            body
-            title
-            commentsCount
             id
-            createdAt
-            reactionsCount
-            user {
-                id
-                username
-                profileImage {
-                    urls {
-                        id
-                        small
-                        medium
-                    }
-                }
-            }
-            comments {
-                ...BaseComment
-            }
-            images {
-                id
-                urls {
-                    id
-                    small
-                    medium
-                }
-            }
+            ...PostFragment
         }
     }
-    ${BASE_COMMENT_FRAGMENT}
+    ${POST}
 `
 
 export const DELETE_POST = gql`
-    mutation deletePost($postId: ID!) {
-        deletePost(postId: $postId)
+    mutation delete($postId: ID!) {
+        delete(id: $postId)
     }
 `
 
@@ -189,8 +163,8 @@ export const LIKE_POST = gql`
     }
 `
 export const DELETE_COMMENT = gql`
-    mutation deleteComment($postId: ID!, $commentId: ID!) {
-        deleteComment(postId: $postId, commentId: $commentId) {
+    mutation delete($postId: ID!, $commentId: ID!) {
+        delete(postId: $postId, commentId: $commentId) {
             id
             commentsCount
             comments {

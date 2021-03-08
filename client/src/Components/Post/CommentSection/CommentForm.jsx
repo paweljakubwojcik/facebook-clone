@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useMutation, gql } from '@apollo/client'
 import PropsTypes from 'prop-types'
@@ -66,7 +66,7 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
                     <FontAwesomeIcon icon={faPaperPlane} />
                 </SquareButton>
             </Form>
-            {error && <ErrorMessage textOnly>Comment cant be empty</ErrorMessage>}
+            {error && <ErrorMessage textOnly>{error.message}</ErrorMessage>}
         </>
     )
 }
@@ -93,8 +93,11 @@ const ADD_COMMENT = gql`
     mutation createComment($body: String!, $postId: ID!) {
         createComment(body: $body, postId: $postId) {
             id
-            username
-            comments {
+            user {
+                id
+                username
+            }
+            comments(paginationData: { limit: 5 }) {
                 ...BaseComment
             }
         }

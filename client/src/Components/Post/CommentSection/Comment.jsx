@@ -45,10 +45,10 @@ export default function Comment({ comment, postId }) {
     const [liked, setLiked] = useState(false)
 
     useEffect(() => {
-        if (context.user && comment.likes.find((like) => like.user.id === context.user.id))
+        if (context.userId && comment.reactions.find((like) => like.user.id === context.userId))
             setLiked(true)
         else setLiked(false)
-    }, [comment.likes, context.user])
+    }, [comment.reactions, context.userId])
 
     const handleClick = (e, callback) => {
         e.target.blur()
@@ -69,18 +69,17 @@ export default function Comment({ comment, postId }) {
                 <Buttons blue={comment.reactionsCount > 0 ? 1 : 0}>
                     <LikesCounter
                         className="likes"
-                        likesCount={comment.reactionsCount}
-                        likes={comment.reactions}
+                        reactionsCount={comment.reactionsCount}
+                        reactions={comment.reactions}
                     />
                     <GenericButton
                         className="button"
                         onClick={(e) => handleClick(e, likeComment)}
                         active={liked}
                     >
-                        {' '}
                         {liked ? 'Liked' : 'Like'}{' '}
                     </GenericButton>
-                    {context?.user?.username === username && (
+                    {context?.userId === userId && (
                         <GenericButton
                             className="button"
                             onClick={(e) => handleClick(e, deleteComment)}

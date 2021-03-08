@@ -143,8 +143,9 @@ module.exports = {
         },
         async comments({ children }, { paginationData: { limit, cursor } }) {
             const index = children.findIndex((id) => id === cursor)
+            const next = index + 1
             return await Promise.all(
-                children.slice(index, index + limit).map((id) => Entity.findById(id))
+                children.slice(next, next + limit).map((id) => Entity.findById(id))
             )
         },
         commentsCount: (parent) => parent.children.length,

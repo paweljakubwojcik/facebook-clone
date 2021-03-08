@@ -3,15 +3,16 @@ const Post = require('../../models/Post')
 const Entity = require('../../models/Entity')
 const User = require('../../models/User')
 const checkAuth = require('../../utils/checkAuth')
+const { savePictureToDB } = require('./methods/savePictureToDB')
 
 module.exports = {
     Mutation: {
         createComment: async (_, { postId, body, image }, context) => {
             try {
-                const { id } = checkAuth(context)
+                const user = checkAuth(context)
 
                 if (body.trim() === '') {
-                    throw new UserInputError('Empty comment', {
+                    throw new UserInputError('Coment body must not be empty', {
                         errors: {
                             body: 'Coment body must not be empty',
                         },
@@ -26,14 +27,15 @@ module.exports = {
                     body,
                     createdAt: new Date().toISOString(),
                     timestamp: Date.now(),
-                    user: id,
+                    user: user.id,
                     images: [],
                     parent: postId,
                     children: [],
                 })
-
-                const imageId = await savePictureToDB(image, user, { post: comment })
-                comment.images = [imageId]
+                if (image) {
+                    const imageId = await savePictureToDB(image, user, { post: comment })
+                    comment.images = [imageId]
+                }
 
                 const commentId = await comment.save()
                 post.children.unshift(commentId.id)
