@@ -1,13 +1,10 @@
 const { AuthenticationError, UserInputError } = require('apollo-server')
-const Post = require('../../models/Post')
 const Entity = require('../../models/Entity')
 const User = require('../../models/User')
 const Image = require('../../models/Image')
 const checkAuth = require('../../utils/checkAuth')
-const comments = require('./comments')
 
 const { savePictureToDB } = require('./methods/savePictureToDB')
-const { deletePicture } = require('../../services/firebaseStorage')
 
 module.exports = {
     Query: {
@@ -72,7 +69,7 @@ module.exports = {
         },
         async post(_, { postId }) {
             try {
-                const post = await Entity.findById(postId) //Post from mongoose Schemes
+                const post = await Entity.findById(postId)
                 return post
             } catch (err) {
                 throw new Error('Post not found')

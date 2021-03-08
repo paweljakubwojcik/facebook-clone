@@ -58,7 +58,7 @@ module.exports = {
                 }
 
                 const comment = await Entity.findById(commentId)
-                if (!post) throw new UserInputError('Post not found')
+                if (!post) throw new UserInputError('Comment not found')
 
                 const reply = new Entity({
                     type: 'REPLY',
