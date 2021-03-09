@@ -27,7 +27,6 @@ function ThemesProvider(props) {
     }
 
     const [state, setState] = useState(initialState)
-    const { themeName } = state
 
     const changeTheme = (themeName) => {
         setSettings('preferredTheme', themeName, () => {
@@ -42,12 +41,12 @@ function ThemesProvider(props) {
     // to make sure theme is consistent across multiple devices
     useEffect(() => {
         if (settings?.preferredTheme && settings.preferredTheme !== state.themeName)
-            setState({ theme: themes[themeName], themeName })
+            setState({ theme: themes[settings.preferredTheme], themeName: settings.preferredTheme })
         return () => {}
-    }, [settings, setState, state, themeName])
+    }, [settings, setState, state])
 
     return (
-        <ThemeContext.Provider value={{ changeTheme, themeName }} {...props}>
+        <ThemeContext.Provider value={{ changeTheme, themeName: state.themeName }} {...props}>
             <ThemeProvider theme={state.theme}>{props.children}</ThemeProvider>
         </ThemeContext.Provider>
     )
