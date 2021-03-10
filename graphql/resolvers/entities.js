@@ -23,10 +23,14 @@ module.exports = {
                         user,
                     })
                 }
-                const reaction = entity.reactions.find((reaction) => reaction.user == user)
+                const reaction = entity.reactions.find(
+                    (reaction) => reaction.user.toString() === user
+                )
                 if (reaction) {
                     // Post already has a reaction
-                    entity.reactions = entity.reactions.filter((reaction) => reaction.user != user)
+                    entity.reactions = entity.reactions.filter(
+                        (reaction) => reaction.user.toString() !== user
+                    )
                     if (reaction.type !== type) addReaction()
                 } else {
                     addReaction()
@@ -48,7 +52,7 @@ module.exports = {
                 if (entity.children.length)
                     await Promise.all(entity.children.map((id) => deleteEntity(id)))
                 //deleting the entity
-                await entity.delete()
+                return await entity.delete()
             }
 
             const user = checkAuth(context)
@@ -62,11 +66,9 @@ module.exports = {
                         parent.children = parent.children.filter(
                             (child) => child.toString() !== entity.id
                         )
-                        await parent.save() 
+                        await parent.save()
                     }
-
-                    await deleteEntity(id)
-                    return 'post deleted succesfully'
+                    return await deleteEntity(id)
                 } else {
                     throw new AuthenticationError('User is not the owner of the post')
                 }

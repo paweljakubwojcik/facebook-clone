@@ -6,20 +6,22 @@ import { SquareButton } from '../General/Buttons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 
-import { LIKE_POST } from '../../Util/GraphQL_Queries'
+import { REACT } from '../../Util/GraphQL_Queries'
+
+import ReactionPicker from './ReactionPicker'
 
 export default function LikeButton({ postData }) {
-    const { user } = useContext(AuthContext)
+    const { userId, isLogged } = useContext(AuthContext)
     const [liked, setLiked] = useState(false)
     const { id, reactions } = postData
 
     useEffect(() => {
-        if (user && reactions.find((like) => like.user.id === user.id)) setLiked(true)
+        if (isLogged && reactions.find((like) => like.user.id === userId)) setLiked(true)
         else setLiked(false)
-    }, [reactions, user])
+    }, [reactions, userId, isLogged])
 
-    const [likePost, { loading }] = useMutation(LIKE_POST, {
-        variables: { postId: id },
+    const [likePost, { loading }] = useMutation(REACT, {
+        variables: { id },
         onError(err) {
             console.log(err)
         },
@@ -35,13 +37,17 @@ export default function LikeButton({ postData }) {
     }
 
     return (
-        <SquareButton
-            onClick={handleOnClick}
-            inactive={loading}
-            active={liked}
-        >
-            <FontAwesomeIcon className="icon" icon={faThumbsUp} />
-            {liked ? 'Liked !' : 'Like !'}
-        </SquareButton>
+        <ReactionPicker.Container style={{ display: 'flex' }}>
+            <ReactionPicker />
+            <SquareButton
+                onClick={handleOnClick}
+                inactive={loading}
+                active={liked}
+                style={{ flex: 1 }}
+            >
+                <FontAwesomeIcon className="icon" icon={faThumbsUp} />
+                {liked ? 'Liked !' : 'Like !'}
+            </SquareButton>
+        </ReactionPicker.Container>
     )
 }

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useQuery, useMutation } from '@apollo/client'
-import { LIKE_COMMENT, DELETE_COMMENT, GET_USER_PIC } from '../../../Util/GraphQL_Queries'
+import { REACT, DELETE } from '../../../Util/GraphQL_Queries'
 import { AuthContext } from '../../../Context/auth'
 import moment from 'moment'
 
@@ -14,27 +14,34 @@ export default function Comment({ comment, postId }) {
     const context = useContext(AuthContext)
     const { id: userId, username, profileImage } = comment.user
 
-    //because getting all info about user straight in posts query qoused some problems
-    /* const { data: { user: { profileImage } = {} } = {} } = useQuery(GET_USER_PIC, {
+    const [deleteComment] = useMutation(DELETE, {
         variables: {
-            userId,
+            id: comment.id,
         },
-    }) */
+        update(cache, data) {
+            console.log('comment has been removed')
+            console.log(cache.identify(`${postId}`))
 
-    const [deleteComment] = useMutation(DELETE_COMMENT, {
-        variables: {
-            postId,
-            commentId: comment.id,
-        },
-        update() {
-            console.log('comment deleted')
+            const isSuccesfull = cache.modify({
+                id: `Post:${postId}`,
+                fields: {
+                    comments(existingCommentRefs, { readField }) {
+                        return existingCommentRefs.filter(
+                            (commentRef) => comment.id !== readField('id', commentRef)
+                        )
+                    },
+                    commentsCount(existing) {
+                        return existing - 1
+                    },
+                },
+            })
+            console.log(isSuccesfull)
         },
     })
 
-    const [likeComment] = useMutation(LIKE_COMMENT, {
+    const [likeComment] = useMutation(REACT, {
         variables: {
-            postId,
-            commentId: comment.id,
+            id: comment.id,
             type: 'LIKE',
         },
         update() {

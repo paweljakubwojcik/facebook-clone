@@ -134,16 +134,14 @@ module.exports = {
         async user({ user }) {
             return await User.findById(user)
         },
-        async images({ id, images }) {
-            if (images.length) return await Promise.all(images.map((img) => Image.findById(img)))
+        async images({ id }) {
             return await Image.find({ post: id })
         },
-        async comments({ children }, { paginationData: { limit, cursor } }) {
-            const index = children.findIndex((id) => id === cursor)
+        async comments({ id }, { paginationData: { limit, cursor } }) {
+            const comments = await Entity.find({ parent: id })
+            const index = comments.findIndex(({ _id }) => _id === cursor)
             const next = index + 1
-            return await Promise.all(
-                children.slice(next, next + limit).map((id) => Entity.findById(id))
-            )
+            return comments.slice(next, next + limit)
         },
         commentsCount: (parent) => parent.children.length,
         reactionsCount: (parent) => parent.reactions.length,

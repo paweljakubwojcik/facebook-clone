@@ -3,7 +3,11 @@ const { model, Schema } = require('mongoose')
 const reaction = {
     createdAt: String,
     timestamp: Number,
-    type: String,
+    type: {
+        type: String,
+        required: true,
+        enum: ['LIKE', 'LOVE', 'CARE', 'HAHA', 'WOW', 'SAD', 'ANGRY'],
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'users',

@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+import { defaultCommentLimit } from '../Constants/defaultPagination'
 
 export const BASE_COMMENT_FRAGMENT = gql`
     fragment BaseComment on Comment {
@@ -49,7 +50,7 @@ export const POST = gql`
                 }
             }
         }
-        comments(paginationData: { limit: 5 }) {
+        comments(paginationData: { limit: ${defaultCommentLimit} }) {
             id
             body
             createdAt
@@ -75,6 +76,7 @@ export const POST = gql`
         }
         reactions {
             id
+            createdAt
             timestamp
             user {
                 id
@@ -127,7 +129,9 @@ export const ADD_POST = gql`
 
 export const DELETE_POST = gql`
     mutation delete($postId: ID!) {
-        delete(id: $postId)
+        delete(id: $postId) {
+            id
+        }
     }
 `
 
@@ -144,9 +148,9 @@ export const EDIT_POST = gql`
     }
 `
 
-export const LIKE_POST = gql`
-    mutation reactToPost($postId: ID!, $type: String!) {
-        reactToPost(postId: $postId, type: $type) {
+export const REACT = gql`
+    mutation react($id: ID!, $type: ReactionType!) {
+        react(id: $id, type: $type) {
             id
             reactions {
                 id
@@ -162,35 +166,38 @@ export const LIKE_POST = gql`
         }
     }
 `
-export const DELETE_COMMENT = gql`
-    mutation delete($postId: ID!, $commentId: ID!) {
-        delete(postId: $postId, commentId: $commentId) {
-            id
-            commentsCount
-            comments {
-                id
-                body
-                user {
-                    id
-                    username
-                }
-            }
-        }
-    }
-`
 
-export const LIKE_COMMENT = gql`
-    mutation reactToComment($postId: ID!, $commentId: ID!, $type: String!) {
-        reactToComment(postId: $postId, commentId: $commentId, type: $type) {
+/*
+ISSUE - POTENTIAL SOURCE OF BUGS in future
+This must be exacly the same shape as comments on getPosts query,
+otherwise apollo makes new request to server to get rest of fields 
+and as a result pagination breaks 
+ 
+SOLVED
+using GraphQL Fragments,
+in other words making sure that apollo doesnt need to refetch missing fields 
+*/
+export const ADD_COMMENT = gql`
+    mutation createComment($body: String!, $postId: ID!) {
+        createComment(body: $body, postId: $postId) {
             id
-            comments {
+            user {
+                id
+                username
+            }
+            commentsCount
+            comments(paginationData: { limit: 5 }) {
                 ...BaseComment
-                reactions {
-                    id
-                }
-                reactionCount
             }
         }
     }
     ${BASE_COMMENT_FRAGMENT}
+`
+
+export const DELETE = gql`
+    mutation delete($id: ID!) {
+        delete(id: $id) {
+            id
+        }
+    }
 `

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import PropsTypes from 'prop-types'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -31,8 +31,6 @@ export default function Navbar() {
             </Link>
         </>
     )
-
-    console.log({ loading, user, shouldRender })
 
     if (!shouldRender) return null
 

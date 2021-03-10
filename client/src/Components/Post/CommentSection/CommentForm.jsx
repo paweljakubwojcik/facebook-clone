@@ -6,7 +6,7 @@ import PropsTypes from 'prop-types'
 import Avatar from '../../General/Avatar'
 import { SquareButton } from '../../General/Buttons'
 import ErrorMessage from '../../General/ErrorMessage'
-import { BASE_COMMENT_FRAGMENT } from '../../../Util/GraphQL_Queries'
+import { ADD_COMMENT } from '../../../Util/GraphQL_Queries'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
@@ -78,32 +78,6 @@ CommentForm.propTypes = {
         setFocus: PropsTypes.func.isRequired,
     }),
 }
-
-/*
-ISSUE - POTENTIAL SOURCE OF BUGS in future
-This must be exacly the same shape as comments on getPosts query,
-otherwise apollo makes new request to server to get rest of fields 
-and as a result pagination breaks 
- 
-SOLVED
-using GraphQL Fragments,
-in other words making sure that apollo doesnt need to refetch missing fields 
-*/
-const ADD_COMMENT = gql`
-    mutation createComment($body: String!, $postId: ID!) {
-        createComment(body: $body, postId: $postId) {
-            id
-            user {
-                id
-                username
-            }
-            comments(paginationData: { limit: 5 }) {
-                ...BaseComment
-            }
-        }
-    }
-    ${BASE_COMMENT_FRAGMENT}
-`
 
 const Form = styled.form`
     display: flex;

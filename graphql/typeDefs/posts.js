@@ -27,7 +27,7 @@ module.exports = gql`
         body: String
         title: String
         createdAt: String!
-        timestamp: Int!
+        timestamp: Float!
         user: User!
         comments(paginationData: CursorBasedPagination!): [Comment]!
         reactions: [Reaction]!
@@ -41,7 +41,7 @@ module.exports = gql`
     type Comment implements Entity {
         id: ID!
         createdAt: String!
-        timestamp: Int!
+        timestamp: Float!
         user: User!
         body: String!
         reactions: [Reaction]!
@@ -54,7 +54,7 @@ module.exports = gql`
     type Reply implements Entity {
         id: ID!
         createdAt: String!
-        timestamp: Int!
+        timestamp: Float!
         user: User!
         body: String!
         reactions: [Reaction]!

@@ -14,7 +14,7 @@ module.exports = gql`
     type Reaction {
         id: ID!
         createdAt: String!
-        timestamp: Int!
+        timestamp: Float!
         user: User!
         type: ReactionType
     }
@@ -22,7 +22,7 @@ module.exports = gql`
     interface Entity {
         id: ID!
         createdAt: String!
-        timestamp: Int!
+        timestamp: Float!
         user: User!
         body: String
         reactions: [Reaction]!
@@ -35,6 +35,6 @@ module.exports = gql`
 
     extend type Mutation {
         react(id: ID!, type: ReactionType!): Entity!
-        delete(id: ID): String!
+        delete(id: ID): Entity!
     }
 `
