@@ -11,6 +11,7 @@ export default function PopUpElement({
     showRight,
     showLeft,
     showAbove,
+    showUnder,
     children,
     delay = 0,
     ...rest
@@ -32,6 +33,7 @@ export default function PopUpElement({
                             showRight={showRight}
                             showAbove={showAbove}
                             showLeft={showLeft}
+                            showUnder={showUnder}
                         >
                             {children}
                         </Container>
@@ -47,7 +49,7 @@ const Container = styled.div`
     z-index: 3;
     left: ${(props) => {
         if (props.showRight) return `100%;`
-        if (props.showAbove) return `50%;`
+        if (props.showAbove || props.showUnder) return `50%;`
         if (props.showLeft) return `0`
     }};
 
@@ -55,12 +57,14 @@ const Container = styled.div`
         if (props.showRight) return `50%;`
         if (props.showAbove) return `0;`
         if (props.showLeft) return `50%;`
+        if (props.showUnder) return `100%;`
     }};
 
     transform: translate(-105%, -50%);
     ${(props) => {
         if (props.showRight) return `transform: translate(0, -50%);`
-        if (props.showAbove) return `transform: translate(-50%, -100%);`
+        if (props.showAbove ) return `transform: translate(-50%, -100%);`
+        if (props.showUnder) return `transform: translate(-50%, 0%);`
     }}
 
     //css animations here

@@ -7,7 +7,7 @@ import icons from '../../Util/Constants/reactionsIcons'
 export default function ReactionPicker({ react, isVisible }) {
     return (
         <PopUpElement isVisible={isVisible} showAbove delay={200} noExtension>
-            <AnotherContainer noMargins>
+            <AnotherContainer noMargins noPadding>
                 <IconsContainer>
                     {Object.entries(icons).map(([key, Icon], i) => (
                         <Button key={key} delay={i * 50} onClick={() => react(key.toUpperCase())}>
@@ -15,7 +15,7 @@ export default function ReactionPicker({ react, isVisible }) {
                         </Button>
                     ))}
                 </IconsContainer>
-                <ReallySmallAttribute>
+              {/*   <ReallySmallAttribute>
                     Icons made by
                     <a href="https://www.freepik.com" title="Freepik">
                         Freepik
@@ -24,7 +24,7 @@ export default function ReactionPicker({ react, isVisible }) {
                     <a href="https://www.flaticon.com/" title="Flaticon">
                         www.flaticon.com
                     </a>
-                </ReallySmallAttribute>
+                </ReallySmallAttribute> */}
             </AnotherContainer>
         </PopUpElement>
     )
@@ -32,7 +32,7 @@ export default function ReactionPicker({ react, isVisible }) {
 
 ReactionPicker.propTypes = {
     react: PropTypes.func.isRequired,
-    isVisible: PropTypes.bool.isRequired
+    isVisible: PropTypes.bool.isRequired,
 }
 
 ReactionPicker.Container = styled.div`
@@ -47,9 +47,10 @@ const AnotherContainer = styled(ElementContainer)`
 
 const ReallySmallAttribute = styled.div`
     font-size: 0.5em;
-    opacity: 0.8;
+    opacity: 0.4;
     position: absolute;
     width: 100%;
+    
 `
 
 const IconsContainer = styled.div`
@@ -150,7 +151,7 @@ const Button = styled.button`
     align-items: center;
     justify-content: center;
 
-    margin: 0.1em;
+    margin: .3em 0.2em;
 
     height: 2rem;
     width: 2rem;

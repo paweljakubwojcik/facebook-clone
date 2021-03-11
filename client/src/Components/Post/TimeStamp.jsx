@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import styled from 'styled-components/macro'
 
 import PopUpElement from '../General/PopUpElement'
 
-export default function TimeStamp({ time }) {
+dayjs.extend(relativeTime)
+
+export default function TimeStamp({ time, ...rest }) {
     const [isHovered, setHover] = useState(false)
 
     const handleMouseEnter = () => {
@@ -15,7 +18,7 @@ export default function TimeStamp({ time }) {
         setHover(false)
     }
 
-    const date = moment(time).format('MMMM Do YYYY, h:mm:ss a')
+    const date = dayjs(time).format('MMMM Do YYYY, h:mm:ss a')
 
     return (
         <Stamp
@@ -24,8 +27,9 @@ export default function TimeStamp({ time }) {
             onFocus={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onBlur={handleMouseLeave}
+            {...rest}
         >
-            {moment(time).fromNow()}
+            {dayjs(time).fromNow()}
             <PopUpElement isVisible={isHovered} showRight>
                 <Time>{date}</Time>
             </PopUpElement>

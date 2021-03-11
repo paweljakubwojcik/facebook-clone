@@ -3,18 +3,16 @@ import { useMutation } from '@apollo/client'
 import { AuthContext } from '../../Context/auth'
 
 import { SquareButton } from '../General/Buttons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 
 import { REACT } from '../../Util/GraphQL_Queries'
 
 import ReactionPicker from './ReactionPicker'
 import icons from '../../Util/Constants/reactionsIcons'
 
-export default function LikeButton({ postData }) {
+export default function LikeButton({ data, customButton }) {
     const { userId, isLogged } = useContext(AuthContext)
     const [reaction, setReaction] = useState(null)
-    const { id, reactions } = postData
+    const { id, reactions } = data
     const [pickerVisible, setPicker] = useState(false)
 
     useEffect(() => {
@@ -23,15 +21,15 @@ export default function LikeButton({ postData }) {
         else setReaction(null)
     }, [reactions, userId, isLogged])
 
-    const [likePost, { loading }] = useMutation(REACT, {
+    const [reactToThis, { loading }] = useMutation(REACT, {
         variables: { id },
         onError(err) {
             console.log(err)
         },
     })
 
-    const reactToPost = (type) => {
-        likePost({
+    const react = (type) => {
+        reactToThis({
             variables: {
                 type: type,
             },
@@ -40,22 +38,24 @@ export default function LikeButton({ postData }) {
 
     const Reaction = icons[reaction ? reaction : 'LIKE']
 
+    const Button = customButton ? customButton : SquareButton
+
     return (
         <ReactionPicker.Container
             style={{ display: 'flex' }}
             onMouseEnter={() => setPicker(true)}
             onMouseLeave={() => setPicker(false)}
         >
-            <ReactionPicker react={reactToPost} isVisible={pickerVisible} />
-            <SquareButton
-                onClick={() => reactToPost(reaction ? reaction : 'LIKE')}
+            <ReactionPicker react={react} isVisible={pickerVisible} />
+            <Button
+                onClick={() => react(reaction ? reaction : 'LIKE')}
                 inactive={loading}
                 active={!!reaction}
-                style={{ flex: 1 }}
+                style={{ flex: 1, padding: 0, margin: 0 }}
             >
                 <Reaction style={{ width: '1em', height: '1em' }} />
                 {reaction ? reaction.slice(0, 1) + reaction.slice(1).toLowerCase() : 'Like !'}
-            </SquareButton>
+            </Button>
         </ReactionPicker.Container>
     )
 }

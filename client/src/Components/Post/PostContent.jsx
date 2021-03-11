@@ -84,7 +84,7 @@ export default function PostContent({ post, noImages }) {
 
             {context.isLogged && (
                 <PostCardButtonsContainer>
-                    <LikeButton postData={{ id, reactions }} />
+                    <LikeButton data={{ id, reactions }} />
                     <SquareButton onClick={engageComment}>
                         <FontAwesomeIcon className="icon" icon={faComment} />
                         Comment

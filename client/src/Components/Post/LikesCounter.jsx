@@ -6,6 +6,8 @@ import styled from 'styled-components'
 import PopUpElement from '../General/PopUpElement'
 import PopUpList from './PopUpList'
 
+import icons from '../../Util/Constants/reactionsIcons'
+
 // TODO: ograniczyć wyświetlanie gdy likeów jest bardzo dużo
 
 export default function LikesCounter({ reactionsCount, reactions, ...rest }) {
@@ -23,11 +25,12 @@ export default function LikesCounter({ reactionsCount, reactions, ...rest }) {
     const areThereAnyLikes = reactionsCount !== 0;
     const isVisible = isHovered && areThereAnyLikes;
 
+
     return (
         <CounterLikes {...rest} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} blue={areThereAnyLikes}>
             <FontAwesomeIcon className="icon" icon={faThumbsUp} />
             {reactionsCount}
-            <PopUpElement isVisible={isVisible} showRight>
+            <PopUpElement isVisible={isVisible} showUnder>
                 <PopUpList list={reactions}></PopUpList>
             </PopUpElement>
         </CounterLikes>
