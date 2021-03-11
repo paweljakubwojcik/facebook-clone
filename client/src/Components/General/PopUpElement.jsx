@@ -51,7 +51,11 @@ const Container = styled.div`
         if (props.showLeft) return `0`
     }};
 
-    top: 50%;
+    top: ${(props) => {
+        if (props.showRight) return `50%;`
+        if (props.showAbove) return `0;`
+        if (props.showLeft) return `50%;`
+    }};
 
     transform: translate(-105%, -50%);
     ${(props) => {

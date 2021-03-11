@@ -1,46 +1,38 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 import ElementContainer from '../General/ElementContainer'
-
-import { ReactComponent as Angry } from '../../styles/svg/reactions/angry.svg'
-import { ReactComponent as Happy } from '../../styles/svg/reactions/happy.svg'
-import { ReactComponent as Love } from '../../styles/svg/reactions/in-love.svg'
-import { ReactComponent as Haha } from '../../styles/svg/reactions/laugh.svg'
-import { ReactComponent as Wow } from '../../styles/svg/reactions/surprised.svg'
-import { ReactComponent as Sad } from '../../styles/svg/reactions/worried.svg'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
-
-const icons = { Love, Happy, Haha, Wow, Angry, Sad }
-export default function ReactionPicker({ visible }) {
+import PopUpElement from '../General/PopUpElement'
+import PropTypes from 'prop-types'
+import icons from '../../Util/Constants/reactionsIcons'
+export default function ReactionPicker({ react, isVisible }) {
     return (
-        <AnotherContainer noMargins>
-            <IconsContainer>
-                <Button delay={0}>
-                    <FontAwesomeIcon
-                        style={{ width: '1em', height: '1em' }}
-                        icon={faThumbsUp}
-                        className="Like"
-                    />
-                </Button>
-                {Object.entries(icons).map(([key, Icon], i) => (
-                    <Button key={key} delay={i * 50 + 100}>
-                        <Icon style={{ width: '1em', height: '1em' }} className={`${key}`} />
-                    </Button>
-                ))}
-            </IconsContainer>
-            <ReallySmallAttribute>
-                Icons made by
-                <a href="https://www.freepik.com" title="Freepik">
-                    Freepik
-                </a>
-                from
-                <a href="https://www.flaticon.com/" title="Flaticon">
-                    www.flaticon.com
-                </a>
-            </ReallySmallAttribute>
-        </AnotherContainer>
+        <PopUpElement isVisible={isVisible} showAbove delay={200} noExtension>
+            <AnotherContainer noMargins>
+                <IconsContainer>
+                    {Object.entries(icons).map(([key, Icon], i) => (
+                        <Button key={key} delay={i * 50} onClick={() => react(key.toUpperCase())}>
+                            <Icon style={{ width: '1em', height: '1em' }} className={`${key}`} />
+                        </Button>
+                    ))}
+                </IconsContainer>
+                <ReallySmallAttribute>
+                    Icons made by
+                    <a href="https://www.freepik.com" title="Freepik">
+                        Freepik
+                    </a>
+                    from
+                    <a href="https://www.flaticon.com/" title="Flaticon">
+                        www.flaticon.com
+                    </a>
+                </ReallySmallAttribute>
+            </AnotherContainer>
+        </PopUpElement>
     )
+}
+
+ReactionPicker.propTypes = {
+    react: PropTypes.func.isRequired,
+    isVisible: PropTypes.bool.isRequired
 }
 
 ReactionPicker.Container = styled.div`
@@ -95,7 +87,7 @@ const LikeAnimation = keyframes`
 `
 
 //TODO: animations, gsap will be probably best for this
-const LoveAnimation = keyframes`
+/* const LoveAnimation = keyframes`
     0% {
         .eye{
             top:0;
@@ -107,35 +99,32 @@ const LoveAnimation = keyframes`
         }
     }
 
-`
+` */
 
 const Animation = keyframes`
     0% {
         transform: translateY(0%);
     }
-    20% {
-        transform: translateY(0%);
-    }
-    30%{
+    10%{
          transform: rotate(4deg) scale(1.3);
     }
-    35%{
+    20%{
          transform:  rotate(15deg) scale(1.3);
     }
-    40%{
+    30%{
         transform:  rotate(-15deg) scale(1.3);
     }
-    45%{
+    40%{
         transform:  rotate(10deg) scale(1.3);
     }
-    60%{
+    50%{
         transform:  rotate(10deg) scale(1.3);
     }
-    70% { 
+    60% { 
          transform:  scale(1);
     }
-    80% { 
-         transform:  rotate(0deg);
+    70% { 
+         transform:  rotate(-20deg);
     }
     100% {
      transform:  rotate(360deg);
@@ -178,9 +167,6 @@ const Button = styled.button`
         }
         .Like {
             animation: ${LikeAnimation} 3s infinite;
-        }
-        .Love {
-            animation: ${LoveAnimation} 3s infinite;
         }
     }
 

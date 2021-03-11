@@ -20,6 +20,7 @@ export const BASE_COMMENT_FRAGMENT = gql`
         }
         reactions {
             id
+            type
             user {
                 id
                 username
@@ -68,6 +69,7 @@ export const POST = gql`
             }
             reactions {
                 id
+                type
                 user {
                     id
                     username
@@ -78,6 +80,7 @@ export const POST = gql`
             id
             createdAt
             timestamp
+            type
             user {
                 id
                 username

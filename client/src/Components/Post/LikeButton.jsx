@@ -9,17 +9,18 @@ import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { REACT } from '../../Util/GraphQL_Queries'
 
 import ReactionPicker from './ReactionPicker'
-import PopUpElement from '../General/PopUpElement'
+import icons from '../../Util/Constants/reactionsIcons'
 
 export default function LikeButton({ postData }) {
     const { userId, isLogged } = useContext(AuthContext)
-    const [liked, setLiked] = useState(false)
+    const [reaction, setReaction] = useState(null)
     const { id, reactions } = postData
     const [pickerVisible, setPicker] = useState(false)
 
     useEffect(() => {
-        if (isLogged && reactions.find((like) => like.user.id === userId)) setLiked(true)
-        else setLiked(false)
+        const foundReaction = reactions.find((like) => like.user.id === userId)
+        if (isLogged && foundReaction) setReaction(foundReaction.type)
+        else setReaction(null)
     }, [reactions, userId, isLogged])
 
     const [likePost, { loading }] = useMutation(REACT, {
@@ -29,14 +30,15 @@ export default function LikeButton({ postData }) {
         },
     })
 
-    const handleOnClick = (e) => {
-        e.target.blur()
+    const reactToPost = (type) => {
         likePost({
             variables: {
-                type: 'LIKE',
+                type: type,
             },
         })
     }
+
+    const Reaction = icons[reaction ? reaction : 'LIKE']
 
     return (
         <ReactionPicker.Container
@@ -44,17 +46,15 @@ export default function LikeButton({ postData }) {
             onMouseEnter={() => setPicker(true)}
             onMouseLeave={() => setPicker(false)}
         >
-            <PopUpElement isVisible={pickerVisible} showAbove delay={200}>
-                <ReactionPicker />
-            </PopUpElement>
+            <ReactionPicker react={reactToPost} isVisible={pickerVisible} />
             <SquareButton
-                onClick={handleOnClick}
+                onClick={() => reactToPost(reaction ? reaction : 'LIKE')}
                 inactive={loading}
-                active={liked}
+                active={!!reaction}
                 style={{ flex: 1 }}
             >
-                <FontAwesomeIcon className="icon" icon={faThumbsUp} />
-                {liked ? 'Liked !' : 'Like !'}
+                <Reaction style={{ width: '1em', height: '1em' }} />
+                {reaction ? reaction.slice(0, 1) + reaction.slice(1).toLowerCase() : 'Like !'}
             </SquareButton>
         </ReactionPicker.Container>
     )
