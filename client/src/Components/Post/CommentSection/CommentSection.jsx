@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useQuery } from '@apollo/client'
 
@@ -14,7 +14,7 @@ import { FETCH_COMMENTS } from '../../../Util/GraphQL_Queries'
 export default function CommentSection({ postId, inputFocus, setFocus, commentsCount }) {
     const context = useContext(AuthContext)
 
-    const [canFetchMore, setCanFetchMore] = useState(true)
+    const [canFetchMore, setCanFetchMore] = useState(false)
 
     const { data: { post: { comments } = {} } = {}, fetchMore } = useQuery(FETCH_COMMENTS, {
         variables: {
@@ -30,12 +30,13 @@ export default function CommentSection({ postId, inputFocus, setFocus, commentsC
             variables: {
                 cursor: areThereAnyComments ? comments[comments.length - 1].id : null,
             },
-        }).then(() => {
-            //when all posts have been fetched
-            if (comments.length === commentsCount) setCanFetchMore(false)
-            console.log(comments)
         })
     }
+
+    useEffect(() => {
+        //when all posts have been fetched
+        setCanFetchMore(!(comments?.length === commentsCount))
+    }, [comments, commentsCount])
 
     return (
         <>

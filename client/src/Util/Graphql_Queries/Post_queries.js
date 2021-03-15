@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client'
-import { defaultCommentLimit } from '../Constants/defaultPagination'
 
 export const BASE_COMMENT_FRAGMENT = gql`
     fragment BaseComment on Comment {
