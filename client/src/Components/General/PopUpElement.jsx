@@ -63,7 +63,7 @@ const Container = styled.div`
     transform: translate(-105%, -50%);
     ${(props) => {
         if (props.showRight) return `transform: translate(0, -50%);`
-        if (props.showAbove ) return `transform: translate(-50%, -100%);`
+        if (props.showAbove) return `transform: translate(-50%, -100%);`
         if (props.showUnder) return `transform: translate(-50%, 0%);`
     }}
 
@@ -89,12 +89,25 @@ const Container = styled.div`
         ${(props) => (!props.noExtension ? `content: '' ` : '')};
         display: block;
         position: absolute;
-        left: 50%;
+        left: 100%;
         top: 50%;
-        transform: translate(50%, -50%);
-        ${(props) => (props.showRight ? `transform: translate(-100%, -50%);` : '')}
-        width:50%;
-        height: 40%;
+        transform: translate(0, -50%);
+        ${(props) => {
+            if (props.showRight)
+                return `left: 0;
+                        top: 50%;
+                        transform: translate(0, -50%);`
+            if (props.showAbove)
+                return `left: 50%;
+                        top: 100%;
+                        transform: translate(-50%, -90%);`
+            if (props.showUnder)
+                return `left: 50%;
+                        top: 0%;
+                        transform: translate(-50%, -70%);`
+        }};
+        width: 3em;
+        height: 3em;
         z-index: -1;
     }
 `

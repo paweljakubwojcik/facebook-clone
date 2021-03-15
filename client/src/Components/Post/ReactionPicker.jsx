@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import icons from '../../Util/Constants/reactionsIcons'
 export default function ReactionPicker({ react, isVisible }) {
     return (
-        <PopUpElement isVisible={isVisible} showAbove delay={200} noExtension>
+        <PopUpElement isVisible={isVisible} showAbove delay={200}>
             <AnotherContainer noMargins noPadding>
                 <IconsContainer>
                     {Object.entries(icons).map(([key, Icon], i) => (
@@ -15,7 +15,7 @@ export default function ReactionPicker({ react, isVisible }) {
                         </Button>
                     ))}
                 </IconsContainer>
-              {/*   <ReallySmallAttribute>
+                {/*   <ReallySmallAttribute>
                     Icons made by
                     <a href="https://www.freepik.com" title="Freepik">
                         Freepik
@@ -50,7 +50,6 @@ const ReallySmallAttribute = styled.div`
     opacity: 0.4;
     position: absolute;
     width: 100%;
-    
 `
 
 const IconsContainer = styled.div`
@@ -125,10 +124,10 @@ const Animation = keyframes`
          transform:  scale(1);
     }
     70% { 
-         transform:  rotate(-20deg);
+         transform:  rotate(-0deg);
     }
     100% {
-     transform:  rotate(360deg);
+        transform:  rotate(0deg);
     }
 
 `
@@ -151,7 +150,7 @@ const Button = styled.button`
     align-items: center;
     justify-content: center;
 
-    margin: .3em 0.2em;
+    margin: 0.3em 0.2em;
 
     height: 2rem;
     width: 2rem;

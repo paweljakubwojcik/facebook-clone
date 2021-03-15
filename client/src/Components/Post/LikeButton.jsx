@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
+import styled from 'styled-components/macro'
 import { useMutation } from '@apollo/client'
+import { SwitchTransition, CSSTransition } from 'react-transition-group'
 import { AuthContext } from '../../Context/auth'
 
 import { SquareButton } from '../General/Buttons'
@@ -53,9 +55,36 @@ export default function LikeButton({ data, customButton }) {
                 active={!!reaction}
                 style={{ flex: 1, padding: 0, margin: 0 }}
             >
-                <Reaction style={{ width: '1em', height: '1em' }} />
+                <SwitchTransition>
+                    <CSSTransition
+                        key={reaction}
+                        timeout={{ enter: 700, exit: 100 }}
+                        classNames="anim"
+                    >
+                        <AnimatedReaction as={Reaction} style={{ width: '1em', height: '1em' }} />
+                    </CSSTransition>
+                </SwitchTransition>
                 {reaction ? reaction.slice(0, 1) + reaction.slice(1).toLowerCase() : 'Like !'}
             </Button>
         </ReactionPicker.Container>
     )
 }
+
+const AnimatedReaction = styled.div`
+    margin: 0.2em;
+    &.anim-enter {
+        transform: scale(1.7);
+    }
+    &.anim-enter-active {
+        transform: scale(1);
+        transition: transform 0.4s 0.3s;
+    }
+    &.anim-exit {
+        opacity: 1;
+    }
+    &.anim-exit-active {
+        transform: scale(0);
+        opacity: 0;
+        transition: transform 0.2s, opacity 0.4s;
+    }
+`
