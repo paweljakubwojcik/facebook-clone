@@ -20,10 +20,7 @@ export default function Comment({ comment, postId }) {
             id: comment.id,
         },
         update(cache, data) {
-            console.log('comment has been removed')
-            console.log(cache.identify(`${postId}`))
-
-            const isSuccesfull = cache.modify({
+            const succes = cache.modify({
                 id: `Post:${postId}`,
                 fields: {
                     comments(existingCommentRefs, { readField }) {
@@ -36,7 +33,7 @@ export default function Comment({ comment, postId }) {
                     },
                 },
             })
-            console.log(isSuccesfull)
+            if (!succes) console.error('unable to modify cache after deleting comment') // cuz cache.modify doesn't throw error
         },
     })
 
