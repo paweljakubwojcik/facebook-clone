@@ -29,7 +29,6 @@ export default function PostContent({ post, noImages }) {
         commentsCount,
         id,
         reactionsCount,
-        comments,
         reactions,
         isDeletable,
         user: { id: userId, username, profileImage },
@@ -62,7 +61,9 @@ export default function PostContent({ post, noImages }) {
                     </h4>
                     <TimeStamp time={createdAt} />
                 </header>
-                {context.userId === userId && <PostOptions post={{ privacy, id }} isDeletable={isDeletable} />}
+                {context.userId === userId && (
+                    <PostOptions post={{ privacy, id }} isDeletable={isDeletable} />
+                )}
             </PostCardHeader>
 
             <PostCardBody>{body}</PostCardBody>
@@ -77,7 +78,10 @@ export default function PostContent({ post, noImages }) {
 
             <PostCardCounters>
                 <LikesCounter reactionsCount={reactionsCount} reactions={reactions} />
-                <GenericButton className="counter" onClick={() => setCommentsVisibility(!commentsVisible)}>
+                <GenericButton
+                    className="counter"
+                    onClick={() => setCommentsVisibility(!commentsVisible)}
+                >
                     {commentsCount} {`Comment${commentsCount !== 1 ? 's' : ''}`}
                 </GenericButton>
             </PostCardCounters>
@@ -92,7 +96,14 @@ export default function PostContent({ post, noImages }) {
                 </PostCardButtonsContainer>
             )}
 
-            {commentsVisible && <CommentSection comments={comments} postId={id} inputFocus={commentInputFocus} setFocus={setCommentInputFocus} />}
+            {commentsVisible && (
+                <CommentSection
+                    postId={id}
+                    inputFocus={commentInputFocus}
+                    setFocus={setCommentInputFocus}
+                    commentsCount={commentsCount}
+                />
+            )}
         </>
     )
 }

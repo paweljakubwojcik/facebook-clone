@@ -20,11 +20,12 @@ export default function Comment({ comment, postId }) {
             id: comment.id,
         },
         update(cache, data) {
-            const succes = cache.modify({
+            /*  const succes = cache.modify({
                 id: `Post:${postId}`,
                 fields: {
                     comments(existingCommentRefs, { readField }) {
-                        return existingCommentRefs.filter(
+                        console.log(existingCommentRefs)
+                        return Object.values(existingCommentRefs).filter(
                             (commentRef) => comment.id !== readField('id', commentRef)
                         )
                     },
@@ -33,7 +34,8 @@ export default function Comment({ comment, postId }) {
                     },
                 },
             })
-            if (!succes) console.error('unable to modify cache after deleting comment') // cuz cache.modify doesn't throw error
+            if (!succes) console.error('unable to modify cache after deleting comment') // cuz cache.modify doesn't throw error */
+            cache.evict({ id: `Comment:${comment.id}` }) // the most simple way to cleanup cache
         },
     })
 

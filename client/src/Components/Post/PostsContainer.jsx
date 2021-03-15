@@ -23,7 +23,7 @@ export default function Posts({ userId }) {
     const { loading, error, data: { posts } = {}, fetchMore, refetch } = useQuery(GET_POSTS, {
         variables: {
             userId,
-            limit: 6,
+            limit: 3,
         },
         onCompleted: (data) => {
             console.log(data)

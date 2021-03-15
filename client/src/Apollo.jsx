@@ -25,6 +25,37 @@ const cache = new InMemoryCache({
         },
         Post: {
             merge: true,
+            fields: {
+                comments: {
+                    keyArgs: ['postId'],
+
+                    merge(existing, incoming, { readField }) {
+                        const merged = { ...existing }
+                        incoming.forEach((item) => {
+                            merged[readField('id', item)] = item
+                        })
+
+                        return merged
+                    },
+
+                    // Return all items stored so far, to avoid ambiguities
+                    // about the order of the items.
+                    read(existing, { readField }) {
+                        if (existing) {
+                            let sorted = Object.values(existing)
+                            sorted.sort((b, a) => {
+                                return (
+                                    dayjs(readField('createdAt', a)).unix() -
+                                    dayjs(readField('createdAt', b)).unix()
+                                )
+                            })
+                            console.log({ existing, sorted })
+                            return sorted
+                        }
+                        return false
+                    },
+                },
+            },
         },
         Query: {
             fields: {

@@ -5,22 +5,11 @@ const Image = require('../../models/Image')
 const checkAuth = require('../../utils/checkAuth')
 
 const { savePictureToDB } = require('./methods/savePictureToDB')
+const { getPaginatedResult } = require('./methods/cursorPagination')
 
 module.exports = {
     Query: {
-        async posts(
-            _,
-            {
-                userId,
-                paginationData: {
-                    limit,
-                    cursor,
-                    sortBy = 'createdAt',
-                    sort: sortDir = 'DESCENDING',
-                },
-            },
-            context
-        ) {
+        async posts(_, { userId, paginationData }, context) {
             // if user Id => search all posts if user===userId
             // if !context.user => search only public posts
             // if context.user => search 1. first posts that fuser.friends.contains(context.user)
@@ -28,12 +17,6 @@ module.exports = {
             // timeLimit for friends posts
             // if userId === context.user show all posts
             let filter = { type: 'POST' }
-            let sort = {}
-            const sortingValues = {
-                ASCENDING: 1,
-                DESCENDING: -1,
-            }
-            sort[sortBy] = sortingValues[sortDir]
             try {
                 const user = checkAuth(context)
                 if (userId) filter.user = userId
@@ -55,16 +38,7 @@ module.exports = {
                 if (!user) filter.privacy = 'PUBLIC'
                 else throw error
             } finally {
-                try {
-                    const posts = await Entity.find(filter, null, {
-                        sort,
-                    })
-                    const cursorIndex = posts.findIndex((post) => post._id.toString() === cursor) // not defined cursor => return -1
-                    const next = cursorIndex + 1 // to not return the cursor second time, also this take care of situation when cursor is not defined
-                    return posts.slice(next, next + limit)
-                } catch (err) {
-                    throw new Error(err)
-                }
+                return await getPaginatedResult(filter, paginationData, Entity)
             }
         },
         async post(_, { postId }) {
@@ -137,11 +111,8 @@ module.exports = {
         async images({ id }) {
             return await Image.find({ post: id })
         },
-        async comments({ id }, { paginationData: { limit, cursor } }) {
-            const comments = await Entity.find({ parent: id })
-            const index = comments.findIndex(({ _id }) => _id === cursor)
-            const next = index + 1
-            return comments.slice(next, next + limit)
+        async comments({ id }, { paginationData }) {
+            return await getPaginatedResult({ parent: id }, paginationData, Entity)
         },
         commentsCount: (parent) => parent.children.length,
         reactionsCount: (parent) => parent.reactions.length,

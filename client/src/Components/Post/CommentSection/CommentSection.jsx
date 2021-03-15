@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
+import { useQuery } from '@apollo/client'
 
 import { AuthContext } from '../../../Context/auth'
 import { GenericButton } from '../../General/Buttons'
@@ -7,33 +8,60 @@ import { GenericButton } from '../../General/Buttons'
 import Comment from './Comment'
 import CommentForm from './CommentForm'
 
-const initialLimit = 2
+import { defaultCommentLimit } from '../../../Util/Constants/defaultPagination'
+import { FETCH_COMMENTS } from '../../../Util/GraphQL_Queries'
 
-export default function CommentSection({ comments, postId, inputFocus, setFocus }) {
+export default function CommentSection({ postId, inputFocus, setFocus, commentsCount }) {
     const context = useContext(AuthContext)
 
-    const [limit, setLimit] = useState(initialLimit)
-    const isThereMore = comments.length - limit > 0
+    const [canFetchMore, setCanFetchMore] = useState(true)
+
+    const { data: { post: { comments } = {} } = {}, fetchMore } = useQuery(FETCH_COMMENTS, {
+        variables: {
+            postId,
+            limit: defaultCommentLimit,
+        },
+    })
+
+    const areThereAnyComments = comments?.length > 0
+
+    const handleRefetch = () => {
+        fetchMore({
+            variables: {
+                cursor: areThereAnyComments ? comments[comments.length - 1].id : null,
+            },
+        }).then(() => {
+            //when all posts have been fetched
+            if (comments.length === commentsCount) setCanFetchMore(false)
+            console.log(comments)
+        })
+    }
 
     return (
         <>
-
             <CommentsContainer>
-                {comments.slice(0, limit).map(comment => <Comment key={comment.id} comment={comment} postId={postId} />)}
-                {isThereMore &&
-                    <GenericButton
-                        onClick={() => setLimit(prev => prev + initialLimit)}
-                        style={{ margin: 'auto', fontSize: '.7em' }}
-                    >
-                        show more
-                 </GenericButton>}
+                {areThereAnyComments && (
+                    <>
+                        {comments.map((comment) => (
+                            <Comment key={comment.id} comment={comment} postId={postId} />
+                        ))}
+                        {canFetchMore && (
+                            <GenericButton
+                                onClick={handleRefetch}
+                                style={{ margin: 'auto', fontSize: '.7em' }}
+                            >
+                                show more
+                            </GenericButton>
+                        )}
+                    </>
+                )}
             </CommentsContainer>
 
-            { context.isLogged && <CommentForm props={{ inputFocus, setFocus, postId }} />}
+            {context.isLogged && <CommentForm props={{ inputFocus, setFocus, postId }} />}
         </>
     )
 }
 
 const CommentsContainer = styled.div`
-    border-top: 1px solid ${props => props.theme.borderColor};
+    border-top: 1px solid ${(props) => props.theme.borderColor};
 `

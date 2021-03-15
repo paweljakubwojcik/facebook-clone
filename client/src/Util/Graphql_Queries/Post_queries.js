@@ -51,31 +51,7 @@ export const POST = gql`
                 }
             }
         }
-        comments(paginationData: { limit: ${defaultCommentLimit} }) {
-            id
-            body
-            createdAt
-            reactionsCount
-            user {
-                username
-                id
-                profileImage {
-                    id
-                    urls {
-                        id
-                        thumbnail
-                    }
-                }
-            }
-            reactions {
-                id
-                type
-                user {
-                    id
-                    username
-                }
-            }
-        }
+
         reactions {
             id
             createdAt
@@ -201,6 +177,38 @@ export const DELETE = gql`
     mutation delete($id: ID!) {
         delete(id: $id) {
             id
+        }
+    }
+`
+export const FETCH_COMMENTS = gql`
+    query post($postId: ID!, $limit: Int!, $cursor: ID) {
+        post(postId: $postId) {
+            id
+            comments(paginationData: { limit: $limit, cursor: $cursor }) {
+                id
+                body
+                createdAt
+                reactionsCount
+                user {
+                    username
+                    id
+                    profileImage {
+                        id
+                        urls {
+                            id
+                            thumbnail
+                        }
+                    }
+                }
+                reactions {
+                    id
+                    type
+                    user {
+                        id
+                        username
+                    }
+                }
+            }
         }
     }
 `
