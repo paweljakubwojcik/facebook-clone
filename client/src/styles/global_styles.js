@@ -7,7 +7,7 @@ export const GlobalStyles = createGlobalStyle`
     }
 
     *:focus {
-     outline: none;
+        outline: 2px solid ${(props) => props.theme.primaryColor};
     }
 
     body {
@@ -17,10 +17,12 @@ export const GlobalStyles = createGlobalStyle`
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
 
-        background-color: ${props => props.theme.backgroundColor};
-        color: ${props => props.theme.primaryFontColor};
+        background-color: ${(props) => props.theme.backgroundColor};
+        color: ${(props) => props.theme.primaryFontColor};
         font-size: 16px;
         transition: font-size 0.2s, color 0.2s, background-color 0.3s;
+
+      
     }
 
     code {

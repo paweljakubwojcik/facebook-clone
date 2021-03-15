@@ -108,4 +108,6 @@ const Container = styled.div`
     overflow-y: auto;
     overflow-x: hidden;
     max-height: ${(props) => props.height}px;
+
+    ${(props) => props.theme.scrollBar}
 `

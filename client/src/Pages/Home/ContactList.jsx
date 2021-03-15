@@ -100,20 +100,7 @@ const ScrollWrapper = styled.div`
         flex-shrink: 0;
     }
 
-    /* ScrollBar styling here */
-    scrollbar-width: thin; /* "auto" or "thin"  */
-    scrollbar-color: ${(props) => props.theme.secondaryFontColor} ${(props) => props.theme.primaryElementColor}; /* scroll thumb & track */
-
-    &::-webkit-scrollbar {
-        width: 12px;
-    }
-    &::-webkit-scrollbar-track {
-        background: ${(props) => props.theme.primaryElementColor};
-    }
-    &::-webkit-scrollbar-thumb {
-        background-color: ${(props) => props.theme.secondaryFontColor};
-        border-radius: 20px;
-    }
+    ${(props) => props.theme.scrollBar}
 `
 
 const Dummy = styled.div`
