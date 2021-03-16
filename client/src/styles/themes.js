@@ -10,6 +10,7 @@ const scrollBar = (primary, secondary) => `
         &::-webkit-scrollbar-thumb {
             background-color: ${secondary};
             border-radius: 20px;
+            width: 12px;
         }`
 
 export const darkTheme = {
@@ -43,5 +44,5 @@ export const lightTheme = {
     standardShadow: '-5px 5px 20px -10px #12121599',
     borderColor: '#e3e4e6',
     errorColor: '#f75656',
-    scrollBar: scrollBar('#fff', '#ddd'),
+    scrollBar: scrollBar('#fff', '#bbb'),
 }

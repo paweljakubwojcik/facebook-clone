@@ -57,15 +57,13 @@ export default function Navbar() {
     )
 }
 
-Navbar.propsTypes = {
-    setForm: PropsTypes.func,
-}
+Navbar.propsTypes = {}
 
 const NavBar = styled.nav`
     position: ${(props) => (!props.isCovered ? 'sticky' : 'static')};
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 3;
     height: 60px;
     padding: 0 1em;
     padding-left: 1%;
@@ -91,8 +89,15 @@ const NavBar = styled.nav`
             height: 40px;
             color: ${(props) => props.theme.primaryColor};
             ${(props) =>
-                props.isCovered ? 'position:absolute; z-index:3; transform:translateX(100%);' : ''}
+                props.isCovered ? 'position:fixed; z-index:3; transform:translateX(100%);' : ''}
             transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+    }
+
+    @media (max-width: 900px) {
+        position: sticky;
+        header .img {
+            position: static;
         }
     }
 `

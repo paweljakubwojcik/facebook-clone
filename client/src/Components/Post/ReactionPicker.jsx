@@ -6,11 +6,11 @@ import PropTypes from 'prop-types'
 import icons from '../../Util/Constants/reactionsIcons'
 export default function ReactionPicker({ react, isVisible }) {
     return (
-        <PopUpElement isVisible={isVisible} showAbove delay={200}>
+        <PopUpElement isVisible={isVisible} showAbove delay={500}>
             <AnotherContainer noMargins noPadding>
                 <IconsContainer>
                     {Object.entries(icons).map(([key, Icon], i) => (
-                        <Button key={key} delay={i * 50} onClick={() => react(key.toUpperCase())}>
+                        <Button key={key} delay={i * 50 + 500} onClick={() => react(key.toUpperCase())}>
                             <Icon style={{ width: '1em', height: '1em' }} className={`${key}`} />
                         </Button>
                     ))}

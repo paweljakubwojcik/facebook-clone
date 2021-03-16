@@ -18,9 +18,9 @@ export default function Image({ setPostId }) {
         onCompleted: (data) => {
             console.log(data)
         },
-        onError: (e)=>{
+        onError: (e) => {
             console.log(e)
-        }
+        },
     })
 
     console.log(loading)
@@ -62,7 +62,7 @@ const ImageContainer = styled.div`
     z-index: 1;
     top: 0;
     height: 100vh;
-    width: calc(100% - 400px);
+    width: calc(100% - 450px);
 
     overflow: hidden;
     display: flex;
@@ -72,9 +72,9 @@ const ImageContainer = styled.div`
     border-right: solid 1px ${(props) => props.theme.borderColor};
     box-shadow: inset -10px 0 20px -5px ${(props) => props.theme.shadowColor};
 
-    @media (max-width: 600px) {
+    @media (max-width: 900px) {
         width: 100%;
-        height: 100vh;
+        height: auto;
     }
 
     &:after {
@@ -88,7 +88,7 @@ const ImageContainer = styled.div`
         width: 100%;
         height: 100%;
         @supports ((-webkit-backdrop-filter: blur(16px)) or (backdrop-filter: blur(16px))) {
-            backdrop-filter: blur(16px);
+            backdrop-filter: blur(0.5em);
         }
     }
 
@@ -98,7 +98,7 @@ const ImageContainer = styled.div`
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%) scale(1.1);
-        z-index: -1;
+        z-index: -2;
         display: block;
         width: 100%;
         height: 100%;
