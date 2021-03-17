@@ -1,9 +1,10 @@
 const cursorPagination = {
-    merge(existing, incoming, { readField }) {
+    merge(existing, incoming, { readField, canRead }) {
         const merged = { ...existing }
         incoming.forEach((item) => {
             merged[readField('id', item)] = item
         })
+
         return merged
     },
 
@@ -19,22 +20,24 @@ const cursorPagination = {
 
         if (existing) {
             let sorted = Object.values(existing)
-            sorted.sort((b, a) => {
-                const later = readField(sortBy, a)
-                const prior = readField(sortBy, b)
-                if (typeof later !== 'number' || typeof prior !== 'number')
-                    console.warn(
-                        `attempt to sort by field ${sortBy} which is not a number, this will not affect the order of stored objects`
-                    )
-                if (typeof later === 'undefined' || typeof prior === 'undefined')
-                    console.warn(`can't read field ${sortBy} on ${fieldName}`)
+            sorted
+                .filter((obj) => canRead(obj)) // filter out dangling references
+                .sort((b, a) => {
+                    const later = readField(sortBy, a)
+                    const prior = readField(sortBy, b)
+                    if (typeof later !== 'number' || typeof prior !== 'number')
+                        console.warn(
+                            `attempt to sort by field ${sortBy} which is not a number, this will not affect the order of stored objects`
+                        )
+                    if (typeof later === 'undefined' || typeof prior === 'undefined')
+                        console.warn(`can't read field ${sortBy} on ${fieldName}`)
 
-                if (sort === 'DESCENDING') return later - prior
-                if (sort === 'ASCENDING') return prior - later
-                throw new Error(
-                    `sort value on paginationData can only be "ASCENDING" or "DESCENDING" , got ${sort} instead`
-                )
-            })
+                    if (sort === 'DESCENDING') return later - prior
+                    if (sort === 'ASCENDING') return prior - later
+                    throw new Error(
+                        `sort value on paginationData can only be "ASCENDING" or "DESCENDING" , got ${sort} instead`
+                    )
+                })
             return sorted
         }
         return false

@@ -20,6 +20,7 @@ export default function Comment({ comment, postId }) {
             id: comment.id,
         },
         update(cache, data) {
+            cache.evict({ id: `Comment:${comment.id}` }) // the most simple way to cleanup cache
             /*  const succes = cache.modify({
                 id: `Post:${postId}`,
                 fields: {
@@ -34,8 +35,7 @@ export default function Comment({ comment, postId }) {
                     },
                 },
             })
-            if (!succes) console.error('unable to modify cache after deleting comment') // cuz cache.modify doesn't throw error */
-            cache.evict({ id: `Comment:${comment.id}` }) // the most simple way to cleanup cache
+            if (!succes) console.error('unable to modify cache after deleting comment') // cuz cache.modify doesn't throw error  */
         },
     })
 

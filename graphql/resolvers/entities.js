@@ -64,11 +64,12 @@ module.exports = {
                 if (user.id === entity.user.toString()) {
                     //removing entity from parent's list of children
                     if (entity.parent) {
+                        await deleteEntity(id)
                         const parent = await Entity.findById(entity.parent)
                         parent.children = parent.children.filter(
                             (child) => child.toString() !== entity.id
                         )
-                        await parent.save()
+                        return await parent.save()
                     }
                     return await deleteEntity(id)
                 } else {

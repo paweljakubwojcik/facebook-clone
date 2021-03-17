@@ -175,6 +175,9 @@ export const DELETE = gql`
     mutation delete($id: ID!) {
         delete(id: $id) {
             id
+            ... on Post {
+                commentsCount
+            }
         }
     }
 `
