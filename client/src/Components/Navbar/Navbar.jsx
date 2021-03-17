@@ -1,5 +1,4 @@
 import React from 'react'
-import PropsTypes from 'prop-types'
 import { Link, useLocation } from 'react-router-dom'
 
 import styled from 'styled-components'

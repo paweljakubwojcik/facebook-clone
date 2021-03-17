@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import PostForm from './PostForm'
 
@@ -17,14 +17,12 @@ import { useCurrentUser } from '../../../Util/Hooks/useCurrentUser'
 export default function PostFormContainer({ toggleForm, ...rest }) {
     const [active, setActive] = useState('form')
 
-    const {
-        user: { settings: { postDefaultPrivacy: privacy = 'PUBLIC' } = {} } = {},
-    } = useCurrentUser()
+    const { user: { settings: { postDefaultPrivacy: privacy } = {} } = {} } = useCurrentUser()
 
     const initialState = {
         body: '',
         images: [],
-        privacy: privacy,
+        privacy: 'PUBLIC',
     }
 
     const { onChange, onSubmit, values, removeValue, addValue } = useForm(
@@ -42,6 +40,10 @@ export default function PostFormContainer({ toggleForm, ...rest }) {
         values.body = ''
         toggleForm(false)
     }
+
+    useEffect(() => {
+        if (privacy) addValue({ privacy })
+    }, [privacy])
 
     return (
         <Modal toggleModal={toggleForm} {...rest}>
@@ -64,7 +66,7 @@ export default function PostFormContainer({ toggleForm, ...rest }) {
                                 <SubMenu title={'Privacy'} setActive={setActive}>
                                     <PrivacyMenu
                                         setPrivacy={(privacy) => addValue({ privacy: privacy })}
-                                        currentPrivacy={values.privacy}
+                                        currentPrivacy={values?.privacy}
                                         style={{ fontSize: '1.2em' }}
                                     />
                                 </SubMenu>
