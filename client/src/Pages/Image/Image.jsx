@@ -75,6 +75,7 @@ const ImageContainer = styled.div`
     @media (max-width: 900px) {
         width: 100%;
         height: auto;
+        min-height: 50vh;
     }
 
     &:after {
@@ -117,4 +118,8 @@ const Img = styled.img`
     max-height: 100%;
     transition: opacity 0.2s;
     opacity: ${(props) => (props.loaded ? '1' : '0')};
+
+    @media (max-width: 900px) {
+        max-height: calc(100vh - 60px);
+    }
 `

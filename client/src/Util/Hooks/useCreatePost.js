@@ -14,14 +14,40 @@ export const useCreatePost = (values, callback) => {
 
     const { body, title, privacy, images } = values
 
+    const { pathname } = useLocation()
+    const userId = pathname.split('/')[2]
+    console.log(userId)
+
     const [uploadPost] = useMutation(ADD_POST, {
+        //executed if mutation is succesful
+        async update(proxy, { data: { createPost: newPost } }) {
+            try {
+                const cacheData = proxy.readQuery({
+                    query: GET_POSTS,
+                    variables: { userId },
+                })
+
+                // calling callback, after this point there should not be any errors
+                if (callback) await callback(newPost)
+
+                //updating cache
+                const updatedPosts = [newPost, ...cacheData.posts]
+                proxy.writeQuery({
+                    query: GET_POSTS,
+                    variables: { userId },
+                    data: { posts: updatedPosts },
+                })
+            } catch (error) {
+                setErrors(error)
+                throw error
+            } finally {
+                setLoading(false)
+            }
+        },
         onError(error) {
             setLoading(false)
             setErrors(error)
             throw error
-        },
-        onCompleted: () => {
-            setLoading(false)
         },
         variables: { body, title, privacy, images },
     })

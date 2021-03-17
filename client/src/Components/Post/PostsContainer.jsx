@@ -34,7 +34,7 @@ export default function Posts({ userId }) {
     async function handleIntersect() {
         fetchMore({
             variables: {
-                cursor: !isPostsEmpty ? posts[posts.length - 1].id : null,
+                cursor: !isPostsEmpty && posts ? posts[posts?.length - 1]?.id : null,
             },
         }).then(({ data: { posts: newPosts } }) => {
             //when all posts have been fetched
@@ -45,8 +45,6 @@ export default function Posts({ userId }) {
     useEffect(() => {
         refetch()
     }, [])
-
-    console.log(posts)
 
     return (
         <PostsContainer>

@@ -5,7 +5,7 @@ import PostOptionsMenu from './postOptionsMenu'
 
 import { checkIfContains } from '../../Util/Methods'
 
-export default function PostOptions({ post, isDeletable }) {
+export default function PostOptions({ post, isDeletable, onDeleteCallback }) {
 
     const [open, setopen] = useState(false)
 
@@ -38,9 +38,14 @@ export default function PostOptions({ post, isDeletable }) {
     return (
         <>
             <OptionButton onClick={toggleOpen} ref={optionButton}></OptionButton>
-            {open &&
-                <PostOptionsMenu isDeletable={isDeletable} post={post} ref={dropDownMenu} />
-            }
+            {open && (
+                <PostOptionsMenu
+                    isDeletable={isDeletable}
+                    post={post}
+                    ref={dropDownMenu}
+                    onDeleteCallback={onDeleteCallback}
+                />
+            )}
         </>
     )
 }

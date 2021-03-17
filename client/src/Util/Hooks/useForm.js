@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useState } from 'react'
 
 /**
  *
@@ -9,41 +9,38 @@ export const useForm = (callback, initialState = {}) => {
     const [values, setValues] = useState(initialState)
 
     const onChange = (e) => {
-        if (e.target.type !== 'file')
-            setValues({ ...values, [e.target.name]: e.target.value })
-        else
-            if (values[e.target.name])
-                setValues({ ...values, [e.target.name]: [...values[e.target.name], ...e.target.files] })
-            else
-                setValues({ ...values, [e.target.name]: [...e.target.files] })
-
-
+        if (e.target.type !== 'file') setValues({ ...values, [e.target.name]: e.target.value })
+        else if (values[e.target.name])
+            setValues({ ...values, [e.target.name]: [...values[e.target.name], ...e.target.files] })
+        else setValues({ ...values, [e.target.name]: [...e.target.files] })
     }
 
-    const onSubmit = e => {
+    const onSubmit = (e) => {
         e.preventDefault()
-        callback();
+        callback()
     }
 
     /**
      * remove a value from state
      * @param {Obj} value {name: value}
      */
-    const removeValue = (value) => {
+    const removeValue = useCallback((value) => {
         const key = Object.keys(value)[0]
-        const filteredValues = values[key].filter(val => val !== value[key])
-        setValues({ ...values, [key]: filteredValues })
-    }
+        setValues((values) => {
+            const filteredValues = values[key].filter((val) => val !== value[key])
+            return { ...values, [key]: filteredValues }
+        })
+    }, [])
 
     /**
      * add a value to state
-     * @param {Obj} value {name: value}
+     * @param {{value: newValue}} value {name: value}
      */
-    const addValue = (value) => {
-
-        setValues({ ...values, ...value })
-    }
-
+    const addValue = useCallback((value) => {
+        setValues((values) => {
+            return { ...values, ...value }
+        })
+    }, [])
 
     return {
         onChange,

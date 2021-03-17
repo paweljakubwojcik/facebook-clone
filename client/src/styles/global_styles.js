@@ -6,8 +6,12 @@ export const GlobalStyles = createGlobalStyle`
         box-sizing: border-box;
     }
 
-    *:focus {
-        outline: 2px solid ${(props) => props.theme.primaryColor};
+    * :focus {
+            outline: none;
+    }
+
+    * :focus:not(input):not(textarea):not(:active) {
+            outline: 1px solid ${(props) => props.theme.primaryColor};
     }
 
     html {

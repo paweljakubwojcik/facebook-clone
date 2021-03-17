@@ -4,6 +4,8 @@ import { useQuery } from '@apollo/client'
 import PostContent from '../../Components/Post/PostContent'
 import { GET_POST } from '../../Util/GraphQL_Queries'
 
+import { useHistory } from 'react-router-dom'
+
 const width = 450
 
 export default function Post({ postId }) {
@@ -13,11 +15,21 @@ export default function Post({ postId }) {
         },
     })
 
+    const history = useHistory()
+
     return (
         <FlexWrapper>
             <PostWrapper>
                 {loading && <p>Loading...</p>}
-                {post && <PostContent post={post} noImages />}
+                {post && (
+                    <PostContent
+                        post={post}
+                        noImages
+                        onDeleteCallback={() => {
+                            history.goBack()
+                        }}
+                    />
+                )}
             </PostWrapper>
         </FlexWrapper>
     )

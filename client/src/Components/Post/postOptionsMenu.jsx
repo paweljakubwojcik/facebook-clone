@@ -19,7 +19,7 @@ const menuTypes = {
     PRIVACY: 'privacy',
 }
 
-const PostOptionsMenu = forwardRef(({ isDeletable, post }, ref) => {
+const PostOptionsMenu = forwardRef(({ isDeletable, post, onDeleteCallback }, ref) => {
     const [active, setActive] = useState(menuTypes.MAIN)
 
     const MainMenu = () => {
@@ -28,14 +28,14 @@ const PostOptionsMenu = forwardRef(({ isDeletable, post }, ref) => {
                 <MenuButton onClick={() => setActive(menuTypes.PRIVACY)}>
                     <FontAwesomeIcon icon={faEdit} /> <p>PrivacySettings</p>
                 </MenuButton>
-                {isDeletable && <DeleteButton postId={post.id} />}
+                {isDeletable && <DeleteButton postId={post.id} callback={onDeleteCallback} />}
             </SubMenuContainer>
         )
     }
 
     const Privacy = () => {
         const [editPost] = useMutation(EDIT_POST, {
-            update: (cache, data) => {
+            update: (cache, { data }) => {
                 console.log(data)
             },
             onError: (e) => {

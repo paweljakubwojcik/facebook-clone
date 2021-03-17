@@ -36,6 +36,12 @@ export default function LikeButton({ data, customButton }) {
                 type: type,
             },
         })
+        setPicker(false)
+    }
+
+    const handleClick = (e) => {
+        e.target.blur()
+        react(reaction ? reaction : 'LIKE')
     }
 
     const Reaction = icons[reaction ? reaction : 'LIKE']
@@ -47,10 +53,11 @@ export default function LikeButton({ data, customButton }) {
             style={{ display: 'flex' }}
             onMouseEnter={() => setPicker(true)}
             onMouseLeave={() => setPicker(false)}
+            onFocus={() => setPicker(true)}
+            onBlur={() => setPicker(false)}
         >
-            <ReactionPicker react={react} isVisible={pickerVisible} />
             <Button
-                onClick={() => react(reaction ? reaction : 'LIKE')}
+                onClick={handleClick}
                 inactive={loading}
                 active={!!reaction}
                 style={{ flex: 1, padding: 0, margin: 0 }}
@@ -66,6 +73,7 @@ export default function LikeButton({ data, customButton }) {
                 </SwitchTransition>
                 {reaction ? reaction.slice(0, 1) + reaction.slice(1).toLowerCase() : 'Like !'}
             </Button>
+            <ReactionPicker react={react} isVisible={pickerVisible} />
         </ReactionPicker.Container>
     )
 }

@@ -20,7 +20,7 @@ import LikesCounter from './LikesCounter'
 import ImagesContainer from './ImagesContainer'
 import PictureLink from '../General/PictureLink'
 
-export default function PostContent({ post, noImages }) {
+export default function PostContent({ post, noImages, onDeleteCallback }) {
     const {
         body,
         title,
@@ -62,7 +62,11 @@ export default function PostContent({ post, noImages }) {
                     <TimeStamp time={createdAt} />
                 </header>
                 {context.userId === userId && (
-                    <PostOptions post={{ privacy, id }} isDeletable={isDeletable} />
+                    <PostOptions
+                        post={{ privacy, id }}
+                        isDeletable={isDeletable}
+                        onDeleteCallback={onDeleteCallback}
+                    />
                 )}
             </PostCardHeader>
 

@@ -119,7 +119,7 @@ const AvatarContainer = styled.div`
     position: absolute;
     bottom: 100%;
     left: 50%;
-    z-index: 3;
+    z-index: 2;
     transform: translate(-50%, 1.2em);
 `
 

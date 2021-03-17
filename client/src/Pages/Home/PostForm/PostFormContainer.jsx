@@ -43,7 +43,7 @@ export default function PostFormContainer({ toggleForm, ...rest }) {
 
     useEffect(() => {
         if (privacy) addValue({ privacy })
-    }, [privacy])
+    }, [privacy, addValue])
 
     return (
         <Modal toggleModal={toggleForm} {...rest}>
