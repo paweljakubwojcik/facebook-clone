@@ -20,13 +20,15 @@ export default function CommentSection({ postId, inputFocus, setFocus, commentsC
         variables: {
             postId,
             limit: defaultCommentLimit,
+            sort: 'DESCENDING',
+            sortBy: 'timestamp',
         },
     })
 
     const areThereAnyComments = comments?.length > 0
 
-    const handleRefetch = () => {
-        fetchMore({
+    const handleRefetch = async () => {
+        await fetchMore({
             variables: {
                 cursor: areThereAnyComments ? comments[comments.length - 1].id : null,
             },

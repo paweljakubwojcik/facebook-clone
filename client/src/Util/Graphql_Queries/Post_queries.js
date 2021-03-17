@@ -5,6 +5,7 @@ export const BASE_COMMENT_FRAGMENT = gql`
         id
         body
         createdAt
+        timestamp
         reactionsCount
         user {
             username
@@ -18,14 +19,20 @@ export const BASE_COMMENT_FRAGMENT = gql`
             }
         }
         reactions {
+            ...BaseReaction
+        }
+    }
+`
+
+const REACTION = gql`
+    fragment BaseReaction on Reaction {
+        id
+        createdAt
+        timestamp
+        type
+        user {
             id
-            type
-            createdAt
-            timestamp
-            user {
-                id
-                username
-            }
+            username
         }
     }
 `
@@ -37,6 +44,7 @@ export const POST = gql`
         title
         commentsCount
         createdAt
+        timestamp
         reactionsCount
         privacy
         isDeletable
@@ -53,14 +61,7 @@ export const POST = gql`
             }
         }
         reactions {
-            id
-            createdAt
-            timestamp
-            type
-            user {
-                id
-                username
-            }
+            ...BaseReaction
         }
         images {
             id
@@ -72,17 +73,22 @@ export const POST = gql`
             }
         }
     }
+    ${REACTION}
 `
 // for some weird reason when attempting to fetch that query with only fragment, query is sending back an empty object
 export const GET_POSTS = gql`
-    query posts($userId: ID, $limit: Int!, $cursor: ID) {
-        posts(userId: $userId, paginationData: { limit: $limit, cursor: $cursor }) {
+    query posts($userId: ID, $limit: Int!, $cursor: ID, $sort: SortDirection, $sortBy: String) {
+        posts(
+            userId: $userId
+            paginationData: { limit: $limit, cursor: $cursor, sort: $sort, sortBy: $sortBy }
+        ) {
             ...PostFragment
             id
         }
     }
 
     ${POST}
+    ${REACTION}
 `
 
 export const GET_POST = gql`
@@ -93,6 +99,7 @@ export const GET_POST = gql`
         }
     }
     ${POST}
+    ${REACTION}
 `
 
 // graphQL query
@@ -119,6 +126,7 @@ export const EDIT_POST = gql`
         editPost(postId: $postId, field: $field, newValue: $newValue) {
             id
             body
+            timestamp
             title
             privacy
         }
@@ -130,18 +138,12 @@ export const REACT = gql`
         react(id: $id, type: $type) {
             id
             reactions {
-                id
-                type
-                createdAt
-                timestamp
-                user {
-                    id
-                    username
-                }
+                ...BaseReaction
             }
             reactionsCount
         }
     }
+    ${REACTION}
 `
 
 /*
@@ -158,17 +160,15 @@ export const ADD_COMMENT = gql`
     mutation createComment($body: String!, $postId: ID!) {
         createComment(body: $body, postId: $postId) {
             id
-            user {
-                id
-                username
-            }
             commentsCount
+            timestamp
             comments(paginationData: { limit: 5 }) {
                 ...BaseComment
             }
         }
     }
     ${BASE_COMMENT_FRAGMENT}
+    ${REACTION}
 `
 
 export const DELETE = gql`
@@ -179,34 +179,17 @@ export const DELETE = gql`
     }
 `
 export const FETCH_COMMENTS = gql`
-    query post($postId: ID!, $limit: Int!, $cursor: ID) {
+    query post($postId: ID!, $limit: Int!, $cursor: ID, $sort: SortDirection, $sortBy: String) {
         post(postId: $postId) {
             id
-            comments(paginationData: { limit: $limit, cursor: $cursor }) {
+            comments(
+                paginationData: { limit: $limit, cursor: $cursor, sort: $sort, sortBy: $sortBy }
+            ) {
                 id
-                body
-                createdAt
-                reactionsCount
-                user {
-                    username
-                    id
-                    profileImage {
-                        id
-                        urls {
-                            id
-                            thumbnail
-                        }
-                    }
-                }
-                reactions {
-                    id
-                    type
-                    user {
-                        id
-                        username
-                    }
-                }
+                ...BaseComment
             }
         }
     }
+    ${REACTION}
+    ${BASE_COMMENT_FRAGMENT}
 `

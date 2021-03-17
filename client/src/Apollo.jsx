@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { ApolloClient, ApolloProvider, InMemoryCache, /* createHttpLink */ } from '@apollo/client'
-import { offsetLimitPagination } from '@apollo/client/utilities'
+import { ApolloClient, ApolloProvider, InMemoryCache /* createHttpLink */ } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { createUploadLink } from 'apollo-upload-client'
 
-import dayjs from 'dayjs'
+
+import cursorPagination from './Util/cursorPagination'
 
 const httpLink = createUploadLink({
     uri: 'http://localhost:5000/graphql',
@@ -13,89 +13,24 @@ const httpLink = createUploadLink({
 
 const cache = new InMemoryCache({
     typePolicies: {
-        Image: {
-            fields: {
-                urls: {
-                    merge: true,
-                },
-            },
-        },
-        Urls: {
-            merge: true,
-        },
         Post: {
             merge: true,
             fields: {
                 comments: {
                     keyArgs: ['postId'],
-
-                    merge(existing, incoming, { readField }) {
-                        const merged = { ...existing }
-                        incoming.forEach((item) => {
-                            merged[readField('id', item)] = item
-                        })
-
-                        return merged
-                    },
-
-                    // Return all items stored so far, to avoid ambiguities
-                    // about the order of the items.
-                    read(existing, { readField }) {
-                        if (existing) {
-                            let sorted = Object.values(existing)
-                            sorted.sort((b, a) => {
-                                return (
-                                    dayjs(readField('createdAt', a)).unix() -
-                                    dayjs(readField('createdAt', b)).unix()
-                                )
-                            })
-                            console.log({ existing, sorted })
-                            return sorted
-                        }
-                        return false
-                    },
+                    ...cursorPagination,
                 },
             },
+        },
+        Reaction: {
+            merge: true,
         },
         Query: {
             fields: {
                 posts: {
                     keyArgs: ['userId'],
-
-                    merge(existing, incoming, { readField }) {
-                        const merged = { ...existing }
-                        incoming.forEach((item) => {
-                            merged[readField('id', item)] = item
-                        })
-
-                        return merged
-                    },
-
-                    // Return all items stored so far, to avoid ambiguities
-                    // about the order of the items.
-                    read(existing, { readField }) {
-                        if (existing) {
-                            let sorted = Object.values(existing)
-                            sorted.sort((b, a) => {
-                                return (
-                                    dayjs(readField('createdAt', a)).unix() -
-                                    dayjs(readField('createdAt', b)).unix()
-                                )
-                            })
-                            console.log({ existing, sorted })
-                            return sorted
-                        }
-                        return false
-                    },
+                    ...cursorPagination,
                 },
-
-                users: offsetLimitPagination(),
-            },
-        },
-        User: {
-            merge: true,
-            fields: {
-                notifications: offsetLimitPagination(),
             },
         },
     },

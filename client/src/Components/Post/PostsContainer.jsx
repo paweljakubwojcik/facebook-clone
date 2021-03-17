@@ -38,7 +38,7 @@ export default function Posts({ userId }) {
             },
         }).then(({ data: { posts: newPosts } }) => {
             //when all posts have been fetched
-            if (newPosts.length === 0) setCanFetchMore(false)
+            if (newPosts.length <= 2) setCanFetchMore(false)
         })
     }
 
