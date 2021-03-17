@@ -123,12 +123,12 @@ module.exports = {
                     },
                 })
                 const { _id } = await newUser.save()
-              
+
                 //saving user in DB
                 const newPost = await createWelcomePost(_id)
-                
+
                 const { _id: postId } = await newPost.save()
-               
+
                 //generate random backgroundImage and avatar pic
                 const backgroundImage = await generateRandomPhoto('background', _id, postId)
                 const profileImage = await generateRandomPhoto('avatar', _id, postId)
@@ -283,6 +283,7 @@ module.exports = {
             const data = await Promise.all(friends.map((friend) => User.findById(friend)))
             return data
         },
+        
     },
     Invitation: {
         from: async ({ from }) => {

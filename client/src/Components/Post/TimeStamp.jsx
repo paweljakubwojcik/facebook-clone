@@ -18,7 +18,7 @@ export default function TimeStamp({ time, ...rest }) {
         setHover(false)
     }
 
-    const date = dayjs(time).format('MMMM Do YYYY, h:mm:ss a')
+    const date = dayjs(time).format('MMMM DD YYYY, h:mm:ss a')
 
     return (
         <Stamp

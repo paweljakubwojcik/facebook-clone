@@ -129,5 +129,6 @@ module.exports = {
         },
         reactionsCount: (parent) => parent.reactions.length,
         repliesCount: (parent) => parent.children.length,
+        timestamp: ({ createdAt, timestamp }) => (timestamp ? timestamp : dayjs(createdAt).unix()),
     },
 }

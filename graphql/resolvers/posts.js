@@ -6,6 +6,7 @@ const checkAuth = require('../../utils/checkAuth')
 
 const { savePictureToDB } = require('./methods/savePictureToDB')
 const { getPaginatedResult } = require('./methods/cursorPagination')
+const dayjs = require('dayjs')
 
 module.exports = {
     Query: {
@@ -116,5 +117,6 @@ module.exports = {
         },
         commentsCount: (parent) => parent.children.length,
         reactionsCount: (parent) => parent.reactions.length,
+        timestamp: ({ createdAt, timestamp }) => (timestamp ? timestamp : dayjs(createdAt).unix()),
     },
 }

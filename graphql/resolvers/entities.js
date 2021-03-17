@@ -9,6 +9,8 @@ const comments = require('./comments')
 const { savePictureToDB } = require('./methods/savePictureToDB')
 const { deletePicture } = require('../../services/firebaseStorage')
 
+const dayjs = require('dayjs')
+
 module.exports = {
     Mutation: {
         react: async (_, { id, type }, context) => {
@@ -99,6 +101,7 @@ module.exports = {
                     return 'Post'
             }
         },
+        
     },
     Reaction: {
         async user({ user }) {
