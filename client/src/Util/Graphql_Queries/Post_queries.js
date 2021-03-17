@@ -20,6 +20,8 @@ export const BASE_COMMENT_FRAGMENT = gql`
         reactions {
             id
             type
+            createdAt
+            timestamp
             user {
                 id
                 username
@@ -50,7 +52,6 @@ export const POST = gql`
                 }
             }
         }
-
         reactions {
             id
             createdAt
@@ -117,11 +118,9 @@ export const EDIT_POST = gql`
     mutation editPost($postId: ID!, $field: String!, $newValue: String!) {
         editPost(postId: $postId, field: $field, newValue: $newValue) {
             id
-            privacy
             body
-            user {
-                username
-            }
+            title
+            privacy
         }
     }
 `
@@ -132,6 +131,7 @@ export const REACT = gql`
             id
             reactions {
                 id
+                type
                 createdAt
                 timestamp
                 user {
@@ -139,7 +139,6 @@ export const REACT = gql`
                     username
                 }
             }
-            body
             reactionsCount
         }
     }
