@@ -30,6 +30,8 @@ export const GlobalStyles = createGlobalStyle`
         color: ${(props) => props.theme.primaryFontColor};
         font-size: 16px;
         transition: font-size 0.2s, color 0.2s, background-color 0.3s;
+
+        --navbar-height: 60px;
     }
 
     code {

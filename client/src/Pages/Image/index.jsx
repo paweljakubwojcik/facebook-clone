@@ -8,10 +8,12 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { RoundButton } from '../../Components/General/Buttons'
 import Image from './Image'
 import Post from './Post'
+import { maxTablet } from '../../styles/breakpoints'
 
 export default function ImagePage() {
     const lastLocation = useLastLocation()
     const [postId, setPostId] = useState(null)
+    const postWidth = 450
 
     return (
         <>
@@ -21,11 +23,11 @@ export default function ImagePage() {
                 </XButton>
                 <Router basename="image">
                     <Route path="/:id">
-                        <Image setPostId={setPostId} />
+                        <Image setPostId={setPostId} postWidth={postWidth} />
                     </Route>
                 </Router>
             </Wrapper>
-            {postId && <Post postId={postId}></Post>}
+            {postId && <Post postId={postId} postWidth={postWidth}></Post>}
         </>
     )
 }
@@ -42,7 +44,7 @@ const Wrapper = styled.div`
     & > * {
         pointer-events: all;
     }
-    @media (max-width: 900px) {
+    @media (max-width: ${maxTablet}) {
         flex-direction: column;
         height: fit-content;
         position: relative;

@@ -39,7 +39,7 @@ export default function PostContent({ post, noImages, onDeleteCallback }) {
 
     const context = useContext(AuthContext)
 
-    const initialCommentsVisibility = commentsCount > 3 ? false : true
+    const initialCommentsVisibility = commentsCount > 6 ? false : true
     const [commentsVisible, setCommentsVisibility] = useState(initialCommentsVisibility)
     const [commentInputFocus, setCommentInputFocus] = useState(false)
 

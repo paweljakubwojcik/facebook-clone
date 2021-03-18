@@ -8,22 +8,16 @@ import { GET_IMAGE } from '../../Util/GraphQL_Queries'
 import Arrows from './Arrows'
 import ImageLoader from '../../Components/General/ImageLoader'
 
-export default function Image({ setPostId }) {
+import { maxTablet } from '../../styles/breakpoints'
+
+export default function Image({ setPostId, postWidth }) {
     const { id } = useParams()
 
     const { loading, error, data: { image } = {} } = useQuery(GET_IMAGE, {
         variables: {
             imageId: id,
         },
-        onCompleted: (data) => {
-            console.log(data)
-        },
-        onError: (e) => {
-            console.log(e)
-        },
     })
-
-    console.log(loading)
 
     const allImages = image ? image.post.images.map((image) => image.id) : null
 
@@ -32,7 +26,7 @@ export default function Image({ setPostId }) {
     }, [image, setPostId])
 
     return (
-        <ImageContainer image={image?.urls.small}>
+        <ImageContainer image={image?.urls.small} postWidth={postWidth}>
             {image && (
                 <>
                     <Arrows currentImage={id} allImages={allImages} />
@@ -62,7 +56,7 @@ const ImageContainer = styled.div`
     z-index: 1;
     top: 0;
     height: 100vh;
-    width: calc(100% - 450px);
+    width: calc(100% - ${(props) => props.postWidth}px);
 
     overflow: hidden;
     display: flex;
@@ -72,7 +66,7 @@ const ImageContainer = styled.div`
     border-right: solid 1px ${(props) => props.theme.borderColor};
     box-shadow: inset -10px 0 20px -5px ${(props) => props.theme.shadowColor};
 
-    @media (max-width: 900px) {
+    @media (max-width: ${maxTablet}) {
         width: 100%;
         height: auto;
         min-height: 50vh;
@@ -119,7 +113,7 @@ const Img = styled.img`
     transition: opacity 0.2s;
     opacity: ${(props) => (props.loaded ? '1' : '0')};
 
-    @media (max-width: 900px) {
-        max-height: calc(100vh - 60px);
+    @media (max-width: ${maxTablet}) {
+        max-height: calc(100vh - var(--navbar-height));
     }
 `

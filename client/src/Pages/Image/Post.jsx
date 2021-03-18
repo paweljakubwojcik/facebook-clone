@@ -5,11 +5,11 @@ import PostContent from '../../Components/Post/PostContent'
 import { GET_POST } from '../../Util/GraphQL_Queries'
 
 import { useHistory } from 'react-router-dom'
+import ErrorMessage from '../../Components/General/ErrorMessage'
+import { maxTablet } from '../../styles/breakpoints'
 
-const width = 450
-
-export default function Post({ postId }) {
-    const { loading, data: { post } = {} } = useQuery(GET_POST, {
+export default function Post({ postId, postWidth }) {
+    const { error, loading, data: { post } = {} } = useQuery(GET_POST, {
         variables: {
             postId,
         },
@@ -19,8 +19,9 @@ export default function Post({ postId }) {
 
     return (
         <FlexWrapper>
-            <PostWrapper>
+            <PostWrapper postWidth={postWidth}>
                 {loading && <p>Loading...</p>}
+                {error && <ErrorMessage>{error.message}</ErrorMessage>}
                 {post && (
                     <PostContent
                         post={post}
@@ -41,12 +42,12 @@ const FlexWrapper = styled.div`
     top: 0;
     height: 100vh;
     width: 100%;
-    padding-top: 60px;
+    padding-top: var(--navbar-height);
     pointer-events: none;
 
     ${(props) => props.theme.scrollBar};
 
-    @media (max-width: 900px) {
+    @media (max-width: ${maxTablet}) {
         position: relative;
         padding-top: 0;
         height: auto;
@@ -59,14 +60,14 @@ const PostWrapper = styled.div`
     pointer-events: all;
     z-index: 1;
     padding: 2em 0.5em;
-    margin-left: calc(100vw - ${width}px);
+    margin-left: calc(100vw - ${(props) => props.postWidth}px);
     background-color: ${(props) => props.theme.primaryElementColor};
-    width: ${width}px;
+    width: ${(props) => props.postWidth}px;
     height: fit-content;
 
     box-shadow: ${(props) => props.theme.standardShadow};
 
-    @media (max-width: 900px) {
+    @media (max-width: ${maxTablet}) {
         width: 100%;
         margin-top: 0;
         height: fit-content;

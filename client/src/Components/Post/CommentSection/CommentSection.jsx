@@ -10,29 +10,36 @@ import CommentForm from './CommentForm'
 
 import { defaultCommentLimit } from '../../../Util/Constants/defaultPagination'
 import { FETCH_COMMENTS } from '../../../Util/GraphQL_Queries'
+import DotLoader from '../../General/DotLoader'
 
 export default function CommentSection({ postId, inputFocus, setFocus, commentsCount }) {
     const context = useContext(AuthContext)
 
     const [canFetchMore, setCanFetchMore] = useState(false)
+    const [loading, setLoading] = useState(false)
 
-    const { data: { post: { comments } = {} } = {}, fetchMore } = useQuery(FETCH_COMMENTS, {
-        variables: {
-            postId,
-            limit: defaultCommentLimit,
-            sort: 'DESCENDING',
-            sortBy: 'timestamp',
-        },
-    })
+    const { data: { post: { comments } = {} } = {}, fetchMore, loading: initialLoading } = useQuery(
+        FETCH_COMMENTS,
+        {
+            variables: {
+                postId,
+                limit: defaultCommentLimit,
+                sort: 'DESCENDING',
+                sortBy: 'timestamp',
+            },
+        }
+    )
 
     const areThereAnyComments = comments?.length > 0
 
     const handleRefetch = async () => {
+        setLoading(true)
         await fetchMore({
             variables: {
                 cursor: areThereAnyComments ? comments[comments.length - 1].id : null,
             },
         })
+        setLoading(false)
     }
 
     useEffect(() => {
@@ -43,18 +50,29 @@ export default function CommentSection({ postId, inputFocus, setFocus, commentsC
     return (
         <>
             <CommentsContainer>
-                {areThereAnyComments && (
+                {commentsCount !== 0 && (
                     <>
-                        {comments.map((comment) => (
-                            <Comment key={comment.id} comment={comment} postId={postId} />
-                        ))}
-                        {canFetchMore && (
+                        {comments &&
+                            comments.map((comment) => (
+                                <Comment key={comment.id} comment={comment} postId={postId} />
+                            ))}
+                        {canFetchMore && !loading && !initialLoading && (
                             <GenericButton
                                 onClick={handleRefetch}
                                 style={{ margin: 'auto', fontSize: '.7em' }}
                             >
                                 show more
                             </GenericButton>
+                        )}
+                        {(loading || initialLoading) && (
+                            <DotLoader
+                                style={{
+                                    width: '3rem',
+                                    margin: 'auto',
+                                    height: '3rem',
+                                    fontSize: '.4em',
+                                }}
+                            />
                         )}
                     </>
                 )}

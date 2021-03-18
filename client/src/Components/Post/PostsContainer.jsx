@@ -23,7 +23,7 @@ export default function Posts({ userId }) {
     const { loading, error, data: { posts } = {}, fetchMore, refetch } = useQuery(GET_POSTS, {
         variables: {
             userId,
-            limit: 3,
+            limit: 5,
         },
         onCompleted: (data) => {
             console.log(data)
@@ -38,7 +38,7 @@ export default function Posts({ userId }) {
             },
         }).then(({ data: { posts: newPosts } }) => {
             //when all posts have been fetched
-            if (newPosts.length <= 2) setCanFetchMore(false)
+            if (newPosts.length <= 0) setCanFetchMore(false)
         })
     }
 

@@ -5,11 +5,12 @@ import styled from 'styled-components'
 
 import FormButton from '../General/FormButton'
 import UserButton from '../General/UserButton'
+import Menu from './Menu'
 import { ReactComponent as Logo } from '../../styles/svg/logo.svg'
 
-import Menu from './Menu'
-
 import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
+
+import { maxTablet } from '../../styles/breakpoints'
 
 export default function Navbar() {
     const location = useLocation()
@@ -63,7 +64,7 @@ const NavBar = styled.nav`
     top: 0;
     left: 0;
     z-index: 3;
-    height: 60px;
+    height: var(--navbar-height);
     padding: 0 1em;
     padding-left: 1%;
 
@@ -93,7 +94,7 @@ const NavBar = styled.nav`
         }
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: ${maxTablet}) {
         position: sticky;
         header .img {
             position: static;

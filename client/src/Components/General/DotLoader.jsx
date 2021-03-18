@@ -43,7 +43,6 @@ const pulse = keyframes`
 
 
 const Loader = styled.div`
-
     display:block;
     display:flex;
     justify-content:space-evenly;
