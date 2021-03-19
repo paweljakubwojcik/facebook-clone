@@ -48,6 +48,8 @@ export default function PostContent({ post, noImages, onDeleteCallback }) {
         setCommentInputFocus(true)
     }
 
+    const isLargeContent = body?.length < 20
+
     return (
         <>
             <PostCardHeader>
@@ -70,7 +72,7 @@ export default function PostContent({ post, noImages, onDeleteCallback }) {
                 )}
             </PostCardHeader>
 
-            <PostCardBody>{body}</PostCardBody>
+            <PostCardBody largeFont={isLargeContent}>{body}</PostCardBody>
 
             {renderImages && (
                 <ImagesContainer>
@@ -138,11 +140,12 @@ export const PostCardBody = styled.div`
     width: 100%;
     margin: 1em 0;
     padding: 0 0.2em;
+    font-size: ${(props) => (props.largeFont ? '2em' : '1em')};
 `
 
 const PostCardCounters = styled.div`
     display: flex;
-    font-size: 0.6em;
+    font-size: 0.8em;
     color: ${(props) => props.theme.secondaryFontColor};
     .counter {
         margin: 1em;

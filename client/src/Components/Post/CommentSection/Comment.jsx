@@ -21,21 +21,6 @@ export default function Comment({ comment, postId }) {
         },
         update(cache, data) {
             cache.evict({ id: `Comment:${comment.id}` }) // the most simple way to cleanup cache
-            /*  const succes = cache.modify({
-                id: `Post:${postId}`,
-                fields: {
-                    comments(existingCommentRefs, { readField }) {
-                        console.log(existingCommentRefs)
-                        return Object.values(existingCommentRefs).filter(
-                            (commentRef) => comment.id !== readField('id', commentRef)
-                        )
-                    },
-                    commentsCount(existing) {
-                        return existing - 1
-                    },
-                },
-            })
-            if (!succes) console.error('unable to modify cache after deleting comment') // cuz cache.modify doesn't throw error  */
         },
     })
 
@@ -71,6 +56,7 @@ export default function Comment({ comment, postId }) {
                         className="likes"
                         reactionsCount={comment.reactionsCount}
                         reactions={comment.reactions}
+                        style={{ marginLeft: 'auto', marginRight: 0 }}
                     />
                 </Buttons>
             </CommentBody>
@@ -92,7 +78,7 @@ const Container = styled.div`
 `
 
 const CommentBody = styled.div`
-    min-width: 20%;
+    min-width: 10em;
     margin: 0em 1em;
     margin-bottom: 1em;
     position: relative;
