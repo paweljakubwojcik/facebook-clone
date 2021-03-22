@@ -80,11 +80,8 @@ export default function PostForm({ setActive, values, removeValue, loading, erro
                 </ImagesContainer>
             </ImagesContainer.ScrollContainer>
 
-            {errors && (
-                <ErrorMessage>
-                    There was a problem during faking your status, please try later
-                </ErrorMessage>
-            )}
+            {errors?.length &&
+                errors.map((error, i) => <ErrorMessage key={i}>{error?.message}</ErrorMessage>)}
 
             <Form.Button
                 primary

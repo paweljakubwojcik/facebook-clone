@@ -8,7 +8,6 @@ import { useLocation } from 'react-router-dom'
  * @param {(createdPost)=>void} callback - callback to execute efter uploading post , it's called with created post as an argument
  */
 export const useCreatePost = (values, callback) => {
-    //TODO:this hook is usless
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState(null)
 

@@ -25,7 +25,7 @@ export default function PostFormContainer({ toggleForm, ...rest }) {
         privacy: 'PUBLIC',
     }
 
-    const { onChange, onSubmit, values, removeValue, addValue } = useForm(
+    const { onChange, onSubmit, values, removeValue, addValue, errors: formErrors } = useForm(
         createPostCallback,
         initialState
     )
@@ -58,7 +58,7 @@ export default function PostFormContainer({ toggleForm, ...rest }) {
                                 values={values}
                                 removeValue={removeValue}
                                 loading={loading}
-                                errors={errors}
+                                errors={[errors, formErrors]}
                             />
                         </AnimatedMenu.Primary>
                         <AnimatedMenu.Secondary value={'options'}>

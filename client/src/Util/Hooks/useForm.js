@@ -1,5 +1,11 @@
 import { useCallback, useState } from 'react'
 
+const fileTypes = ['image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png']
+
+function validFileType(file) {
+    return fileTypes.includes(file.type)
+}
+
 /**
  *
  * @param {Function} callback - a function to be executed on submit
@@ -7,12 +13,34 @@ import { useCallback, useState } from 'react'
  */
 export const useForm = (callback, initialState = {}) => {
     const [values, setValues] = useState(initialState)
+    const [errors, setErrors] = useState(null)
+
+    const validateFiles = (fileList) => {
+        const notEmptyFiles = Array.from(fileList).filter((file) => file.size !== 0)
+        const imageFiles = notEmptyFiles.filter((file) => {
+            if (validFileType(file)) return true
+            else {
+                setErrors(new Error('unsuported file type'))
+                return false
+            }
+        })
+        return imageFiles
+    }
 
     const onChange = (e) => {
+        setErrors(null)
+
         if (e.target.type !== 'file') setValues({ ...values, [e.target.name]: e.target.value })
-        else if (values[e.target.name])
-            setValues({ ...values, [e.target.name]: [...values[e.target.name], ...e.target.files] })
-        else setValues({ ...values, [e.target.name]: [...e.target.files] })
+        // if new value is a file
+        else {
+            const files = validateFiles(e.target.files)
+            if (values[e.target.name])
+                setValues({
+                    ...values,
+                    [e.target.name]: [...values[e.target.name], ...files],
+                })
+            else setValues({ ...values, [e.target.name]: files })
+        }
     }
 
     const onSubmit = (e) => {
@@ -48,5 +76,6 @@ export const useForm = (callback, initialState = {}) => {
         values,
         removeValue,
         addValue,
+        errors,
     }
 }

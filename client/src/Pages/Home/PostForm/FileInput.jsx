@@ -28,8 +28,8 @@ const FileInput = forwardRef((props, ref) => {
                 name="images"
                 id="file"
                 type="file"
-                multiple
-                accept="image/*"
+                multiple={!props.single}
+                accept=".jpg, .png, .jpeg"
                 onChange={() => {
                     setFileInputVis(false)
                     setFileInputHover(false)
@@ -41,7 +41,11 @@ const FileInput = forwardRef((props, ref) => {
                     setFileInputHover(false)
                 }}
             />
-            <Label visibility={fileInputVisibility ? 1 : 0} hover={fileInputHover ? 1 : 0} htmlFor="images">
+            <Label
+                visibility={fileInputVisibility ? 1 : 0}
+                hover={fileInputHover ? 1 : 0}
+                htmlFor="images"
+            >
                 Drop images here
             </Label>
         </>
