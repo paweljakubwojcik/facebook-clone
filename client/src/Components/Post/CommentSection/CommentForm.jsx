@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { useMutation, gql } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import PropsTypes from 'prop-types'
 
 import Avatar from '../../General/Avatar'
@@ -27,7 +27,6 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
             resizableInput.current.value = ''
         },
         onError(e) {
-            //TODO: handle this error on the front
             throw e
         },
     })
@@ -36,7 +35,7 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
 
     useEffect(() => {
         if (inputFocus) resizableInput.current.focus()
-    }, [inputFocus])
+    }, [inputFocus, resizableInput])
 
     const onSubmit = async (e) => {
         e.preventDefault()
@@ -61,6 +60,7 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
                     rows="1"
                     onChange={onChange}
                     onBlur={() => setFocus(false)}
+                    placeholder={'Write a comment...'}
                 />
                 <SquareButton className="sendComment">
                     <FontAwesomeIcon icon={faPaperPlane} />

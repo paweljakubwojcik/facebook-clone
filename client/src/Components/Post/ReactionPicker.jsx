@@ -10,7 +10,12 @@ export default function ReactionPicker({ react, isVisible }) {
             <AnotherContainer noMargins noPadding>
                 <IconsContainer>
                     {Object.entries(icons).map(([key, Icon], i) => (
-                        <Button key={key} delay={i * 50 + 500} onClick={() => react(key.toUpperCase())}>
+                        <Button
+                            key={key}
+                            delay={i * 50 + 500}
+                            onClick={() => react(key.toUpperCase())}
+                            title={key}
+                        >
                             <Icon style={{ width: '1em', height: '1em' }} className={`${key}`} />
                         </Button>
                     ))}

@@ -32,13 +32,20 @@ export default function LikesCounter({ reactionsCount, reactions, ...rest }) {
                     <Icon as={icons[key]} />
                 </Counter>
             ))}
-            <Counter
-                areThereAnyLikes={areThereAnyLikes}
-                reactions={reactions}
-                style={{ marginLeft: '.5em', fontSize: '1em' }}
-            >
-                {reactionsCount}
-            </Counter>
+            {areThereAnyLikes && (
+                <Counter
+                    areThereAnyLikes={areThereAnyLikes}
+                    reactions={reactions}
+                    style={{
+                        marginLeft: '.7em',
+                        fontSize: '1em',
+                        backgroundColor: 'transparent',
+                        boxShadow: 'none',
+                    }}
+                >
+                    {reactionsCount}
+                </Counter>
+            )}
         </Container>
     )
 }
@@ -80,19 +87,26 @@ const Container = styled.div`
 const Icon = styled.div`
     width: 100%;
     height: 100%;
-    color: ${(props) => (props.blue ? props.theme.primaryColor : 'inherit')};
 `
 
 const CounterLikes = styled.div`
-    color: ${(props) => (props.blue ? props.theme.primaryColor : 'inherit')};
     position: relative;
-    width: 1em;
-    height: 1em;
-    font-size: 1.5em;
-    display: flex;
-    margin: 0.3em -0.1em 0.3em 0;
     display: flex;
     align-items: center;
+    justify-content: center;
+
+    width: 1.2em;
+    height: 1.2em;
+
+    font-size: 1.5em;
+    margin: 0.3em -0.3em 0.3em 0;
+    padding: 0.2em;
+    border-radius: 50%;
+    background-color: ${(props) => props.theme.roundButtonColor};
+    box-shadow: ${(props) => props.theme.smallShadow};
+
+    color: ${(props) => (props.blue ? props.theme.primaryColor : 'inherit')};
+
     &:hover {
         ${(props) =>
             props.blue

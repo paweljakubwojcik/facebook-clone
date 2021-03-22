@@ -8,6 +8,7 @@ import ErrorMessage from '../General/ErrorMessage'
 import NotFound from '../General/NotFound'
 import { GET_POSTS } from '../../Util/GraphQL_Queries'
 import { useIntersectionObserver } from '../../Util/Hooks/useIntersectionObserver'
+import ElementContainer from '../General/ElementContainer'
 
 export default function Posts({ userId }) {
     const [setRef] = useIntersectionObserver(
@@ -25,20 +26,24 @@ export default function Posts({ userId }) {
             userId,
             limit: 5,
         },
-        onCompleted: (data) => {
-            console.log(data)
+        onCompleted: ({ posts: newPosts }) => {
+            //when all posts have been fetched
+            console.log(newPosts)
+            if (newPosts.length < 5) setCanFetchMore(false)
         },
     })
     const isPostsEmpty = posts?.length === 0
 
     async function handleIntersect() {
+        console.log(';fetch')
         fetchMore({
             variables: {
                 cursor: !isPostsEmpty && posts ? posts[posts?.length - 1]?.id : null,
             },
         }).then(({ data: { posts: newPosts } }) => {
             //when all posts have been fetched
-            if (newPosts.length <= 0) setCanFetchMore(false)
+
+            if (newPosts.length < 5) setCanFetchMore(false)
         })
     }
 
@@ -62,6 +67,7 @@ export default function Posts({ userId }) {
                     ))}
                 </Dummy>
             )}
+            {!canFetchMore && <ElementContainer>There is no more content to show</ElementContainer>}
         </PostsContainer>
     )
 }

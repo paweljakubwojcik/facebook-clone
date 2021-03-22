@@ -88,7 +88,7 @@ const ContainerBar = styled.div`
     height: 4em;
     top: ${(props) => props.top}px;
     overflow: hidden;
-    box-shadow: 0 15px 10px -15px ${(props) => props.theme.shadowColor};
+    box-shadow: ${(props) => props.theme.smallShadow};
 `
 
 const Menu = styled.div`
