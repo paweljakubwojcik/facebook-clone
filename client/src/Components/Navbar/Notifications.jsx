@@ -2,7 +2,6 @@ import React, { forwardRef } from 'react'
 import styled from 'styled-components'
 
 import { gql, useMutation, useQuery } from '@apollo/client'
-import moment from 'moment'
 import { replaceJSX } from '../../Util/Methods'
 import { useHistory } from 'react-router-dom'
 import { MARK_SEEN } from '../../Util/GraphQL_Queries'
@@ -97,7 +96,7 @@ const Notifications = forwardRef(({ userId, ...rest }, ref) => {
         <DropDownMenu {...rest} ref={ref}>
             <Container onScroll={handleScroll}>
                 {loading && <DotLoader style={{ margin: '2em', width: '10em' }} />}
-                {fetchedUser && [...notifications, ...invitations].sort(({ props: { date: a } }, { props: { date: b } }) => moment(b).unix() - moment(a).unix())}
+               {/*  {fetchedUser && [...notifications, ...invitations].sort(({ props: { date: a } }, { props: { date: b } }) => moment(b).unix() - moment(a).unix())} */}
                 {error && <NotFound message={'Something went wrong'} />}
             </Container>
         </DropDownMenu>
@@ -163,7 +162,7 @@ const Content = ({ data, children, date, buttons }) => {
                     <Title>
                         {replaceJSX(children, `$user`, <b>{data.from?.username}</b>)}
                     </Title>
-                    <Timestamp isSeen={data.isSeen}>{moment(date).fromNow()}</Timestamp>
+                   {/*  <Timestamp isSeen={data.isSeen}>{moment(date).fromNow()}</Timestamp> */}
                     <Buttons>{buttons}</Buttons>
                 </ContentContainer>
 
