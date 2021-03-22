@@ -18,7 +18,6 @@ export const useUpdatePicture = (values, callback, field) => {
     const [updateUser] = useMutation(UPDATE_USER, {
         update: async (_, { data: { updateUser: user } }) => {
             setLoading(false)
-            localStorage.setItem('avatar', user.profileImage?.urls?.medium)
             await callback(user)
         },
         onError: (e) => {
@@ -27,23 +26,16 @@ export const useUpdatePicture = (values, callback, field) => {
         },
     })
 
-   /*  const { storePicture } = useCreateImage((uploadedPicture) => {
-        updateUser({
-            variables: {
-                field: field,
-                newValue: uploadedPicture.id,
-            },
-        })
-    }) */
-
     const title = `has uploaded new ${
         field === 'profileImage' ? 'profile picture' : 'background picture'
     }`
 
+    console.log(values.image)
     const { createPost } = useCreatePost(
-        { body: values.body, privacy: 'PRIVATE', title, images: [] },
-        async (post) => {
-           /*  await storePicture(values.image[0], post.id) */
+        { body: values?.body, privacy: 'PRIVATE', title, images: values.image },
+        async ({ images }) => {
+            console.log(images)
+            updateUser({ variables: { field: field, newValue: images[0].id } })
         }
     )
 

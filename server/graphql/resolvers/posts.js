@@ -53,15 +53,16 @@ module.exports = {
     },
 
     Mutation: {
-        async createPost(_, { body, title, privacy = 'PUBLIC', images }, context) {
+        async createPost(_, { body = '', title, privacy = 'PUBLIC', images }, context) {
             //check if user is authenitaced
             const user = checkAuth(context)
             //if check auth fails to confirm token, error is being thrown
             // so if get to this blok of code thats means [user] definetly exists
-            if (body && !title)
-                if (body.trim() === '') {
+            if (body && !title) {
+                if (body && body.trim() === '') {
                     throw new Error('Post body must not be empty')
                 }
+            }
 
             try {
                 const newPost = new Entity({

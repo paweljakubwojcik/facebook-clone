@@ -16,6 +16,7 @@ import FormButton from '../../Components/General/FormButton'
 import { SquareButton } from '../../Components/General/Buttons'
 import FileImage from '../../Components/General/FileImage'
 
+
 const enumTypes = {
     profile: 'profileImage',
     background: 'backgroundImage',
@@ -69,8 +70,6 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
         setActive(image ? 'imgPreview' : 'main')
     }, [image])
 
-    console.log('render')
-
     return (
         <Modal toggleModal={toggleForm}>
             <ElementContainer noPadding style={{ width: '500px' }}>
@@ -78,6 +77,31 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
                     <Form.Header toggleForm={toggleForm}>{`Update ${type} picture`}</Form.Header>
                     <AnimatedMenu active={active}>
                         <AnimatedMenu.Primary value={'main'}>
+                            <Form.FlexContainer>
+                                <FormButton
+                                    primary
+                                    type="button"
+                                    onClick={() => setActive('choose')}
+                                >
+                                    Choose from images
+                                </FormButton>
+
+                                <FormButton
+                                    primary
+                                    type="button"
+                                    onClick={() => fileInput.current.click()}
+                                >
+                                    Add new
+                                </FormButton>
+                                <UploadImage
+                                    type="file"
+                                    ref={fileInput}
+                                    name="image"
+                                    accept=".jpg, .png, .jpeg"
+                                />
+                            </Form.FlexContainer>
+                        </AnimatedMenu.Primary>
+                        <AnimatedMenu.Secondary value={'choose'}>
                             <Form.FlexContainer>
                                 <Tittle>Choose from your pictures</Tittle>
                                 <ImagesContainer.ScrollContainer>
@@ -92,16 +116,11 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
                                         ))}
                                     </ImagesContainer>
                                 </ImagesContainer.ScrollContainer>
-                                <FormButton
-                                    primary
-                                    type="button"
-                                    onClick={() => fileInput.current.click()}
-                                >
-                                    Add new
-                                </FormButton>
-                                <UploadImage type="file" ref={fileInput} name="image" />
+                                <SquareButton type="button" onClick={() => setActive('main')}>
+                                    Cancel
+                                </SquareButton>
                             </Form.FlexContainer>
-                        </AnimatedMenu.Primary>
+                        </AnimatedMenu.Secondary>
 
                         <AnimatedMenu.Secondary
                             value={'imgPreview'}

@@ -8,7 +8,7 @@ import { createUploadLink } from 'apollo-upload-client'
 import cursorPagination from './Util/cursorPagination'
 
 const httpLink = createUploadLink({
-    uri: 'http://localhost:5000/graphql',
+    uri: 'http://localhost:5000',
 })
 
 const cache = new InMemoryCache({
