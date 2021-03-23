@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { maxTablet } from '../../styles/breakpoints'
 
 export const GenericButton = styled.button`
     display: flex;
@@ -96,8 +97,10 @@ export const FilledButton = styled(SquareButton)`
 
 export const ShowableButton = styled(RoundButton)`
     transition: opacity 0.3s, transform 0.3s;
-    opacity: 0;
-    transform: scale(0.1);
+    @media (min-width: ${maxTablet}) {
+        opacity: 0;
+        transform: scale(0.1);
+    }
 
     ${(props) => props.parent}:hover &,
     ${(props) => props.parent}:focus & {
