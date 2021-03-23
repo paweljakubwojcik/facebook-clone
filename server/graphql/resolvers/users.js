@@ -268,6 +268,28 @@ module.exports = {
                 }
             }
         },
+        searchForUser: async (parent, { query }) => {
+            try {
+                if (query.trim() === '') return []
+                const queries = query.split(' ')
+                const filter = query.replace(' ', '|')
+                let foundUsers = []
+                foundUsers = foundUsers.concat(await User.find({ username: { $regex: filter } }))
+                
+                let indexBack = query.length - 1
+                while (foundUsers.length === 0 && indexBack !== 0) {
+                    foundUsers = foundUsers.concat(
+                        await User.find({
+                            username: { $regex: query.slice(0, indexBack) },
+                        })
+                    )
+                    indexBack--
+                }
+                return foundUsers
+            } catch (error) {
+                throw error
+            }
+        },
     },
     User: {
         profileImage: async ({ profileImage }) => {
@@ -283,7 +305,6 @@ module.exports = {
             const data = await Promise.all(friends.map((friend) => User.findById(friend)))
             return data
         },
-        
     },
     Invitation: {
         from: async ({ from }) => {
