@@ -5,7 +5,7 @@ module.exports = gql`
         users(limit: Int!, offset: Int!): [User]
         user(userId: ID!): User
 
-        searchForUser(query: String!): [User]
+        searchForUser(query: String!, limit: Int, offset: Int): [User]
     }
 
     extend type Mutation {

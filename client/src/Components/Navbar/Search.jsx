@@ -2,12 +2,26 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import Input from '../General/StyledInput'
 import ElementContainer from '../General/ElementContainer'
+import UserButton from '../General/UserButton'
+import { Link } from 'react-router-dom'
+
+import { useQuery } from '@apollo/client'
+import { SEARCH } from '../../Util/GraphQL_Queries'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 export default function Search({ setActive, active, isCovered, ...rest }) {
     const [search, setSearch] = useState('')
+
+    const { data: { searchForUser: users } = {}, refetch } = useQuery(SEARCH, {
+        variables: {
+            query: search,
+        },
+        fetchPolicy: 'cache-and-network',
+    })
+
+    console.log(users)
 
     if (isCovered) return null
     return (
@@ -19,9 +33,28 @@ export default function Search({ setActive, active, isCovered, ...rest }) {
                     placeholder="search fakebook..."
                     onFocus={() => setActive(true)}
                     active={active ? 1 : 0}
+                    onInput={(e) => {
+                        console.log(e.target.value)
+                        setSearch(e.target.value)
+                    }}
                 />
             </Container>
-            {active && <SearchResults>No search results</SearchResults>}
+            {active && (
+                <SearchResults>
+                    {users?.length
+                        ? users.map((user) => (
+                              <UserButton
+                                  key={user.id}
+                                  user={user}
+                                  notLink
+                                  as={Link}
+                                  to={`/profile/${user.id}`}
+                                  onClick={() => setActive(false)}
+                              />
+                          ))
+                        : 'no matching results'}
+                </SearchResults>
+            )}
         </>
     )
 }

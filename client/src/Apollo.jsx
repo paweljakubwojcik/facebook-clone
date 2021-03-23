@@ -4,7 +4,6 @@ import { ApolloClient, ApolloProvider, InMemoryCache /* createHttpLink */ } from
 import { setContext } from '@apollo/client/link/context'
 import { createUploadLink } from 'apollo-upload-client'
 
-
 import cursorPagination from './Util/cursorPagination'
 
 const httpLink = createUploadLink({
@@ -30,6 +29,10 @@ const cache = new InMemoryCache({
                 posts: {
                     keyArgs: ['userId'],
                     ...cursorPagination,
+                },
+                searchForUser: {
+                    keyArgs: false,
+                    
                 },
             },
         },

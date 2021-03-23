@@ -268,14 +268,14 @@ module.exports = {
                 }
             }
         },
-        searchForUser: async (parent, { query }) => {
+        searchForUser: async (parent, { query, limit = 5, offset = 0 }) => {
             try {
                 if (query.trim() === '') return []
                 const queries = query.split(' ')
                 const filter = query.replace(' ', '|')
                 let foundUsers = []
                 foundUsers = foundUsers.concat(await User.find({ username: { $regex: filter } }))
-                
+
                 let indexBack = query.length - 1
                 while (foundUsers.length === 0 && indexBack !== 0) {
                     foundUsers = foundUsers.concat(
@@ -285,7 +285,7 @@ module.exports = {
                     )
                     indexBack--
                 }
-                return foundUsers
+                return foundUsers.slice(offset, offset + limit)
             } catch (error) {
                 throw error
             }

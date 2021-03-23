@@ -185,3 +185,17 @@ export const UPDATE_USER = gql`
         }
     }
 `
+
+export const SEARCH = gql`
+    query searchForUser($query: String!, $limit: Int, $offset: Int) {
+        searchForUser(query: $query, limit: $limit, offset: $offset) {
+            username
+            id
+            profileImage {
+                urls {
+                    small
+                }
+            }
+        }
+    }
+`
