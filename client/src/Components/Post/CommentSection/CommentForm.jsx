@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, forwardRef } from 'react'
 import styled from 'styled-components'
 import { useMutation } from '@apollo/client'
 import PropsTypes from 'prop-types'
 
 import Avatar from '../../General/Avatar'
 import { SquareButton } from '../../General/Buttons'
+import Input from '../../General/StyledInput'
 import ErrorMessage from '../../General/ErrorMessage'
 import { ADD_COMMENT } from '../../../Util/GraphQL_Queries'
 
@@ -90,29 +91,4 @@ const Form = styled.form`
     }
 `
 
-const CommentInput = styled.textarea`
-    flex: 1;
-    margin: 0 0.5em;
-    border-radius: 1em;
-    padding: 0.5em 1em;
-    box-shadow: none;
-    height: 2em;
-    border: none;
-    font-family: inherit;
-    background-color: ${(props) => props.theme.secondaryElementColor};
-    color: ${(props) => props.theme.primaryFontColor};
-    resize: none;
-    filter: opacity(0.8);
-    transition: background-color 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s;
-    &:focus {
-        filter: opacity(1);
-    }
-    &:hover {
-        background-color: ${(props) => props.theme.secondaryElementHover};
-        filter: opacity(1);
-        cursor: pointer;
-    }
-    &:focus:hover {
-        cursor: text;
-    }
-`
+const CommentInput = forwardRef((props, ref) => <Input as="textarea" {...props} ref={ref} />)

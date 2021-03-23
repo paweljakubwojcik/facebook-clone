@@ -6,11 +6,11 @@ import styled from 'styled-components'
 import FormButton from '../General/FormButton'
 import UserButton from '../General/UserButton'
 import Menu from './Menu'
-import { ReactComponent as Logo } from '../../styles/svg/logo.svg'
 
 import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 
 import { maxTablet } from '../../styles/breakpoints'
+import Header from './Header'
 
 export default function Navbar() {
     const location = useLocation()
@@ -36,28 +36,21 @@ export default function Navbar() {
 
     return (
         <NavBar className="navBar" isCovered={isCovered}>
-            <header>
-                <Link to="/">
-                    <Logo className="img" />
-                    <MediaQuery width={400}>{!isCovered && <h1>Fakebook</h1>}</MediaQuery>
-                </Link>
-            </header>
+            <Header isCovered={isCovered} />
             {!loading &&
                 (user ? (
-                    <>
+                    <div style={{ marginLeft: 'auto', display: 'flex' }}>
                         <MediaQuery width={740}>
                             <UserButton user={user} notLink as={Link} to={`/profile/${user.id}`} />
                         </MediaQuery>
                         <Menu counters={{ messages: 0, notifications: user?.notificationCount }} />
-                    </>
+                    </div>
                 ) : (
                     loggingButtons
                 ))}
         </NavBar>
     )
 }
-
-Navbar.propsTypes = {}
 
 const NavBar = styled.nav`
     position: ${(props) => (!props.isCovered ? 'sticky' : 'static')};
@@ -66,7 +59,6 @@ const NavBar = styled.nav`
     z-index: 3;
     height: var(--navbar-height);
     padding: 0 1em;
-    padding-left: 1%;
 
     display: flex;
 
@@ -75,24 +67,6 @@ const NavBar = styled.nav`
     background-color: ${(props) => props.theme.primaryElementColor};
     border-bottom: solid 1px ${(props) => props.theme.borderColor};
     box-shadow: ${(props) => props.theme.standardShadow};
-
-    header {
-        margin: 0.3em auto 0.3em 1em;
-        a {
-            display: flex;
-            align-items: center;
-        }
-        h1 {
-            margin: 0 1em;
-        }
-        .img {
-            height: 40px;
-            color: ${(props) => props.theme.primaryColor};
-            ${(props) =>
-                props.isCovered ? 'position:fixed; z-index:3; transform:translateX(100%);' : ''}
-            transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-    }
 
     @media (max-width: ${maxTablet}) {
         position: sticky;

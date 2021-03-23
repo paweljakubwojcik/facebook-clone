@@ -33,8 +33,8 @@ export const RoundButton = styled(GenericButton)`
     color: ${(props) => props.active && props.theme.primaryFontColors};
 
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: ${(props) => (props.size ? props.size : 40)}px;
+    height: ${(props) => (props.size ? props.size : 40)}px;
     margin: 0.3em 0.2em;
     & > * {
         margin: 0;
