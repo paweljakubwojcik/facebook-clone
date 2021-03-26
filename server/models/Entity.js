@@ -2,7 +2,10 @@ const { model, Schema } = require('mongoose')
 
 const reaction = {
     createdAt: String,
-    timestamp: Number,
+    timestamp: {
+        type: Number,
+        default: Date.now(),
+    },
     type: {
         type: String,
         required: true,
@@ -23,7 +26,10 @@ const entitySchema = new Schema({
     body: String,
     title: String,
     createdAt: String,
-    timestamp: Number,
+    timestamp: {
+        type: Number,
+        default: Date.now(),
+    },
     privacy: String,
     isDeletable: Boolean,
     isEdited: Boolean,

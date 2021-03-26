@@ -5,23 +5,27 @@ const imageSchema = new Schema({
         large: String,
         medium: String,
         small: String,
-        thumbnail: String
+        thumbnail: String,
     },
     createdAt: String,
+    timestamp: {
+        type: Number,
+        default: Date.now(),
+    },
     author: {
         name: String,
         link: String,
     },
     uploadedBy: {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'users',
     },
     post: {
         type: Schema.Types.ObjectId,
-        ref: 'posts'
+        ref: 'posts',
     },
     title: String,
-    filename: String
+    filename: String,
 })
 
 module.exports = model('Image', imageSchema)

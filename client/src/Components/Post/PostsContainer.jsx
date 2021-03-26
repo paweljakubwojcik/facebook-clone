@@ -25,6 +25,8 @@ export default function Posts({ userId }) {
         variables: {
             userId,
             limit: 5,
+            sort: 'DESCENDING',
+            sortBy: 'timestamp',
         },
         onCompleted: ({ posts: newPosts }) => {
             //when all posts have been fetched
@@ -42,7 +44,7 @@ export default function Posts({ userId }) {
             },
         }).then(({ data: { posts: newPosts } }) => {
             //when all posts have been fetched
-
+            console.log(newPosts)
             if (newPosts.length < 5) setCanFetchMore(false)
         })
     }

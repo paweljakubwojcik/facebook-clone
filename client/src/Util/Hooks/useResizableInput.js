@@ -12,9 +12,14 @@ export default function useResizableInput({ maxHeight } = {}) {
     useEffect(() => {
         if (resizableInput.current) {
             resizableInput.current.style.height = '1px'
+
+            const paddingBottom = parseFloat(
+                window.getComputedStyle(resizableInput.current).paddingBottom.replace('px', '')
+            )
+
             const height =
                 resizableInput.current.scrollHeight < maxHeight || !maxHeight
-                    ? resizableInput.current.scrollHeight
+                    ? resizableInput.current.scrollHeight + paddingBottom
                     : maxHeight
             resizableInput.current.style.height = height + 'px'
         }

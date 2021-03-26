@@ -69,18 +69,22 @@ const Container = styled.div`
 
     //css animations here
     &.fade-enter {
+        pointer-events: none;
         opacity: 0;
     }
     &.fade-enter-active {
         opacity: 1;
+        pointer-events: none;
         transition: opacity ${animDuration}ms ${(props) => props.delay}ms;
     }
 
     &.fade-exit {
+        pointer-events: none;
         opacity: 1;
     }
     &.fade-exit-active {
         opacity: 0;
+        pointer-events: none;
         transition: opacity ${animDuration}ms ${(props) => props.delay}ms;
     }
 

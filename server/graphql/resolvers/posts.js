@@ -72,7 +72,6 @@ module.exports = {
                     privacy,
                     user: user.id,
                     createdAt: new Date().toISOString(),
-                    timestamp: Date.now(),
                     reactions: [],
                     children: [],
                     images: [],
@@ -118,6 +117,6 @@ module.exports = {
         },
         commentsCount: (parent) => parent.children.length,
         reactionsCount: (parent) => parent.reactions.length,
-        timestamp: ({ createdAt, timestamp }) => (timestamp ? timestamp : dayjs(createdAt).unix()),
+        timestamp: ({ createdAt, timestamp }) => (timestamp ? timestamp : dayjs(createdAt).valueOf()),
     },
 }

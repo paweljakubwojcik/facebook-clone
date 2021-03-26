@@ -39,7 +39,8 @@ export default function Comment({ comment, postId }) {
                     </h4>
                     <TimeStamp time={comment.createdAt} style={{ margin: '.4em' }} />
                 </header>
-                {comment.body}
+                <Body>{comment.body}</Body>
+
                 <Buttons blue={comment.reactionsCount > 0 ? 1 : 0}>
                     <LikeButton data={comment} customButton={GenericButton} />
                     <Dot />
@@ -86,6 +87,10 @@ const CommentBody = styled.div`
     border-radius: 0.5em;
     background-color: ${(props) => props.theme.roundButtonColor};
     word-wrap: break-word;
+`
+
+const Body = styled.div`
+    margin: .5em 0;
 `
 
 const Buttons = styled.div`

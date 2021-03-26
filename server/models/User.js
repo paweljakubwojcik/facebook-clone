@@ -1,10 +1,14 @@
 const { model, Schema } = require('mongoose')
 
 const userSchema = new Schema({
-    username: String,  // required i s handled by GraphQL
+    username: String, // required i s handled by GraphQL
     password: String,
     email: String,
     createdAt: String,
+    timestamp: {
+        type: Number,
+        default: Date.now(),
+    },
     info: {
         joiningDate: String,
         birthDate: String,
@@ -17,17 +21,17 @@ const userSchema = new Schema({
     friends: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'users'
-        }
+            ref: 'users',
+        },
     ],
     invitations: [
         {
             from: {
                 type: Schema.Types.ObjectId,
-                ref: 'users'
+                ref: 'users',
             },
-            date: String
-        }
+            date: String,
+        },
     ],
     notifications: [
         {
@@ -35,33 +39,32 @@ const userSchema = new Schema({
             createdAt: String,
             isSeen: {
                 type: Boolean,
-                default: false
+                default: false,
             },
             from: {
                 type: Schema.Types.ObjectId,
-                ref: 'users'
+                ref: 'users',
             },
-        }
+        },
     ],
     profileImage: {
         type: Schema.Types.ObjectId,
-        ref: 'images'
+        ref: 'images',
     },
     backgroundImage: {
         type: Schema.Types.ObjectId,
-        ref: 'images'
+        ref: 'images',
     },
     conversations: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'conversations'
-        }
+            ref: 'conversations',
+        },
     ],
     settings: {
         preferredTheme: String,
         postDefaultPrivacy: String,
-    }
-
+    },
 })
 
 module.exports = model('User', userSchema)
