@@ -51,8 +51,6 @@ export default function Profile() {
         }
     }, [user, isMobileDevice])
 
-    console.log(user)
-
     return (
         <UserMatchContext.Provider value={isViewerTheOwner}>
             {user && (

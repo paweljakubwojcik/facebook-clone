@@ -75,7 +75,7 @@ export default function ProfileMenu({ width, contentType, setContentType, user }
                 </Menu>
             </ContainerBar>
             {friendshipState === 'INVITING' && (
-                <ElementContainer style={{ width, margin: '1em auto' }} special>
+                <ElementContainer style={{ width, margin: '1em auto', maxWidth: '100%' }} special>
                     <ActionButtons
                         user={user}
                         state={friendshipState}

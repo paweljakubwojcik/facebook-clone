@@ -7,7 +7,7 @@ export default function ElementContainer({ children, ...rest }) {
 
 export const Container = styled.div`
     width: 100%;
-    max-width: 100%;
+    max-width: 100vw;
     background-color: ${(props) => props.theme.primaryElementColor};
     border-radius: 0.5em;
     ${(props) => (props.noMargins ? '' : 'margin: 2vh 2%;')}
