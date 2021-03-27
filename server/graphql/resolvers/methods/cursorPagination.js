@@ -1,4 +1,10 @@
 // TODO: typescript would be really handy here
+
+const sortingValues = {
+    ASCENDING: 1,
+    DESCENDING: -1,
+}
+
 /**
  *
  * @param {{key: any}} filter
@@ -6,17 +12,34 @@
  * @param {obj} MongoDocument
  */
 module.exports.getPaginatedResult = async (filter = {}, paginationData, MongoDocument) => {
-    const { limit, cursor, sortBy = 'createdAt', sort: sortDir = 'DESCENDING' } = paginationData
+    const { limit, cursor, sortBy = 'timestamp', sort: sortDir = 'DESCENDING' } = paginationData
     let sort = {}
-    const sortingValues = {
-        ASCENDING: 1,
-        DESCENDING: -1,
-    }
     sort[sortBy] = sortingValues[sortDir]
 
     try {
         const paginatedResult = await MongoDocument.find(filter, null, { sort })
         const index = paginatedResult.findIndex(({ _id }) => _id.toString() === cursor) //currsor === undefined => ined = -1
+        const next = index + 1
+        return paginatedResult.slice(next, next + limit)
+    } catch (error) {
+        throw error
+    }
+}
+
+/**
+ *
+ * @param {{key: any}} filter
+ * @param {{limit: number , cursor: string, sortBy: string, sort: string}} paginationData
+ * @param {Array} array to be paginated
+ */
+module.exports.paginateResult = (filter = {}, paginationData, result) => {
+    const { limit, cursor, sortBy = 'timestamp', sort: sortDir = 'DESCENDING' } = paginationData
+
+    try {
+        const paginatedResult = result.sort(
+            (b, a) => (b[sortBy] - a[sortBy]) * sortingValues[sortDir]
+        )
+        const index = paginatedResult.findIndex(({ id }) => id.toString() === cursor) //currsor === undefined => ined = -1
         const next = index + 1
         return paginatedResult.slice(next, next + limit)
     } catch (error) {

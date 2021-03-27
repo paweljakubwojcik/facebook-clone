@@ -1,9 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 
-import { gql, useQuery, useMutation } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import { AuthContext } from '../../Context/auth'
-import { INVITE_USER } from '../../Util/GraphQL_Queries'
+import { INVITE_USER, GET_USER_FRIENDS } from '../../Util/GraphQL_Queries'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserPlus, faCheck } from '@fortawesome/free-solid-svg-icons'
@@ -12,23 +12,7 @@ import { FilledButton } from '../../Components/General/Buttons'
 import AnswerToInvitation from '../../Components/General/ActionButtons/AnswerToInvitation'
 import DotLoader from '../../Components/General/DotLoader'
 
-const GET_USER_FRIENDS = gql`
-    query user($userId: ID!) {
-        user(userId: $userId) {
-            id
-            invitations {
-                from {
-                    id
-                    username
-                }
-                id
-            }
-            friends {
-                id
-            }
-        }
-    }
-`
+
 
 export default function ActionButtons({ user, state, setState }) {
     const context = useContext(AuthContext)

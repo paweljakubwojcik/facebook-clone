@@ -14,15 +14,11 @@ module.exports = gql`
         timestamp: Float!
         isSeen: Boolean!
         from: User
-        image: Image
-        type: NotificationTypes!
-    }
-
-    extend type Query {
-        notifications(limit: Int!, offset: Int!): User!
+        type: NotificationTypes
     }
 
     extend type Mutation {
         markNotificationSeen(notificationId: ID!): User!
+        deleteNotification(notificationId: ID!): User!
     }
 `

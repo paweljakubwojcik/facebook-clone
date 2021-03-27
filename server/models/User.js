@@ -58,6 +58,10 @@ const userSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'users',
             },
+            actions: [String],
+            type: {
+                type: String,
+            },
         },
     ],
     profileImage: {

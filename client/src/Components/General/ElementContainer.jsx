@@ -13,7 +13,8 @@ export const Container = styled.div`
     ${(props) => (props.noPadding ? '' : 'padding:1em;')}
     cursor:default;
 
-    border: solid 1px ${(props) => props.theme.borderColor};
+    border: solid 1px
+        ${(props) => (props.special ? props.theme.primaryColor : props.theme.borderColor)};
     box-shadow: ${(props) => props.theme.smallShadow};
     @media (max-width: 600px) {
         border-radius: 0;

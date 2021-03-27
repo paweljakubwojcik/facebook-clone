@@ -6,6 +6,7 @@ const { SECRET_KEY } = require('../../config')
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
 const { createWelcomePost } = require('./methods/createWelcomePost')
 const { generateRandomPhoto } = require('../../utils/randomPhoto')
+const { paginateResult } = require('./methods/cursorPagination')
 const checkAuth = require('../../utils/checkAuth')
 
 const User = require('../../models/User')
@@ -49,9 +50,6 @@ module.exports = {
                 throw new UserInputError('Wrong password', { errors })
             }
             const token = generateToken(user)
-            //actualize user info
-            user.isOnline = true
-            user.lastTimeOnline = new Date().toISOString()
             const res = await user.save()
             return {
                 ...user._doc,
@@ -178,8 +176,11 @@ module.exports = {
                 const invitator = await User.findById(invitatorId)
                 user.invitations.push({
                     from: invitator.id,
-                    date: new Date().toISOString(),
-                    isSeen: false,
+                })
+                user.notifications.push({
+                    from: invitator.id,
+                    body: `$user wants to become your fake friend!`,
+                    type: 'INVITATION',
                 })
                 return await user.save()
             } catch (error) {
@@ -188,10 +189,13 @@ module.exports = {
         },
         async answerInvitation(_, { from, answer }, context) {
             const user = checkAuth(context)
-
             try {
                 const invitator = await User.findById(from)
                 const invitee = await User.findById(user.id)
+                //deleting notification related to invitation
+                invitee.notifications = invitee.notifications.filter(
+                    (n) => !(n.type === 'INVITATION' && n.from.toString() === from)
+                )
                 const response = []
                 switch (answer) {
                     case 'ACCEPT':
@@ -201,7 +205,9 @@ module.exports = {
                         if (!invitator.friends.includes(invitee.id)) invitator.friends.push(invitee)
 
                         // != because 'inv.from' has diffrent type than 'from'
-                        const filteredInv = invitee.invitations.filter((inv) => inv.from != from)
+                        const filteredInv = invitee.invitations.filter(
+                            (inv) => inv.from.toString() !== from
+                        )
                         invitee.invitations = filteredInv
 
                         invitator.notifications.unshift({
@@ -238,14 +244,13 @@ module.exports = {
         },
     },
     Query: {
-        users: async (_, { offset, limit }, context) => {
+        users: async (_, { limit }, context) => {
             try {
                 const { id } = checkAuth(context)
                 const user = await User.findById(id)
-                const users = await User.find({}, null, {
-                    skip: offset,
-                    limit: limit,
-                }) // gets only users that are friends
+                /* const users = await getPaginatedResult({ _id: user.friends }, paginationData, User) */
+                /* const users = await getPaginatedResult({}, paginationData, User) */
+                const users = User.find({}, null, { limit })
                 return users
             } catch (err) {
                 throw new Error(err)
@@ -304,6 +309,15 @@ module.exports = {
         friends: async ({ friends }) => {
             const data = await Promise.all(friends.map((friend) => User.findById(friend)))
             return data
+        },
+        notifications: async ({ id }, { paginationData }, context) => {
+            try {
+                const user = await User.findById(id)
+                notifications = paginateResult({}, paginationData, user.notifications)
+                return notifications
+            } catch (error) {
+                return error
+            }
         },
     },
     Invitation: {

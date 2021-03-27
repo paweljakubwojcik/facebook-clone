@@ -1,42 +1,5 @@
 import { gql } from '@apollo/client'
 
-export const INVITE_USER = gql`
-    mutation inviteUser($userId: ID!) {
-        inviteUser(userId: $userId) {
-            id
-            email
-            username
-            invitations {
-                id
-                timestamp
-                from {
-                    id
-                }
-            }
-        }
-    }
-`
-
-export const ANSWER_INVITATION = gql`
-    mutation answerInvitation($from: ID!, $answer: Answer!) {
-        answerInvitation(from: $from, answer: $answer) {
-            id
-            username
-            invitations {
-                id
-                timestamp
-                from {
-                    id
-                }
-            }
-            friends {
-                id
-                username
-            }
-        }
-    }
-`
-
 export const MARK_SEEN = gql`
     mutation markNotificationSeen($notificationId: ID!) {
         markNotificationSeen(notificationId: $notificationId) {
@@ -47,12 +10,28 @@ export const MARK_SEEN = gql`
     }
 `
 
-export const GET_USER_NOTIFICATIONS = gql`
-    query user($userId: ID!) {
+export const GET_NOTIFICATIONS = gql`
+    query user($limit: Int!, $cursor: ID, $sortBy: String, $sort: SortDirection, $userId: ID!) {
         user(userId: $userId) {
             id
-            notifications {
+            notifications(
+                paginationData: { limit: $limit, cursor: $cursor, sortBy: $sortBy, sort: $sort }
+            ) {
+                body
                 id
+                timestamp
+                type
+                isSeen
+                from {
+                    id
+                    username
+                    profileImage {
+                        urls {
+                            id
+                            small
+                        }
+                    }
+                }
             }
         }
     }

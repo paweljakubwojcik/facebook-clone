@@ -20,7 +20,6 @@ export default function Posts({ userId }) {
 
     const [canFetchMore, setCanFetchMore] = useState(true)
 
-    // without any variables it gets all posts from DB
     const { loading, error, data: { posts } = {}, fetchMore, refetch } = useQuery(GET_POSTS, {
         variables: {
             userId,
@@ -28,23 +27,22 @@ export default function Posts({ userId }) {
             sort: 'DESCENDING',
             sortBy: 'timestamp',
         },
-        onCompleted: ({ posts: newPosts }) => {
+        onCompleted: ({ posts: newPosts } = {}) => {
             //when all posts have been fetched
-           
-            if (newPosts.length < 5) setCanFetchMore(false)
+            console.log(newPosts)
+            if (newPosts?.length < 5) setCanFetchMore(false)
         },
     })
     const isPostsEmpty = posts?.length === 0
 
     async function handleIntersect() {
-        console.log(';fetch')
         fetchMore({
             variables: {
                 cursor: !isPostsEmpty && posts ? posts[posts?.length - 1]?.id : null,
             },
         }).then(({ data: { posts: newPosts } }) => {
             //when all posts have been fetched
-            
+
             if (newPosts.length < 5) setCanFetchMore(false)
         })
     }
@@ -69,7 +67,9 @@ export default function Posts({ userId }) {
                     ))}
                 </Dummy>
             )}
-            {!canFetchMore && <ElementContainer>There is no more content to show</ElementContainer>}
+            {!canFetchMore && !isPostsEmpty && (
+                <ElementContainer>There is no more content to show</ElementContainer>
+            )}
         </PostsContainer>
     )
 }

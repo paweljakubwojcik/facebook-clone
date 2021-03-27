@@ -32,7 +32,16 @@ const cache = new InMemoryCache({
                 },
                 searchForUser: {
                     keyArgs: false,
-                    
+                },
+            },
+        },
+        /* let's see if this doesn't make trouble */
+        User: {
+            merge: true,
+            fields: {
+                notifications: {
+                    keyArgs: ['userId'],
+                    ...cursorPagination,
                 },
             },
         },

@@ -1,12 +1,13 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useState, useContext } from 'react'
 import styled from 'styled-components'
-
+import { AuthContext } from '../../Context/auth'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { replaceJSX } from '../../Util/Methods'
 import { useHistory } from 'react-router-dom'
-import { MARK_SEEN } from '../../Util/GraphQL_Queries'
+import { MARK_SEEN, GET_NOTIFICATIONS } from '../../Util/GraphQL_Queries'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+
 import DotLoader from '../General/DotLoader'
 import DropDownMenu from '../General/DropDownMenu'
 import Avatar from '../General/Avatar'
@@ -15,60 +16,46 @@ import AnswerToInvitation from '../General/ActionButtons/AnswerToInvitation'
 
 dayjs.extend(relativeTime)
 
-const GET_NOTIFICATIONS = gql`
-    query notifications($limit: Int!, $offset: Int!) {
-        notifications(limit: $limit, offset: $offset) {
-            id
-            notifications {
-                body
-                id
-                createdAt
-                timestamp
-                isSeen
-                from {
-                    id
-                    username
-                    profileImage {
-                        urls {
-                            id
-                            small
-                        }
-                    }
-                }
-            }
-        }
-    }
-`
+const limit = 10
 
-const limit = 7
+const Notifications = forwardRef(({ ...rest }, ref) => {
+    const [canFetchMore, setCanFetchMore] = useState(true)
 
-const Notifications = forwardRef(({ userId, ...rest }, ref) => {
-    const { data: { notifications: fetchedUser } = {}, loading, error, fetchMore } = useQuery(
+    const { userId } = useContext(AuthContext)
+
+    const { data: { user: { notifications } = {} } = {}, loading, error, fetchMore } = useQuery(
         GET_NOTIFICATIONS,
         {
             variables: {
                 limit,
-                offset: 0,
+                sort: 'DESCENDING',
+                sortBy: 'timestamp',
+                userId,
             },
             onError: (e) => {
                 throw e
             },
-            onCompleted: (data) => console.log(data),
+            onCompleted: ({ user: { notifications } }) => {},
         }
     )
 
-    const notifications = fetchedUser?.notifications?.map((notification) => (
-        <Notification data={notification} key={notification.id} date={notification.createdAt} />
-    ))
-
-    const handleScroll = (e) => {
+    const handleScroll = async (e) => {
         const { scrollTop, scrollTopMax } = e.target
-        if (scrollTop === scrollTopMax)
-            fetchMore({
+        if (scrollTop === scrollTopMax) {
+            const {
+                data: {
+                    user: { notifications: newNotifications },
+                },
+            } = await fetchMore({
                 variables: {
-                    offset: notifications.length,
+                    cursor: notifications.length
+                        ? notifications[notifications.length - 1].id
+                        : undefined,
                 },
             })
+            if (newNotifications.length < limit) setCanFetchMore(false)
+            console.log(newNotifications)
+        }
     }
 
     return (
@@ -76,7 +63,18 @@ const Notifications = forwardRef(({ userId, ...rest }, ref) => {
             <Container onScroll={handleScroll}>
                 {loading && <DotLoader style={{ margin: '2em', width: '10em' }} />}
                 {error && <NotFound message={'Something went wrong'} />}
-                {notifications && notifications}
+                {notifications && (
+                    <>
+                        {notifications.map((notification) => (
+                            <Notification data={notification} key={notification.id} />
+                        ))}
+                        {!canFetchMore && (
+                            <ElementContainer style={{ pointerEvents: 'none' }}>
+                                no more notifications today ;/
+                            </ElementContainer>
+                        )}
+                    </>
+                )}
             </Container>
         </DropDownMenu>
     )
@@ -120,8 +118,12 @@ const Notification = ({ data, buttons }) => {
                 <Avatar image={data.from?.profileImage?.urls?.small} />
                 <ContentContainer>
                     <Title>{replaceJSX(data.body, `$user`, <b>{data.from?.username}</b>)}</Title>
-                     <Timestamp isSeen={data.isSeen}>{dayjs(data.timestamp).fromNow()}</Timestamp>
-                    {buttons && <Buttons>{buttons}</Buttons>}
+                    <Timestamp isSeen={data.isSeen}>{dayjs(data.timestamp).fromNow()}</Timestamp>
+                    {data.type === 'INVITATION' && (
+                        <Buttons>
+                            <AnswerToInvitation from={data.from} />
+                        </Buttons>
+                    )}
                 </ContentContainer>
             </ElementContainer>
             {!data.isSeen && <NotSeenIndicator onClick={markSeen} />}
