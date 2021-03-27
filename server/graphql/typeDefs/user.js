@@ -2,7 +2,7 @@ const { gql } = require('apollo-server')
 
 module.exports = gql`
     extend type Query {
-        users(limit: Int!, offset: Int!): [User]
+        users(limit: Int!): [User]
         user(userId: ID!): User
 
         searchForUser(query: String!, limit: Int, offset: Int): [User]
@@ -44,7 +44,7 @@ module.exports = gql`
         settings: Settings!
         invitations: [Invitation]!
         friends: [User]!
-        notifications: [Notification]!
+        notifications(paginationData: CursorBasedPagination): [Notification]!
         notificationCount: Int!
         info: UserInfo!
     }

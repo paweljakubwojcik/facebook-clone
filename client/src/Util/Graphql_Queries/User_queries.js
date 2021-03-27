@@ -1,16 +1,19 @@
 import { gql } from '@apollo/client'
 
-export const GET_USERS = gql`
-    query user($limit: Int!, $offset: Int!) {
-        users(limit: $limit, offset: $offset) {
+export const GET_FRIENDS = gql`
+    query user($userId: ID!) {
+        user(userId: $userId) {
             id
-            username
-            profileImage {
+            friends {
                 id
-                urls {
+                username
+                profileImage {
                     id
-                    medium
-                    small
+                    urls {
+                        id
+                        medium
+                        small
+                    }
                 }
             }
         }
@@ -201,6 +204,60 @@ export const SEARCH = gql`
                 urls {
                     small
                 }
+            }
+        }
+    }
+`
+
+export const INVITE_USER = gql`
+    mutation inviteUser($userId: ID!) {
+        inviteUser(userId: $userId) {
+            id
+            username
+            invitations {
+                id
+                timestamp
+                from {
+                    id
+                }
+            }
+        }
+    }
+`
+
+export const ANSWER_INVITATION = gql`
+    mutation answerInvitation($from: ID!, $answer: Answer!) {
+        answerInvitation(from: $from, answer: $answer) {
+            id
+            username
+            invitations {
+                id
+                timestamp
+                from {
+                    id
+                }
+            }
+            friends {
+                id
+                username
+            }
+        }
+    }
+`
+
+export const GET_USER_FRIENDS = gql`
+    query user($userId: ID!) {
+        user(userId: $userId) {
+            id
+            invitations {
+                from {
+                    id
+                    username
+                }
+                id
+            }
+            friends {
+                id
             }
         }
     }
