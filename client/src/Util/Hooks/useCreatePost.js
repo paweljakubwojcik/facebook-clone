@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ADD_POST, GET_POSTS, DELETE_POST } from '../GraphQL_Queries'
+import { ADD_POST, GET_POSTS } from '../GraphQL_Queries'
 import { useMutation } from '@apollo/client'
 import { useLocation } from 'react-router-dom'
 

@@ -5,8 +5,6 @@ import { useHistory } from 'react-router-dom'
 import { ThemeContext } from '../../Context/theme'
 import { AuthContext } from '../../Context/auth'
 
-import { useUserSettings } from '../../Util/Hooks/useUserSettings'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faSignOutAlt,

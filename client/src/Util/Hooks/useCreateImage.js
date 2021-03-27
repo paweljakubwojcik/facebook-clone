@@ -1,4 +1,11 @@
 
+/* 
+    TODO: extract image optimalisation from here and implement it in useForm hook to reduce size of sent data
+
+
+*/
+
+
 import { useContext } from "react"
 import { ADD_PICTURE } from '../GraphQL_Queries'
 import { useMutation } from '@apollo/client'
