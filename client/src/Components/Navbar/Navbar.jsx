@@ -6,15 +6,25 @@ import styled from 'styled-components'
 import FormButton from '../General/FormButton'
 import UserButton from '../General/UserButton'
 import Menu from './Menu'
+import Header from './Header'
+import PushNotification from '../General/PushNotification'
 
 import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
+import { GET_COUNTERS } from '../../Util/GraphQL_Queries'
+import { useQuery } from '@apollo/client'
 
 import { maxTablet } from '../../styles/breakpoints'
-import Header from './Header'
 
 export default function Navbar() {
     const location = useLocation()
     const { user, loading, isLogged } = useCurrentUser()
+
+    const { data: { user: { notificationCount } = {} } = {} } = useQuery(GET_COUNTERS, {
+        variables: {
+            userId: user?.id,
+        },
+        pollInterval: 500,
+    })
 
     //navbar shouldn't be rendered on login page
     const shouldRender = location.pathname !== '/' || isLogged
@@ -35,29 +45,32 @@ export default function Navbar() {
     if (!shouldRender) return null
 
     return (
-        <NavBar className="navBar" isCovered={isCovered}>
-            <Header isCovered={isCovered} />
-            <div style={{ marginLeft: 'auto', display: 'flex' }}>
-                {!loading &&
-                    (user ? (
-                        <>
-                            <MediaQuery width={740}>
-                                <UserButton
-                                    user={user}
-                                    notLink
-                                    as={Link}
-                                    to={`/profile/${user.id}`}
+        <>
+            <NavBar className="navBar" isCovered={isCovered}>
+                <Header isCovered={isCovered} />
+                <div style={{ marginLeft: 'auto', display: 'flex' }}>
+                    {!loading &&
+                        (user ? (
+                            <>
+                                <MediaQuery width={740}>
+                                    <UserButton
+                                        user={user}
+                                        notLink
+                                        as={Link}
+                                        to={`/profile/${user.id}`}
+                                    />
+                                </MediaQuery>
+                                <Menu
+                                    counters={{ messages: 0, notifications: notificationCount }}
                                 />
-                            </MediaQuery>
-                            <Menu
-                                counters={{ messages: 0, notifications: user?.notificationCount }}
-                            />
-                        </>
-                    ) : (
-                        loggingButtons
-                    ))}
-            </div>
-        </NavBar>
+                            </>
+                        ) : (
+                            loggingButtons
+                        ))}
+                </div>
+            </NavBar>
+            <PushNotification />
+        </>
     )
 }
 

@@ -10,7 +10,7 @@ const userSchema = new Schema({
     },
     timestamp: {
         type: Number,
-        default: Date.now(),
+        default: Date.now,
     },
     info: {
         joiningDate: String,
@@ -35,7 +35,7 @@ const userSchema = new Schema({
             },
             timestamp: {
                 type: Number,
-                default: Date.now(),
+                default: Date.now,
             },
         },
     ],
@@ -48,7 +48,7 @@ const userSchema = new Schema({
             },
             timestamp: {
                 type: Number,
-                default: Date.now(),
+                default: Date.now,
             },
             isSeen: {
                 type: Boolean,

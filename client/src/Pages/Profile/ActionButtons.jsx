@@ -12,15 +12,15 @@ import { FilledButton } from '../../Components/General/Buttons'
 import AnswerToInvitation from '../../Components/General/ActionButtons/AnswerToInvitation'
 import DotLoader from '../../Components/General/DotLoader'
 
-
-
 export default function ActionButtons({ user, state, setState }) {
     const context = useContext(AuthContext)
 
     const { data: { user: contextUser } = {} } = useQuery(GET_USER_FRIENDS, {
         variables: { userId: context.userId },
+        pollInterval: 500,
     })
 
+    //TODO: change this so we only fetch inforamtion about friendship status
     useEffect(() => {
         if (contextUser) {
             const isFriend = !!user.friends.find((friend) => friend.id === contextUser?.id)
@@ -41,7 +41,13 @@ export default function ActionButtons({ user, state, setState }) {
             {state === 'FRIEND' && <FriendButton />}
             {state === 'INVITED' && <RequestSent />}
             {state === 'INVITING' && (
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                    }}
+                >
                     <div>{user.username} wants to be your fakefriend!</div>
                     <div style={{ display: 'flex' }}>
                         <AnswerToInvitation from={user.id} />

@@ -38,6 +38,14 @@ export const GET_CURRENT_USER = gql`
                 preferredTheme
                 postDefaultPrivacy
             }
+        }
+    }
+`
+
+export const GET_COUNTERS = gql`
+    query user($userId: ID!) {
+        user(userId: $userId) {
+            id
             notificationCount
         }
     }

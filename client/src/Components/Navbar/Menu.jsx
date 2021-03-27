@@ -11,6 +11,7 @@ import { RoundButton } from '../General/Buttons'
 import { checkIfContains } from '../../Util/Methods'
 import Notifications from './Notifications'
 
+
 export default function Menu({ counters, ...rest }) {
     const buttons = [
         {
@@ -76,7 +77,9 @@ export default function Menu({ counters, ...rest }) {
                 </MenuButton>
             ))}
             {activeButton === buttons[2].value && <UserMenu className="openMenu" ref={menu} />}
-            {activeButton === buttons[1].value && <Notifications className="openMenu" ref={menu} />}
+            {activeButton === buttons[1].value && (
+                <Notifications className="openMenu" count={counters.notifications} ref={menu} />
+            )}
         </StyledMenu>
     )
 }

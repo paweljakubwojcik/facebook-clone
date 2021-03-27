@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useContext } from 'react'
+import React, { forwardRef, useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { AuthContext } from '../../Context/auth'
 import { gql, useMutation, useQuery } from '@apollo/client'
@@ -18,26 +18,29 @@ dayjs.extend(relativeTime)
 
 const limit = 10
 
-const Notifications = forwardRef(({ ...rest }, ref) => {
+const Notifications = forwardRef(({ count, ...rest }, ref) => {
     const [canFetchMore, setCanFetchMore] = useState(true)
 
     const { userId } = useContext(AuthContext)
 
-    const { data: { user: { notifications } = {} } = {}, loading, error, fetchMore } = useQuery(
-        GET_NOTIFICATIONS,
-        {
-            variables: {
-                limit,
-                sort: 'DESCENDING',
-                sortBy: 'timestamp',
-                userId,
-            },
-            onError: (e) => {
-                throw e
-            },
-            onCompleted: ({ user: { notifications } }) => {},
-        }
-    )
+    const {
+        data: { user: { notifications } = {} } = {},
+        loading,
+        error,
+        fetchMore,
+        refetch,
+    } = useQuery(GET_NOTIFICATIONS, {
+        variables: {
+            limit,
+            sort: 'DESCENDING',
+            sortBy: 'timestamp',
+            userId,
+        },
+        onError: (e) => {
+            throw e
+        },
+        onCompleted: ({ user: { notifications } }) => {},
+    })
 
     const handleScroll = async (e) => {
         const { scrollTop, scrollTopMax } = e.target
@@ -54,9 +57,12 @@ const Notifications = forwardRef(({ ...rest }, ref) => {
                 },
             })
             if (newNotifications.length < limit) setCanFetchMore(false)
-            console.log(newNotifications)
         }
     }
+
+    useEffect(() => {
+        refetch()
+    }, [count, refetch])
 
     return (
         <DropDownMenu {...rest} ref={ref}>
