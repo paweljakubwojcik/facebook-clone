@@ -271,13 +271,16 @@ module.exports = {
         searchForUser: async (parent, { query, limit = 5, offset = 0 }) => {
             try {
                 if (query.trim() === '') return []
-                const queries = query.split(' ')
-                const filter = query.replace(' ', '|')
                 let foundUsers = []
-                foundUsers = foundUsers.concat(await User.find({ username: { $regex: filter } }))
 
-                let indexBack = query.length - 1
-                while (foundUsers.length === 0 && indexBack !== 0) {
+                const initialIndexBack = query.length
+                const maxDepth = 5
+                let indexBack = initialIndexBack
+                while (
+                    foundUsers.length === 0 &&
+                    indexBack !== 0 &&
+                    initialIndexBack - indexBack < maxDepth
+                ) {
                     foundUsers = foundUsers.concat(
                         await User.find({
                             username: { $regex: query.slice(0, indexBack) },

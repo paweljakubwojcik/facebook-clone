@@ -37,17 +37,26 @@ export default function Navbar() {
     return (
         <NavBar className="navBar" isCovered={isCovered}>
             <Header isCovered={isCovered} />
-            {!loading &&
-                (user ? (
-                    <div style={{ marginLeft: 'auto', display: 'flex' }}>
-                        <MediaQuery width={740}>
-                            <UserButton user={user} notLink as={Link} to={`/profile/${user.id}`} />
-                        </MediaQuery>
-                        <Menu counters={{ messages: 0, notifications: user?.notificationCount }} />
-                    </div>
-                ) : (
-                    loggingButtons
-                ))}
+            <div style={{ marginLeft: 'auto', display: 'flex' }}>
+                {!loading &&
+                    (user ? (
+                        <>
+                            <MediaQuery width={740}>
+                                <UserButton
+                                    user={user}
+                                    notLink
+                                    as={Link}
+                                    to={`/profile/${user.id}`}
+                                />
+                            </MediaQuery>
+                            <Menu
+                                counters={{ messages: 0, notifications: user?.notificationCount }}
+                            />
+                        </>
+                    ) : (
+                        loggingButtons
+                    ))}
+            </div>
         </NavBar>
     )
 }
