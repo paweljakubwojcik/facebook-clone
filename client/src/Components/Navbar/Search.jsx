@@ -14,14 +14,12 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 export default function Search({ setActive, active, isCovered, ...rest }) {
     const [search, setSearch] = useState('')
 
-    const { data: { searchForUser: users } = {}, refetch } = useQuery(SEARCH, {
+    const { data: { searchForUser: users } = {} } = useQuery(SEARCH, {
         variables: {
             query: search,
         },
         fetchPolicy: 'cache-and-network',
     })
-
-    console.log(users)
 
     if (isCovered) return null
     return (

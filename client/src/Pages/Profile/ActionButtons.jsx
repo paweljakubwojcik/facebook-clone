@@ -1,4 +1,5 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
+import styled from 'styled-components'
 
 import { gql, useQuery, useMutation } from '@apollo/client'
 import { AuthContext } from '../../Context/auth'
@@ -29,28 +30,40 @@ const GET_USER_FRIENDS = gql`
     }
 `
 
-export default function ActionButtons({ user }) {
+export default function ActionButtons({ user, state, setState }) {
     const context = useContext(AuthContext)
 
-    const { data: { getUser: contextUser } = {} } = useQuery(GET_USER_FRIENDS, {
-        variables: { userId: context.user.id },
+    const { data: { user: contextUser } = {} } = useQuery(GET_USER_FRIENDS, {
+        variables: { userId: context.userId },
     })
 
-    const isFriend = !!user.friends.find((friend) => friend.id === contextUser?.id)
-    const isInviting = !!contextUser?.invitations.find((inv) => inv.from.id === user.id)
-    const isInvited = !!user.invitations.find((inv) => inv.from.id === contextUser?.id)
+    useEffect(() => {
+        if (contextUser) {
+            const isFriend = !!user.friends.find((friend) => friend.id === contextUser?.id)
+            const isInviting = !!contextUser?.invitations.find((inv) => inv.from.id === user.id)
+            const isInvited = !!user.invitations.find((inv) => inv.from.id === contextUser?.id)
 
-    let state = 'NOT_FRIEND'
-    if (isFriend) state = 'FRIEND'
-    if (isInviting) state = 'INVITING'
-    if (isInvited) state = 'INVITED'
+            let state = 'NOT_FRIEND'
+            if (isFriend) state = 'FRIEND'
+            if (isInviting) state = 'INVITING'
+            if (isInvited) state = 'INVITED'
+            setState(state)
+        }
+    }, [contextUser, user, state, setState])
 
     return (
         <>
             {state === 'NOT_FRIEND' && <AddFriend userId={user.id} />}
             {state === 'FRIEND' && <FriendButton />}
             {state === 'INVITED' && <RequestSent />}
-            {state === 'INVITING' && <AnswerToInvitation from={user.id} />}
+            {state === 'INVITING' && (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div>{user.username} wants to be your fakefriend!</div>
+                    <div style={{ display: 'flex' }}>
+                        <AnswerToInvitation from={user.id} />
+                    </div>
+                </div>
+            )}
         </>
     )
 }

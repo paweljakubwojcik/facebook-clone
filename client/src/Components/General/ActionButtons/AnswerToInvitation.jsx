@@ -16,7 +16,7 @@ export default function AnswerToInvitation({ from }) {
             console.log(data)
         },
         onError: (error) => {
-            console.log(error)
+            throw error
         },
     })
 

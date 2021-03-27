@@ -4,7 +4,10 @@ const userSchema = new Schema({
     username: String, // required i s handled by GraphQL
     password: String,
     email: String,
-    createdAt: String,
+    createdAt: {
+        type: String,
+        default: new Date().toISOString(),
+    },
     timestamp: {
         type: Number,
         default: Date.now(),
@@ -30,13 +33,23 @@ const userSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'users',
             },
-            date: String,
+            timestamp: {
+                type: Number,
+                default: Date.now(),
+            },
         },
     ],
     notifications: [
         {
             body: String,
-            createdAt: String,
+            createdAt: {
+                type: String,
+                default: new Date().toISOString(),
+            },
+            timestamp: {
+                type: Number,
+                default: Date.now(),
+            },
             isSeen: {
                 type: Boolean,
                 default: false,

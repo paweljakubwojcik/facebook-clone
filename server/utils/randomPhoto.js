@@ -5,7 +5,6 @@ global.fetch = fetch
 const APP_ACCESS_KEY = require('../config.js').UNSPLASH_APP_KEY
 
 const Image = require('../models/Image')
-const Post = require('../models/Post')
 
 const unsplash = new Unsplash({ accessKey: APP_ACCESS_KEY })
 

@@ -25,7 +25,10 @@ const entitySchema = new Schema({
     },
     body: String,
     title: String,
-    createdAt: String,
+    createdAt: {
+        type: String,
+        default: new Date().toISOString(),
+    },
     timestamp: {
         type: Number,
         default: Date.now(),

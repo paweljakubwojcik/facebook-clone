@@ -8,7 +8,7 @@ export const INVITE_USER = gql`
             username
             invitations {
                 id
-                date
+                timestamp
                 from {
                     id
                 }
@@ -24,7 +24,7 @@ export const ANSWER_INVITATION = gql`
             username
             invitations {
                 id
-                date
+                timestamp
                 from {
                     id
                 }

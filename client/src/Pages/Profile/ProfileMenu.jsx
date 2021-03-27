@@ -9,12 +9,14 @@ import RadioButtons from './RadioButtons'
 import UserButton from '../../Components/General/UserButton'
 
 import ActionButtons from './ActionButtons'
+import ElementContainer from '../../Components/General/ElementContainer'
 
 let navBarHeight
 
 export default function ProfileMenu({ width, contentType, setContentType, user }) {
     const isViewerTheOwner = useContext(UserMatchContext)
     const context = useContext(AuthContext)
+    const [friendshipState, setFriendshipState] = useState(null)
 
     const containerBar = useRef(null)
     const [sticky, setSticky] = useState(false)
@@ -59,13 +61,28 @@ export default function ProfileMenu({ width, contentType, setContentType, user }
                             )}
                         </CSSTransition>
                     </TransitionGroup>
-                    {!isViewerTheOwner && context.user && (
+                    {!isViewerTheOwner && context.userId && (
                         <Buttons>
-                            <ActionButtons user={user} />
+                            {friendshipState !== 'INVITING' && (
+                                <ActionButtons
+                                    user={user}
+                                    state={friendshipState}
+                                    setState={setFriendshipState}
+                                />
+                            )}
                         </Buttons>
                     )}
                 </Menu>
             </ContainerBar>
+            {friendshipState === 'INVITING' && (
+                <ElementContainer style={{ width, margin: '1em auto' }}>
+                    <ActionButtons
+                        user={user}
+                        state={friendshipState}
+                        setState={setFriendshipState}
+                    />
+                </ElementContainer>
+            )}
         </>
     )
 }

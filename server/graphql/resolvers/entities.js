@@ -1,5 +1,4 @@
 const { AuthenticationError, UserInputError } = require('apollo-server')
-const Post = require('../../models/Post')
 const Entity = require('../../models/Entity')
 const User = require('../../models/User')
 const Image = require('../../models/Image')

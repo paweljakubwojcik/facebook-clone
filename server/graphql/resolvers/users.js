@@ -207,13 +207,11 @@ module.exports = {
                         invitator.notifications.unshift({
                             from: invitee.id,
                             body: `$user has accepted you as a fake friend!`,
-                            createdAt: new Date().toISOString(),
                         })
 
                         invitee.notifications.unshift({
                             from: invitator.id,
                             body: `You and $user have became friends!`,
-                            createdAt: new Date().toISOString(),
                         })
 
                         response.push(await invitee.save())
@@ -226,7 +224,6 @@ module.exports = {
                         invitator.notifications.unshift({
                             from: invitee.id,
                             body: `$user has declined your friendship request`,
-                            createdAt: new Date().toISOString(),
                         })
                         response.push(await invitee.save())
                         response.push(await invitator.save())

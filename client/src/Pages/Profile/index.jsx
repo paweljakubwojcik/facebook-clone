@@ -1,11 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 
 import { GET_USER } from '../../Util/GraphQL_Queries'
-import { AuthContext } from '../../Context/auth'
 
 import ProfileMenu from './ProfileMenu'
 import Posts from './Sections/Posts'

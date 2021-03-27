@@ -1,5 +1,4 @@
-const { AuthenticationError, UserInputError } = require('apollo-server')
-const Post = require('../../models/Post')
+const { UserInputError } = require('apollo-server')
 const Entity = require('../../models/Entity')
 const User = require('../../models/User')
 const checkAuth = require('../../utils/checkAuth')
@@ -85,36 +84,8 @@ module.exports = {
          * @deprecated
          */
         async reactToComment(_, { postId, commentId, type }, context) {
-            const { id } = checkAuth(context)
-            try {
-                const post = await Post.findById(postId)
-                const comment = post.comments.find((comment) => comment.id === commentId)
-                const indexOfComment = post.comments.indexOf(comment)
-                const reaction = comment.reactions.find((reaction) => reaction.user == id)
-
-                if (reaction) {
-                    comment.reactions = comment.reactions.filter((reaction) => reaction.user != id)
-                    if (reaction.type !== type)
-                        comment.reactions.push({
-                            type,
-                            user: id,
-                            createdAt: new Date().toISOString(),
-                        })
-                } else {
-                    comment.reactions.push({
-                        type,
-                        user: id,
-                        createdAt: new Date().toISOString(),
-                    })
-                }
-
-                post.comments[indexOfComment] = comment
-
-                await post.save()
-                return post
-            } catch (e) {
-                throw new UserInputError(e)
-            }
+            /*  */
+            throw new Error('method deprecated, use react(): Entety instead')
         },
     },
     Comment: {
