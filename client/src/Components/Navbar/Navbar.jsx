@@ -69,7 +69,7 @@ export default function Navbar() {
                         ))}
                 </div>
             </NavBar>
-            <PushNotification />
+           {/*  <PushNotification /> */}
         </>
     )
 }
