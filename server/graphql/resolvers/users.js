@@ -295,6 +295,23 @@ module.exports = {
                 throw error
             }
         },
+        getFriendshipStatus: async (_, { withUser }, context) => {
+            try {
+                const { id } = checkAuth(context)
+                const user = await User.findById(withUser)
+
+                if (user.friends.find((friend) => friend.toString() === id)) return 'FRIEND'
+                if (user.invitations.find((inv) => inv.from.toString() === id)) return 'INVITED'
+
+                const contextUser = await User.findById(id)
+                if (contextUser.invitations.find((inv) => inv.from.toString() === user._id))
+                    return 'INVITING'
+
+                return 'NOT_FRIEND'
+            } catch (error) {
+                throw error
+            }
+        },
     },
     User: {
         profileImage: async ({ profileImage }) => {

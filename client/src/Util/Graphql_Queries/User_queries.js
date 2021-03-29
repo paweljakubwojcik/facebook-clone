@@ -253,20 +253,10 @@ export const ANSWER_INVITATION = gql`
     }
 `
 
-export const GET_USER_FRIENDS = gql`
-    query user($userId: ID!) {
-        user(userId: $userId) {
-            id
-            invitations {
-                from {
-                    id
-                    username
-                }
-                id
-            }
-            friends {
-                id
-            }
-        }
+export const GET_FRIENDSHIP_STATUS = gql`
+    query getFriendshipStatus($withUser: ID!) {
+        getFriendshipStatus(withUser: $withUser) 
     }
 `
+
+

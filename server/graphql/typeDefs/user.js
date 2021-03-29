@@ -6,6 +6,7 @@ module.exports = gql`
         user(userId: ID!): User
 
         searchForUser(query: String!, limit: Int, offset: Int): [User]
+        getFriendshipStatus(withUser: ID!): FriendshipStatus
     }
 
     extend type Mutation {
@@ -18,6 +19,13 @@ module.exports = gql`
 
         inviteUser(userId: ID!): User!
         answerInvitation(from: ID!, answer: Answer!): [User!]
+    }
+
+    enum FriendshipStatus {
+        INVITING
+        INVITED
+        FRIEND
+        NOT_FRIEND
     }
 
     enum Answer {

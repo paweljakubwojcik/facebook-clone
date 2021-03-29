@@ -1,9 +1,7 @@
-import React, { useContext, useEffect } from 'react'
-import styled from 'styled-components'
+import React, {  useEffect } from 'react'
 
 import { useQuery, useMutation } from '@apollo/client'
-import { AuthContext } from '../../Context/auth'
-import { INVITE_USER, GET_USER_FRIENDS } from '../../Util/GraphQL_Queries'
+import { INVITE_USER, GET_FRIENDSHIP_STATUS } from '../../Util/GraphQL_Queries'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserPlus, faCheck } from '@fortawesome/free-solid-svg-icons'
@@ -13,27 +11,15 @@ import AnswerToInvitation from '../../Components/General/ActionButtons/AnswerToI
 import DotLoader from '../../Components/General/DotLoader'
 
 export default function ActionButtons({ user, state, setState }) {
-    const context = useContext(AuthContext)
 
-    const { data: { user: contextUser } = {} } = useQuery(GET_USER_FRIENDS, {
-        variables: { userId: context.userId },
+    const { data: { getFriendshipStatus: status } = {} } = useQuery(GET_FRIENDSHIP_STATUS, {
+        variables: { withUser: user.id },
         pollInterval: 500,
     })
 
-    //TODO: change this so we only fetch inforamtion about friendship status
     useEffect(() => {
-        if (contextUser) {
-            const isFriend = !!user.friends.find((friend) => friend.id === contextUser?.id)
-            const isInviting = !!contextUser?.invitations.find((inv) => inv.from.id === user.id)
-            const isInvited = !!user.invitations.find((inv) => inv.from.id === contextUser?.id)
-
-            let state = 'NOT_FRIEND'
-            if (isFriend) state = 'FRIEND'
-            if (isInviting) state = 'INVITING'
-            if (isInvited) state = 'INVITED'
-            setState(state)
-        }
-    }, [contextUser, user, state, setState])
+        setState(status)
+    }, [status, setState])
 
     return (
         <>
