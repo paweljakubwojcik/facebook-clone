@@ -43,7 +43,6 @@ export default function Comment({ comment, postId }) {
 
                 <Buttons blue={comment.reactionsCount > 0 ? 1 : 0}>
                     <LikeButton data={comment} customButton={GenericButton} />
-                    <Dot />
                     {context?.userId === userId && (
                         <GenericButton
                             className="button"
@@ -57,7 +56,10 @@ export default function Comment({ comment, postId }) {
                         className="likes"
                         reactionsCount={comment.reactionsCount}
                         reactions={comment.reactions}
-                        style={{ marginLeft: 'auto', marginRight: 0 }}
+                        style={{
+                            position: 'absolute',
+                            right: 0,
+                        }}
                     />
                 </Buttons>
             </CommentBody>
@@ -90,7 +92,7 @@ const CommentBody = styled.div`
 `
 
 const Body = styled.div`
-    margin: .5em 0;
+    margin: 0.5em 0;
 `
 
 const Buttons = styled.div`
@@ -100,7 +102,7 @@ const Buttons = styled.div`
     min-width: 100%;
 
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
 
     font-size: 0.85em;

@@ -17,6 +17,7 @@ export default function Menu({ counters, ...rest }) {
         {
             value: 'messenger',
             icon: faFacebookMessenger,
+            counter: counters.messages,
         },
         {
             value: 'notification',
