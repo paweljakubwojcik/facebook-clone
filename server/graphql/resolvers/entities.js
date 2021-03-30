@@ -16,12 +16,19 @@ module.exports = {
             try {
                 const { id: user } = checkAuth(context)
                 const entity = await Entity.findById(id)
+                const entityOwner = await User.findById(entity.user.toString())
                 const addReaction = () => {
                     entity.reactions.push({
                         type,
                         createdAt: new Date().toISOString(),
                         timestamp: Date.now(),
                         user,
+                    })
+
+                    entityOwner.notifications.unshift({
+                        from: user,
+                        body: `$user has reacted to your ${entity.type.toLowerCase()}`,
+                        type: 'POST',
                     })
                 }
                 const reaction = entity.reactions.find(
@@ -32,10 +39,15 @@ module.exports = {
                     entity.reactions = entity.reactions.filter(
                         (reaction) => reaction.user.toString() !== user
                     )
+                    entityOwner.notifications = entityOwner.notifications.filter(
+                        (n) => !(n.type === 'POST' && n.from.toString() === user)
+                    )
                     if (reaction.type !== type) addReaction()
                 } else {
                     addReaction()
                 }
+
+                await entityOwner.save()
                 return await entity.save()
             } catch (e) {
                 throw new UserInputError(e)
@@ -101,7 +113,6 @@ module.exports = {
                     return 'Post'
             }
         },
-        
     },
     Reaction: {
         async user({ user }) {

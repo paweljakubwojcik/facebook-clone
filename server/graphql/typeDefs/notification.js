@@ -15,6 +15,7 @@ module.exports = gql`
         isSeen: Boolean!
         from: User
         type: NotificationTypes
+        entity: Entity
     }
 
     extend type Mutation {
