@@ -127,7 +127,7 @@ const Notification = ({ data, buttons }) => {
                     <Timestamp isSeen={data.isSeen}>{dayjs(data.timestamp).fromNow()}</Timestamp>
                     {data.type === 'INVITATION' && (
                         <Buttons>
-                            <AnswerToInvitation from={data.from} />
+                            <AnswerToInvitation from={data.from.id} />
                         </Buttons>
                     )}
                 </ContentContainer>

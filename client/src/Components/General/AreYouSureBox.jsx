@@ -13,7 +13,7 @@ export default function AreYouSureBox({ callback, callbackMessage, children, clo
     }
 
     return (
-        <Modal>
+        <Modal toggleModal={close}>
             <div style={{ maxWidth: '600px' }}>
                 <ElementContainer noMargins>
                     <Header>{children}</Header>

@@ -23,7 +23,7 @@ export default function Navbar() {
         variables: {
             userId: user?.id,
         },
-        //pollInterval: 1000,
+        pollInterval: 1000,
     })
 
     //navbar shouldn't be rendered on login page

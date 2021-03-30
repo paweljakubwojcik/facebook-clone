@@ -20,13 +20,17 @@ export default function AnswerToInvitation({ from }) {
         },
     })
 
-    const handleAnswer = (answer) => {
-        answerToInvitation({
-            variables: {
-                from,
-                answer,
-            },
-        })
+    const handleAnswer = async (answer) => {
+        try {
+            await answerToInvitation({
+                variables: {
+                    from,
+                    answer,
+                },
+            })
+        } catch (err) {
+            throw err
+        }
     }
 
     return loading ? (

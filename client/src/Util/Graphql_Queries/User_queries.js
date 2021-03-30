@@ -231,22 +231,19 @@ export const INVITE_USER = gql`
     }
 `
 
+export const DELETE_FRIEND = gql`
+    mutation deleteFriend($userId: ID!) {
+        deleteFriend(userId: $userId) {
+            id
+            username
+        }
+    }
+`
+
 export const ANSWER_INVITATION = gql`
     mutation answerInvitation($from: ID!, $answer: Answer!) {
         answerInvitation(from: $from, answer: $answer) {
             id
-            username
-            invitations {
-                id
-                timestamp
-                from {
-                    id
-                }
-            }
-            friends {
-                id
-                username
-            }
         }
     }
 `

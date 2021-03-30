@@ -239,6 +239,22 @@ module.exports = {
                         break
                 }
             } catch (error) {
+                console.log(error)
+                return error
+            }
+        },
+        deleteFriend: async (_, { userId }, context) => {
+            const { id } = checkAuth(context)
+            try {
+                const user = await User.findById(userId)
+                const user2 = await User.findById(id)
+
+                user.friends = user.friends.filter((friend) => friend.toString() !== id)
+                user2.friends = user2.friends.filter((friend) => friend.toString() !== userId)
+
+                await user.save()
+                return await user2.save()
+            } catch (error) {
                 return error
             }
         },
@@ -304,7 +320,7 @@ module.exports = {
                 if (user.invitations.find((inv) => inv.from.toString() === id)) return 'INVITED'
 
                 const contextUser = await User.findById(id)
-                if (contextUser.invitations.find((inv) => inv.from.toString() === user._id))
+                if (contextUser.invitations.find((inv) => inv.from.toString() === user.id))
                     return 'INVITING'
 
                 return 'NOT_FRIEND'
