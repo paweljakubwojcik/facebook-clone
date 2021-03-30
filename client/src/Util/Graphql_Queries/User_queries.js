@@ -108,17 +108,12 @@ export const GET_USER = gql`
                 id
                 username
                 profileImage {
+                    id
                     urls {
                         id
                         medium
                         small
                     }
-                }
-            }
-            invitations {
-                id
-                from {
-                    id
                 }
             }
         }
@@ -193,6 +188,7 @@ export const UPDATE_USER = gql`
                 }
             }
             profileImage {
+                id
                 urls {
                     id
                     medium
@@ -209,7 +205,9 @@ export const SEARCH = gql`
             username
             id
             profileImage {
+                id
                 urls {
+                    id
                     small
                 }
             }

@@ -25,6 +25,7 @@ const cache = new InMemoryCache({
             merge: true,
         },
         Query: {
+            merge: true,
             fields: {
                 posts: {
                     keyArgs: ['userId'],
@@ -35,7 +36,6 @@ const cache = new InMemoryCache({
                 },
             },
         },
-        /* let's see if this doesn't make trouble */
         User: {
             merge: true,
             fields: {

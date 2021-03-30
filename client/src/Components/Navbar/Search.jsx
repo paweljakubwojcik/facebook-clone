@@ -32,7 +32,6 @@ export default function Search({ setActive, active, isCovered, ...rest }) {
                     onFocus={() => setActive(true)}
                     active={active ? 1 : 0}
                     onInput={(e) => {
-                        console.log(e.target.value)
                         setSearch(e.target.value)
                     }}
                 />

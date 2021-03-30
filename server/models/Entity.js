@@ -27,11 +27,11 @@ const entitySchema = new Schema({
     title: String,
     createdAt: {
         type: String,
-        default: new Date().toISOString(),
+        default: new Date().toISOString,
     },
     timestamp: {
         type: Number,
-        default: Date.now(),
+        default: Date.now,
     },
     privacy: String,
     isDeletable: Boolean,

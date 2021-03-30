@@ -14,7 +14,7 @@ export default function ActionButtons({ user, state, setState }) {
 
     const { data: { getFriendshipStatus: status } = {} } = useQuery(GET_FRIENDSHIP_STATUS, {
         variables: { withUser: user.id },
-        pollInterval: 500,
+        pollInterval: 2000,
     })
 
     useEffect(() => {

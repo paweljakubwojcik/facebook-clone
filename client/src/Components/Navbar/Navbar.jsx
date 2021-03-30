@@ -23,7 +23,7 @@ export default function Navbar() {
         variables: {
             userId: user?.id,
         },
-        pollInterval: 500,
+        //pollInterval: 1000,
     })
 
     //navbar shouldn't be rendered on login page
@@ -69,7 +69,7 @@ export default function Navbar() {
                         ))}
                 </div>
             </NavBar>
-           {/*  <PushNotification /> */}
+            {/*  <PushNotification /> */}
         </>
     )
 }
