@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,7 +10,7 @@ import AddButton from './AddButton'
 import ImagePreview from './ImagePreview'
 import ImagesContainer from '../../../Components/Post/ImagesContainer'
 import Form from '../../../Components/General/Form'
-import FileInput from './FileInput'
+import FileInput from '../../../Components/General/FileInput'
 import { useCurrentUser } from '../../../Util/Hooks/useCurrentUser'
 
 export default function PostForm({ setActive, values, removeValue, loading, errors }) {

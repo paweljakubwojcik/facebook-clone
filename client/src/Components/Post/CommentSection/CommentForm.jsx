@@ -1,30 +1,28 @@
-import React, { useState, useEffect, forwardRef } from 'react'
+import React, { useEffect, forwardRef, useRef } from 'react'
 import styled from 'styled-components'
 import { useMutation } from '@apollo/client'
 import PropsTypes from 'prop-types'
 
 import Avatar from '../../General/Avatar'
-import { SquareButton } from '../../General/Buttons'
+import { GenericButton, SquareButton } from '../../General/Buttons'
 import Input from '../../General/StyledInput'
+import FileInput from '../../General/FileInput'
 import ErrorMessage from '../../General/ErrorMessage'
 import { ADD_COMMENT } from '../../../Util/GraphQL_Queries'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { faPaperPlane, faImages } from '@fortawesome/free-solid-svg-icons'
+
 import useResizableInput from '../../../Util/Hooks/useResizableInput'
 import { useCurrentUser } from '../../../Util/Hooks/useCurrentUser'
+import { useForm } from '../../../Util/Hooks/useForm'
 
 export default function CommentForm({ props: { postId, inputFocus, setFocus } }) {
     const { user: { profileImage } = {} } = useCurrentUser()
-    const [body, setBody] = useState('')
+    const fileInput = useRef(null)
 
     const [createComment, { error }] = useMutation(ADD_COMMENT, {
-        variables: {
-            body,
-            postId,
-        },
-        update(proxy, { data }) {
-            setBody('')
+        update() {
             resizableInput.current.value = ''
         },
         onError(e) {
@@ -32,37 +30,54 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
         },
     })
 
+    const initialState = {
+        body: '',
+        images: [],
+    }
+
+    const { onChange, onSubmit, values } = useForm(createCommentCallbact, initialState)
+
+    function createCommentCallbact() {
+        createComment({
+            variables: {
+                ...values,
+                postId,
+            },
+        })
+    }
+
     const resizableInput = useResizableInput()
 
     useEffect(() => {
         if (inputFocus) resizableInput.current.focus()
     }, [inputFocus, resizableInput])
 
-    const onSubmit = async (e) => {
-        e.preventDefault()
-        try {
-            await createComment()
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const onChange = (e) => {
-        setBody(e.target.value)
-    }
+    console.log(values)
 
     return (
         <>
-            <Form onSubmit={onSubmit}>
+            <Form onSubmit={onSubmit} onChange={onChange}>
                 <Avatar image={profileImage?.urls?.thumbnail} />
-                <CommentInput
-                    ref={resizableInput}
-                    name="body"
-                    rows="1"
-                    onChange={onChange}
-                    onBlur={() => setFocus(false)}
-                    placeholder={'Write a comment...'}
-                />
+                <FileInput.Wrapper style={{ width: '100%', margin: ' 0 1em' }}>
+                    <CommentInput
+                        ref={resizableInput}
+                        name="body"
+                        rows="1"
+                        onBlur={() => setFocus(false)}
+                        placeholder={'Write a comment...'}
+                        style={{ width: '100%', margin: 0, paddingRight: '2em' }}
+                    />
+                    <ImagesButton
+                        type="button"
+                        onClick={() => {
+                            fileInput.current.click()
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faImages} />
+                    </ImagesButton>
+
+                    <FileInput ref={fileInput} />
+                </FileInput.Wrapper>
                 <SquareButton className="sendComment">
                     <FontAwesomeIcon icon={faPaperPlane} />
                 </SquareButton>
@@ -89,6 +104,12 @@ const Form = styled.form`
         margin-top: auto;
         right: 2em;
     }
+`
+
+const ImagesButton = styled(GenericButton)`
+    position: absolute;
+    top: 0;
+    right: 0.5em;
 `
 
 const CommentInput = forwardRef((props, ref) => <Input as="textarea" {...props} ref={ref} />)
