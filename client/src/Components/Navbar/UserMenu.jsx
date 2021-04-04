@@ -24,7 +24,7 @@ import { menuOptions } from './menuOptions'
 import PrivacyMenu from '../General/PrivacyMenu'
 import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 
-const UserMenu = forwardRef(({ ...rest }, ref) => {
+const UserMenu = forwardRef(({ visible, ...rest }, ref) => {
     const history = useHistory()
 
     const [active, setActive] = useState(menuOptions.MAIN)
@@ -110,10 +110,12 @@ const UserMenu = forwardRef(({ ...rest }, ref) => {
         )
     }
 
+    if (!visible) return null
+
     return (
         <DropDownMenu {...rest} ref={ref}>
             <AnimatedMenu active={active} setActive={setActive}>
-                <AnimatedMenu.Primary value={menuOptions.MAIN}>
+                <AnimatedMenu.Primary value={menuOptions.MAIN} unmountOnExit>
                     <MainMenu />
                 </AnimatedMenu.Primary>
                 <AnimatedMenu.Secondary value={menuOptions.DISPLAY_PREFERENCES}>

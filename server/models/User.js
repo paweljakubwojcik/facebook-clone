@@ -6,7 +6,7 @@ const userSchema = new Schema({
     email: String,
     createdAt: {
         type: String,
-        default: new Date().toISOString(),
+        
     },
     timestamp: {
         type: Number,
@@ -44,7 +44,7 @@ const userSchema = new Schema({
             body: String,
             createdAt: {
                 type: String,
-                default: new Date().toISOString(),
+                
             },
             timestamp: {
                 type: Number,
@@ -58,7 +58,10 @@ const userSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'users',
             },
-            actions: [String],
+            entity: {
+                type: Schema.Types.ObjectId,
+                ref: 'entities',
+            },
             type: {
                 type: String,
             },

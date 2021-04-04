@@ -18,8 +18,9 @@ dayjs.extend(relativeTime)
 
 const limit = 10
 
-const Notifications = forwardRef(({ count, ...rest }, ref) => {
+const Notifications = forwardRef(({ count, visible, ...rest }, ref) => {
     const [canFetchMore, setCanFetchMore] = useState(true)
+    const [notifsCount, setNotifCount] = useState(0)
 
     const { userId } = useContext(AuthContext)
 
@@ -29,6 +30,7 @@ const Notifications = forwardRef(({ count, ...rest }, ref) => {
         error,
         fetchMore,
         refetch,
+        client,
     } = useQuery(GET_NOTIFICATIONS, {
         variables: {
             limit,
@@ -61,8 +63,26 @@ const Notifications = forwardRef(({ count, ...rest }, ref) => {
     }
 
     useEffect(() => {
-        refetch()
-    }, [count, refetch])
+        if (count > notifsCount) {
+            refetch()
+            setNotifCount(count)
+        }
+        if (count < notifsCount) {
+            const isSuccesful = client.cache.modify({
+                id: `User:${userId}`,
+                fields: {
+                    notifications: () => [],
+                },
+            })
+            if (!isSuccesful) console.warn(`could not modify cache on object User:${userId}`)
+            refetch({
+                limit: notifications.length,
+            })
+            setNotifCount(count)
+        }
+    }, [count, refetch, client, userId, notifsCount, notifications])
+
+    if (!visible) return null
 
     return (
         <DropDownMenu {...rest} ref={ref}>

@@ -29,6 +29,7 @@ module.exports = {
                         from: user,
                         body: `$user has reacted to your ${entity.type.toLowerCase()}`,
                         type: 'POST',
+                        entity,
                     })
                 }
                 const reaction = entity.reactions.find(

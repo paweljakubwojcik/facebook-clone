@@ -65,6 +65,7 @@ const PrimaryMenu = ({ children, value, ...rest }) => {
             timeout={timeout}
             classNames="menu"
             onEnter={calcHeight}
+            {...rest}
         >
             <AnimationContainer.Primary ref={animationContainer}>
                 {children}
@@ -109,11 +110,6 @@ SecondaryMenu.propTypes = {
     value: PropTypes.string.isRequired,
 }
 AnimatedMenu.Secondary = SecondaryMenu
-
-
-
-
-
 
 const Container = styled.div`
     transition: min-height ${timeout}ms, height ${timeout}ms;
