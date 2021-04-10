@@ -43,10 +43,14 @@ export const useForm = (callback, initialState = {}) => {
         }
     }
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault()
-        callback()
-        setValues(initialState)
+        try {
+            await callback()
+            setValues(initialState)
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     /**

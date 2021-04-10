@@ -41,13 +41,17 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
 
     const { onChange, onSubmit, values, removeValue } = useForm(createCommentCallbact, initialState)
 
-    function createCommentCallbact() {
-        createComment({
-            variables: {
-                ...values,
-                postId,
-            },
-        })
+    async function createCommentCallbact() {
+        try {
+            await createComment({
+                variables: {
+                    ...values,
+                    postId,
+                },
+            })
+        } catch (error) {
+            throw error
+        }
     }
 
     useEffect(() => {
