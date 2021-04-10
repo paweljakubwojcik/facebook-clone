@@ -138,11 +138,4 @@ const Buttons = styled.div`
     }
 `
 
-const Dot = styled.div`
-    display: block;
-    width: 3px;
-    height: 3px;
-    margin: 0.2em;
-    background-color: ${(props) => props.theme.secondaryFontColor};
-    border-radius: 50%;
-`
+

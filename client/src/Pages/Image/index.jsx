@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
-import { Link, BrowserRouter as Router, Route } from 'react-router-dom'
-import { useLastLocation } from 'react-router-last-location'
+import { useHistory, useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
@@ -11,21 +10,23 @@ import Post from './Post'
 import { maxTablet } from '../../styles/breakpoints'
 
 export default function ImagePage() {
-    const lastLocation = useLastLocation()
+    const history = useHistory()
+    const params = useParams()
     const [postId, setPostId] = useState(null)
     const postWidth = 450
+
+    const goBack = () => {
+        history.goBack()
+    }
 
     return (
         <>
             <Wrapper>
-                <XButton as={Link} to={lastLocation?.pathname || '/'}>
+                <XButton onClick={goBack}>
                     <FontAwesomeIcon icon={faTimes} />
                 </XButton>
-                <Router basename="image">
-                    <Route path="/:id">
-                        <Image setPostId={setPostId} postWidth={postWidth} />
-                    </Route>
-                </Router>
+
+                <Image setPostId={setPostId} postWidth={postWidth} params={params} />
             </Wrapper>
             {postId && <Post postId={postId} postWidth={postWidth}></Post>}
         </>

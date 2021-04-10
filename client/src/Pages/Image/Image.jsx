@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 
 import { GET_IMAGE } from '../../Util/GraphQL_Queries'
@@ -10,8 +9,8 @@ import ImageLoader from '../../Components/General/ImageLoader'
 
 import { maxTablet } from '../../styles/breakpoints'
 
-export default function Image({ setPostId, postWidth }) {
-    const { id } = useParams()
+export default function Image({ setPostId, postWidth, params }) {
+    const { id } = params
 
     const { loading, error, data: { image } = {} } = useQuery(GET_IMAGE, {
         variables: {

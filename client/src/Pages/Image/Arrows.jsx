@@ -16,16 +16,16 @@ export default function Arrows({ currentImage, allImages }) {
         <>
             {prevImage &&
                 <ButtonLeft>
-                    <RoundButton as={Link} to={`/${prevImage}`} replace={true}>
+                    <RoundButton as={Link} to={`${prevImage}`} replace={true}>
                         <FontAwesomeIcon icon={faArrowLeft} />
                     </RoundButton>
                 </ButtonLeft>}
             {nextImage &&
-                <ButtonRigth>
-                    <RoundButton as={Link} to={`/${nextImage}`} replace={true}>
+                <ButtonRight>
+                    <RoundButton as={Link} to={`${nextImage}`} replace={true}>
                         <FontAwesomeIcon icon={faArrowRight} />
                     </RoundButton>
-                </ButtonRigth>}
+                </ButtonRight>}
         </>
     )
 }
@@ -38,7 +38,7 @@ const ButtonLeft = styled.div`
     left:1em;
 `
 
-const ButtonRigth = styled.div`
+const ButtonRight = styled.div`
     position:absolute;
      z-index:3;
     transform:translateY(-50%);

@@ -34,7 +34,7 @@ export default function App() {
                     <Route exact path="/profile/:id">
                         <Profile />
                     </Route>
-                    <Route path="/image">
+                    <Route path="/image/:id">
                         <ImagePage />
                     </Route>
                 </LastLocationProvider>
