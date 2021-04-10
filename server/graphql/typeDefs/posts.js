@@ -11,7 +11,7 @@ module.exports = gql`
         createPost(body: String, title: String, privacy: Privacy, images: [Upload]): Post!
         editPost(postId: ID!, field: String!, newValue: String!): Post!
 
-        createComment(postId: ID!, body: String!, image: Upload): Post!
+        createComment(postId: ID!, body: String!, images: [Upload]): Post!
         createReply(commentId: ID!, body: String!, image: Upload): Comment!
 
         reactToPost(postId: ID!, type: ReactionType!): Post!
@@ -46,7 +46,7 @@ module.exports = gql`
         body: String!
         reactions: [Reaction]!
         reactionsCount: Int!
-        image: Image
+        images: [Image]
         replies(paginationData: CursorBasedPagination!): [Reply]!
         repliesCount: Int!
     }
@@ -59,6 +59,6 @@ module.exports = gql`
         body: String!
         reactions: [Reaction]!
         reactionsCount: Int!
-        image: Image
+        images: [Image]
     }
 `

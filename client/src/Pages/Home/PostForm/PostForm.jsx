@@ -7,7 +7,7 @@ import { faEye } from '@fortawesome/free-solid-svg-icons'
 import Avatar from '../../../Components/General/Avatar'
 
 import AddButton from './AddButton'
-import ImagePreview from './ImagePreview'
+import ImagePreview from '../../../Components/General/ImagePreview'
 import ImagesContainer from '../../../Components/Post/ImagesContainer'
 import Form from '../../../Components/General/Form'
 import FileInput from '../../../Components/General/FileInput'

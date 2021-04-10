@@ -1,12 +1,13 @@
 const { UserInputError } = require('apollo-server')
 const Entity = require('../../models/Entity')
 const User = require('../../models/User')
+const Image = require('../../models/Image')
 const checkAuth = require('../../utils/checkAuth')
 const { savePictureToDB } = require('./methods/savePictureToDB')
 
 module.exports = {
     Mutation: {
-        createComment: async (_, { postId, body, image }, context) => {
+        createComment: async (_, { postId, body, images }, context) => {
             try {
                 const user = checkAuth(context)
 
@@ -21,7 +22,7 @@ module.exports = {
                 const post = await Entity.findById(postId)
                 if (!post) throw new UserInputError('Post not found')
 
-                const comment = new Entity({
+                const newComment = new Entity({
                     type: 'COMMENT',
                     body,
                     createdAt: new Date().toISOString(),
@@ -31,13 +32,18 @@ module.exports = {
                     parent: postId,
                     children: [],
                 })
-                if (image) {
-                    const imageId = await savePictureToDB(image, user, { post: comment })
-                    comment.images = [imageId]
+
+                const comment = await newComment.save()
+                post.children.unshift(comment.id)
+
+                if (images) {
+                    const savedImages = await Promise.all(
+                        images.map((img) => savePictureToDB(img, user, { post: comment.id }))
+                    )
+                    comment.images = savedImages
                 }
 
-                const commentId = await comment.save()
-                post.children.unshift(commentId.id)
+                await comment.save()
 
                 return await post.save()
             } catch (err) {
@@ -97,6 +103,9 @@ module.exports = {
             return await Promise.all(
                 children.slice(index, index + limit).map((id) => Entity.findById(id))
             )
+        },
+        async images({ id }) {
+            return await Image.find({ post: id })
         },
         reactionsCount: (parent) => parent.reactions.length,
         repliesCount: (parent) => parent.children.length,

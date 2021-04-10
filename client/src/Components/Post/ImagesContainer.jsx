@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { GenericButton } from '../General/Buttons'
 
 const maxImages = 9
-export default function ImagesContainer({ children, noCompensation }) {
+export default function ImagesContainer({ children, noCompensation, ...rest }) {
     const [fold, setFold] = useState(false)
     const [compensativePadding, setPadding] = useState(null)
     const container = useRef(null)
@@ -37,7 +37,7 @@ export default function ImagesContainer({ children, noCompensation }) {
 
     return (
         <>
-            <ImageContainer ref={container} com={noCompensation ? '' : compensativePadding}>
+            <ImageContainer ref={container} com={noCompensation ? '' : compensativePadding} {...rest}>
                 {fold ? foldedContent : unfoldedContent}
             </ImageContainer>
             {!fold && children.length > maxImages && (

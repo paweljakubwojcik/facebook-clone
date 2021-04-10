@@ -1,24 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import { ShowableButton } from '../../../Components/General/Buttons'
-import ImageLoader from '../../../Components/General/ImageLoader'
-import FileImage from '../../../Components/General/FileImage'
+import { ShowableButton } from './Buttons'
+import ImageLoader from './ImageLoader'
+import FileImage from './FileImage'
 
 export default function ImagePreview({ file, removeImage }) {
-    const [url, setUrl] = useState(null)
-
-    useEffect(() => {
-        const fileReader = new FileReader()
-        fileReader.onload = () => {
-            const arrayBuffer = fileReader.result
-            const blob = new Blob([arrayBuffer], [file.type])
-            const blobUrl = URL.createObjectURL(blob)
-            setUrl(blobUrl)
-        }
-        fileReader.readAsArrayBuffer(file)
-    }, [file])
 
     return (
         <Container>

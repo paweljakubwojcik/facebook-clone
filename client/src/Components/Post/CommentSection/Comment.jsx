@@ -10,6 +10,8 @@ import UserLink from '../UserLink'
 import LikesCounter from '../LikesCounter'
 import LikeButton from '../LikeButton'
 import TimeStamp from '../TimeStamp'
+import PictureLink from '../../General/PictureLink'
+import ImagesContainer from '../ImagesContainer'
 
 export default function Comment({ comment, postId }) {
     const context = useContext(AuthContext)
@@ -39,7 +41,21 @@ export default function Comment({ comment, postId }) {
                     </h4>
                     <TimeStamp time={comment.createdAt} style={{ margin: '.4em' }} />
                 </header>
-                <Body>{comment.body}</Body>
+                <Body>
+                    {comment.body}
+                    {comment.images.length > 0 && (
+                        <ImagesContainer
+                            style={{
+                                minWidth: '20em',
+                                paddingTop: '1em',
+                            }}
+                        >
+                            {comment.images.map((image) => (
+                                <PictureLink picture={image} key={image.id} />
+                            ))}
+                        </ImagesContainer>
+                    )}
+                </Body>
 
                 <Buttons blue={comment.reactionsCount > 0 ? 1 : 0}>
                     <LikeButton data={comment} customButton={GenericButton} />

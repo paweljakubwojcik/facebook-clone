@@ -3,10 +3,10 @@ import propTypes from 'prop-types'
 
 /**
  *
- * @param {{maxHeight:Number }} options
+ * @param {{maxHeight:Number, offset: Number }} options
  * @returns resizableInputRef
  */
-export default function useResizableInput({ maxHeight } = {}) {
+export default function useResizableInput({ maxHeight, offset = 0 } = {}) {
     const resizableInput = useRef(null)
 
     useEffect(() => {
@@ -19,11 +19,11 @@ export default function useResizableInput({ maxHeight } = {}) {
 
             const height =
                 resizableInput.current.scrollHeight < maxHeight || !maxHeight
-                    ? resizableInput.current.scrollHeight + paddingBottom
+                    ? resizableInput.current.scrollHeight + paddingBottom + offset
                     : maxHeight
             resizableInput.current.style.height = height + 'px'
         }
-    }, [resizableInput.current?.value, maxHeight])
+    }, [resizableInput.current?.value, maxHeight, offset])
 
     return resizableInput
 }

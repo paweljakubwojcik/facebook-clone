@@ -46,11 +46,12 @@ export const useForm = (callback, initialState = {}) => {
     const onSubmit = (e) => {
         e.preventDefault()
         callback()
+        setValues(initialState)
     }
 
     /**
      * remove a value from state
-     * @param {Obj} value {name: value}
+     * @param {Object} value {name: value}
      */
     const removeValue = useCallback((value) => {
         const key = Object.keys(value)[0]
@@ -62,7 +63,7 @@ export const useForm = (callback, initialState = {}) => {
 
     /**
      * add a value to state
-     * @param {{value: newValue}} value {name: value}
+     * @param {Object} value {name: value}
      */
     const addValue = useCallback((value) => {
         setValues((values) => {

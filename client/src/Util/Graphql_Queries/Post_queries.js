@@ -21,6 +21,14 @@ export const BASE_COMMENT_FRAGMENT = gql`
         reactions {
             ...BaseReaction
         }
+        images{
+            id
+            urls{
+                id
+                small
+                medium
+            }
+        }
     }
 `
 
@@ -157,12 +165,12 @@ using GraphQL Fragments,
 in other words making sure that apollo doesnt need to refetch missing fields 
 */
 export const ADD_COMMENT = gql`
-    mutation createComment($body: String!, $postId: ID!) {
-        createComment(body: $body, postId: $postId) {
+    mutation createComment($body: String!, $postId: ID!, $images: [Upload]) {
+        createComment(body: $body, postId: $postId, images: $images) {
             id
             commentsCount
             timestamp
-            comments(paginationData: { limit: 5 }) {
+            comments(paginationData: { limit: 1 }) {
                 ...BaseComment
             }
         }
