@@ -1,8 +1,7 @@
 import React, { useState, forwardRef } from 'react'
 import styled from 'styled-components'
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { EDIT_POST } from '../../Util/GraphQL_Queries'
-import { ENUMS } from '../../Util/GraphQL_Queries/Type_queries'
 
 import { MenuButton } from '../General/Buttons'
 import DeleteButton from './DeleteButton'
@@ -25,9 +24,11 @@ const PostOptionsMenu = forwardRef(({ isDeletable, post, onDeleteCallback }, ref
     const MainMenu = () => {
         return (
             <SubMenuContainer>
-                <MenuButton onClick={() => setActive(menuTypes.PRIVACY)}>
-                    <FontAwesomeIcon icon={faEdit} /> <p>PrivacySettings</p>
-                </MenuButton>
+                {post.privacy && (
+                    <MenuButton onClick={() => setActive(menuTypes.PRIVACY)}>
+                        <FontAwesomeIcon icon={faEdit} /> <p>PrivacySettings</p>
+                    </MenuButton>
+                )}
                 {isDeletable && <DeleteButton postId={post.id} callback={onDeleteCallback} />}
             </SubMenuContainer>
         )

@@ -1,88 +1,7 @@
 import { gql } from '@apollo/client'
 
-export const BASE_COMMENT_FRAGMENT = gql`
-    fragment BaseComment on Comment {
-        id
-        body
-        createdAt
-        timestamp
-        reactionsCount
-        user {
-            username
-            id
-            profileImage {
-                id
-                urls {
-                    id
-                    thumbnail
-                }
-            }
-        }
-        reactions {
-            ...BaseReaction
-        }
-        images{
-            id
-            urls{
-                id
-                small
-                medium
-            }
-        }
-    }
-`
+import { REACTION, POST, COMMENT } from '../Graphql_Fragments'
 
-const REACTION = gql`
-    fragment BaseReaction on Reaction {
-        id
-        createdAt
-        timestamp
-        type
-        user {
-            id
-            username
-        }
-    }
-`
-
-export const POST = gql`
-    fragment PostFragment on Post {
-        id
-        body
-        title
-        commentsCount
-        createdAt
-        timestamp
-        reactionsCount
-        privacy
-        isDeletable
-        user {
-            id
-            username
-            profileImage {
-                urls {
-                    id
-                    thumbnail
-                    small
-                    large
-                }
-            }
-        }
-        reactions {
-            ...BaseReaction
-        }
-        images {
-            id
-            urls {
-                id
-                small
-                medium
-                large
-            }
-        }
-    }
-    ${REACTION}
-`
 // for some weird reason when attempting to fetch that query with only fragment, query is sending back an empty object
 export const GET_POSTS = gql`
     query posts($userId: ID, $limit: Int!, $cursor: ID, $sort: SortDirection, $sortBy: String) {
@@ -171,11 +90,11 @@ export const ADD_COMMENT = gql`
             commentsCount
             timestamp
             comments(paginationData: { limit: 1 }) {
-                ...BaseComment
+                ...Comment
             }
         }
     }
-    ${BASE_COMMENT_FRAGMENT}
+    ${COMMENT}
     ${REACTION}
 `
 
@@ -197,10 +116,10 @@ export const FETCH_COMMENTS = gql`
                 paginationData: { limit: $limit, cursor: $cursor, sort: $sort, sortBy: $sortBy }
             ) {
                 id
-                ...BaseComment
+                ...Comment
             }
         }
     }
     ${REACTION}
-    ${BASE_COMMENT_FRAGMENT}
+    ${COMMENT}
 `

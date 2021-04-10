@@ -39,7 +39,7 @@ export default function DeleteButton({ postId, callback }) {
                 className="postCard__button"
             >
                 <FontAwesomeIcon icon={faTrash} />
-                <p>Delete post</p>
+                <p>Delete</p>
             </StyledMenuButton>
             {areSure && (
                 <AreYouSureBox callback={deletePost} close={() => setAreSure(false)}>

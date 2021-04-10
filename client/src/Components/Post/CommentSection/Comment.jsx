@@ -13,7 +13,7 @@ import TimeStamp from '../TimeStamp'
 import PictureLink from '../../General/PictureLink'
 import ImagesContainer from '../ImagesContainer'
 
-export default function Comment({ comment, postId }) {
+export default function Comment({ comment, noImages }) {
     const context = useContext(AuthContext)
     const { id: userId, username, profileImage } = comment.user
 
@@ -43,7 +43,7 @@ export default function Comment({ comment, postId }) {
                 </header>
                 <Body>
                     {comment.body}
-                    {comment.images.length > 0 && (
+                    {comment.images.length > 0 && !noImages && (
                         <ImagesContainer
                             style={{
                                 minWidth: '20em',
@@ -58,7 +58,11 @@ export default function Comment({ comment, postId }) {
                 </Body>
 
                 <Buttons blue={comment.reactionsCount > 0 ? 1 : 0}>
-                    <LikeButton data={comment} customButton={GenericButton} />
+                    <LikeButton
+                        data={comment}
+                        customButton={GenericButton}
+                        style={{ flex: 1, padding: 0, margin: 0 }}
+                    />
                     {context?.userId === userId && (
                         <GenericButton
                             className="button"
@@ -137,5 +141,3 @@ const Buttons = styled.div`
         font-size: 0.9em;
     }
 `
-
-

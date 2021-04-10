@@ -11,7 +11,7 @@ import { REACT } from '../../Util/GraphQL_Queries'
 import ReactionPicker from './ReactionPicker'
 import icons from '../../Util/Constants/reactionsIcons'
 
-export default function LikeButton({ data, customButton }) {
+export default function LikeButton({ data, customButton, ...rest }) {
     const { userId, isLogged } = useContext(AuthContext)
     const [reaction, setReaction] = useState(null)
     const { id, reactions } = data
@@ -60,7 +60,8 @@ export default function LikeButton({ data, customButton }) {
                 onClick={handleClick}
                 inactive={loading}
                 active={!!reaction}
-                style={{ flex: 1, padding: 0, margin: 0 }}
+                style={{ flex: 1 }}
+                {...rest}
             >
                 <SwitchTransition>
                     <CSSTransition

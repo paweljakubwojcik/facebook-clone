@@ -100,6 +100,13 @@ module.exports = {
                 return error
             }
         },
+        entity: async (_, { id }, context) => {
+            try {
+                return await Entity.findById(id)
+            } catch (error) {
+                return error
+            }
+        },
     },
     Entity: {
         async __resolveType({ type }, context, info) {

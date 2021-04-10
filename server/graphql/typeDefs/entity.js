@@ -27,10 +27,12 @@ module.exports = gql`
         body: String
         reactions: [Reaction]!
         reactionsCount: Int!
+        images: [Image]
     }
 
     extend type Query {
         entities: [Entity]
+        entity(id: ID!): Entity
     }
 
     extend type Mutation {

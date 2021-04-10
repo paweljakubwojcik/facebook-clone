@@ -33,13 +33,15 @@ export default function PostContent({ post, noImages, onDeleteCallback }) {
         isDeletable,
         user: { id: userId, username, profileImage },
         images,
+        __typename,
     } = post
 
     const renderImages = !!images && !noImages
+    const isPost = __typename === 'Post'
 
     const context = useContext(AuthContext)
 
-    const initialCommentsVisibility = commentsCount > 6 ? false : true
+    const initialCommentsVisibility = commentsCount < 6 ? true : false
     const [commentsVisible, setCommentsVisibility] = useState(initialCommentsVisibility)
     const [commentInputFocus, setCommentInputFocus] = useState(false)
 
@@ -66,7 +68,7 @@ export default function PostContent({ post, noImages, onDeleteCallback }) {
                 {context.userId === userId && (
                     <PostOptions
                         post={{ privacy, id }}
-                        isDeletable={isDeletable}
+                        isDeletable={isDeletable || !isPost}
                         onDeleteCallback={onDeleteCallback}
                     />
                 )}
@@ -84,25 +86,29 @@ export default function PostContent({ post, noImages, onDeleteCallback }) {
 
             <PostCardCounters>
                 <LikesCounter reactionsCount={reactionsCount} reactions={reactions} />
-                <GenericButton
-                    className="counter"
-                    onClick={() => setCommentsVisibility(!commentsVisible)}
-                >
-                    {commentsCount} {`Comment${commentsCount !== 1 ? 's' : ''}`}
-                </GenericButton>
+                {isPost && (
+                    <GenericButton
+                        className="counter"
+                        onClick={() => setCommentsVisibility(!commentsVisible)}
+                    >
+                        {commentsCount} {`Comment${commentsCount !== 1 ? 's' : ''}`}
+                    </GenericButton>
+                )}
             </PostCardCounters>
 
             {context.isLogged && (
                 <PostCardButtonsContainer>
-                    <LikeButton data={{ id, reactions }} />
-                    <SquareButton onClick={engageComment}>
-                        <FontAwesomeIcon className="icon" icon={faComment} />
-                        Comment
-                    </SquareButton>
+                    <LikeButton data={{ id, reactions }} as={SquareButton} />
+                    {isPost && (
+                        <SquareButton onClick={engageComment}>
+                            <FontAwesomeIcon className="icon" icon={faComment} />
+                            Comment
+                        </SquareButton>
+                    )}
                 </PostCardButtonsContainer>
             )}
 
-            {commentsVisible && (
+            {commentsVisible && isPost && (
                 <CommentSection
                     postId={id}
                     inputFocus={commentInputFocus}
