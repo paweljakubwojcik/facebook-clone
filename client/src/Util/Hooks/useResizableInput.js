@@ -22,6 +22,8 @@ export default function useResizableInput({ maxHeight, offset = 0 } = {}) {
                     ? resizableInput.current.scrollHeight + paddingBottom + offset
                     : maxHeight
             resizableInput.current.style.height = height + 'px'
+
+            console.log(height)
         }
     }, [resizableInput.current?.value, maxHeight, offset])
 

@@ -6,9 +6,9 @@ import { infoIcons } from '../InfoIcons'
 
 import ElementContainer from '../../../Components/General/ElementContainer'
 import { GenericButton } from '../../../Components/General/Buttons'
-import StyledInput from '../../../Components/General/StyledInput'
 
 import { normalizeString } from '../../../Util/Methods'
+import useResizableInput from '../../../Util/Hooks/useResizableInput'
 
 import { useForm } from '../../../Util/Hooks/useForm'
 import { useMutation } from '@apollo/client'
@@ -33,6 +33,7 @@ const InfoElement = ({ info }) => {
     const [editMode, setEditMode] = useState(false)
     const userMatch = useContext(UserMatchContext)
     const [key, value] = info
+    const resizableInput = useResizableInput()
 
     const [updateInfo, { loading, error }] = useMutation(UPDATE_USER_INFO)
 
@@ -50,12 +51,13 @@ const InfoElement = ({ info }) => {
         })
     }
 
-    if(!userMatch && !value) return null
+    if (!userMatch && !value) return null
 
     return (
         <div
             style={{
                 fontSize: '1.2em',
+                margin: '0.4em',
             }}
         >
             <Title>
@@ -63,14 +65,6 @@ const InfoElement = ({ info }) => {
                 {value || editMode ? (
                     <>
                         <div>{normalizeString(key)}</div>
-                        {!editMode && userMatch && (
-                            <GenericButton
-                                style={{ fontSize: '.7em', margin: 0 }}
-                                onClick={() => setEditMode(true)}
-                            >
-                                edit
-                            </GenericButton>
-                        )}
                     </>
                 ) : (
                     <BlueButton onClick={() => setEditMode(true)}>
@@ -81,25 +75,34 @@ const InfoElement = ({ info }) => {
             <Value>
                 {editMode ? (
                     <Form onSubmit={onSubmit} onChange={onChange}>
-                        {key.includes('Date') ? (
-                            <Input name={key} type={'date'} defaultValue={values[key] || ''} />
-                        ) : (
-                            <Input name={key} type={'text'} defaultValue={values[key] || ''} />
-                        )}
-                        <div style={{ display: 'flex' }}>
-                            {loading ? (
-                                <DotLoader style={{ fontSize: '.3em' }} />
-                            ) : (
-                                <GenericButton role="submit">Save</GenericButton>
-                            )}
-                            <GenericButton role="button" onClick={() => setEditMode(false)}>
-                                Cancel
-                            </GenericButton>
-                        </div>
+                        <Input
+                            name={key}
+                            type={key.includes('Date') ? 'date' : 'text'}
+                            as={key.includes('Date') ? 'input' : 'textarea'}
+                            defaultValue={values[key] || ''}
+                            autoFocus={true}
+                            ref={resizableInput}
+                            rows={1}
+                        />
+                        {loading && <DotLoader style={{ fontSize: '.3em' }} />}
+
+                        {!loading && <ButtonWithoutMargin role="submit">Save</ButtonWithoutMargin>}
+
+                        <ButtonWithoutMargin role="button" onClick={() => setEditMode(false)}>
+                            Cancel
+                        </ButtonWithoutMargin>
+
                         {error && <ErrorMessage textOnly>{error.message}</ErrorMessage>}
                     </Form>
                 ) : (
-                    normalizeString(value)
+                    <Flex>
+                        <div style={{ maxWidth: '12em', wordWrap: 'break-word' }}>{value}</div>
+                        {userMatch && value && (
+                            <ButtonWithoutMargin onClick={() => setEditMode(true)}>
+                                edit
+                            </ButtonWithoutMargin>
+                        )}
+                    </Flex>
                 )}
             </Value>
         </div>
@@ -116,15 +119,37 @@ const Value = styled.div`
     padding: 0.3em 5em;
 `
 
+const ButtonWithoutMargin = styled(GenericButton)`
+    margin: 0 1em;
+    padding: 0;
+    font-size: 0.7em;
+`
+
 const BlueButton = styled(GenericButton)`
     color: ${(props) => props.theme.primaryColor};
     margin: 0;
     padding: 0;
 `
 
-const Input = styled(StyledInput)`
+const Input = styled.textarea`
+    background: transparent;
+    color: inherit;
     font-size: inherit;
+    font-family: inherit;
     margin: 0;
+    padding: 0;
     cursor: initial;
+    max-width: 12em;
+    width: fit-content;
+    resize: none;
+    border: none;
 `
-const Form = styled.form``
+const Form = styled.form`
+    display: flex;
+    align-items: center;
+`
+
+const Flex = styled.div`
+    display: flex;
+    align-items: center;
+`

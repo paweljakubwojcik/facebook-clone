@@ -82,6 +82,6 @@ export function replaceJSX(str, find, replace) {
 
 export const normalizeString = (string) => {
     if (!string) return null
-    const sliced = string.replace(/([A-Z])/g, ' $1')
+    const sliced = string.replace(/([A-Z])/g, ' $1').trim()
     return sliced.charAt(0).toUpperCase() + sliced.slice(1).toLowerCase()
 }
