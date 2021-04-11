@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { SquareButton } from '../../Components/General/Buttons'
+import { useHistory } from 'react-router-dom'
 
+import { SquareButton } from '../../Components/General/Buttons'
 import { getOffsetPosition } from '../../Util/Methods'
 import types from './contentTypes'
 
@@ -9,10 +10,11 @@ const buttons = Object.values(types).map((value) => {
     return { value: value }
 })
 
-export default function RadioButtons({ setContentType, contentType, ...rest }) {
+export default function RadioButtons({ contentType, ...rest }) {
     const [indicatorOffset, setOffset] = useState(-0.5)
     const [indicatorWidth, setWidth] = useState(0)
     const activeButton = useRef()
+    const history = useHistory()
 
     useEffect(() => {
         // to get consistent position even when resizing
@@ -24,14 +26,22 @@ export default function RadioButtons({ setContentType, contentType, ...rest }) {
     }, [contentType])
 
     const handleOnClick = (e) => {
-        setContentType(e.target.value)
+        history.push({
+            hash: `#${e.target.value}`,
+        })
         e.target.blur()
     }
 
     return (
         <Container {...rest}>
             {buttons.map(({ value }) => (
-                <RadioButton key={value} value={value} active={value === contentType} onClick={handleOnClick} ref={value === contentType ? activeButton : null}>
+                <RadioButton
+                    key={value}
+                    value={value}
+                    active={value === contentType}
+                    onClick={handleOnClick}
+                    ref={value === contentType ? activeButton : null}
+                >
                     {value.toUpperCase()}
                 </RadioButton>
             ))}

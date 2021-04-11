@@ -29,7 +29,7 @@ export default function Posts({ userId }) {
         },
         onCompleted: ({ posts: newPosts } = {}) => {
             //when all posts have been fetched
-            console.log(newPosts)
+            //console.log(newPosts)
             if (newPosts?.length < 5) setCanFetchMore(false)
         },
     })
@@ -49,7 +49,7 @@ export default function Posts({ userId }) {
 
     useEffect(() => {
         refetch()
-    }, [])
+    }, [refetch])
 
     return (
         <PostsContainer>

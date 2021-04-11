@@ -12,7 +12,7 @@ import ElementContainer from '../../Components/General/ElementContainer'
 
 let navBarHeight
 
-export default function ProfileMenu({ width, contentType, setContentType, user }) {
+export default function ProfileMenu({ width, contentType, user }) {
     const isViewerTheOwner = useContext(UserMatchContext)
     const context = useContext(AuthContext)
     const [friendshipState, setFriendshipState] = useState(null)
@@ -43,11 +43,7 @@ export default function ProfileMenu({ width, contentType, setContentType, user }
                     <TransitionGroup component={null}>
                         <CSSTransition key={sticky} timeout={200} classNames="rollUp">
                             {!sticky ? (
-                                <RadioButtons
-                                    className="buttons"
-                                    setContentType={setContentType}
-                                    contentType={contentType}
-                                />
+                                <RadioButtons className="buttons" contentType={contentType} />
                             ) : (
                                 <UserButton
                                     className="user"

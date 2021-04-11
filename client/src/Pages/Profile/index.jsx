@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 
 import { GET_USER } from '../../Util/GraphQL_Queries'
@@ -25,19 +25,25 @@ export default function Profile() {
     const params = useParams()
     const id = params.id.replace('-', ' ')
 
+    const { hash } = useLocation()
+
     const isViewerTheOwner = context.user?.id === id || context.user?.username === id
 
     const { data: { user } = {}, loading, error } = useQuery(GET_USER, {
         variables: { userId: id },
         onCompleted: (data) => {
-            console.log(data)
+            //console.log(data)
         },
         onError: (e) => {
             console.log(e)
         },
     })
 
-    const [contentType, setContentType] = useState('posts')
+    const [contentType, setContentType] = useState(contentTypes.POSTS)
+
+    useEffect(() => {
+        setContentType(contentTypes[hash.replace('#', '').toUpperCase()] || contentTypes.POSTS)
+    }, [hash])
 
     const isMobileDevice = window.matchMedia('(max-width:600px)').matches
 
@@ -56,15 +62,10 @@ export default function Profile() {
             {user && (
                 <>
                     <TopPanel user={user} width={width} />
-                    <ProfileMenu
-                        width={width}
-                        contentType={contentType}
-                        setContentType={setContentType}
-                        user={user}
-                    ></ProfileMenu>
+                    <ProfileMenu width={width} contentType={contentType} user={user}></ProfileMenu>
                     <Content>
                         {contentType === contentTypes.POSTS && (
-                            <Posts user={user} setContentType={setContentType} />
+                            <Posts user={user} />
                         )}
                         {contentType === contentTypes.INFO && (
                             <>

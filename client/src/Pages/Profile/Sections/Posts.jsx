@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useHistory } from 'react-router-dom'
 
 import PostsContainer from '../../../Components/Post/PostsContainer'
 import ElementContainer from '../../../Components/General/ElementContainer'
@@ -14,13 +15,13 @@ export default function Posts({ user, setContentType }) {
     return (
         <Container>
             <Details>
-                <DetailsElement name={contentTypes.INFO} setContentType={setContentType}>
+                <DetailsElement name={contentTypes.INFO}>
                     <InfoBrief info={user.info} />
                 </DetailsElement>
-                <DetailsElement name={contentTypes.PICTURES} setContentType={setContentType}>
+                <DetailsElement name={contentTypes.PICTURES}>
                     <PicturesBrief pictures={user.images} />
                 </DetailsElement>
-                <DetailsElement name={contentTypes.FRIENDS} setContentType={setContentType}>
+                <DetailsElement name={contentTypes.FRIENDS}>
                     <FriendsBrief friends={user.friends} />
                 </DetailsElement>
             </Details>
@@ -29,14 +30,16 @@ export default function Posts({ user, setContentType }) {
     )
 }
 
-const DetailsElement = ({ name, children, setContentType }) => {
+const DetailsElement = ({ name, children }) => {
+    const history = useHistory()
+
     const handleOnClick = (e) => {
         e.target.blur()
         window.scrollTo({
             top: 150,
             behavior: 'smooth',
         })
-        setContentType(e.target.value)
+        history.push({ hash: e.target.value })
     }
 
     return (

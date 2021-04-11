@@ -21,8 +21,6 @@ export default function ActionButtons({ user, state, setState }) {
         setState(status)
     }, [status, setState])
 
-    console.log(status)
-
     return (
         <>
             {state === 'NOT_FRIEND' && <AddFriend userId={user.id} />}

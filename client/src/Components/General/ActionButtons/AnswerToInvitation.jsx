@@ -13,7 +13,7 @@ import DotLoader from '../DotLoader'
 export default function AnswerToInvitation({ from }) {
     const [answerToInvitation, { loading }] = useMutation(ANSWER_INVITATION, {
         update: (cache, data) => {
-            console.log(data)
+            //console.log(data)
         },
         onError: (error) => {
             throw error
