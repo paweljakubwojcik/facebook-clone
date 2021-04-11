@@ -87,7 +87,6 @@ export const GET_USER = gql`
             info {
                 joiningDate
                 birthDate
-                age
                 sex
                 description
                 location
@@ -199,6 +198,22 @@ export const UPDATE_USER = gql`
     }
 `
 
+export const UPDATE_USER_INFO = gql`
+    mutation updateUserInfo($field: String!, $newValue: String!) {
+        updateUserInfo(field: $field, newValue: $newValue) {
+            id
+            info {
+                joiningDate
+                birthDate
+                sex
+                description
+                location
+                job
+            }
+        }
+    }
+`
+
 export const SEARCH = gql`
     query searchForUser($query: String!, $limit: Int, $offset: Int) {
         searchForUser(query: $query, limit: $limit, offset: $offset) {
@@ -250,8 +265,6 @@ export const ANSWER_INVITATION = gql`
 
 export const GET_FRIENDSHIP_STATUS = gql`
     query getFriendshipStatus($withUser: ID!) {
-        getFriendshipStatus(withUser: $withUser) 
+        getFriendshipStatus(withUser: $withUser)
     }
 `
-
-

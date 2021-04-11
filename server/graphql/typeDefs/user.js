@@ -16,6 +16,7 @@ module.exports = gql`
 
         updateSettings(setting: String!, newValue: String!): User!
         updateUser(field: String!, newValue: String!): User!
+        updateUserInfo(field: String!, newValue: String!): User!
 
         inviteUser(userId: ID!): User!
         answerInvitation(from: ID!, answer: Answer!): [User!]

@@ -168,6 +168,16 @@ module.exports = {
             )
             return user
         },
+        async updateUserInfo(_, { field, newValue }, context) {
+            try {
+                const { id } = checkAuth(context)
+                const user = await User.findById(id)
+                user.info[field] = newValue
+                return user.save()
+            } catch (error) {
+                return error
+            }
+        },
         async inviteUser(_, { userId }, context) {
             const { id: invitatorId } = checkAuth(context)
 

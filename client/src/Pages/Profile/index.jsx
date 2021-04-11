@@ -8,6 +8,7 @@ import { GET_USER } from '../../Util/GraphQL_Queries'
 
 import ProfileMenu from './ProfileMenu'
 import Posts from './Sections/Posts'
+import Info from './Sections/Info'
 import TopPanel from './TopPanel'
 import Pictures from './Sections/Pictures'
 import NotFound from '../../Components/General/NotFound'
@@ -16,6 +17,7 @@ import DotLoader from '../../Components/General/DotLoader'
 import contentTypes from './contentTypes'
 import { UserMatchContext } from './userMatchContext'
 import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
+import { maxMobile } from '../../styles/breakpoints'
 
 const width = 1000
 
@@ -45,9 +47,8 @@ export default function Profile() {
         setContentType(contentTypes[hash.replace('#', '').toUpperCase()] || contentTypes.POSTS)
     }, [hash])
 
-    const isMobileDevice = window.matchMedia('(max-width:600px)').matches
-
     useEffect(() => {
+        const isMobileDevice = window.matchMedia(`(max-width:${maxMobile})`).matches
         //scrolling to the right position after page has load aka user data has been loaded
         if (user && !isMobileDevice) {
             window.scrollTo({
@@ -55,7 +56,7 @@ export default function Profile() {
                 behavior: 'smooth',
             })
         }
-    }, [user, isMobileDevice])
+    }, [user])
 
     return (
         <UserMatchContext.Provider value={isViewerTheOwner}>
@@ -64,15 +65,8 @@ export default function Profile() {
                     <TopPanel user={user} width={width} />
                     <ProfileMenu width={width} contentType={contentType} user={user}></ProfileMenu>
                     <Content>
-                        {contentType === contentTypes.POSTS && (
-                            <Posts user={user} />
-                        )}
-                        {contentType === contentTypes.INFO && (
-                            <>
-                                <h2>{'INFO'}</h2>
-                                <div style={{ height: 1000 }}></div>
-                            </>
-                        )}
+                        {contentType === contentTypes.POSTS && <Posts user={user} />}
+                        {contentType === contentTypes.INFO && <Info info={user.info} />}
                         {contentType === contentTypes.PICTURES && <Pictures images={user.images} />}
                         {contentType === contentTypes.FRIENDS && <h2>{'FRIENDS'}</h2>}
                     </Content>
@@ -90,7 +84,6 @@ export default function Profile() {
 
 const Content = styled.div`
     display: flex;
-    min-height: 80vh;
     justify-content: center;
     & > * {
         max-width: 1000px;
