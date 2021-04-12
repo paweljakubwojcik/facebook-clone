@@ -9,7 +9,7 @@ import { ReactComponent as Logo } from '../../styles/svg/logo.svg'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
-import { maxTablet } from '../../styles/breakpoints'
+import { MAX_TABLET_PX } from '../../styles/breakpoints'
 
 export default function Header({ isCovered, ...rest }) {
     const [searchActive, setSearchActive] = useState(false)
@@ -66,7 +66,7 @@ const StyledHeader = styled.header`
         transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    @media (max-width: ${maxTablet}) {
+    @media (max-width: ${MAX_TABLET_PX}) {
         .img {
             position: static;
         }

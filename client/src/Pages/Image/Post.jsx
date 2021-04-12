@@ -6,7 +6,7 @@ import { GET_ENTITY } from '../../Util/GraphQL_Queries'
 
 import { useHistory } from 'react-router-dom'
 import ErrorMessage from '../../Components/General/ErrorMessage'
-import { maxTablet } from '../../styles/breakpoints'
+import { MAX_TABLET_PX } from '../../styles/breakpoints'
 
 export default function Post({ postId, postWidth }) {
     const { error, loading, data: { entity } = {} } = useQuery(GET_ENTITY, {
@@ -49,7 +49,7 @@ const FlexWrapper = styled.div`
 
     ${(props) => props.theme.scrollBar};
 
-    @media (max-width: ${maxTablet}) {
+    @media (max-width: ${MAX_TABLET_PX}) {
         position: relative;
         padding-top: 0;
         height: auto;
@@ -69,7 +69,7 @@ const PostWrapper = styled.div`
 
     box-shadow: ${(props) => props.theme.standardShadow};
 
-    @media (max-width: ${maxTablet}) {
+    @media (max-width: ${MAX_TABLET_PX}) {
         width: 100%;
         margin-top: 0;
         height: fit-content;

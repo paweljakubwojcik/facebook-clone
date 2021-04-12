@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { maxMobile } from '../../../styles/breakpoints'
-
+import { MAX_MOBILE_PX } from '../../../styles/breakpoints'
 
 import PostsContainer from '../../../Components/Post/PostsContainer'
 
@@ -11,17 +10,14 @@ import InfoBrief from '../DetailsElements/InfoBrief'
 import PicturesBrief from '../DetailsElements/PicturesBrief'
 import FriendsBrief from '../DetailsElements/FriendsBrief'
 import DetailsElement from '../DetailsElement'
+import useSizeDetection from '../../../Util/Hooks/useSizeDetection'
 
 export default function Posts({ user }) {
-    const match = window.matchMedia(`(max-width:${maxMobile})`)
-    match.onchange = (match) => {
-        setMobile(match.matches)
-    }
-    const [isMobileDevice, setMobile] = useState(match.matches)
+    const { isMobile } = useSizeDetection()
 
     return (
         <Container>
-            {!isMobileDevice && (
+            {!isMobile && (
                 <Details>
                     <DetailsElement name={contentTypes.INFO}>
                         <InfoBrief info={user.info} />
@@ -39,15 +35,13 @@ export default function Posts({ user }) {
     )
 }
 
-
-
 const Container = styled.div`
     display: grid;
     grid-template-columns: 1fr 60%;
     column-gap: 1em;
     width: 100%;
 
-    @media (max-width: ${maxMobile}) {
+    @media (max-width: ${MAX_MOBILE_PX}) {
         grid-template-columns: 1fr;
     }
 `
@@ -60,5 +54,3 @@ const Details = styled.div`
     align-items: center;
     width: 100%;
 `
-
-

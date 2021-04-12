@@ -17,7 +17,7 @@ import DotLoader from '../../Components/General/DotLoader'
 import contentTypes from './contentTypes'
 import { UserMatchContext } from './userMatchContext'
 import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
-import { maxMobile } from '../../styles/breakpoints'
+import { MAX_MOBILE_PX } from '../../styles/breakpoints'
 
 const width = 1000
 
@@ -48,7 +48,7 @@ export default function Profile() {
     }, [hash])
 
     useEffect(() => {
-        const isMobileDevice = window.matchMedia(`(max-width:${maxMobile})`).matches
+        const isMobileDevice = window.matchMedia(`(max-width:${MAX_MOBILE_PX})`).matches
         //scrolling to the right position after page has load aka user data has been loaded
         if (user && !isMobileDevice) {
             window.scrollTo({

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { maxTablet } from '../../styles/breakpoints'
+import { MAX_TABLET_PX } from '../../styles/breakpoints'
 
 export const GenericButton = styled.button`
     display: flex;
@@ -97,7 +97,7 @@ export const FilledButton = styled(SquareButton)`
 
 export const ShowableButton = styled(RoundButton)`
     transition: opacity 0.3s, transform 0.3s;
-    @media (min-width: ${maxTablet}) {
+    @media (min-width: ${MAX_TABLET_PX}) {
         opacity: 0;
         transform: scale(0.1);
     }

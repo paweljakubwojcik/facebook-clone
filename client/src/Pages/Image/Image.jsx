@@ -7,7 +7,7 @@ import { GET_IMAGE } from '../../Util/GraphQL_Queries'
 import Arrows from './Arrows'
 import ImageLoader from '../../Components/General/ImageLoader'
 
-import { maxTablet } from '../../styles/breakpoints'
+import { MAX_TABLET_PX } from '../../styles/breakpoints'
 
 export default function Image({ setPostId, postWidth, params }) {
     const { id } = params
@@ -65,7 +65,7 @@ const ImageContainer = styled.div`
     border-right: solid 1px ${(props) => props.theme.borderColor};
     box-shadow: inset -10px 0 20px -5px ${(props) => props.theme.shadowColor};
 
-    @media (max-width: ${maxTablet}) {
+    @media (max-width: ${MAX_TABLET_PX}) {
         width: 100%;
         height: auto;
         min-height: 50vh;
@@ -112,7 +112,7 @@ const Img = styled.img`
     transition: opacity 0.2s;
     opacity: ${(props) => (props.loaded ? '1' : '0')};
 
-    @media (max-width: ${maxTablet}) {
+    @media (max-width: ${MAX_TABLET_PX}) {
         max-height: calc(100vh - var(--navbar-height));
     }
 `

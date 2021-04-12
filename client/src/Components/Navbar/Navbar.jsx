@@ -13,7 +13,7 @@ import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 import { GET_COUNTERS } from '../../Util/GraphQL_Queries'
 import { useQuery } from '@apollo/client'
 
-import { maxTablet } from '../../styles/breakpoints'
+import { MAX_TABLET_PX } from '../../styles/breakpoints'
 
 export default function Navbar() {
     const location = useLocation()
@@ -90,7 +90,7 @@ const NavBar = styled.nav`
     border-bottom: solid 1px ${(props) => props.theme.borderColor};
     box-shadow: ${(props) => props.theme.standardShadow};
 
-    @media (max-width: ${maxTablet}) {
+    @media (max-width: ${MAX_TABLET_PX}) {
         position: sticky;
         header .img {
             position: static;

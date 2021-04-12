@@ -25,23 +25,21 @@ export default function ContactList() {
                 {friends && friends.map((user) => <UserButton key={user.id} user={user} />)}
                 {loading && [0, 1, 2, 3].map((key) => <SkeletonUserButton key={key} />)}
                 {error && <ErrorMessage>{"Couldn't find any friends"}</ErrorMessage>}
-                {/*  {!loading && !error && (
-                    <Dummy ref={setRef}>
-                        {[1, 2].map((key) => (
-                            <SkeletonUserButton key={key} theme={'dark'} />
-                        ))}
-                    </Dummy>
-                )} */}
             </ScrollWrapper>
         </Container>
     )
 }
 
 const Container = styled.div`
-    position: fixed;
-    right: 1%;
+    grid-area: right;
+    justify-self: right;
+    position: sticky;
+    top: var(--navbar-height);
+
+    margin: 0 1%;
+
     width: 300px;
-    height: 92vh;
+    height: calc(100vh - var(--navbar-height));
     display: flex;
     flex-direction: column;
     overflow-x: visible;
@@ -55,10 +53,6 @@ const Container = styled.div`
     & > * {
         margin: 0.2em;
         flex-shrink: 0;
-    }
-
-    @media (max-width: 1260px) {
-        display: none;
     }
 `
 //This componenet is responsible for scroll behaviour only, notice it is positioned static - because in order to
@@ -78,11 +72,4 @@ const ScrollWrapper = styled.div`
     }
 
     ${(props) => props.theme.scrollBar}
-`
-
-const Dummy = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    background-color: transparent;
 `

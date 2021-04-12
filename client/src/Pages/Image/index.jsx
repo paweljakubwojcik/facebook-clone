@@ -7,7 +7,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { RoundButton } from '../../Components/General/Buttons'
 import Image from './Image'
 import Post from './Post'
-import { maxTablet } from '../../styles/breakpoints'
+import { MAX_TABLET_PX } from '../../styles/breakpoints'
 
 export default function ImagePage() {
     const history = useHistory()
@@ -45,7 +45,7 @@ const Wrapper = styled.div`
     & > * {
         pointer-events: all;
     }
-    @media (max-width: ${maxTablet}) {
+    @media (max-width: ${MAX_TABLET_PX}) {
         flex-direction: column;
         height: fit-content;
         position: relative;
