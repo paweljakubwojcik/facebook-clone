@@ -5,7 +5,6 @@ import Status from './Status'
 import PostsContainer from '../../Components/Post/PostsContainer'
 import ContactList from './ContactList'
 import useSizeDetection from '../../Util/Hooks/useSizeDetection'
-import { MAX_TABLET_PX } from '../../styles/breakpoints'
 
 export default function Home() {
     const { isTablet, isMobile } = useSizeDetection()
@@ -41,5 +40,6 @@ const Feed = styled.section`
     flex-direction: column;
     align-items: center;
     width: 600px;
+    max-width: 100vw;
     grid-area: feed;
 `
