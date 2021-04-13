@@ -7,6 +7,7 @@ const checkAuth = require('../../utils/checkAuth')
 const { savePictureToDB } = require('./methods/savePictureToDB')
 const { getPaginatedResult } = require('./methods/cursorPagination')
 const dayjs = require('dayjs')
+const getPrivacyFilter = require('./methods/getPrivacyFilter')
 
 module.exports = {
     Query: {
@@ -17,30 +18,13 @@ module.exports = {
             //                           2. if posts.length < limit => search for public posts
             // timeLimit for friends posts
             // if userId === context.user show all posts
-            let filter = { type: 'POST' }
-            try {
-                const user = checkAuth(context)
-                if (userId) filter.user = userId
-                if (user) {
-                    const { friends } = await User.findById(user.id)
-                    filter = {
-                        ...filter,
-                        $or: [
-                            { privacy: 'PUBLIC' },
-                            {
-                                privacy: ['PRIVATE', 'FRIENDS_ONLY'],
-                                user: user.id,
-                            },
-                            { privacy: ['FRIENDS_ONLY'], user: friends },
-                        ],
-                    }
-                }
-            } catch (error) {
-                if (!user) filter.privacy = 'PUBLIC'
-                else throw error
-            } finally {
-                return await getPaginatedResult(filter, paginationData, Entity)
-            }
+
+            const filter = await getPrivacyFilter({
+                userId,
+                context,
+                initialFilter: { type: 'POST' },
+            })
+            return await getPaginatedResult(filter, paginationData, Entity)
         },
         async post(_, { postId }) {
             try {
@@ -117,6 +101,7 @@ module.exports = {
         },
         commentsCount: (parent) => parent.children.length,
         reactionsCount: (parent) => parent.reactions.length,
-        timestamp: ({ createdAt, timestamp }) => (timestamp ? timestamp : dayjs(createdAt).valueOf()),
+        timestamp: ({ createdAt, timestamp }) =>
+            timestamp ? timestamp : dayjs(createdAt).valueOf(),
     },
 }

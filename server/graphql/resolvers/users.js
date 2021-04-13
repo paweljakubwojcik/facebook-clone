@@ -8,9 +8,12 @@ const { createWelcomePost } = require('./methods/createWelcomePost')
 const { generateRandomPhoto } = require('../../utils/randomPhoto')
 const { paginateResult } = require('./methods/cursorPagination')
 const checkAuth = require('../../utils/checkAuth')
+const { asyncFilter } = require('../../utils/asyncFilter')
 
 const User = require('../../models/User')
 const Image = require('../../models/Image')
+const Entity = require('../../models/Entity')
+const getPrivacyFilter = require('./methods/getPrivacyFilter')
 
 /**
  *
@@ -346,8 +349,14 @@ module.exports = {
         backgroundImage: async ({ backgroundImage }) => {
             return await Image.findById(backgroundImage)
         },
-        images: async ({ id }) => {
-            return await Image.find({ uploadedBy: id })
+        images: async ({ id }, variables, context) => {
+            // get all images
+            const images = await Image.find({ uploadedBy: id })
+            // filter them out
+            return await asyncFilter(images, async (img) => {
+                const filter = await getPrivacyFilter({ context, initialFilter: { _id: img.post } })
+                return await Entity.exists(filter)
+            })
         },
         friends: async ({ friends }) => {
             const data = await Promise.all(friends.map((friend) => User.findById(friend)))
