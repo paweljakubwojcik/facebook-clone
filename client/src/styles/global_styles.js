@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
+import { NAVBAR_HEIGHT } from '../Util/Constants/layoutConstants'
 
 export const GlobalStyles = createGlobalStyle`
 
@@ -31,7 +32,7 @@ export const GlobalStyles = createGlobalStyle`
         font-size: 16px;
         transition: font-size 0.2s, color 0.2s, background-color 0.3s;
 
-        --navbar-height: 60px;
+        --navbar-height: ${NAVBAR_HEIGHT}px;
     }
 
     code {

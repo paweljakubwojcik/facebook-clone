@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { shuffleArray } from '../../../Util/Methods'
+import styled from 'styled-components'
+import { useHistory } from 'react-router-dom'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { infoIcons } from '../InfoIcons'
-import styled from 'styled-components'
 
 import { FilledButton } from '../../../Components/General/Buttons'
 
 import { UserMatchContext } from '../userMatchContext'
+import { shuffleArray } from '../../../Util/Methods'
 
 export default function InfoBrief({ info }) {
     const isViewerTheOwner = useContext(UserMatchContext)
+    const history = useHistory()
 
     const [briefInfo, setBriefInfo] = useState(null)
 
@@ -30,10 +32,16 @@ export default function InfoBrief({ info }) {
     const Information = ({ info }) => {
         const sliced = info[0].replace(/([A-Z])/g, ' $1')
         const key = sliced.charAt(0).toUpperCase() + sliced.slice(1)
-        const value = info[1] ? info[1].charAt(0).toUpperCase() + info[1].slice(1).toLowerCase() : null
+        const value = info[1]
+            ? info[1].charAt(0).toUpperCase() + info[1].slice(1).toLowerCase()
+            : null
         return (
             <InfoElement>
-                <FontAwesomeIcon icon={infoIcons[info[0]]} listItem style={{ position: 'static' }} />
+                <FontAwesomeIcon
+                    icon={infoIcons[info[0]]}
+                    listItem
+                    style={{ position: 'static' }}
+                />
                 {key} : {value}
             </InfoElement>
         )
@@ -41,8 +49,15 @@ export default function InfoBrief({ info }) {
 
     return (
         <Container>
-            {briefInfo && briefInfo.map((information) => <Information key={information[0]} info={information} />)}
-            {isViewerTheOwner && <FilledButton>Update fake info</FilledButton>}
+            {briefInfo &&
+                briefInfo.map((information) => (
+                    <Information key={information[0]} info={information} />
+                ))}
+            {isViewerTheOwner && (
+                <FilledButton onClick={() => history.push({ hash: 'info' })}>
+                    Update fake info
+                </FilledButton>
+            )}
         </Container>
     )
 }

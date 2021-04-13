@@ -18,8 +18,7 @@ import contentTypes from './contentTypes'
 import { UserMatchContext } from './userMatchContext'
 import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 import { MAX_MOBILE_PX } from '../../styles/breakpoints'
-
-const width = 1000
+import { CONTENT_WIDTH } from '../../Util/Constants/layoutConstants'
 
 export default function Profile() {
     const context = useCurrentUser()
@@ -62,8 +61,12 @@ export default function Profile() {
         <UserMatchContext.Provider value={isViewerTheOwner}>
             {user && (
                 <>
-                    <TopPanel user={user} width={width} />
-                    <ProfileMenu width={width} contentType={contentType} user={user}></ProfileMenu>
+                    <TopPanel user={user} width={CONTENT_WIDTH} />
+                    <ProfileMenu
+                        width={CONTENT_WIDTH}
+                        contentType={contentType}
+                        user={user}
+                    ></ProfileMenu>
                     <Content>
                         {contentType === contentTypes.POSTS && <Posts user={user} />}
                         {contentType === contentTypes.INFO && <Info info={user.info} />}
@@ -74,7 +77,7 @@ export default function Profile() {
             )}
             {error && <NotFound message={'Faker not found'} />}
             {loading && (
-                <Content>
+                <Content style={{ height: '80vh' }}>
                     <DotLoader pulse />
                 </Content>
             )}
