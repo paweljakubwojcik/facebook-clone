@@ -38,18 +38,22 @@ export default function Search({ setActive, active, isCovered, ...rest }) {
             </Container>
             {active && (
                 <SearchResults>
-                    {users?.length
-                        ? users.map((user) => (
-                              <UserButton
-                                  key={user.id}
-                                  user={user}
-                                  notLink
-                                  as={Link}
-                                  to={`/profile/${user.id}`}
-                                  onClick={() => setActive(false)}
-                              />
-                          ))
-                        : 'no matching results'}
+                    <ScrollContainer>
+                        {users?.length ? (
+                            users.map((user) => (
+                                <UserButton
+                                    key={user.id}
+                                    user={user}
+                                    notLink
+                                    as={Link}
+                                    to={`/profile/${user.id}`}
+                                    onClick={() => setActive(false)}
+                                />
+                            ))
+                        ) : (
+                            <div style={{ margin: 'auto' }}>{'no matching results'}</div>
+                        )}
+                    </ScrollContainer>
                 </SearchResults>
             )}
         </>
@@ -89,12 +93,23 @@ const Icon = styled(FontAwesomeIcon)`
 `
 
 const SearchResults = styled(ElementContainer)`
+    --header-height: 4em;
+
     margin: 0;
-    padding-top: 4em;
+    padding-top: var(--header-height);
     position: absolute;
     z-index: -1;
     top: -1em;
     left: -1em;
 
     width: calc(100% + 2em);
+`
+
+const ScrollContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    max-height: calc(80vh - var(--header-height));
+    min-height: 4em;
+    overflow-y: auto;
+    ${(props) => props.theme.scrollBar};
 `
