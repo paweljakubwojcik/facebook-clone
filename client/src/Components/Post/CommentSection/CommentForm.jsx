@@ -56,6 +56,7 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
 
     useEffect(() => {
         setOffset(imagesContainer.current?.clientHeight)
+        console.log(imagesContainer.current?.clientHeight)
     }, [values])
 
     const resizableInput = useResizableInput({ offset })
@@ -74,7 +75,7 @@ export default function CommentForm({ props: { postId, inputFocus, setFocus } })
         <>
             <Form onSubmit={onSubmit} onChange={onChange}>
                 <Avatar image={profileImage?.urls?.thumbnail} />
-                <FileInput.Wrapper style={{ width: '100%', margin: ' 0 1em' }}>
+                <FileInput.Wrapper style={{ width: '100%', margin: 'auto 1em' }}>
                     <CommentInput
                         ref={resizableInput}
                         name="body"
@@ -126,10 +127,11 @@ const Form = styled.form`
     display: flex;
     margin: 1em 0;
     align-items: flex-start;
+
     position: relative;
     .sendComment {
-        margin-top: 0;
-        right: 2em;
+        margin: 0;
+        height: 40px;
     }
 `
 

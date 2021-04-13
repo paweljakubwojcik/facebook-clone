@@ -9,6 +9,7 @@ const Input = styled.input`
     height: 2em;
     border: none;
     font-family: inherit;
+    font-size: inherit;
     background-color: ${(props) => props.theme.secondaryElementColor};
     color: ${(props) => props.theme.primaryFontColor};
     resize: none;

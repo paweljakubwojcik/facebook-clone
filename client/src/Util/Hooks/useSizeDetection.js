@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { MAX_MOBILE, MAX_TABLET, MAX_DESKTOP } from '../../styles/breakpoints'
 
+export { MAX_MOBILE, MAX_TABLET, MAX_DESKTOP }
+
 export default function useSizeDetection() {
-    const matchMobile = window.matchMedia(`(max-width:${MAX_MOBILE})px`)
+    const matchMobile = window.matchMedia(`(max-width:${MAX_MOBILE}px)`)
     const matchTablet = window.matchMedia(
         `(max-width:${MAX_TABLET}px) and (min-width:${MAX_MOBILE + 1}px)`
     )
