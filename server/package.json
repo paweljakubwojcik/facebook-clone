@@ -21,7 +21,7 @@
     "graphql-upload": "^11.0.0",
     "graphql-upload-minimal": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.16",
+    "mongoose": "^5.12.3",
     "node-fetch": "^2.6.1",
     "sharp": "^0.27.1",
     "unsplash-js": "^6.3.0"
