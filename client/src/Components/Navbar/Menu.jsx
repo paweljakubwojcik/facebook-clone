@@ -11,17 +11,29 @@ import { RoundButton } from '../General/Buttons'
 import { checkIfContains } from '../../Util/Methods'
 import Notifications from './Notifications'
 
-export default function Menu({ counters, ...rest }) {
+import { GET_COUNTERS } from '../../Util/GraphQL_Queries'
+import { useQuery } from '@apollo/client'
+
+export default function Menu({ user, ...rest }) {
+    const { data: { user: { notificationCount } = {} } = {} } = useQuery(GET_COUNTERS, {
+        variables: {
+            userId: user?.id,
+        },
+        pollInterval: 1000,
+    })
+
+    const messagesCount = 0
+
     const buttons = [
         {
             value: 'messenger',
             icon: faFacebookMessenger,
-            counter: counters.messages,
+            counter: messagesCount,
         },
         {
             value: 'notification',
             icon: faBell,
-            counter: counters.notifications,
+            counter: notificationCount,
         },
         {
             value: 'usermenu',
@@ -81,7 +93,7 @@ export default function Menu({ counters, ...rest }) {
 
             <Notifications
                 className="openMenu"
-                count={counters.notifications}
+                count={notificationCount}
                 ref={menu}
                 visible={activeButton === buttons[1].value}
             />

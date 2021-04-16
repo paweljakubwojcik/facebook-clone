@@ -10,22 +10,12 @@ import Header from './Header'
 import PushNotification from '../General/PushNotification'
 
 import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
-import { GET_COUNTERS } from '../../Util/GraphQL_Queries'
-import { useQuery } from '@apollo/client'
 
 import { MAX_TABLET_PX } from '../../styles/breakpoints'
 
 export default function Navbar() {
     const location = useLocation()
     const { user, loading, isLogged } = useCurrentUser()
-
-    const { data: { user: { notificationCount } = {} } = {} } = useQuery(GET_COUNTERS, {
-        variables: {
-            userId: user?.id,
-        },
-        pollInterval: 1000,
-    })
-
     //navbar shouldn't be rendered on login page
     const shouldRender = location.pathname !== '/' || isLogged
 
@@ -60,9 +50,7 @@ export default function Navbar() {
                                         to={`/profile/${user.id}`}
                                     />
                                 </MediaQuery>
-                                <Menu
-                                    counters={{ messages: 0, notifications: notificationCount }}
-                                />
+                                <Menu user={user} />
                             </>
                         ) : (
                             loggingButtons
