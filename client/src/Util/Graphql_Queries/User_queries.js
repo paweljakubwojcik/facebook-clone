@@ -148,6 +148,17 @@ export const LOGIN_USER = gql`
     ${CONTEXT}
 `
 
+export const LOGIN_USER_WITH_GOOGLE = gql`
+    mutation login($code: String!) {
+        loginWithGoogle(code: $code) {
+            id
+            ...CONTEXT
+        }
+    }
+
+    ${CONTEXT}
+`
+
 export const REGISTER_USER = gql`
     mutation register(
         $username: String!

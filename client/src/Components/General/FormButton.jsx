@@ -1,19 +1,27 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 
-export default function FormButton({ children, type, primary, loading, loadingMessage, inactive, ...rest }) {
-
-  return (
-    <StyledButton
-      type={type}
-      primary={primary}
-      loading={loading ? 1 : 0}
-      inactive={inactive ? 1 : 0}
-      aria-label={children}
-      {...rest}>
-      {!loading ? children : (loadingMessage || 'Loading...')}
-    </StyledButton>
-  )
+export default function FormButton({
+    children,
+    type,
+    primary,
+    loading,
+    loadingMessage,
+    inactive,
+    ...rest
+}) {
+    return (
+        <StyledButton
+            type={type}
+            primary={primary}
+            loading={loading ? 1 : 0}
+            inactive={inactive ? 1 : 0}
+            aria-label={children}
+            {...rest}
+        >
+            {!loading ? children : loadingMessage || 'Loading...'}
+        </StyledButton>
+    )
 }
 
 const loading = keyframes`
@@ -50,22 +58,22 @@ const loading = keyframes`
 `
 
 const StyledButton = styled.button`
-    background-color: ${props => props.primary ? props.theme.primaryColor : '#fff'};
-    color: ${props => props.primary ? '#fff' : props.theme.primaryColor};
-    font-family:inherit;
-    font-weight:bold;
-    width:9em;
-    height:3em;
-    border-radius:1em;
-    margin:1.3em;
-    transition:transform .4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter .4s;
-    &:hover, &:focus{
-        cursor:pointer;
-        filter:brightness(1.3);
+    background-color: ${(props) => (props.primary ? props.theme.primaryColor : '#fff')};
+    color: ${(props) => (props.primary ? '#fff' : props.theme.primaryColor)};
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: bold;
+    border-radius: .7rem;
+    margin: 1em;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s;
+    &:hover,
+    &:focus {
+        cursor: pointer;
+        filter: brightness(1.3);
     }
-    animation: ${props => props.loading && loading} 6s infinite cubic-bezier(.66,-0.33,.3,1.02);
-    background-color: ${props => props.inactive && props.theme.secondaryElementColor};
-    pointer-events: ${props => props.inactive && 'none'};
+    animation: ${(props) => props.loading && loading} 6s infinite
+        cubic-bezier(0.66, -0.33, 0.3, 1.02);
+    background-color: ${(props) => props.inactive && props.theme.secondaryElementColor};
+    pointer-events: ${(props) => props.inactive && 'none'};
+    padding: .7em 1.3em;
 `
-
-

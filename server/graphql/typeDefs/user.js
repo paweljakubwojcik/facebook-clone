@@ -12,7 +12,7 @@ module.exports = gql`
     extend type Mutation {
         register(registerInput: RegisterInput): User!
         login(username: String!, password: String!): User!
-        logout(userId: ID!): ID!
+        loginWithGoogle(code: String!): User!
 
         updateSettings(setting: String!, newValue: String!): User!
         updateUser(field: String!, newValue: String!): User!

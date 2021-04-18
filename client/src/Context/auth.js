@@ -2,6 +2,7 @@ import React, { createContext, useReducer } from 'react'
 
 import jwtDecode from 'jwt-decode'
 import { useApolloClient } from '@apollo/client'
+import { useLoginWithGoogle } from '../Util/Hooks/useLoginWithGoogle'
 
 const initialState = {
     userId: null,
@@ -48,6 +49,7 @@ function AuthProvider(props) {
     const [state, dispatch] = useReducer(authReducer, initialState)
 
     const apollo = useApolloClient()
+    useLoginWithGoogle()
 
     const login = (userData) => {
         dispatch({

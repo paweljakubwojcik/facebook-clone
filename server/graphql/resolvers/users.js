@@ -14,6 +14,7 @@ const User = require('../../models/User')
 const Image = require('../../models/Image')
 const Entity = require('../../models/Entity')
 const getPrivacyFilter = require('./methods/getPrivacyFilter')
+const { validateGoogleUser } = require('../../services/googleAouth')
 
 /**
  *
@@ -142,7 +143,7 @@ module.exports = {
                 //saving user in DB
                 const res = await newUser.save()
 
-                console.log({ res })
+                //console.log({ res })
 
                 //creating validation token
                 const token = generateToken(res)
@@ -154,6 +155,57 @@ module.exports = {
             } catch (e) {
                 console.log(e)
                 throw e
+            }
+        },
+        async loginWithGoogle(_, { code }) {
+            // if email is taken merge accounts => add providers to list
+            // if user already exist => return user
+            //     then check for data update i.e profile picture
+            // else => create user
+            try {
+                const googleData = await validateGoogleUser(code)
+                console.log(googleData)
+
+                let user = await User.findOne({ email: googleData.email })
+                if (user) {
+                    if (user.providers)
+                        if (!user.providers.includes('Google')) {
+                            user.providers.push('Google')
+                            user = await user.save()
+                        }
+                    //checking for updates from google (changed profile picture)
+                } else {
+                    // create user
+                    const newUser = new User({
+                        email,
+                        username: googleData.name,
+                        createdAt: new Date().toISOString(),
+                        settings: {
+                            preferredTheme: null,
+                            postDefaultPrivacy: 'PUBLIC',
+                        },
+                        info: {
+                            joiningDate: new Date().toLocaleDateString(),
+                            birthDate: null,
+                            sex: null,
+                            description: null,
+                            location: null,
+                            job: null,
+                        },
+                        providers: ['Google'],
+                    })
+                    user = await newUser.save()
+                }
+                const token = generateToken(user)
+
+                //TODO: complete creating new user
+                return {
+                    ...user._doc,
+                    id: user._id,
+                    token,
+                }
+            } catch (e) {
+                return e
             }
         },
         async updateSettings(_, { setting, newValue }, context, info) {

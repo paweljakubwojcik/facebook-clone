@@ -6,7 +6,6 @@ const userSchema = new Schema({
     email: String,
     createdAt: {
         type: String,
-        
     },
     timestamp: {
         type: Number,
@@ -44,7 +43,6 @@ const userSchema = new Schema({
             body: String,
             createdAt: {
                 type: String,
-                
             },
             timestamp: {
                 type: Number,
@@ -84,6 +82,10 @@ const userSchema = new Schema({
     settings: {
         preferredTheme: String,
         postDefaultPrivacy: String,
+    },
+    authProviders: {
+        type: Array,
+        default: ['FakeBook'],
     },
 })
 
