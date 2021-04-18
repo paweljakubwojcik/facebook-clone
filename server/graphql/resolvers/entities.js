@@ -72,7 +72,6 @@ module.exports = {
             const user = checkAuth(context)
             try {
                 const entity = await Entity.findById(id)
-
                 if (user.id === entity.user.toString()) {
                     //removing entity from parent's list of children
                     if (entity.parent) {
