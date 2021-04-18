@@ -18,7 +18,8 @@ const server = new ApolloServer({
 
 /* server.applyMiddleware({ app }) */
 
-/* app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 })) //  make sure to add a semicolumn before IIFE's */
+/* app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 })) 
+//  make sure to add a semicolumn before IIFE's */
 ;(async () => {
     try {
         //connecting to DB

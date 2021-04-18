@@ -1,5 +1,5 @@
-import { useContext, createContext, useEffect, useState, useCallback } from 'react'
-import { useLazyQuery, useMutation, useApolloClient } from '@apollo/client'
+import { useContext, useEffect, useCallback } from 'react'
+import { useLazyQuery, useMutation } from '@apollo/client'
 import { AuthContext } from '../../Context/auth'
 import { GET_CURRENT_USER, UPDATE_SETTINGS } from '../GraphQL_Queries'
 
@@ -15,6 +15,7 @@ export const useCurrentUser = (props) => {
             variables: {
                 userId,
             },
+            fetchPolicy: 'cache-first',
         }
     )
 

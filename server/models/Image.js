@@ -10,7 +10,7 @@ const imageSchema = new Schema({
     createdAt: String,
     timestamp: {
         type: Number,
-        default: Date.now(),
+        default: Date.now,
     },
     author: {
         name: String,

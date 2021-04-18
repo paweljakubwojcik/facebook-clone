@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 export default function PictureLink({ picture, fullSize, ...rest }) {
     const render = fullSize ? (
-        <PictureFullSize src={picture.urls.medium} />
+        <PictureFullSize src={picture.urls.large} />
     ) : (
         <Picture img={picture.urls.medium} />
     )

@@ -39,9 +39,9 @@ export default function Navbar() {
             <NavBar className="navBar" isCovered={isCovered}>
                 <Header isCovered={isCovered} />
                 <div style={{ marginLeft: 'auto', display: 'flex' }}>
-                    {!loading &&
-                        (user ? (
-                            <>
+                    {!loading && (
+                        <>
+                            {user && (
                                 <MediaQuery width={740}>
                                     <UserButton
                                         user={user}
@@ -50,11 +50,12 @@ export default function Navbar() {
                                         to={`/profile/${user.id}`}
                                     />
                                 </MediaQuery>
-                                <Menu user={user} />
-                            </>
-                        ) : (
-                            loggingButtons
-                        ))}
+                            )}
+                            {isLogged && <Menu user={user} />}
+
+                            {!isLogged && loggingButtons}
+                        </>
+                    )}
                 </div>
             </NavBar>
             {/*  <PushNotification /> */}

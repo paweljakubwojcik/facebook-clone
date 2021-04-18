@@ -4,7 +4,7 @@ const reaction = {
     createdAt: String,
     timestamp: {
         type: Number,
-        default: Date.now(),
+        default: Date.now,
     },
     type: {
         type: String,

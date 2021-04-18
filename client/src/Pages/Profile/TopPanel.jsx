@@ -49,7 +49,7 @@ export default function TopPanel({ loading, user, width }) {
                     <User>
                         <AvatarContainer>
                             <AvatarLink to={`/image/${user?.profileImage?.id}`}>
-                                <Avatar image={user?.profileImage?.urls?.large} large />
+                                <Avatar image={user?.profileImage?.urls?.small} large />
                             </AvatarLink>
                             {isViewerTheOwner && (
                                 <EditButton
