@@ -7,6 +7,7 @@ export const GET_FRIENDS = gql`
             friends {
                 id
                 username
+                email
                 profileImage {
                     id
                     urls {
@@ -68,6 +69,7 @@ export const GET_USER = gql`
         user(userId: $userId) {
             id
             username
+            email
             backgroundImage {
                 id
                 urls {
@@ -106,6 +108,7 @@ export const GET_USER = gql`
             friends {
                 id
                 username
+                email
                 profileImage {
                     id
                     urls {
@@ -230,6 +233,7 @@ export const SEARCH = gql`
         searchForUser(query: $query, limit: $limit, offset: $offset) {
             username
             id
+            email
             profileImage {
                 id
                 urls {
