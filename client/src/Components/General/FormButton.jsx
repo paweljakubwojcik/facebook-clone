@@ -63,8 +63,15 @@ const StyledButton = styled.button`
     font-family: inherit;
     font-size: inherit;
     font-weight: bold;
-    border-radius: .7rem;
+    border-radius: 0.6rem;
     margin: 1em;
+    //padding: .3rem 1.3em;
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    height: 2.5rem;
+    width: 7.5rem;
+    text-align: center;
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s;
     &:hover,
     &:focus {
@@ -75,5 +82,4 @@ const StyledButton = styled.button`
         cubic-bezier(0.66, -0.33, 0.3, 1.02);
     background-color: ${(props) => props.inactive && props.theme.secondaryElementColor};
     pointer-events: ${(props) => props.inactive && 'none'};
-    padding: .7em 1.3em;
 `

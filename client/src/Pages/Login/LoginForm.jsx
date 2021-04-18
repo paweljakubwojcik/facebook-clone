@@ -76,10 +76,12 @@ export default function LoginForm({ setForm }) {
             </Form.Row>
             <Providers>
                 <p>Or login using one of the following:</p>
-                <Form.Button type="button">Facebook</Form.Button>
-                <Form.Button type="button" as="a" href={getGoogleAuthLink()}>
-                    Google
-                </Form.Button>
+                <div style={{ display: 'flex' }}>
+                    {/* <Form.Button type="button">Facebook</Form.Button> */}
+                    <Form.Button type="button" as="a" href={getGoogleAuthLink()}>
+                        Google
+                    </Form.Button>
+                </div>
             </Providers>
         </Form>
     )
