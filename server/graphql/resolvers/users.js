@@ -14,7 +14,7 @@ const User = require('../../models/User')
 const Image = require('../../models/Image')
 const Entity = require('../../models/Entity')
 const getPrivacyFilter = require('./methods/getPrivacyFilter')
-const { validateGoogleUser } = require('../../services/googleAouth')
+const { validateGoogleUser } = require('../../services/googleAuth')
 
 /**
  *
@@ -164,7 +164,6 @@ module.exports = {
             // else => create user
             try {
                 const googleData = await validateGoogleUser(code)
-                console.log(googleData)
 
                 let user = await User.findOne({ email: googleData.email })
                 if (user) {
@@ -177,7 +176,7 @@ module.exports = {
                 } else {
                     // create user
                     const newUser = new User({
-                        email,
+                        email: googleData.email,
                         username: googleData.name,
                         createdAt: new Date().toISOString(),
                         settings: {
@@ -192,13 +191,27 @@ module.exports = {
                             location: null,
                             job: null,
                         },
-                        providers: ['Google'],
+                        authProviders: ['Google'],
                     })
+                    const { _id } = await newUser.save()
+                    const newPost = await createWelcomePost(_id)
+
+                    const { _id: postId } = await newPost.save()
+
+                    //generate random backgroundImage and avatar pic
+                    const backgroundImage = await generateRandomPhoto('background', _id, postId)
+                    const profileImage = await generateRandomPhoto('avatar', _id, postId)
+
+                    newUser.backgroundImage = backgroundImage
+                    newUser.profileImage = profileImage
+                    newPost.images = [backgroundImage._id, profileImage._id]
+                    await newPost.save()
+
+                    //saving user in DB
                     user = await newUser.save()
                 }
                 const token = generateToken(user)
 
-                //TODO: complete creating new user
                 return {
                     ...user._doc,
                     id: user._id,

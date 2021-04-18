@@ -9,7 +9,7 @@ async function getAccessTokenFromCode(code) {
                 client_id: process.env.GOOGLE_AUTH_CLIENT_ID,
                 client_secret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
                 grant_type: 'authorization_code',
-                redirect_uri: process.env.CLIENT_URL,
+                redirect_uri: process.env.AUTH_URL,
                 code,
             },
         })

@@ -11,6 +11,7 @@ import Login from './Pages/Login'
 import NavBar from './Components/Navbar/Navbar'
 import Profile from './Pages/Profile'
 import ImagePage from './Pages/Image'
+import Authentication from './Pages/Redirect/Authentication'
 
 export default function App() {
     //checks if user is logged in
@@ -36,6 +37,9 @@ export default function App() {
                     </Route>
                     <Route path="/image/:id">
                         <ImagePage />
+                    </Route>
+                    <Route path="/auth">
+                        <Authentication />
                     </Route>
                 </LastLocationProvider>
             </Router>

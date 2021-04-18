@@ -77,7 +77,7 @@ export default function LoginForm({ setForm }) {
             <Providers>
                 <p>Or login using one of the following:</p>
                 <Form.Button type="button">Facebook</Form.Button>
-                <Form.Button type="button" as="a" href={getGoogleAuthLink()} target="blank">
+                <Form.Button type="button" as="a" href={getGoogleAuthLink()}>
                     Google
                 </Form.Button>
             </Providers>

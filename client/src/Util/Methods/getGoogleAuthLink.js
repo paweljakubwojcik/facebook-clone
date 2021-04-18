@@ -4,7 +4,7 @@ import { GOOGLE_AUTH_CLIENT_ID } from '../../config'
 export const getGoogleAuthLink = () => {
     const stringifiedParams = queryString.stringify({
         client_id: GOOGLE_AUTH_CLIENT_ID,
-        redirect_uri: window.location.origin,
+        redirect_uri: window.location.origin + '/auth',
         scope: [
             'https://www.googleapis.com/auth/userinfo.email',
             'https://www.googleapis.com/auth/userinfo.profile',
