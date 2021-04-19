@@ -11,7 +11,7 @@ module.exports.savePictureToDB = async (image, user, additionalFields) => {
         timestamp: Date.now(),
         uploadedBy: user.id,
         author: {
-            name: user.id,
+            name: user.username,
             link: null,
         },
         ...additionalFields,

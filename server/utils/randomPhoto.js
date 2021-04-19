@@ -2,11 +2,9 @@ const Unsplash = require('unsplash-js').default
 const toJson = require('unsplash-js').toJson
 const fetch = require('node-fetch')
 global.fetch = fetch
-const APP_ACCESS_KEY = require('../config.js').UNSPLASH_APP_KEY
-
 const Image = require('../models/Image')
 
-const unsplash = new Unsplash({ accessKey: APP_ACCESS_KEY })
+const unsplash = new Unsplash({ accessKey: process.env.APP_ACCESS_KEY })
 
 /**
  *

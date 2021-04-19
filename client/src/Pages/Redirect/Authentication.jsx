@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom'
 const urlParams = queryString.parse(window.location.search)
 
 export default function Authentication() {
-    const { login } = useContext(AuthContext)
+    const { login, isLogged } = useContext(AuthContext)
 
     const history = useHistory()
 
@@ -27,7 +27,7 @@ export default function Authentication() {
     })
 
     useEffect(() => {
-        if (urlParams.code) {
+        if (urlParams.code && !isLogged) {
             loginWithGoogle()
                 .then(({ data: { loginWithGoogle: userData }, error }) => {
                     console.log(userData)

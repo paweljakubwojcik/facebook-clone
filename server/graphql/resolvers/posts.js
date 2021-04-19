@@ -8,6 +8,7 @@ const { savePictureToDB } = require('./methods/savePictureToDB')
 const { getPaginatedResult } = require('./methods/cursorPagination')
 const dayjs = require('dayjs')
 const getPrivacyFilter = require('./methods/getPrivacyFilter')
+const { asyncFilter } = require('../../utils/asyncFilter')
 
 module.exports = {
     Query: {

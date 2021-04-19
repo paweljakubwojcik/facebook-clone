@@ -43,6 +43,9 @@ const cache = new InMemoryCache({
                     keyArgs: ['userId'],
                     ...cursorPagination,
                 },
+                info: {
+                    merge: true,
+                },
             },
         },
     },

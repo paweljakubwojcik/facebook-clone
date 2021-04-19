@@ -2,12 +2,12 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { UserInputError } = require('apollo-server')
 
-const { SECRET_KEY } = require('../../config')
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
 const { createWelcomePost } = require('./methods/createWelcomePost')
 const { generateRandomPhoto } = require('../../utils/randomPhoto')
 const { paginateResult } = require('./methods/cursorPagination')
 const checkAuth = require('../../utils/checkAuth')
+const generateToken = require('../../utils/generateToken')
 const { asyncFilter } = require('../../utils/asyncFilter')
 
 const User = require('../../models/User')
@@ -16,21 +16,6 @@ const Entity = require('../../models/Entity')
 const getPrivacyFilter = require('./methods/getPrivacyFilter')
 const { validateGoogleUser } = require('../../services/googleAuth')
 
-/**
- *
- * @param {Object} user user for which session token is generated
- * @returns token
- */
-function generateToken(user) {
-    return jwt.sign(
-        {
-            id: user.id,
-            email: user.email,
-            username: user.username,
-        },
-        SECRET_KEY
-    )
-}
 
 module.exports = {
     Mutation: {

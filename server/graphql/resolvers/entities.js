@@ -3,12 +3,9 @@ const Entity = require('../../models/Entity')
 const User = require('../../models/User')
 const Image = require('../../models/Image')
 const checkAuth = require('../../utils/checkAuth')
-const comments = require('./comments')
 
-const { savePictureToDB } = require('./methods/savePictureToDB')
 const { deletePicture } = require('../../services/firebaseStorage')
 
-const dayjs = require('dayjs')
 
 module.exports = {
     Mutation: {
@@ -99,7 +96,7 @@ module.exports = {
                 return error
             }
         },
-        entity: async (_, { id }, context) => {
+        entity: async (_, { id }, context, info) => {
             try {
                 return await Entity.findById(id)
             } catch (error) {
@@ -108,7 +105,7 @@ module.exports = {
         },
     },
     Entity: {
-        async __resolveType({ type }, context, info) {
+        async __resolveType({ type }, args, context, info) {
             switch (type) {
                 case 'POST':
                     return 'Post'
@@ -122,8 +119,9 @@ module.exports = {
         },
     },
     Reaction: {
-        async user({ user }) {
-            return await User.findById(user)
+        async user({ user: userId }, args, context, info) {
+            const user = await User.findById(userId)
+            return user || { id: userId, username: '<user deleted>' }
         },
     },
 }

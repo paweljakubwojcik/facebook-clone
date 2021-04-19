@@ -32,6 +32,9 @@ export default function Posts({ userId }) {
             //console.log(newPosts)
             if (newPosts?.length < 5) setCanFetchMore(false)
         },
+        onError: (error) => {
+            console.error(error)
+        },
     })
     const isPostsEmpty = posts?.length === 0
 
