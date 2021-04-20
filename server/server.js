@@ -7,6 +7,7 @@ const typeDefs = require('./graphql/typeDefs')
 const { requestLogger } = require('./plugins/requestLogger')
 
 require('dotenv').config()
+require('./plugins/checkNodeVersion')(12)
 
 //setting up apollo
 const server = new ApolloServer({
