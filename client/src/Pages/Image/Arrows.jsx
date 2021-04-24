@@ -7,6 +7,8 @@ import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { RoundButton } from '../../Components/General/Buttons'
 
 export default function Arrows({ currentImage, allImages }) {
+    if (!allImages) return null
+
     const currentIndex = allImages.indexOf(currentImage)
     const nextImage = allImages[currentIndex + 1]
     const prevImage = allImages[currentIndex - 1]

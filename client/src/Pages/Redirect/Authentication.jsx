@@ -32,15 +32,15 @@ export default function Authentication() {
                 .then(({ data: { loginWithGoogle: userData }, error }) => {
                     console.log(userData)
                     login(userData)
-                    history.replace('/')
                 })
                 .catch((error) => {
                     throw error
                 })
+                .finally(() => history.replace('/'))
         } else {
             history.replace('/')
         }
-    }, [history, login, loginWithGoogle])
+    }, [history, isLogged, login, loginWithGoogle])
 
     return <FlexContainer style={{ minHeight: '70vh' }}>Redirecting...</FlexContainer>
 }

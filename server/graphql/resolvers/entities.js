@@ -6,7 +6,6 @@ const checkAuth = require('../../utils/checkAuth')
 
 const { deletePicture } = require('../../services/firebaseStorage')
 
-
 module.exports = {
     Mutation: {
         react: async (_, { id, type }, context) => {
@@ -52,11 +51,24 @@ module.exports = {
             }
         },
         delete: async (_, { id }, context) => {
+            const user = checkAuth(context)
+            const { profileImage, backgroundImage } = await User.findById(user.id)
+
             //TODO: test deleting children after return
             const deleteEntity = async (id) => {
                 const entity = await Entity.findById(id)
                 //deleting all images associated with entity
-                const images = await Promise.all(entity.images.map((id) => Image.findById(id)))
+                const images = await Promise.all(
+                    entity.images
+                        .filter((id) => {
+                            return (
+                                id.toString() !== profileImage.toString() &&
+                                id.toString() !== backgroundImage.toString()
+                            )
+                        }) //only if image is not profile or background
+                        .map((id) => Image.findById(id))
+                )
+
                 await Promise.all(Array.from(images).map(({ filename }) => deletePicture(filename)))
                 await Promise.all(Array.from(images).map((image) => image.delete()))
                 //deleting all children
@@ -66,7 +78,6 @@ module.exports = {
                 return await entity.delete()
             }
 
-            const user = checkAuth(context)
             try {
                 const entity = await Entity.findById(id)
                 if (user.id === entity.user.toString()) {

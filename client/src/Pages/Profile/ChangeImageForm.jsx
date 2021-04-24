@@ -42,8 +42,8 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
 
     const { updatePicture, loading } = useUpdatePicture({ image, body }, callback, field)
 
-    function addPicture() {
-        updatePicture()
+    async function addPicture() {
+        await updatePicture()
     }
 
     function callback() {

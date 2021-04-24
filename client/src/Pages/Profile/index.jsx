@@ -33,7 +33,7 @@ export default function Profile() {
     const { data: { user } = {}, loading, error } = useQuery(GET_USER, {
         variables: { userId: id },
         onCompleted: (data) => {
-            //console.log(data)
+            console.log(data)
         },
         onError: (e) => {
             console.log(e)

@@ -20,9 +20,10 @@ export default function Image({ setPostId, postWidth, params, isFullScreen, setF
         variables: {
             imageId: id,
         },
+        onError: (error) => console.log(error),
     })
 
-    const allImages = image ? image.post.images.map((image) => image.id) : null
+    const allImages = image?.post?.images.map((image) => image.id) || null
 
     useEffect(() => {
         if (image) {

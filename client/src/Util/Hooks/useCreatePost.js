@@ -51,9 +51,9 @@ export const useCreatePost = (values, callback) => {
         variables: { body, title, privacy, images },
     })
 
-    const createPost = () => {
+    const createPost = async () => {
         setLoading(true)
-        uploadPost()
+        await uploadPost()
     }
 
     return { createPost, errors, loading }

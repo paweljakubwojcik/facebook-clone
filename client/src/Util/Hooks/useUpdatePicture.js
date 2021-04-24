@@ -30,22 +30,21 @@ export const useUpdatePicture = (values, callback, field) => {
         field === 'profileImage' ? 'profile picture' : 'background picture'
     }`
 
-    console.log(values.image)
     const { createPost } = useCreatePost(
         { body: values?.body, privacy: 'PRIVATE', title, images: values.image },
         async ({ images }) => {
             console.log(images)
-            updateUser({ variables: { field: field, newValue: images[0].id } })
+            await updateUser({ variables: { field: field, newValue: images[0].id } })
         }
     )
 
-    const updatePicture = () => {
+    const updatePicture = async () => {
         setLoading(true)
 
-        if (typeof values.image !== 'string') createPost()
+        if (typeof values.image !== 'string') await createPost()
         else {
             const value = values.image
-            updateUser({ variables: { field: field, newValue: value } })
+            await updateUser({ variables: { field: field, newValue: value } })
         }
     }
 
