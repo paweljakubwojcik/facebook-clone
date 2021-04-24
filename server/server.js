@@ -1,3 +1,6 @@
+
+require('dotenv').config()
+require('./plugins/checkNodeVersion')(12) // checking node version because of uploading files via apollo-file-uploader (works only on 12)
 const mongoose = require('mongoose')
 
 const { ApolloServer } = require('apollo-server')
@@ -5,9 +8,6 @@ const { ApolloServer } = require('apollo-server')
 const resolvers = require('./graphql/resolvers/index')
 const typeDefs = require('./graphql/typeDefs')
 const { requestLogger } = require('./plugins/requestLogger')
-
-require('dotenv').config()
-require('./plugins/checkNodeVersion')(12) // checking node version because of uploading files via apollo-file-uploader (works only on 12)
 
 //setting up apollo
 const server = new ApolloServer({

@@ -4,7 +4,7 @@ const { UserInputError } = require('apollo-server')
 
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
 const { createWelcomePost } = require('./methods/createWelcomePost')
-const { generateRandomPhoto } = require('../../utils/randomPhoto')
+const { generateRandomPhoto } = require('../../services/unsplash')
 const { paginateResult } = require('./methods/cursorPagination')
 const checkAuth = require('../../utils/checkAuth')
 const generateToken = require('../../utils/generateToken')
@@ -15,7 +15,7 @@ const Image = require('../../models/Image')
 const Entity = require('../../models/Entity')
 const getPrivacyFilter = require('./methods/getPrivacyFilter')
 const { validateGoogleUser } = require('../../services/googleAuth')
-
+const generateImageFromGoogleAuth = require('./methods/generateImageFromGoogleAuth')
 
 module.exports = {
     Mutation: {
@@ -111,19 +111,20 @@ module.exports = {
                 })
                 const { _id } = await newUser.save()
 
-                //saving user in DB
-                const newPost = await createWelcomePost(_id)
-
-                const { _id: postId } = await newPost.save()
-
                 //generate random backgroundImage and avatar pic
-                const backgroundImage = await generateRandomPhoto('background', _id, postId)
-                const profileImage = await generateRandomPhoto('avatar', _id, postId)
+                const backgroundImage = new Image({
+                    ...(await generateRandomPhoto('background')),
+                    uploadedBy: _id,
+                    role: 'BACKGROUND',
+                })
+                const profileImage = new Image({
+                    ...(await generateRandomPhoto('avatar')),
+                    uploadedBy: _id,
+                    role: 'PROFILE',
+                })
 
-                newUser.backgroundImage = backgroundImage
-                newUser.profileImage = profileImage
-                newPost.images = [backgroundImage._id, profileImage._id]
-                await newPost.save()
+                newUser.backgroundImage = await backgroundImage.save()
+                newUser.profileImage = await profileImage.save()
 
                 //saving user in DB
                 const res = await newUser.save()
@@ -179,19 +180,21 @@ module.exports = {
                         authProviders: ['Google'],
                     })
                     const { _id } = await newUser.save()
-                    const newPost = await createWelcomePost(_id)
-
-                    const { _id: postId } = await newPost.save()
 
                     //generate random backgroundImage and avatar pic
-                    const backgroundImage = await generateRandomPhoto('background', _id, postId)
-                    const profileImage = await generateRandomPhoto('avatar', _id, postId)
+                    const backgroundImage = new Image({
+                        ...(await generateRandomPhoto('background')),
+                        uploadedBy: _id,
+                        role: 'BACKGROUND',
+                    })
+                    const profileImage = new Image({
+                        ...generateImageFromGoogleAuth(googleData),
+                        uploadedBy: _id,
+                        role: 'PROFILE',
+                    })
 
-                    newUser.backgroundImage = backgroundImage
-                    newUser.profileImage = profileImage
-                    newPost.images = [backgroundImage._id, profileImage._id]
-                    await newPost.save()
-
+                    newUser.backgroundImage = await backgroundImage.save()
+                    newUser.profileImage = await profileImage.save()
                     //saving user in DB
                     user = await newUser.save()
                 }
@@ -404,7 +407,11 @@ module.exports = {
             const images = await Image.find({ uploadedBy: id })
             // filter them out
             return await asyncFilter(images, async (img) => {
-                const filter = await getPrivacyFilter({ context, initialFilter: { _id: img.post } })
+                if (img.role && (img.role === 'BACKGROUND' || img.role === 'PROFILE')) return true
+                const filter = await getPrivacyFilter({
+                    context,
+                    initialFilter: { _id: img.post },
+                })
                 return await Entity.exists(filter)
             })
         },

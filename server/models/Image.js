@@ -30,6 +30,10 @@ const imageSchema = new Schema({
         type: String,
         enum: ['FIREBASE_STORAGE', 'GOOGLE_AUTH', 'UNSPLASH'],
     },
+    role: {
+        type: String,
+        enum: ['PROFILE', 'BACKGROUND', 'NONE'],
+    },
 })
 
 module.exports = model('Image', imageSchema)

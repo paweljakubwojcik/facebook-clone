@@ -14,6 +14,7 @@ module.exports.savePictureToDB = async (image, user, additionalFields) => {
             name: user.username,
             link: null,
         },
+        storageProvider: 'FIREBASE_STORAGE',
         ...additionalFields,
     })
 

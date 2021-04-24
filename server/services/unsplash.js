@@ -1,37 +1,36 @@
 const Unsplash = require('unsplash-js').default
-const {toJson} = require('unsplash-js')
+const { toJson } = require('unsplash-js')
 global.fetch = require('node-fetch')
-const APP_ACCESS_KEY = require('../config.js').UNSPLASH_APP_KEY
 
-const Image = require('../models/Image')
-
-const unsplash = new Unsplash({ accessKey: APP_ACCESS_KEY })
+const unsplash = new Unsplash({ accessKey: process.env.UNSPLASH_APP_KEY })
 
 /**
  *
  * @param {String} type - 'background' || 'avatar'
- * @param {String} owner - id of user for who this picture belongs to
- *  @param {String} postId - id of post that will contain those photos
  */
 
-module.exports.generateRandomPhoto = async (type, owner, postId) => {
+module.exports.generateRandomPhoto = async (type) => {
     let data
-    switch (type) {
-        case 'background':
-            data = await unsplash.photos.getRandomPhoto({ orientation: 'landscape' })
-            break
-        case 'avatar':
-            data = await unsplash.photos.getRandomPhoto({ query: 'person' })
-            break
-        default:
-            data = await unsplash.photos.getRandomPhoto()
-            break
+    try {
+        switch (type) {
+            case 'background':
+                data = await unsplash.photos.getRandomPhoto({ orientation: 'landscape' })
+                break
+            case 'avatar':
+                data = await unsplash.photos.getRandomPhoto({ query: 'person' })
+                break
+            default:
+                data = await unsplash.photos.getRandomPhoto()
+                break
+        }
+    } catch (error) {
+        console.log(error)
+        throw error
     }
 
     const picture = await toJson(data)
 
-    //TODO: this piece should be in diffrent place
-    const newImage = new Image({
+    return {
         urls: {
             thumbnail: picture.urls.thumb,
             small: picture.urls.thumb,
@@ -43,8 +42,6 @@ module.exports.generateRandomPhoto = async (type, owner, postId) => {
             name: picture.user.name,
             link: picture.user.links.self,
         },
-        uploadedBy: owner,
-        post: postId,
-    })
-    return await newImage.save()
+        storageProvider: 'UNSPLASH',
+    }
 }
