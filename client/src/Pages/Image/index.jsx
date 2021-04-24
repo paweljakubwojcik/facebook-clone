@@ -10,25 +10,30 @@ import Post from './Post'
 import { MAX_TABLET_PX } from '../../styles/breakpoints'
 
 export default function ImagePage() {
-    const history = useHistory()
+    const { goBack } = useHistory()
     const params = useParams()
     const [postId, setPostId] = useState(null)
-    const postWidth = 450
+    const [isFullScreen, setFullscreen] = useState(false)
 
-    const goBack = () => {
-        history.goBack()
-    }
+    const postWidth = 450
 
     return (
         <>
-            <Wrapper>
+            <Wrapper isFullScreen={isFullScreen}>
                 <XButton onClick={goBack}>
                     <FontAwesomeIcon icon={faTimes} />
                 </XButton>
 
-                <Image setPostId={setPostId} postWidth={postWidth} params={params} />
+                {/* <Image> sets postId */}
+                <Image
+                    setPostId={setPostId}
+                    postWidth={postWidth}
+                    params={params}
+                    isFullScreen={isFullScreen}
+                    setFullScreen={setFullscreen}
+                />
             </Wrapper>
-            {postId && <Post postId={postId} postWidth={postWidth}></Post>}
+            {postId && !isFullScreen && <Post postId={postId} postWidth={postWidth}></Post>}
         </>
     )
 }
@@ -42,13 +47,16 @@ const Wrapper = styled.div`
     width: 100vw;
     height: 100vh;
     overflow: visible;
+    z-index:  ${props => props.isFullScreen ? 3 : 'none'};
     & > * {
         pointer-events: all;
     }
     @media (max-width: ${MAX_TABLET_PX}) {
-        flex-direction: column;
+        ${props => !props.isFullScreen ? 
+        `flex-direction: column;
         height: fit-content;
-        position: relative;
+        position: relative;` : ""}
+        
     }
 `
 

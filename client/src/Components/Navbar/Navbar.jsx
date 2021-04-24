@@ -64,7 +64,7 @@ export default function Navbar() {
 }
 
 const NavBar = styled.nav`
-    position: ${(props) => (!props.isCovered ? 'sticky' : 'static')};
+    position: ${(props) => (props.isCovered ? 'static' : 'sticky')};
     top: 0;
     left: 0;
     z-index: 3;

@@ -30,6 +30,7 @@ module.exports.generateRandomPhoto = async (type, owner, postId) => {
 
     const picture = await toJson(data)
 
+    //TODO: this piece should be in diffrent place
     const newImage = new Image({
         urls: {
             thumbnail: picture.urls.thumb,

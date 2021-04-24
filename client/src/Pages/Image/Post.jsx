@@ -8,7 +8,10 @@ import { useHistory } from 'react-router-dom'
 import ErrorMessage from '../../Components/General/ErrorMessage'
 import { MAX_TABLET_PX } from '../../styles/breakpoints'
 
+//TODO: add nice loader
+
 export default function Post({ postId, postWidth }) {
+    const history = useHistory()
     const { error, loading, data: { entity } = {} } = useQuery(GET_ENTITY, {
         variables: {
             id: postId,
@@ -16,7 +19,6 @@ export default function Post({ postId, postWidth }) {
     })
 
     console.log(entity)
-    const history = useHistory()
 
     return (
         <FlexWrapper>
@@ -41,6 +43,7 @@ export default function Post({ postId, postWidth }) {
 const FlexWrapper = styled.div`
     display: flex;
     position: absolute;
+    z-index:0;
     top: 0;
     height: 100vh;
     width: 100%;

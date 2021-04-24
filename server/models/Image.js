@@ -1,6 +1,8 @@
 const { model, Schema } = require('mongoose')
 
 const imageSchema = new Schema({
+    title: String,
+    filename: String,
     urls: {
         large: String,
         medium: String,
@@ -24,8 +26,10 @@ const imageSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'posts',
     },
-    title: String,
-    filename: String,
+    storageProvider: {
+        type: String,
+        enum: ['FIREBASE_STORAGE', 'GOOGLE_AUTH', 'UNSPLASH'],
+    },
 })
 
 module.exports = model('Image', imageSchema)

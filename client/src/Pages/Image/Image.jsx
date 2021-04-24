@@ -8,8 +8,12 @@ import Arrows from './Arrows'
 import ImageLoader from '../../Components/General/ImageLoader'
 
 import { MAX_TABLET_PX } from '../../styles/breakpoints'
+import { RoundButton } from '../../Components/General/Buttons'
 
-export default function Image({ setPostId, postWidth, params }) {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExpand, faCompress } from '@fortawesome/free-solid-svg-icons'
+
+export default function Image({ setPostId, postWidth, params, isFullScreen, setFullScreen }) {
     const { id } = params
 
     const { loading, error, data: { image } = {} } = useQuery(GET_IMAGE, {
@@ -21,13 +25,19 @@ export default function Image({ setPostId, postWidth, params }) {
     const allImages = image ? image.post.images.map((image) => image.id) : null
 
     useEffect(() => {
-        if (image) setPostId(image.post.id)
-    }, [image, setPostId])
+        if (image) {
+            if (image.post) setPostId(image.post.id)
+            else setFullScreen(true)
+        }
+    }, [image, setPostId, setFullScreen])
 
     return (
-        <ImageContainer image={image?.urls.small} postWidth={postWidth}>
+        <ImageContainer image={image?.urls.small} postWidth={postWidth} fullScreen={isFullScreen}>
             {image && (
                 <>
+                    <FullScreenButton onClick={() => setFullScreen((prev) => !prev)}>
+                        <FontAwesomeIcon icon={isFullScreen ? faCompress : faExpand} />
+                    </FullScreenButton>
                     <Arrows currentImage={id} allImages={allImages} />
                     <ActualImage image={image} />
                 </>
@@ -55,7 +65,7 @@ const ImageContainer = styled.div`
     z-index: 1;
     top: 0;
     height: 100vh;
-    width: calc(100% - ${(props) => props.postWidth}px);
+    width: calc(100% - ${(props) => (props.fullScreen ? 0 : props.postWidth)}px);
 
     overflow: hidden;
     display: flex;
@@ -115,4 +125,12 @@ const Img = styled.img`
     @media (max-width: ${MAX_TABLET_PX}) {
         max-height: calc(100vh - var(--navbar-height));
     }
+`
+
+const FullScreenButton = styled(RoundButton)`
+    position: absolute;
+    top: 5px;
+    right: 1em;
+    z-index: 3;
+    background-color: transparent;
 `
