@@ -10,6 +10,8 @@ module.exports = gql`
     extend type Mutation {
         uploadPicture(ImageInput: ImageInput!): Image!
             @deprecated(reason: "no front end uploading anymore, use 'createPost' instead")
+
+        updatePicture(id: ID!, field: String!, newValue: String!): Image!
     }
 
     type Urls {

@@ -27,6 +27,14 @@ export const GET_IMAGE = gql`
     }
 `
 
+export const UPDATE_IMAGE = gql`
+    mutation updatePicture($id: ID!, $field: String!, $newValue: String!) {
+        updatePicture(id: $id, field: $field, newValue: $newValue) {
+            id
+        }
+    }
+`
+
 export const ADD_PICTURE = gql`
     mutation uploadPicture(
         $post: ID!

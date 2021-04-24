@@ -3,8 +3,16 @@ const Entity = require('../../models/Entity')
 const checkAuth = require('../../utils/checkAuth')
 
 module.exports = {
-
     Mutation: {
+        updatePicture: async (_, { id, field, newValue }, context) => {
+            const user = checkAuth(context)
+            const image = await Image.findByIdAndUpdate(
+                id,
+                { [field]: newValue },
+                { new: true, useFindAndModify: false }
+            )
+            return image
+        },
         uploadPicture: async (_, { ImageInput }, context) => {
             const user = checkAuth(context)
             const newImage = Image({
@@ -13,13 +21,13 @@ module.exports = {
                 uploadedBy: user.id,
                 author: {
                     name: user.username,
-                    link: null
-                }
+                    link: null,
+                },
             })
 
             const image = await newImage.save()
             return image
-        }
+        },
     },
     Query: {
         image: async (_, { imageId }) => {
@@ -29,8 +37,7 @@ module.exports = {
             } catch (error) {
                 return new Error(error)
             }
-
-        }
+        },
     },
     Image: {
         post: async ({ post }) => {
@@ -38,6 +45,6 @@ module.exports = {
         },
         urls: ({ urls, id }) => {
             return { ...urls, id }
-        }
+        },
     },
 }
