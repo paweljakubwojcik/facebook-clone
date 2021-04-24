@@ -45,7 +45,8 @@ export default function Header({ isCovered, ...rest }) {
 }
 
 const StyledHeader = styled.header`
-    position: relative;
+    position: ${(props) => (props.isCovered ? 'fixed' : 'relative')};
+    z-index: 3;
     margin: 0.3em 0.3em 0.3em 0;
     display: flex;
     align-items: center;
