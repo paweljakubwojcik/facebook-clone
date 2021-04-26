@@ -9,6 +9,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane, faTimes, faMinus } from '@fortawesome/free-solid-svg-icons'
 import { MessengerContext } from '../../Context/messenger'
 
+
+// USE SubscribeForMore
+
+
+
 export default function Chat({ chatId }) {
     const { removeChat } = useContext(MessengerContext)
 

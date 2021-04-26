@@ -6,6 +6,10 @@ const index = gql`
 
     type Mutation
 
+    type Subscription {
+        dummySub: String
+    }
+
     enum SortDirection {
         ASCENDING
         DESCENDING
@@ -26,4 +30,5 @@ module.exports = [
     require('./notification'),
     require('./user'),
     require('./entity'),
+    require('./conversation'),
 ]

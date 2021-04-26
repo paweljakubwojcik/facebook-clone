@@ -4,8 +4,10 @@ const commentsResorvels = require('./comments')
 const imagesResolvers = require('./images')
 const notificationsResolvers = require('./notifications')
 const entitiesResolvers = require('./entities')
+const conversationsResolvers = require('./conversations')
 
 module.exports = {
+    ...conversationsResolvers,
     Entity: {
         ...entitiesResolvers.Entity,
     },
@@ -20,8 +22,7 @@ module.exports = {
     },
     User: {
         ...usersResorvels.User,
-        notificationCount: (parent) =>
-            parent.notifications.filter((n) => !n.isSeen).length 
+        notificationCount: (parent) => parent.notifications.filter((n) => !n.isSeen).length,
     },
     Invitation: {
         ...usersResorvels.Invitation,
@@ -40,6 +41,7 @@ module.exports = {
         ...imagesResolvers.Query,
         ...notificationsResolvers.Query,
         ...entitiesResolvers.Query,
+        ...conversationsResolvers.Query,
     },
     Mutation: {
         ...usersResorvels.Mutation,
@@ -48,5 +50,6 @@ module.exports = {
         ...imagesResolvers.Mutation,
         ...notificationsResolvers.Mutation,
         ...entitiesResolvers.Mutation,
+        ...conversationsResolvers.Mutation,
     },
 }

@@ -1,21 +1,34 @@
 const { model, Schema } = require('mongoose')
 
 const conversationSchema = new Schema({
-    id: String,
-    participants: [
+    users: [
         {
-            Type: Schema.Types.ObjectId,
-            ref: 'users'
-        }
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+        },
     ],
     messages: [
         {
-            id: String,
+            id: {
+                type: Schema.Types.ObjectId,
+                auto: true,
+                required: true,
+            },
             body: String,
-            date: String,
-            author: String,
-        }
-    ]
+            timestamp: {
+                type: Number,
+                default: Date.now,
+            },
+            user: {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+            },
+            isSeen: {
+                type: Boolean,
+                default: false,
+            },
+        },
+    ],
 })
 
 module.exports = model('Conversation', conversationSchema)
