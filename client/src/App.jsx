@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { LastLocationProvider } from 'react-router-last-location'
 
 import { AuthContext } from './Context/auth'
 import { ThemesProvider } from './Context/theme'

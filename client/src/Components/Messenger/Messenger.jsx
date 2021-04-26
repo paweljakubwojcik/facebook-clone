@@ -16,7 +16,7 @@ export default function Messenger() {
                 ))}
             </ChatsRow>
             <Column>
-                <RoundButton style={{ fontSize: '1.4em' }} size={50}>
+                <RoundButton style={{ fontSize: '1.25em' }} size={50}>
                     <FontAwesomeIcon icon={faPlus} />
                 </RoundButton>
             </Column>
