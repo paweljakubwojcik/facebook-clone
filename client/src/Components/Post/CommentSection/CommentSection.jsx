@@ -27,6 +27,9 @@ export default function CommentSection({ postId, inputFocus, setFocus, commentsC
                 sort: 'DESCENDING',
                 sortBy: 'timestamp',
             },
+            onError: (error) => {
+                throw error
+            },
         }
     )
 

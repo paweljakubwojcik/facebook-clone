@@ -1,14 +1,14 @@
 const { AuthenticationError, UserInputError } = require('apollo-server')
-const Entity = require('../../models/Entity')
+const Post = require('../../models/Post')
+const Comment = require('../../models/Comment')
 const User = require('../../models/User')
 const Image = require('../../models/Image')
 const checkAuth = require('../../utils/checkAuth')
 
 const { savePictureToDB } = require('./methods/savePictureToDB')
-const { getPaginatedResult } = require('./methods/cursorPagination')
+const { getPaginatedResult, paginateResult } = require('./methods/cursorPagination')
 const dayjs = require('dayjs')
 const getPrivacyFilter = require('./methods/getPrivacyFilter')
-const { asyncFilter } = require('../../utils/asyncFilter')
 
 module.exports = {
     Query: {
@@ -23,13 +23,13 @@ module.exports = {
             const filter = await getPrivacyFilter({
                 userId,
                 context,
-                initialFilter: { type: 'POST' },
+                initialFilter: {},
             })
-            return await getPaginatedResult(filter, paginationData, Entity)
+            return await getPaginatedResult(filter, paginationData, Post)
         },
         async post(_, { postId }) {
             try {
-                const post = await Entity.findById(postId)
+                const post = await Post.findById(postId)
                 return post
             } catch (err) {
                 throw new Error('Post not found')
@@ -50,7 +50,7 @@ module.exports = {
             }
 
             try {
-                const newPost = new Entity({
+                const newPost = new Post({
                     body,
                     title,
                     type: 'POST',
@@ -80,7 +80,7 @@ module.exports = {
         async editPost(_, { postId, field, newValue }, context) {
             const { id } = checkAuth(context)
             try {
-                const post = await Entity.findById(postId)
+                const post = await Post.findById(postId)
                 if (post.user.toString() === id) {
                     post[field] = newValue
                     return await post.save()
@@ -97,8 +97,12 @@ module.exports = {
         async images({ id }) {
             return await Image.find({ post: id })
         },
-        async comments({ id }, { paginationData }) {
-            return await getPaginatedResult({ parent: id }, paginationData, Entity)
+        async comments({ id, children }, { paginationData }) {
+            return paginateResult(
+                {},
+                paginationData,
+                await Promise.all(children.map((id) => Comment.findById(id)))
+            )
         },
         commentsCount: (parent) => parent.children.length,
         reactionsCount: (parent) => parent.reactions.length,

@@ -32,7 +32,7 @@ module.exports = {
     Query: {
         image: async (_, { imageId }) => {
             try {
-                const image = await Image.findById(imageId)
+                const image = await Image.findOne({ _id: imageId }).populate('post')
                 return image
             } catch (error) {
                 return new Error(error)
@@ -40,9 +40,6 @@ module.exports = {
         },
     },
     Image: {
-        post: async ({ post }) => {
-            return await Entity.findById(post)
-        },
         urls: ({ urls, id }) => {
             return { ...urls, id }
         },

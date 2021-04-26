@@ -116,16 +116,16 @@ module.exports = {
         },
     },
     Entity: {
-        async __resolveType({ type }, args, context, info) {
-            switch (type) {
-                case 'POST':
+        async __resolveType({ __t }, args, context, info) {
+            switch (__t) {
+                case 'Post':
                     return 'Post'
-                case 'COMMENT':
+                case 'Comment':
                     return 'Comment'
-                case 'REPLY':
+                case 'Reply':
                     return 'Reply'
                 default:
-                    return 'Post'
+                    return 'Entity'
             }
         },
     },

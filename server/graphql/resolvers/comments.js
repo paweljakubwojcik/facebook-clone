@@ -1,4 +1,6 @@
 const { UserInputError } = require('apollo-server')
+const Comment = require('../../models/Comment')
+const Post = require('../../models/Post')
 const Entity = require('../../models/Entity')
 const User = require('../../models/User')
 const Image = require('../../models/Image')
@@ -19,11 +21,10 @@ module.exports = {
                     })
                 }
 
-                const post = await Entity.findById(postId)
+                const post = await Post.findById(postId)
                 if (!post) throw new UserInputError('Post not found')
 
-                const newComment = new Entity({
-                    type: 'COMMENT',
+                const newComment = new Comment({
                     body,
                     createdAt: new Date().toISOString(),
                     timestamp: Date.now(),
@@ -62,7 +63,7 @@ module.exports = {
                     })
                 }
 
-                const comment = await Entity.findById(commentId)
+                const comment = await Comment.findById(commentId)
                 if (!post) throw new UserInputError('Comment not found')
 
                 const reply = new Entity({
@@ -91,11 +92,11 @@ module.exports = {
          */
         async reactToComment(_, { postId, commentId, type }, context) {
             /*  */
-            throw new Error('method deprecated, use react(): Entety instead')
+            throw new Error('method deprecated, use react(): Entity instead')
         },
     },
     Comment: {
-        async user({ user }) {
+        async user({ user }, params, context) {
             return await User.findById(user)
         },
         async replies({ children }, { paginationData: { limit, cursor } }) {

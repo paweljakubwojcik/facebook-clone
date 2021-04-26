@@ -17,12 +17,8 @@ const reaction = {
     },
 }
 
+// TODO: use discriminator
 const entitySchema = new Schema({
-    type: {
-        type: String,
-        required: true,
-        enum: ['POST', 'COMMENT', 'REPLY'],
-    },
     body: String,
     title: String,
     createdAt: {
@@ -48,8 +44,7 @@ const entitySchema = new Schema({
         },
     ],
     parent: {
-        type: Schema.Types.ObjectId,
-        ref: 'entities',
+        type: String,
     },
     children: [
         {

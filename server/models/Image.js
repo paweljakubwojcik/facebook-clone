@@ -24,7 +24,7 @@ const imageSchema = new Schema({
     },
     post: {
         type: Schema.Types.ObjectId,
-        ref: 'posts',
+        ref: 'Entity',
     },
     storageProvider: {
         type: String,
