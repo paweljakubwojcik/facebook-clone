@@ -12,6 +12,8 @@ import NavBar from './Components/Navbar/Navbar'
 import Profile from './Pages/Profile'
 import ImagePage from './Pages/Image'
 import Authentication from './Pages/Redirect/Authentication'
+import { MessengerProvider } from './Context/messenger'
+import Messenger from './Components/Messenger/Messenger'
 
 export default function App() {
     //checks if user is logged in
@@ -19,9 +21,9 @@ export default function App() {
 
     return (
         <ThemesProvider>
-            <GlobalStyles />
-            <Router>
-                <LastLocationProvider>
+            <MessengerProvider>
+                <GlobalStyles />
+                <Router>
                     <NavBar />
                     <Route exact path="/">
                         {isLogged ? (
@@ -41,8 +43,9 @@ export default function App() {
                     <Route path="/auth">
                         <Authentication />
                     </Route>
-                </LastLocationProvider>
-            </Router>
+                </Router>
+                {isLogged && <Messenger />}
+            </MessengerProvider>
         </ThemesProvider>
     )
 }
