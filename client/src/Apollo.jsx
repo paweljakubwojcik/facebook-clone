@@ -50,6 +50,11 @@ const cache = new InMemoryCache({
         },
         Conversation: {
             merge: true,
+            fields: {
+                messages: {
+                    ...cursorPagination,
+                },
+            },
         },
     },
 })

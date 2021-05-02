@@ -2,12 +2,12 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { GenericButton } from '../General/Buttons'
 import ElementContainer from '../General/ElementContainer'
-import StyledInput from '../General/StyledInput'
 import FlexContainer from '../General/CommonStyles/FlexContainer'
 import Avatar from '../General/Avatar'
+import MessageForm from './MessageForm'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPaperPlane, faTimes, faMinus } from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faMinus } from '@fortawesome/free-solid-svg-icons'
 
 import { MessengerContext } from '../../Context/messenger'
 import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
@@ -22,7 +22,7 @@ export default function Chat({ chatId }) {
     const { user: currentUser = {} } = useCurrentUser()
 
     const {
-        data: { conversation: { chatName, users, image } = {} } = {},
+        data: { conversation: { chatName, users, image, messages } = {} } = {},
         error,
         loading,
     } = useQuery(GET_CONVERSATION, {
@@ -34,7 +34,7 @@ export default function Chat({ chatId }) {
         },
     })
 
-    console.log(image)
+    if (loading) return null
 
     return (
         <Container>
@@ -46,7 +46,9 @@ export default function Chat({ chatId }) {
                             ? chatName
                             : users
                                   .filter((user) => user.id !== currentUser.id)
-                                  .map((user) => <Username>{user.username}</Username>)}
+                                  .map((user) => (
+                                      <Username key={user.id}>{user.username}</Username>
+                                  ))}
                     </>
                 )}
                 <FlexContainer style={{ fontSize: '1.3em', marginLeft: 'auto' }}>
@@ -58,13 +60,10 @@ export default function Chat({ chatId }) {
                     </BlueButton>
                 </FlexContainer>
             </Header>
-            <Messages>{'tu będą wiadomości'}</Messages>
-            <Form style={{ flexGrow: 0 }} onSubmit={(e) => e.preventDefault()}>
-                <StyledInput placeholder={'Aa'} />
-                <BlueButton>
-                    <FontAwesomeIcon icon={faPaperPlane} />
-                </BlueButton>
-            </Form>
+            <Messages>
+                {messages && messages.map((message) => <div key={message.id}>{message.body}</div>)}
+            </Messages>
+            <MessageForm chatId={chatId} />
         </Container>
     )
 }
@@ -103,10 +102,4 @@ const Messages = styled.div`
 
 const BlueButton = styled(GenericButton)`
     color: ${(props) => props.theme.primaryColor};
-`
-
-const Form = styled.form`
-    display: flex;
-    padding: 1em;
-    align-items: center;
 `

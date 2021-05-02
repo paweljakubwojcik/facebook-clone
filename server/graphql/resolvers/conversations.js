@@ -107,7 +107,7 @@ module.exports = {
     Message: {
         user: async ({ user }) => {
             try {
-                return await User.findById(user).lean()
+                return await User.findById(user)
             } catch (error) {
                 return error
             }

@@ -29,6 +29,14 @@ export const GET_CONVERSATION = gql`
                     small
                 }
             }
+            messages(paginationData: { limit: 5 }) {
+                id
+                body
+                timestamp
+                user {
+                    id
+                }
+            }
         }
     }
 `
@@ -61,6 +69,22 @@ export const DELETE_CONVERSATION = gql`
     mutation deleteConversation($id: ID!) {
         deleteConversation(id: $id) {
             id
+        }
+    }
+`
+
+export const SEND_MESSAGE = gql`
+    mutation sendMessage($conversationId: ID!, $body: String!) {
+        sendMessage(conversationId: $conversationId, body: $body) {
+            id
+            messages(paginationData: { limit: 1 }) {
+                id
+                body
+                timestamp
+                user {
+                    id
+                }
+            }
         }
     }
 `
