@@ -4,25 +4,51 @@ import { GenericButton } from '../General/Buttons'
 import ElementContainer from '../General/ElementContainer'
 import StyledInput from '../General/StyledInput'
 import FlexContainer from '../General/CommonStyles/FlexContainer'
+import Avatar from '../General/Avatar'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane, faTimes, faMinus } from '@fortawesome/free-solid-svg-icons'
 import { MessengerContext } from '../../Context/messenger'
-
+import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
+import { useQuery } from '@apollo/client'
+import { GET_CONVERSATION } from '../../Util/GraphQL_Queries/Conversation_queries'
 
 // USE SubscribeForMore
 
-
-
 export default function Chat({ chatId }) {
-    const { removeChat } = useContext(MessengerContext)
+    const { removeChat, minimaliseChat } = useContext(MessengerContext)
+    const { user: currentUser = {} } = useCurrentUser()
+
+    const {
+        data: { conversation: { chatName, users, image } = {} } = {},
+        error,
+        loading,
+    } = useQuery(GET_CONVERSATION, {
+        variables: {
+            id: chatId,
+        },
+        onError: (e) => {
+            console.log(e)
+        },
+    })
+
+    console.log(image)
 
     return (
         <Container>
             <Header>
-                {chatId}
-                <FlexContainer style={{ fontSize: '1.3em' }}>
-                    <BlueButton>
+                <Avatar image={image?.urls?.small} size={35} />
+                {!loading && !error && (
+                    <>
+                        {chatName
+                            ? chatName
+                            : users
+                                  .filter((user) => user.id !== currentUser.id)
+                                  .map((user) => user.username)}
+                    </>
+                )}
+                <FlexContainer style={{ fontSize: '1.3em', marginLeft: 'auto' }}>
+                    <BlueButton onClick={() => minimaliseChat(chatId)}>
                         <FontAwesomeIcon icon={faMinus} />
                     </BlueButton>
                     <BlueButton onClick={() => removeChat(chatId)}>
@@ -54,7 +80,7 @@ const Container = styled(ElementContainer)`
 
 const Header = styled.div`
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     padding: 0 0.6rem;
     width: 100%;
     height: 50px;

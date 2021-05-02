@@ -5,7 +5,8 @@ module.exports = gql`
         id: ID!
         users: [User!]
         messages(paginationData: CursorBasedPagination!): [Message]!
-        name: String!
+        name: String
+        image: Image!
     }
 
     type Message {

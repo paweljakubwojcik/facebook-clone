@@ -1,8 +1,9 @@
 const { AuthenticationError, UserInputError } = require('apollo-server')
 const Conversation = require('../../models/Conversation')
 const User = require('../../models/User')
+const Image = require('../../models/Image')
 const checkAuth = require('../../utils/checkAuth')
-const conversation = require('../typeDefs/conversation')
+
 const { paginateResult } = require('./methods/cursorPagination')
 
 module.exports = {
@@ -66,17 +67,50 @@ module.exports = {
             return conversation ? conversation._id : null
         },
         conversation: async (parent, { id }, context) => {
-            return await Conversation.findById(id).populate('users')
+            try {
+                return await Conversation.findById(id)
+            } catch (error) {
+                return error
+            }
         },
     },
     Conversation: {
         messages: ({ messages }, { paginationData }) => {
-            return paginateResult({}, paginationData, messages)
+            try {
+                return paginateResult({}, paginationData, messages)
+            } catch (error) {
+                return error
+            }
+        },
+        users: async ({ users }) => {
+            try {
+                return await User.find({ _id: users })
+            } catch (e) {
+                return e
+            }
+        },
+        image: async ({ image, users }, variables, context) => {
+            try {
+                if (image) {
+                    return await Image.findById(image)
+                } else {
+                    const contextUser = checkAuth(context)
+                    const otherUserId = users.filter((id) => id.toString() !== contextUser.id)[0]
+                    const { profileImage } = await User.findById(otherUserId)
+                    return await Image.findById(profileImage)
+                }
+            } catch (e) {
+                return e
+            }
         },
     },
     Message: {
         user: async ({ user }) => {
-            return await User.findById(user).lean()
+            try {
+                return await User.findById(user).lean()
+            } catch (error) {
+                return error
+            }
         },
     },
 }

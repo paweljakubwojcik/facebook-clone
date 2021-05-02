@@ -1,13 +1,14 @@
 import React, { useContext } from 'react'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import styled from 'styled-components'
 
 import UserButton from '../../Components/General/UserButton'
 import SkeletonUserButton from '../../Components/skeletons/SkeletonUserButton'
 import ErrorMessage from '../../Components/General/ErrorMessage'
 
-import { GET_FRIENDS } from '../../Util/GraphQL_Queries'
+import { GET_FRIENDS, CREATE_CONVERSATION } from '../../Util/GraphQL_Queries'
 import { AuthContext } from '../../Context/auth'
+import { MessengerContext } from '../../Context/messenger'
 
 export default function ContactList() {
     const { userId } = useContext(AuthContext)
@@ -22,12 +23,40 @@ export default function ContactList() {
         <Container>
             <ScrollWrapper>
                 <h2>Contacts</h2>
-                {friends && friends.map((user) => <UserButton key={user.id} user={user} />)}
+                {friends &&
+                    friends.map((user) => (
+                        <ContactButton userId={user.id} key={user.id}>
+                            <UserButton user={user} />
+                        </ContactButton>
+                    ))}
                 {loading && [0, 1, 2, 3].map((key) => <SkeletonUserButton key={key} />)}
                 {error && <ErrorMessage>{"Couldn't find any friends"}</ErrorMessage>}
             </ScrollWrapper>
         </Container>
     )
+}
+
+const ContactButton = ({ children, userId, ...props }) => {
+    const { addChat } = useContext(MessengerContext)
+
+    const [
+        createConversation,
+        { data: { createConversation: conversation } = {}, loading },
+    ] = useMutation(CREATE_CONVERSATION, {
+        variables: {
+            users: [userId],
+        },
+        onCompleted: ({ createConversation: conversation }) => {
+            addChat(conversation.id)
+        },
+        onError: (e) => {
+            throw e
+        },
+    })
+
+    const handleClick = conversation ? () => addChat(conversation.id) : createConversation
+
+    return <div onClick={loading ? null : handleClick}>{children}</div>
 }
 
 const Container = styled.div`

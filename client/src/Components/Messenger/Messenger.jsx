@@ -5,9 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { MessengerContext } from '../../Context/messenger'
 import Chat from './Chat'
+import MinimalizedChat from './minimalizedChat'
 
 export default function Messenger() {
-    const { activeConversations } = useContext(MessengerContext)
+    const { activeConversations, minimalizedConversations } = useContext(MessengerContext)
     return (
         <ModalUnclickableContainer>
             <ChatsRow>
@@ -19,6 +20,9 @@ export default function Messenger() {
                 <RoundButton style={{ fontSize: '1.25em' }} size={50}>
                     <FontAwesomeIcon icon={faPlus} />
                 </RoundButton>
+                {minimalizedConversations.map((chatId) => (
+                    <MinimalizedChat chatId={chatId} key={chatId} />
+                ))}
             </Column>
         </ModalUnclickableContainer>
     )

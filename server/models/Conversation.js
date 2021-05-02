@@ -1,6 +1,11 @@
 const { model, Schema } = require('mongoose')
 
 const conversationSchema = new Schema({
+    name: String,
+    image: {
+        type: Schema.Types.ObjectId,
+        ref: 'Image',
+    },
     users: [
         {
             type: Schema.Types.ObjectId,
