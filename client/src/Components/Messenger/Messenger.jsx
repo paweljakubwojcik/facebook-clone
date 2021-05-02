@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { MessengerContext } from '../../Context/messenger'
 import Chat from './Chat'
-import MinimalizedChat from './minimalizedChat'
+import MinimalizedChat from './MinimalizedChat'
 
 export default function Messenger() {
     const { activeConversations, minimalizedConversations } = useContext(MessengerContext)

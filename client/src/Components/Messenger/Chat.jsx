@@ -8,8 +8,10 @@ import Avatar from '../General/Avatar'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane, faTimes, faMinus } from '@fortawesome/free-solid-svg-icons'
+
 import { MessengerContext } from '../../Context/messenger'
 import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
+
 import { useQuery } from '@apollo/client'
 import { GET_CONVERSATION } from '../../Util/GraphQL_Queries/Conversation_queries'
 
@@ -44,7 +46,7 @@ export default function Chat({ chatId }) {
                             ? chatName
                             : users
                                   .filter((user) => user.id !== currentUser.id)
-                                  .map((user) => user.username)}
+                                  .map((user) => <Username>{user.username}</Username>)}
                     </>
                 )}
                 <FlexContainer style={{ fontSize: '1.3em', marginLeft: 'auto' }}>
@@ -86,6 +88,11 @@ const Header = styled.div`
     height: 50px;
     color: ${(props) => props.theme.primaryColor};
     border-bottom: 1px solid ${(props) => props.theme.borderColor};
+`
+
+const Username = styled.div`
+    margin: 0.4em;
+    color: ${(props) => props.theme.primaryFontColor};
 `
 
 const Messages = styled.div`

@@ -1,10 +1,14 @@
-import React, { useContext } from 'react'
-import styled from 'styled-components'
+import React, { useContext, useRef } from 'react'
+import styled, { keyframes } from 'styled-components'
 
 import { MessengerContext } from '../../Context/messenger'
 import { useQuery } from '@apollo/client'
 import { GET_MINIFIED_CONVERSATION } from '../../Util/GraphQL_Queries/Conversation_queries'
 import Avatar from '../General/Avatar'
+import { ShowableButton } from '../General/Buttons'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 export default function MinimalizedChat({ chatId, ...rest }) {
     const { maximalizeChat, removeChat } = useContext(MessengerContext)
@@ -22,13 +26,37 @@ export default function MinimalizedChat({ chatId, ...rest }) {
     )
 
     return (
-        <Container onClick={() => maximalizeChat(chatId)}>
-            <Avatar image={image?.urls?.small} size={50} />
+        <Container>
+            <CloseButton parent={Container} onClick={() => removeChat(chatId)}>
+                <FontAwesomeIcon icon={faTimes} />
+            </CloseButton>
+            <Avatar image={image?.urls?.small} size={50} onClick={() => maximalizeChat(chatId)} />
         </Container>
     )
 }
 
+const showAnimation = keyframes`
+    from{
+        transform: scale(0);
+    }
+    to{
+        transform: scale(1);
+    }
+`
+
 const Container = styled.div`
     margin: 0.5em auto;
     cursor: pointer;
+    position: relative;
+    pointer-events: all;
+    animation: ${showAnimation} 0.2s;
+`
+
+const CloseButton = styled(ShowableButton)`
+    position: absolute;
+    top: -0.5em;
+    right: -0.5em;
+    font-size: 10px;
+    width: 2em;
+    height: 2em;
 `
