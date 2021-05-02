@@ -23,7 +23,7 @@ module.exports = {
 
                     entityOwner.notifications.unshift({
                         from: user,
-                        body: `$user has reacted to your ${entity.type.toLowerCase()}`,
+                        body: `$user has reacted to your ${entity.__t.toLowerCase()}`,
                         type: 'POST',
                         entity,
                     })

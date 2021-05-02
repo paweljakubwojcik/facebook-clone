@@ -24,7 +24,7 @@ export default function UserButton({ user, notLink, onClick, ...rest }) {
     const handleMouseLeave = () => {
         setHover(false)
     }
-    const handleOnClick = () => {
+    const handleOnClick = (e) => {
         if (onClick) onClick()
         button.current.blur()
     }
@@ -39,7 +39,7 @@ export default function UserButton({ user, notLink, onClick, ...rest }) {
         >
             <HoverWrapper top={popUpPosition}>
                 {!notLink && (
-                    <PopUpElement isVisible={isHovered}>
+                    <PopUpElement isVisible={isHovered} onClick={(e) => e.stopPropagation()}>
                         <ProfilePreview userId={user.id} />
                     </PopUpElement>
                 )}
@@ -101,6 +101,6 @@ const Username = styled.div`
 `
 
 const Email = styled.div`
-    font-size: .7em;
+    font-size: 0.7em;
     color: ${(props) => props.theme.secondaryFontColor};
 `

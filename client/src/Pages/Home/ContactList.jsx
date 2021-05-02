@@ -54,7 +54,13 @@ const ContactButton = ({ children, userId, ...props }) => {
         },
     })
 
-    const handleClick = conversation ? () => addChat(conversation.id) : createConversation
+    const handleClick = (e) => {
+        if (conversation) {
+            addChat(conversation.id)
+        } else {
+            createConversation()
+        }
+    }
 
     return <div onClick={loading ? null : handleClick}>{children}</div>
 }
