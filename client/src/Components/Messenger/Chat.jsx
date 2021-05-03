@@ -14,6 +14,7 @@ import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 
 import { useQuery } from '@apollo/client'
 import { GET_CONVERSATION } from '../../Util/GraphQL_Queries/Conversation_queries'
+import Message from './Message'
 
 // USE SubscribeForMore
 
@@ -61,7 +62,15 @@ export default function Chat({ chatId }) {
                 </FlexContainer>
             </Header>
             <Messages>
-                {messages && messages.map((message) => <div key={message.id}>{message.body}</div>)}
+                {messages &&
+                    messages.map((message, i) => {
+                        const first = i === 0 || message.user.id !== messages[i - 1].user.id
+                        const last =
+                            i + 1 === messages.length || message.user.id !== messages[i + 1].user.id
+                        return (
+                            <Message key={message.id} message={message} first={first} last={last} />
+                        )
+                    })}
             </Messages>
             <MessageForm chatId={chatId} />
         </Container>
@@ -95,6 +104,9 @@ const Username = styled.div`
 `
 
 const Messages = styled.div`
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 0.5em 0;
     height: 100%;
     width: 100%;
     overflow-y: auto;

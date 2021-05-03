@@ -29,7 +29,7 @@ export const GET_CONVERSATION = gql`
                     small
                 }
             }
-            messages(paginationData: { limit: 5 }) {
+            messages(paginationData: { limit: 10 }) {
                 id
                 body
                 timestamp
