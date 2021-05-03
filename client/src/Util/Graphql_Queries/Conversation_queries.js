@@ -1,5 +1,16 @@
 import { gql } from '@apollo/client'
 
+const MESSAGE_FRAGMENT = gql`
+    fragment Message on Message {
+        body
+        timestamp
+        user {
+            id
+            username
+        }
+    }
+`
+
 export const GET_CONVERSATION_ID = gql`
     query conversationIdByUser($userId: ID!) {
         conversationIdByUser(userId: $userId)
@@ -31,14 +42,11 @@ export const GET_CONVERSATION = gql`
             }
             messages(paginationData: { limit: 10 }) {
                 id
-                body
-                timestamp
-                user {
-                    id
-                }
+                ...Message
             }
         }
     }
+    ${MESSAGE_FRAGMENT}
 `
 
 export const GET_MINIFIED_CONVERSATION = gql`
@@ -79,12 +87,19 @@ export const SEND_MESSAGE = gql`
             id
             messages(paginationData: { limit: 1 }) {
                 id
-                body
-                timestamp
-                user {
-                    id
-                }
+                ...Message
             }
         }
     }
+    ${MESSAGE_FRAGMENT}
+`
+
+export const SUBSCRIBE_TO_CONVERSATION = gql`
+    subscription newMessage($conversationId: ID!) {
+        newMessage(conversationId: $conversationId) {
+            id
+            ...Message
+        }
+    }
+    ${MESSAGE_FRAGMENT}
 `

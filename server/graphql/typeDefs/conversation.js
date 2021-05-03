@@ -23,7 +23,7 @@ module.exports = gql`
     }
 
     extend type Subscription {
-        subscribeToConversation(id: ID!): Message!
+        newMessage(conversationId: ID!): Message!
     }
 
     extend type Mutation {

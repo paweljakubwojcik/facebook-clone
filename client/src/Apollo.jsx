@@ -1,14 +1,46 @@
 import React from 'react'
 
-import { ApolloClient, ApolloProvider, InMemoryCache /* createHttpLink */ } from '@apollo/client'
+import {
+    ApolloClient,
+    ApolloProvider,
+    InMemoryCache,
+    split,
+    /* createHttpLink */
+} from '@apollo/client'
+import { getMainDefinition } from '@apollo/client/utilities'
 import { setContext } from '@apollo/client/link/context'
 import { createUploadLink } from 'apollo-upload-client'
+import { WebSocketLink } from '@apollo/client/link/ws'
 
 import cursorPagination from './Util/cursorPagination'
+
+
+// TODO: setup authetication over subscriptions
 
 const httpLink = createUploadLink({
     uri: 'http://localhost:5000',
 })
+
+const wsLink = new WebSocketLink({
+    uri: 'ws://localhost:5000/subscriptions',
+    options: {
+        reconnect: true,
+    },
+})
+
+// The split function takes three parameters:
+//
+// * A function that's called for each operation to execute
+// * The Link to use for an operation if the function returns a "truthy" value
+// * The Link to use for an operation if the function returns a "falsy" value
+const splitLink = split(
+    ({ query }) => {
+        const definition = getMainDefinition(query)
+        return definition.kind === 'OperationDefinition' && definition.operation === 'subscription'
+    },
+    wsLink,
+    httpLink
+)
 
 const cache = new InMemoryCache({
     typePolicies: {
@@ -69,7 +101,7 @@ const setAuthorizationLink = setContext(() => {
 })
 
 const client = new ApolloClient({
-    link: setAuthorizationLink.concat(httpLink),
+    link: setAuthorizationLink.concat(splitLink),
     cache,
 })
 

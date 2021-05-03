@@ -52,4 +52,7 @@ module.exports = {
         ...entitiesResolvers.Mutation,
         ...conversationsResolvers.Mutation,
     },
+    Subscription: {
+        ...conversationsResolvers.Subscription,
+    },
 }

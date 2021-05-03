@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { GenericButton } from '../General/Buttons'
 import ElementContainer from '../General/ElementContainer'
@@ -13,7 +13,10 @@ import { MessengerContext } from '../../Context/messenger'
 import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 
 import { useQuery } from '@apollo/client'
-import { GET_CONVERSATION } from '../../Util/GraphQL_Queries/Conversation_queries'
+import {
+    GET_CONVERSATION,
+    SUBSCRIBE_TO_CONVERSATION,
+} from '../../Util/GraphQL_Queries/Conversation_queries'
 import Message from './Message'
 
 // USE SubscribeForMore
@@ -26,6 +29,7 @@ export default function Chat({ chatId }) {
         data: { conversation: { chatName, users, image, messages } = {} } = {},
         error,
         loading,
+        subscribeToMore,
     } = useQuery(GET_CONVERSATION, {
         variables: {
             id: chatId,
@@ -34,6 +38,20 @@ export default function Chat({ chatId }) {
             console.log(e)
         },
     })
+
+    useEffect(() => {
+        subscribeToMore({
+            document: SUBSCRIBE_TO_CONVERSATION,
+            variables: { conversationId: chatId },
+            updateQuery: (prev, { subscriptionData }) => {
+                if (!subscriptionData) return prev
+                const newMessage = subscriptionData.data.newMessage
+                return Object.assign({}, prev, {
+                    conversation: { messages: [newMessage, ...prev.conversation.messages] },
+                })
+            },
+        })
+    }, [chatId, subscribeToMore])
 
     if (loading) return null
 

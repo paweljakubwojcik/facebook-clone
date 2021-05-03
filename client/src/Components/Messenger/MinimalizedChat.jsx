@@ -1,9 +1,9 @@
-import React, { useContext, useRef } from 'react'
+import React, { useContext } from 'react'
 import styled, { keyframes } from 'styled-components'
 
 import { MessengerContext } from '../../Context/messenger'
-import { useQuery } from '@apollo/client'
-import { GET_MINIFIED_CONVERSATION } from '../../Util/GraphQL_Queries/Conversation_queries'
+import { useQuery, useSubscription } from '@apollo/client'
+import { GET_MINIFIED_CONVERSATION, SUBSCRIBE_TO_CONVERSATION } from '../../Util/GraphQL_Queries'
 import Avatar from '../General/Avatar'
 import { ShowableButton } from '../General/Buttons'
 
@@ -24,6 +24,13 @@ export default function MinimalizedChat({ chatId, ...rest }) {
             },
         }
     )
+
+    useSubscription(SUBSCRIBE_TO_CONVERSATION, {
+        variables: { conversationId: chatId },
+        onSubscriptionData: ({ subscriptionData }) => {
+            console.log(subscriptionData.data.newMessage)
+        },
+    })
 
     return (
         <Container>

@@ -1,4 +1,4 @@
-const { AuthenticationError, UserInputError } = require('apollo-server')
+const { AuthenticationError, UserInputError, withFilter } = require('apollo-server')
 const Conversation = require('../../models/Conversation')
 const User = require('../../models/User')
 const Image = require('../../models/Image')
@@ -52,6 +52,11 @@ module.exports = {
                     user: user.id,
                 })
 
+                context.pubsub.publish('MESSAGE_SENT', {
+                    newMessage: conversation.messages[0],
+                    conversationId,
+                })
+
                 return await conversation.save()
             } catch (error) {
                 return error
@@ -72,6 +77,14 @@ module.exports = {
             } catch (error) {
                 return error
             }
+        },
+    },
+    Subscription: {
+        newMessage: {
+            subscribe: withFilter(
+                (parent, variables, { pubsub }) => pubsub.asyncIterator(['MESSAGE_SENT']),
+                ({ conversationId }, { conversationId: id }) => conversationId === id
+            ),
         },
     },
     Conversation: {
