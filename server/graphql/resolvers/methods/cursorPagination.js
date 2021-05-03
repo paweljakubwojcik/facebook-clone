@@ -17,10 +17,15 @@ module.exports.getPaginatedResult = async (filter = {}, paginationData, MongoDoc
     sort[sortBy] = sortingValues[sortDir]
 
     try {
-        const paginatedResult = await MongoDocument.find(filter, null, { sort })
-        const index = paginatedResult.findIndex(({ _id }) => _id.toString() === cursor) //currsor === undefined => ined = -1
-        const next = index + 1
-        return paginatedResult.slice(next, next + limit)
+        const index = await MongoDocument.findById(cursor)
+        if (index) { //if cursor is not provided we want to return firsts elements from collections
+            filter[sortBy] =
+                sortDir === 'DESCENDING' ? { $lt: index[sortBy] } : { $gt: index[sortBy] }
+        }
+
+        const paginatedResult = await MongoDocument.find(filter, null, { sort, limit })
+
+        return paginatedResult
     } catch (error) {
         throw error
     }
@@ -39,7 +44,7 @@ module.exports.paginateResult = (filter = {}, paginationData, result) => {
         const paginatedResult = result.sort(
             (b, a) => (b[sortBy] - a[sortBy]) * sortingValues[sortDir]
         )
-        const index = paginatedResult.findIndex(({ id }) => id.toString() === cursor) //currsor === undefined => ined = -1
+        const index = paginatedResult.findIndex(({ id }) => id.toString() === cursor) //currsor === undefined => index = -1
         const next = index + 1
         return paginatedResult.slice(next, next + limit)
     } catch (error) {
