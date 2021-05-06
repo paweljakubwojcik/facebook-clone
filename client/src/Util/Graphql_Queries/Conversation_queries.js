@@ -18,7 +18,7 @@ export const GET_CONVERSATION_ID = gql`
 `
 
 export const GET_CONVERSATION = gql`
-    query conversation($id: ID!) {
+    query conversation($id: ID!, $limit: Int!, $cursor: ID, $sort: SortDirection, $sortBy: String) {
         conversation(id: $id) {
             id
             name
@@ -40,7 +40,9 @@ export const GET_CONVERSATION = gql`
                     small
                 }
             }
-            messages(paginationData: { limit: 10 }) {
+            messages(
+                paginationData: { limit: $limit, cursor: $cursor, sort: $sort, sortBy: $sortBy }
+            ) {
                 id
                 ...Message
             }

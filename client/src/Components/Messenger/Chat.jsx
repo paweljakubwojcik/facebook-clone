@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { GenericButton } from '../General/Buttons'
 import ElementContainer from '../General/ElementContainer'
@@ -18,6 +18,7 @@ import {
     SUBSCRIBE_TO_CONVERSATION,
 } from '../../Util/GraphQL_Queries/Conversation_queries'
 import Message from './Message'
+import { useIntersectionObserver } from '../../Util/Hooks/useIntersectionObserver'
 
 // USE SubscribeForMore
 
@@ -30,9 +31,13 @@ export default function Chat({ chatId }) {
         error,
         loading,
         subscribeToMore,
+        fetchMore,
     } = useQuery(GET_CONVERSATION, {
         variables: {
             id: chatId,
+            limit: 10,
+            sort: 'DESCENDING',
+            sortBy: 'timestamp',
         },
         onError: (e) => {
             console.log(e)
@@ -52,6 +57,34 @@ export default function Chat({ chatId }) {
             },
         })
     }, [chatId, subscribeToMore])
+
+    const [setRef] = useIntersectionObserver(
+        {
+            threshold: 0.7,
+        },
+        handleIntersect
+    )
+
+    const [canFetchMore, setCanFetchMore] = useState(true)
+
+    async function handleIntersect() {
+        fetchMore({
+            variables: {
+                cursor:
+                    messages?.length > 0 && messages ? messages[messages?.length - 1]?.id : null,
+            },
+        }).then(
+            ({
+                data: {
+                    conversation: { messages: newMessages },
+                },
+            }) => {
+                //when all posts have been fetched
+
+                if (newMessages.length < 10) setCanFetchMore(false)
+            }
+        )
+    }
 
     if (loading) return null
 
@@ -89,6 +122,9 @@ export default function Chat({ chatId }) {
                             <Message key={message.id} message={message} first={first} last={last} />
                         )
                     })}
+                {canFetchMore && (
+                    <div ref={setRef} style={{ height: '30px', display: 'block' }}></div>
+                )}
             </Messages>
             <MessageForm chatId={chatId} />
         </Container>

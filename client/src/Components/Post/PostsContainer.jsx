@@ -64,7 +64,6 @@ export default function Posts({ userId }) {
             )}
             {!loading && !error && canFetchMore && (
                 <Dummy ref={setRef}>
-                    {' '}
                     {[1, 2].map((key) => (
                         <SkeletonPost key={key} theme={'dark'} />
                     ))}

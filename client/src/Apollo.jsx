@@ -14,7 +14,6 @@ import { WebSocketLink } from '@apollo/client/link/ws'
 
 import cursorPagination from './Util/cursorPagination'
 
-
 // TODO: setup authetication over subscriptions
 
 const httpLink = createUploadLink({
@@ -65,6 +64,7 @@ const cache = new InMemoryCache({
                 },
                 searchForUser: {
                     keyArgs: false,
+                    merge: false,
                 },
             },
         },
@@ -87,6 +87,12 @@ const cache = new InMemoryCache({
                     ...cursorPagination,
                 },
             },
+        },
+        Image: {
+            merge: true,
+        },
+        Urls: {
+            merge: true,
         },
     },
 })
