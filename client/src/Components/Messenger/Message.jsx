@@ -32,7 +32,7 @@ const Body = styled.div`
    
 
     margin: 0.1em;
-    padding: 0.5em;
+    padding: 0.5em .7em;
     border-radius: ${borderRound};
 
     border-top-left-radius: ${(props) =>

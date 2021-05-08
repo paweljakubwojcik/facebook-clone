@@ -28,6 +28,7 @@ export const POST = gql`
             id
             username
             profileImage {
+                id
                 urls {
                     id
                     thumbnail

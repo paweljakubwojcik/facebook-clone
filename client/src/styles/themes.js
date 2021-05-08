@@ -18,7 +18,7 @@ export const darkTheme = {
     primaryColor: 'rgb(44, 143, 248)',
     primaryElementColor: '#242526',
     secondaryElementColor: '#333436',
-    secondaryElementHover: '#898989',
+    secondaryElementHover: '#696969',
     secondaryFontColor: '#707070',
     primaryFontColor: '#fff',
     roundButtonColor: '#333436',
