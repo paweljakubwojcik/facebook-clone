@@ -15,9 +15,17 @@ const pubsub = new PubSub()
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req }) => ({ req, pubsub }), //so we have req.body inside the context argument in resolver
+    context: ({ req, connection, payload: { authorization } = {} }) => {
+        if (connection) connection.context.authorization = authorization // some auth shinanegans
+        return {
+            req,
+            pubsub,
+            connection,
+        }
+    }, //so we have req.body inside the context argument in resolver
     subscriptions: {
         path: '/subscriptions',
+        // here I am letting anyone connect to websocket, but on every subscription there is checked token
     },
     /*  plugins: [requestLogger], */ // for logging requests
 })

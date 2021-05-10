@@ -13,6 +13,7 @@ import { createUploadLink } from 'apollo-upload-client'
 import { WebSocketLink } from '@apollo/client/link/ws'
 
 import cursorPagination from './Util/cursorPagination'
+import copyAuthHeaderMiddleware from './Util/ApolloMiddleware/copyAuthHeaderMiddleware'
 
 // TODO: setup authetication over subscriptions
 
@@ -26,6 +27,8 @@ const wsLink = new WebSocketLink({
         reconnect: true,
     },
 })
+
+wsLink.subscriptionClient.use([copyAuthHeaderMiddleware])
 
 // The split function takes three parameters:
 //

@@ -82,7 +82,14 @@ module.exports = {
     Subscription: {
         newMessage: {
             subscribe: withFilter(
-                (parent, variables, { pubsub }) => pubsub.asyncIterator(['MESSAGE_SENT']),
+                (parent, variables, context) => {
+                    try {
+                        const user = checkAuth(context)
+                        return context.pubsub.asyncIterator(['MESSAGE_SENT'])
+                    } catch (error) {
+                        return error
+                    }
+                },
                 ({ conversationId }, { conversationId: id }) => conversationId === id
             ),
         },
