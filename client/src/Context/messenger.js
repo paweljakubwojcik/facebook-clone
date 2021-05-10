@@ -1,4 +1,5 @@
-import React, { createContext, useCallback, useReducer } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useReducer } from 'react'
+import { AuthContext } from './auth'
 
 const localMin = localStorage.getItem('minifiedConversations')
 const localActive = localStorage.getItem('activeConversations')
@@ -14,6 +15,7 @@ const MessengerContext = createContext({
     removeChat: (chatId) => {},
     minimaliseChat: (chatId) => {},
     maximalizeChat: (chatId) => {},
+    clear: () => {},
 })
 
 const reducer = (state, action) => {
@@ -40,6 +42,10 @@ const reducer = (state, action) => {
                 ? minimalizedConversations
                 : [...minimalizedConversations, payload]
 
+            break
+        case 'CLEAR':
+            newActive = []
+            newMinified = []
             break
         default:
             break
@@ -87,6 +93,19 @@ function MessengerProvider(props) {
         })
     }, [])
 
+    const clear = useCallback(() => {
+        dispatch({
+            type: 'CLEAR',
+        })
+    }, [])
+
+    console.log({ activeConversations, minimalizedConversations })
+
+    const { isLogged } = useContext(AuthContext)
+    useEffect(() => {
+        if (!isLogged) clear()
+    }, [clear, isLogged])
+
     return (
         <MessengerContext.Provider
             value={{
@@ -96,6 +115,7 @@ function MessengerProvider(props) {
                 removeChat,
                 minimaliseChat,
                 maximalizeChat,
+                clear,
             }}
             {...props}
         />
