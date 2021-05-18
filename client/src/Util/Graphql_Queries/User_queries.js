@@ -73,6 +73,7 @@ export const GET_USER = gql`
             backgroundImage {
                 id
                 urls {
+                    id
                     small
                     medium
                     large
@@ -81,6 +82,7 @@ export const GET_USER = gql`
             profileImage {
                 id
                 urls {
+                    id
                     small
                     medium
                     large
@@ -116,6 +118,43 @@ export const GET_USER = gql`
                         medium
                         small
                     }
+                }
+            }
+        }
+    }
+`
+
+export const GET_USER_DETAILS = gql`
+    query user($userId: ID!) {
+        user(userId: $userId) {
+            id
+            username
+            backgroundImage {
+                urls {
+                    id
+                    medium
+                }
+            }
+            profileImage {
+                id
+                urls {
+                    id
+                    medium
+                }
+            }
+            info {
+                joiningDate
+                location
+                job
+            }
+            friends {
+                id
+            }
+            invitations {
+                id
+                from {
+                    id
+                    username
                 }
             }
         }

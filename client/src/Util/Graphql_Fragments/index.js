@@ -2,7 +2,6 @@ import { gql } from '@apollo/client'
 
 export const REACTION = gql`
     fragment BaseReaction on Reaction {
-        id
         createdAt
         timestamp
         type
@@ -38,6 +37,7 @@ export const POST = gql`
             }
         }
         reactions {
+            id
             ...BaseReaction
         }
         images {
@@ -72,6 +72,7 @@ export const COMMENT = gql`
             }
         }
         reactions {
+            id
             ...BaseReaction
         }
         images {

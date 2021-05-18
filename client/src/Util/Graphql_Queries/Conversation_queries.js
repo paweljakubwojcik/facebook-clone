@@ -7,6 +7,13 @@ const MESSAGE_FRAGMENT = gql`
         user {
             id
             username
+            profileImage {
+                id
+                urls {
+                    id
+                    thumbnail
+                }
+            }
         }
     }
 `

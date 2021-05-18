@@ -65,6 +65,7 @@ export const REACT = gql`
         react(id: $id, type: $type) {
             id
             reactions {
+                id
                 ...BaseReaction
             }
             reactionsCount

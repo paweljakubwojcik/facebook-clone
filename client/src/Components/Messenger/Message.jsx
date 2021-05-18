@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { AuthContext } from '../../Context/auth'
+import Avatar from '../General/Avatar'
 
 export default function Message({ message, last, first, ...rest }) {
     const { body, user } = message
@@ -10,7 +11,13 @@ export default function Message({ message, last, first, ...rest }) {
 
     return (
         <Container isItMyMessage={isItMyMessage}>
-            <Body isItMyMessage={isItMyMessage ? 1 : 0} last={last} first={first}>
+            {!isItMyMessage &&
+                (first ? (
+                    <Avatar image={user.profileImage.urls.thumbnail} size={32} />
+                ) : (
+                    <div style={{ display: 'block', width: 32 }}></div>
+                ))}
+            <Body isItMyMessage={isItMyMessage} last={last} first={first}>
                 {body}
             </Body>
         </Container>
@@ -20,6 +27,7 @@ export default function Message({ message, last, first, ...rest }) {
 const Container = styled.div`
     width: 100%;
     display: flex;
+    align-items: center;
     flex-direction: ${(props) => (props.isItMyMessage ? 'row-reverse' : 'row')};
     padding: 0 0.5em;
 `
@@ -29,10 +37,9 @@ const borderRound = '1em'
 
 const Body = styled.div`
     max-width: 70%;
-   
 
-    margin: 0.1em;
-    padding: 0.5em .7em;
+    margin: 0.1em 0.3em;
+    padding: 0.5em 0.7em;
     border-radius: ${borderRound};
 
     border-top-left-radius: ${(props) =>
