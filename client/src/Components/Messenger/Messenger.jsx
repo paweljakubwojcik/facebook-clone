@@ -6,9 +6,29 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { MessengerContext } from '../../Context/messenger'
 import Chat from './Chat'
 import MinimalizedChat from './MinimalizedChat'
+import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
+import { useSubscription, gql } from '@apollo/client'
+import { SUBSCRIBE_TO_NEW_MESSAGES } from '../../Util/GraphQL_Queries'
 
 export default function Messenger() {
-    const { activeConversations, minimalizedConversations } = useContext(MessengerContext)
+    const { user: { id } = {} } = useCurrentUser()
+    const { activeConversations, minimalizedConversations, addChat } = useContext(MessengerContext)
+
+    useSubscription(SUBSCRIBE_TO_NEW_MESSAGES, {
+        variables: { user: id },
+        onSubscriptionData: ({
+            client: { cache },
+            subscriptionData: {
+                data: { newMessage: conversationWithNewMessage },
+            },
+        }) => {
+            const { id } = conversationWithNewMessage
+            if (!activeConversations.includes(id)) {
+                addChat(id)
+            }
+        },
+    })
+
     return (
         <ModalUnclickableContainer>
             <ChatsRow>

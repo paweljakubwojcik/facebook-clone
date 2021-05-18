@@ -11,6 +11,7 @@ module.exports = gql`
 
     type Message {
         id: ID!
+        conversationId: ID!
         body: String!
         user: User!
         timestamp: Float!
@@ -23,7 +24,7 @@ module.exports = gql`
     }
 
     extend type Subscription {
-        newMessage(conversationId: ID!): Message!
+        newMessage(user: ID!): Conversation
     }
 
     extend type Mutation {

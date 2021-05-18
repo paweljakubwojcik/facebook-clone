@@ -2,8 +2,8 @@ import React, { useContext } from 'react'
 import styled, { keyframes } from 'styled-components'
 
 import { MessengerContext } from '../../Context/messenger'
-import { useQuery, useSubscription } from '@apollo/client'
-import { GET_MINIFIED_CONVERSATION, SUBSCRIBE_TO_CONVERSATION } from '../../Util/GraphQL_Queries'
+import { useQuery } from '@apollo/client'
+import { GET_MINIFIED_CONVERSATION } from '../../Util/GraphQL_Queries'
 import Avatar from '../General/Avatar'
 import { ShowableButton } from '../General/Buttons'
 
@@ -13,22 +13,16 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 export default function MinimalizedChat({ chatId, ...rest }) {
     const { maximalizeChat, removeChat } = useContext(MessengerContext)
 
-    const { data: { conversation: { image } = {} } = {}, error, loading } = useQuery(
-        GET_MINIFIED_CONVERSATION,
-        {
-            variables: {
-                id: chatId,
-            },
-            onError: (e) => {
-                console.log(e)
-            },
-        }
-    )
-
-    useSubscription(SUBSCRIBE_TO_CONVERSATION, {
-        variables: { conversationId: chatId },
-        onSubscriptionData: ({ subscriptionData }) => {
-            console.log(subscriptionData.data.newMessage)
+    const {
+        data: { conversation: { image } = {} } = {},
+        error,
+        loading,
+    } = useQuery(GET_MINIFIED_CONVERSATION, {
+        variables: {
+            id: chatId,
+        },
+        onError: (e) => {
+            console.log(e)
         },
     })
 

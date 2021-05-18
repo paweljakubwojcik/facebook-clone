@@ -53,8 +53,7 @@ module.exports = {
                 })
 
                 context.pubsub.publish('MESSAGE_SENT', {
-                    newMessage: conversation.messages[0],
-                    conversationId,
+                    newMessage: conversation,
                 })
 
                 return await conversation.save()
@@ -90,7 +89,8 @@ module.exports = {
                         return error
                     }
                 },
-                ({ conversationId }, { conversationId: id }) => conversationId === id
+                ({ newMessage: conversation }, variables) =>
+                    conversation.users.includes(variables.user)
             ),
         },
     },

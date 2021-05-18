@@ -13,10 +13,7 @@ import { MessengerContext } from '../../Context/messenger'
 import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 
 import { useQuery } from '@apollo/client'
-import {
-    GET_CONVERSATION,
-    SUBSCRIBE_TO_CONVERSATION,
-} from '../../Util/GraphQL_Queries/Conversation_queries'
+import { GET_CONVERSATION } from '../../Util/GraphQL_Queries/Conversation_queries'
 import Message from './Message'
 import { useIntersectionObserver } from '../../Util/Hooks/useIntersectionObserver'
 
@@ -30,7 +27,6 @@ export default function Chat({ chatId }) {
         data: { conversation: { chatName, users, image, messages } = {} } = {},
         error,
         loading,
-        subscribeToMore,
         fetchMore,
     } = useQuery(GET_CONVERSATION, {
         variables: {
@@ -43,20 +39,6 @@ export default function Chat({ chatId }) {
             console.log(e)
         },
     })
-
-    useEffect(() => {
-        subscribeToMore({
-            document: SUBSCRIBE_TO_CONVERSATION,
-            variables: { conversationId: chatId },
-            updateQuery: (prev, { subscriptionData }) => {
-                if (!subscriptionData) return prev
-                const newMessage = subscriptionData.data.newMessage
-                return Object.assign({}, prev, {
-                    conversation: { messages: [newMessage, ...prev.conversation.messages] },
-                })
-            },
-        })
-    }, [chatId, subscribeToMore])
 
     const [setRef] = useIntersectionObserver(
         {
@@ -112,22 +94,44 @@ export default function Chat({ chatId }) {
                     </BlueButton>
                 </FlexContainer>
             </Header>
-            <Messages>
-                {messages &&
-                    messages.map((message, i) => {
-                        const first = i === 0 || message.user.id !== messages[i - 1].user.id
-                        const last =
-                            i + 1 === messages.length || message.user.id !== messages[i + 1].user.id
-                        return (
-                            <Message key={message.id} message={message} first={first} last={last} />
-                        )
-                    })}
-                {canFetchMore && (
-                    <div ref={setRef} style={{ height: '30px', display: 'block' }}></div>
+            <MessagesContainer>
+                {messages?.length ? (
+                    <Messages>
+                        {messages &&
+                            messages.map((message, i) => {
+                                const first = i === 0 || message.user.id !== messages[i - 1].user.id
+                                const last =
+                                    i + 1 === messages.length ||
+                                    message.user.id !== messages[i + 1].user.id
+                                return (
+                                    <Message
+                                        key={message.id}
+                                        message={message}
+                                        first={first}
+                                        last={last}
+                                    />
+                                )
+                            })}
+                        {canFetchMore && (
+                            <div ref={setRef} style={{ height: '30px', display: 'block' }}></div>
+                        )}
+                    </Messages>
+                ) : (
+                    <NoMessages image={image} />
                 )}
-            </Messages>
+            </MessagesContainer>
             <MessageForm chatId={chatId} />
         </Container>
+    )
+}
+
+const NoMessages = ({ image }) => {
+    return (
+        <>
+            <Avatar image={image?.urls?.small} size={64} />
+            <p>There are no messages</p>
+            <p>Start conversation right now !</p>
+        </>
     )
 }
 
@@ -163,6 +167,17 @@ const Messages = styled.div`
     padding: 0.5em 0;
     height: 100%;
     width: 100%;
+    overflow-y: auto;
+`
+
+const MessagesContainer = styled.div`
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     overflow-y: auto;
 `
 

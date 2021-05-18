@@ -53,4 +53,5 @@ const Body = styled.div`
 
     background-color: ${(props) =>
         props.isItMyMessage ? props.theme.primaryColor : props.theme.secondaryElementColor};
+    color: ${(props) => (props.isItMyMessage ? 'white' : 'inherit')};
 `

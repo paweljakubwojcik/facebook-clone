@@ -103,11 +103,14 @@ export const SEND_MESSAGE = gql`
     ${MESSAGE_FRAGMENT}
 `
 
-export const SUBSCRIBE_TO_CONVERSATION = gql`
-    subscription newMessage($conversationId: ID!) {
-        newMessage(conversationId: $conversationId) {
+export const SUBSCRIBE_TO_NEW_MESSAGES = gql`
+    subscription newMessage($user: ID!) {
+        newMessage(user: $user) {
             id
-            ...Message
+            messages(paginationData: { limit: 1 }) {
+                id
+                ...Message
+            }
         }
     }
     ${MESSAGE_FRAGMENT}
