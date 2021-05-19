@@ -49,14 +49,13 @@ module.exports = gql`
         backgroundImage: Image
         profileImage: Image
         images: [Image]!
-        isOnline: Boolean!
-        lastTimeOnline: String!
         settings: Settings!
         invitations: [Invitation]!
         friends: [User]!
         notifications(paginationData: CursorBasedPagination): [Notification]!
         notificationCount: Int!
         info: UserInfo!
+        conversations(paginationData: CursorBasedPagination): [Conversation]!
     }
 
     input RegisterInput {

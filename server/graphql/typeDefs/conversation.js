@@ -7,6 +7,7 @@ module.exports = gql`
         messages(paginationData: CursorBasedPagination!): [Message]!
         name: String
         image: Image!
+        unseenNumber: Int
     }
 
     type Message {
@@ -32,5 +33,7 @@ module.exports = gql`
         updateConversation(id: ID!, field: String!, newValue: String!): Conversation!
         deleteConversation(id: ID!): Conversation
         sendMessage(conversationId: ID!, body: String!): Conversation!
+
+        markLastMessagesSeen(conversationId: ID!): Conversation!
     }
 `

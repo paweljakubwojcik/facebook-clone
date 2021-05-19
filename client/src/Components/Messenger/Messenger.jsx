@@ -7,12 +7,16 @@ import { MessengerContext } from '../../Context/messenger'
 import Chat from './Chat'
 import MinimalizedChat from './MinimalizedChat'
 import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
-import { useSubscription, gql } from '@apollo/client'
+import { useSubscription } from '@apollo/client'
 import { SUBSCRIBE_TO_NEW_MESSAGES } from '../../Util/GraphQL_Queries'
+import useAudio from '../../Util/Hooks/useAudio'
+import audio from '../../styles/audio/messenger_ios.mp3'
 
 export default function Messenger() {
     const { user: { id } = {} } = useCurrentUser()
     const { activeConversations, minimalizedConversations, addChat } = useContext(MessengerContext)
+
+    const { play } = useAudio(audio)
 
     useSubscription(SUBSCRIBE_TO_NEW_MESSAGES, {
         variables: { user: id },
@@ -25,6 +29,7 @@ export default function Messenger() {
             const { id } = conversationWithNewMessage
             if (!activeConversations.includes(id)) {
                 addChat(id)
+                play()
             }
         },
     })
