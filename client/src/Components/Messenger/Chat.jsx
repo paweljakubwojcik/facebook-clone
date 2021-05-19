@@ -14,8 +14,8 @@ import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 
 import { useQuery } from '@apollo/client'
 import { GET_CONVERSATION } from '../../Util/GraphQL_Queries/Conversation_queries'
-import Message from './Message'
 import { useIntersectionObserver } from '../../Util/Hooks/useIntersectionObserver'
+import MessagesContainer from './MessagesContainer'
 
 // USE SubscribeForMore
 
@@ -62,7 +62,6 @@ export default function Chat({ chatId }) {
                 },
             }) => {
                 //when all posts have been fetched
-
                 if (newMessages.length < 10) setCanFetchMore(false)
             }
         )
@@ -94,32 +93,17 @@ export default function Chat({ chatId }) {
                     </BlueButton>
                 </FlexContainer>
             </Header>
-            <MessagesContainer>
+            <MessagesPlace>
                 {messages?.length ? (
-                    <Messages>
-                        {messages &&
-                            messages.map((message, i) => {
-                                const first = i === 0 || message.user.id !== messages[i - 1].user.id
-                                const last =
-                                    i + 1 === messages.length ||
-                                    message.user.id !== messages[i + 1].user.id
-                                return (
-                                    <Message
-                                        key={message.id}
-                                        message={message}
-                                        first={first}
-                                        last={last}
-                                    />
-                                )
-                            })}
+                    <MessagesContainer messages={messages}>
                         {canFetchMore && (
                             <div ref={setRef} style={{ height: '30px', display: 'block' }}></div>
                         )}
-                    </Messages>
+                    </MessagesContainer>
                 ) : (
                     <NoMessages image={image} />
                 )}
-            </MessagesContainer>
+            </MessagesPlace>
             <MessageForm chatId={chatId} />
         </Container>
     )
@@ -161,16 +145,7 @@ const Username = styled.div`
     color: ${(props) => props.theme.primaryFontColor};
 `
 
-const Messages = styled.div`
-    display: flex;
-    flex-direction: column-reverse;
-    padding: 0.5em 0;
-    height: 100%;
-    width: 100%;
-    overflow-y: auto;
-`
-
-const MessagesContainer = styled.div`
+const MessagesPlace = styled.div`
     display: flex;
     height: 100%;
     width: 100%;

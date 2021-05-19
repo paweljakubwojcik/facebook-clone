@@ -30,6 +30,8 @@ const Container = styled.div`
     align-items: center;
     flex-direction: ${(props) => (props.isItMyMessage ? 'row-reverse' : 'row')};
     padding: 0 0.5em;
+
+    word-wrap: break-word;
 `
 
 const smallBorderRound = '0.1em'
