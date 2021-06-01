@@ -52,6 +52,8 @@ module.exports = {
                     user: user.id,
                 })
 
+                conversation.newestMessageTimestamp = conversation.messages[0].timestamp
+
                 context.pubsub.publish('MESSAGE_SENT', {
                     newMessage: conversation,
                 })
@@ -122,6 +124,11 @@ module.exports = {
             } catch (e) {
                 return e
             }
+        },
+        newestMessageTimestamp: ({ messages: [newest], newestMessageTimestamp }) => {
+            // or messages.reduce((prev, curr)=> return prev.timestamp > curr.timestamp ? prev : curr)
+            if (newestMessageTimestamp) return newestMessageTimestamp
+            return newest ? newest.timestamp : null
         },
     },
     Message: {

@@ -1,33 +1,36 @@
-import { useEffect, useState } from 'react'
-
+import { useEffect, useState, useRef } from 'react'
 
 /**
- * 
- * @param {*} options 
- * @param {*} callback 
+ *
+ * @param {*} options
+ * @param {*} callback
  * @returns [setRef , visible]
  */
 export const useIntersectionObserver = (options, callback) => {
     const [ref, setRef] = useState(null)
+    const [root, setRoot] = useState(null)
     const [visible, setVisible] = useState(false)
 
+    const observer = useRef()
+
     useEffect(() => {
-        const observer = new IntersectionObserver(([entry]) => {
-            setVisible(entry.isIntersecting)
-            if (callback && entry.isIntersecting)
-                callback(entry)
-        }, options)
-        if (ref)
-            observer.observe(ref)
-
-        return () => {
-            if (ref)
-                observer.unobserve(ref)
+        if (ref) {
+            observer.current = new IntersectionObserver(
+                ([entry]) => {
+                    setVisible(entry.isIntersecting)
+                    if (callback && entry.isIntersecting) callback(entry)
+                },
+                {
+                    root,
+                    ...options,
+                }
+            )
+            observer.current.observe(ref)
         }
+        return () => {
+            if (ref) observer.current.unobserve(ref)
+        }
+    }, [ref, visible, options, callback, root])
 
-    }, [ref, visible, options, callback])
-
-
-    return [setRef, visible]
-
+    return { setRef, visible, setRoot }
 }

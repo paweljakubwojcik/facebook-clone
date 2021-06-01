@@ -13,6 +13,7 @@ import Notifications from './Notifications'
 
 import { GET_COUNTERS } from '../../Util/GraphQL_Queries'
 import { useQuery } from '@apollo/client'
+import Messages from './Messages'
 
 export default function Menu({ user, ...rest }) {
     const { data: { user: { notificationCount } = {} } = {} } = useQuery(GET_COUNTERS, {
@@ -96,6 +97,13 @@ export default function Menu({ user, ...rest }) {
                 count={notificationCount}
                 ref={menu}
                 visible={activeButton === buttons[1].value}
+            />
+
+            <Messages
+                className="openMenu"
+                count={notificationCount}
+                ref={menu}
+                visible={activeButton === buttons[0].value}
             />
         </StyledMenu>
     )

@@ -3,6 +3,8 @@ const { gql } = require('apollo-server')
 module.exports = gql`
     type Conversation {
         id: ID!
+        timestamp: Float
+        newestMessageTimestamp: Float
         users: [User!]
         messages(paginationData: CursorBasedPagination!): [Message]!
         name: String

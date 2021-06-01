@@ -26,6 +26,9 @@ const wsLink = new WebSocketLink({
     options: {
         reconnect: true,
     },
+    onDisconnected: () => {
+        console.log('disconnected')
+    },
 })
 
 wsLink.subscriptionClient.use([copyAuthHeaderMiddleware])
@@ -81,12 +84,17 @@ const cache = new InMemoryCache({
                 info: {
                     merge: true,
                 },
+                conversations: {
+                    keyArgs: ['userId'],
+                    ...cursorPagination,
+                },
             },
         },
         Conversation: {
             merge: true,
             fields: {
                 messages: {
+                    keyArgs: ['userId'],
                     ...cursorPagination,
                 },
             },

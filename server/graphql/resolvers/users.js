@@ -5,7 +5,7 @@ const { UserInputError } = require('apollo-server')
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
 const { createWelcomePost } = require('./methods/createWelcomePost')
 const { generateRandomPhoto } = require('../../services/unsplash')
-const { paginateResult } = require('./methods/cursorPagination')
+const { paginateResult, getPaginatedResult } = require('./methods/cursorPagination')
 const checkAuth = require('../../utils/checkAuth')
 const generateToken = require('../../utils/generateToken')
 const { asyncFilter } = require('../../utils/asyncFilter')
@@ -13,9 +13,11 @@ const { asyncFilter } = require('../../utils/asyncFilter')
 const User = require('../../models/User')
 const Image = require('../../models/Image')
 const Entity = require('../../models/Entity')
+const Conversation = require('../../models/Conversation')
 const getPrivacyFilter = require('./methods/getPrivacyFilter')
 const { validateGoogleUser } = require('../../services/googleAuth')
 const generateImageFromGoogleAuth = require('./methods/generateImageFromGoogleAuth')
+const conversations = require('./conversations')
 
 module.exports = {
     Mutation: {
@@ -424,6 +426,18 @@ module.exports = {
                 const user = await User.findById(id)
                 notifications = paginateResult({}, paginationData, user.notifications)
                 return notifications
+            } catch (error) {
+                return error
+            }
+        },
+        conversations: async ({ id }, { paginationData }, context) => {
+            try {
+                const conversations = await getPaginatedResult(
+                    { users: id, 'messages.0': { $exists: true } },
+                    paginationData,
+                    Conversation
+                )
+                return conversations
             } catch (error) {
                 return error
             }

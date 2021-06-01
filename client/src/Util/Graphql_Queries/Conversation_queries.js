@@ -4,6 +4,7 @@ const MESSAGE_FRAGMENT = gql`
     fragment Message on Message {
         body
         timestamp
+        isSeen
         user {
             id
             username
@@ -110,6 +111,33 @@ export const SUBSCRIBE_TO_NEW_MESSAGES = gql`
             messages(paginationData: { limit: 1 }) {
                 id
                 ...Message
+            }
+        }
+    }
+    ${MESSAGE_FRAGMENT}
+`
+
+export const GET_CONVERSATIONS = gql`
+    query user($userId: ID!, $limit: Int!, $cursor: ID, $sort: SortDirection, $sortBy: String) {
+        user(userId: $userId) {
+            id
+            conversations(
+                paginationData: { limit: $limit, cursor: $cursor, sort: $sort, sortBy: $sortBy }
+            ) {
+                id
+                name
+                newestMessageTimestamp
+                image {
+                    id
+                    urls {
+                        id
+                        small
+                    }
+                }
+                messages(paginationData: { limit: 1 }) {
+                    id
+                    ...Message
+                }
             }
         }
     }

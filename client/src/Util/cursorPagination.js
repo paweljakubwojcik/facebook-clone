@@ -20,6 +20,7 @@ const cursorPagination = {
 
         if (existing) {
             let sorted = Object.values(existing).filter((obj) => canRead(obj)) // filter out dangling references
+            if (sorted.length < 2) return sorted
             sorted.sort((b, a) => {
                 const later = readField(sortBy, a)
                 const prior = readField(sortBy, b)
@@ -36,6 +37,7 @@ const cursorPagination = {
                     `sort value on paginationData can only be "ASCENDING" or "DESCENDING" , got ${sort} instead`
                 )
             })
+
             return sorted
         }
         return false

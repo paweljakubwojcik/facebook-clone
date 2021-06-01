@@ -2,6 +2,7 @@ const { model, Schema } = require('mongoose')
 
 const conversationSchema = new Schema({
     name: String,
+    newestMessageTimestamp: Number,
     image: {
         type: Schema.Types.ObjectId,
         ref: 'Image',

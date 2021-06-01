@@ -40,7 +40,7 @@ export default function Chat({ chatId }) {
         },
     })
 
-    const [setRef] = useIntersectionObserver(
+    const { setRef } = useIntersectionObserver(
         {
             threshold: 0.7,
         },

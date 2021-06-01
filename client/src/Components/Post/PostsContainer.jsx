@@ -11,7 +11,7 @@ import { useIntersectionObserver } from '../../Util/Hooks/useIntersectionObserve
 import ElementContainer from '../General/ElementContainer'
 
 export default function Posts({ userId }) {
-    const [setRef] = useIntersectionObserver(
+    const { setRef } = useIntersectionObserver(
         {
             threshold: 0.7,
         },
@@ -20,7 +20,13 @@ export default function Posts({ userId }) {
 
     const [canFetchMore, setCanFetchMore] = useState(true)
 
-    const { loading, error, data: { posts } = {}, fetchMore, refetch } = useQuery(GET_POSTS, {
+    const {
+        loading,
+        error,
+        data: { posts } = {},
+        fetchMore,
+        refetch,
+    } = useQuery(GET_POSTS, {
         variables: {
             userId,
             limit: 5,
