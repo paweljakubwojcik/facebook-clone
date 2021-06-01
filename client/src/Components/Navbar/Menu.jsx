@@ -16,14 +16,12 @@ import { useQuery } from '@apollo/client'
 import Messages from './Messages'
 
 export default function Menu({ user, ...rest }) {
-    const { data: { user: { notificationCount } = {} } = {} } = useQuery(GET_COUNTERS, {
+    const { data: { user: { notificationCount, messagesCount } = {} } = {} } = useQuery(GET_COUNTERS, {
         variables: {
             userId: user?.id,
         },
         pollInterval: 1000,
     })
-
-    const messagesCount = 0
 
     const buttons = [
         {

@@ -39,7 +39,6 @@ const Notifications = forwardRef(({ count, visible, ...rest }, ref) => {
         onError: (e) => {
             throw e
         },
-        onCompleted: ({ user: { notifications } }) => {},
     })
 
     const handleFetchMore = async (e) => {
@@ -72,6 +71,7 @@ const Notifications = forwardRef(({ count, visible, ...rest }, ref) => {
             refetch()
             setNotifCount(count)
         }
+        // this is in case notifications gets erased after user has seen it
         if (count < notifsCount) {
             const isSuccesful = client.cache.modify({
                 id: `User:${userId}`,

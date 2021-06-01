@@ -48,6 +48,7 @@ export const GET_COUNTERS = gql`
         user(userId: $userId) {
             id
             notificationCount
+            messagesCount
         }
     }
 `

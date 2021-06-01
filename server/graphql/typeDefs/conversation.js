@@ -7,7 +7,7 @@ module.exports = gql`
         newestMessageTimestamp: Float
         users: [User!]
         messages(paginationData: CursorBasedPagination!): [Message]!
-        name: String
+        name: [String]
         image: Image!
         unseenNumber: Int
     }
@@ -18,7 +18,7 @@ module.exports = gql`
         body: String!
         user: User!
         timestamp: Float!
-        isSeen: Boolean!
+        seenBy: [User]
     }
 
     extend type Query {

@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import React, { forwardRef, useContext, useState } from 'react'
+import React, { forwardRef, useContext, useEffect, useState } from 'react'
 import { GET_CONVERSATIONS } from '../../Util/GraphQL_Queries'
 import DotLoader from '../General/DotLoader'
 import DropDownMenu from '../General/DropDownMenu'
@@ -60,7 +60,6 @@ export default forwardRef(function Messages({ visible }, ref) {
 
     console.log(conversations)
 
-    
     /* useEffect(() => {
         if (count > notifsCount) {
             refetch()
@@ -97,6 +96,11 @@ export default forwardRef(function Messages({ visible }, ref) {
                         no more notifications today ;/
                     </ElementContainer>
                 )}
+                {!loading && !error && !canFetchMore && (
+                    <ElementContainer ref={setRef} style={{ pointerEvents: 'none' }}>
+                        no more messages
+                    </ElementContainer>
+                )}
             </Container>
         </DropDownMenu>
     )
@@ -113,14 +117,12 @@ const ConversationElement = ({ data }) => {
         console.log('seen !')
     }
 
-    const lastMessage = data.messages[0]
-
     return (
         <ListElement isSeen={data.isSeen} handleClick={handleClick} markSeen={markSeen}>
             <Avatar image={data.image.urls.small} />
             <ListElement.ContentContainer>
-                <ListElement.Title>{lastMessage?.user?.username}</ListElement.Title>
-                <ListElement.Body>{lastMessage?.body}</ListElement.Body>
+                <ListElement.Title>{data.name}</ListElement.Title>
+                <ListElement.Body>{data.messages[0]?.body}</ListElement.Body>
                 <ListElement.Timestamp isSeen={data.isSeen}>
                     {data.newestMessageTimestamp}
                 </ListElement.Timestamp>

@@ -442,6 +442,13 @@ module.exports = {
                 return error
             }
         },
+        notificationCount: (parent) => parent.notifications.filter((n) => !n.isSeen).length,
+        messagesCount: async ({ id }) => {
+            const conversations = await Conversation.find({ users: id })
+            return conversations.filter(
+                (c) => c.messages.filter((m) => !m.seenBy.includes(id)).length !== 0
+            ).length
+        },
     },
     Invitation: {
         from: async ({ from }) => {

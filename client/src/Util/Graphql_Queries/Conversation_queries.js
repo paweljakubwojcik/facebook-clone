@@ -4,7 +4,9 @@ const MESSAGE_FRAGMENT = gql`
     fragment Message on Message {
         body
         timestamp
-        isSeen
+        seenBy {
+            id
+        }
         user {
             id
             username

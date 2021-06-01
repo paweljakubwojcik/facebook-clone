@@ -22,7 +22,6 @@ module.exports = {
     },
     User: {
         ...usersResorvels.User,
-        notificationCount: (parent) => parent.notifications.filter((n) => !n.isSeen).length,
     },
     Invitation: {
         ...usersResorvels.Invitation,

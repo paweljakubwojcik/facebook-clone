@@ -29,10 +29,12 @@ const conversationSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'User',
             },
-            isSeen: {
-                type: Boolean,
-                default: false,
-            },
+            seenBy: [
+                {
+                    type: Schema.Types.ObjectId,
+                    ref: 'User',
+                },
+            ],
         },
     ],
 })

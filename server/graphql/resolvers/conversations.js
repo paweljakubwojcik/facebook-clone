@@ -130,6 +130,14 @@ module.exports = {
             if (newestMessageTimestamp) return newestMessageTimestamp
             return newest ? newest.timestamp : null
         },
+        name: async ({ name, users }, vars, context) => {
+            if (name) return name
+
+            const contextUser = checkAuth(context)
+            const otherUsersIds = users.filter((user) => user.toString() !== contextUser.id)
+            const otherUsers = (await User.find({ _id: otherUsersIds })).map((usr) => usr.username)
+            return otherUsers
+        },
     },
     Message: {
         user: async ({ user }) => {

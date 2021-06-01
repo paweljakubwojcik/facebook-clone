@@ -56,6 +56,7 @@ module.exports = gql`
         notificationCount: Int!
         info: UserInfo!
         conversations(paginationData: CursorBasedPagination): [Conversation]!
+        messagesCount: Int!
     }
 
     input RegisterInput {
