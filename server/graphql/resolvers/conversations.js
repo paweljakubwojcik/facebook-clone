@@ -2,6 +2,7 @@ const { AuthenticationError, UserInputError, withFilter } = require('apollo-serv
 const Conversation = require('../../models/Conversation')
 const User = require('../../models/User')
 const Image = require('../../models/Image')
+const { ObjectId } = require('mongodb')
 const checkAuth = require('../../utils/checkAuth')
 
 const { paginateResult } = require('./methods/cursorPagination')
@@ -50,6 +51,7 @@ module.exports = {
                 conversation.messages.unshift({
                     body,
                     user: user.id,
+                    seenBy: [user.id],
                 })
 
                 conversation.newestMessageTimestamp = conversation.messages[0].timestamp
@@ -61,6 +63,19 @@ module.exports = {
                 return await conversation.save()
             } catch (error) {
                 return error
+            }
+        },
+
+        markLastMessagesSeen: async (parent, { conversationId }, context) => {
+            const user = checkAuth(context)
+            try {
+                const conversation = await Conversation.findById(conversationId)
+                conversation.messages.forEach((message) => {
+                    if (!message.seenBy.includes(user.id)) message.seenBy.push(user.id)
+                })
+                return await conversation.save()
+            } catch (e) {
+                throw e
             }
         },
     },
@@ -143,6 +158,13 @@ module.exports = {
         user: async ({ user }) => {
             try {
                 return await User.findById(user)
+            } catch (error) {
+                return error
+            }
+        },
+        seenBy: async ({ seenBy }) => {
+            try {
+                return await User.find({ _id: seenBy })
             } catch (error) {
                 return error
             }

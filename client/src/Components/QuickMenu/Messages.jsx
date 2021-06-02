@@ -1,16 +1,17 @@
-import { useQuery } from '@apollo/client'
-import React, { forwardRef, useContext, useEffect, useState } from 'react'
-import { GET_CONVERSATIONS } from '../../Util/GraphQL_Queries'
+import { useMutation, useQuery } from '@apollo/client'
+import React, { forwardRef, useContext, useState } from 'react'
+import { GET_CONVERSATIONS, MARK_LAST_MESSAGES_SEEN } from '../../Util/GraphQL_Queries'
 import DotLoader from '../General/DotLoader'
 import DropDownMenu from '../General/DropDownMenu'
 import NotFound from '../General/NotFound'
 import styled from 'styled-components'
 import { AuthContext } from '../../Context/auth'
-import ListElement, { ElementContainer } from './ListElement'
+import ListElement from './ListElement'
 import Avatar from '../General/Avatar'
 import { MessengerContext } from '../../Context/messenger'
 import { useIntersectionObserver } from '../../Util/Hooks/useIntersectionObserver'
 import SkeletonUserButton from '../skeletons/SkeletonUserButton'
+import ErrorMessage from '../General/ErrorMessage'
 
 const limit = 2
 
@@ -29,15 +30,11 @@ export default forwardRef(function Messages({ visible }, ref) {
             sortBy: 'newestMessageTimestamp',
             userId,
         },
-        onError: (e) => {
-            throw e
-        },
     })
 
     const [canFetchMore, setCanFetchMore] = useState(true)
 
     const handleFetchMore = async () => {
-        console.log('fetch')
         const {
             data: {
                 user: { conversations: newConversations },
@@ -87,7 +84,12 @@ export default forwardRef(function Messages({ visible }, ref) {
         <DropDownMenu ref={ref}>
             <Container ref={setRoot}>
                 {loading && <DotLoader style={{ margin: '2em', width: '10em' }} />}
-                {error && <NotFound message={'Something went wrong'} />}
+                {error && (
+                    <>
+                        <NotFound message={'Something went wrong'} />
+                        <ErrorMessage>{error.message}</ErrorMessage>
+                    </>
+                )}
                 {conversations &&
                     conversations.map((conversation) => (
                         <ConversationElement data={conversation} key={conversation.id} />
@@ -105,17 +107,31 @@ export default forwardRef(function Messages({ visible }, ref) {
 
 const ConversationElement = ({ data }) => {
     const { addChat } = useContext(MessengerContext)
+    const { userId } = useContext(AuthContext)
+
+    const [markLastMessagesSeen] = useMutation(MARK_LAST_MESSAGES_SEEN, {
+        variables: {
+            conversationId: data.id,
+        },
+        onCompleted: (data) => {
+            console.log(data)
+        },
+        onError: (e) => {
+            console.log(e)
+        },
+    })
 
     const handleClick = () => {
         addChat(data.id)
-    }
-
-    const markSeen = () => {
-        console.log('seen !')
+        markLastMessagesSeen()
     }
 
     return (
-        <ListElement isSeen={data.isSeen} handleClick={handleClick} markSeen={markSeen}>
+        <ListElement
+            isSeen={data.messages[0].seenBy.map((o) => o.id).includes(userId)}
+            handleClick={handleClick}
+            markSeen={markLastMessagesSeen}
+        >
             <Avatar image={data.image.urls.small} />
             <ListElement.ContentContainer>
                 <ListElement.Title>{data.name}</ListElement.Title>

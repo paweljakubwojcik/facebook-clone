@@ -27,6 +27,7 @@ const Container = styled.main`
 
     grid-template-areas: 'left feed right';
     grid-template-columns: 1fr 4fr 1fr;
+    column-gap: 1em;
 
     /* @media (max-width: ${1200}px) {
         grid-template-areas: 'feed feed right';

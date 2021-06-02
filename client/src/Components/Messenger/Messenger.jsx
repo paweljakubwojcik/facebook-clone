@@ -26,11 +26,21 @@ export default function Messenger() {
                 data: { newMessage: conversationWithNewMessage },
             },
         }) => {
-            const { id } = conversationWithNewMessage
-            if (!activeConversations.includes(id)) {
-                addChat(id)
+            const { id: newConversationId } = conversationWithNewMessage
+            if (!activeConversations.includes(newConversationId)) {
+                addChat(newConversationId)
                 play()
             }
+            const isSuccesfull = cache.modify({
+                id: `User:${id}`,
+                fields: {
+                    conversations: (prevConvRefs) => ({
+                        ...prevConvRefs,
+                        [newConversationId]: conversationWithNewMessage,
+                    }),
+                },
+            })
+            if (!isSuccesfull) console.warn(`cannot modify cache of User:${id}.conversations`)
         },
     })
 

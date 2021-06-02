@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { GenericButton } from '../General/Buttons'
 import ElementContainer from '../General/ElementContainer'
@@ -16,6 +16,7 @@ import { useQuery } from '@apollo/client'
 import { GET_CONVERSATION } from '../../Util/GraphQL_Queries/Conversation_queries'
 import { useIntersectionObserver } from '../../Util/Hooks/useIntersectionObserver'
 import MessagesContainer from './MessagesContainer'
+import ErrorMessage from '../General/ErrorMessage'
 
 // USE SubscribeForMore
 
@@ -100,6 +101,8 @@ export default function Chat({ chatId }) {
                             <div ref={setRef} style={{ height: '30px', display: 'block' }}></div>
                         )}
                     </MessagesContainer>
+                ) : error ? (
+                    <ErrorMessage textOnly>{error.name}</ErrorMessage>
                 ) : (
                     <NoMessages image={image} />
                 )}

@@ -145,3 +145,16 @@ export const GET_CONVERSATIONS = gql`
     }
     ${MESSAGE_FRAGMENT}
 `
+
+export const MARK_LAST_MESSAGES_SEEN = gql`
+    mutation markLastMessagesSeen($conversationId: ID!) {
+        markLastMessagesSeen(conversationId: $conversationId) {
+            id
+            messages(paginationData: { limit: 1 }) {
+                id
+                ...Message
+            }
+        }
+    }
+    ${MESSAGE_FRAGMENT}
+`
