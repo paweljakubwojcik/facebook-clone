@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import FormButton from '../General/FormButton'
 import UserButton from '../General/UserButton'
-import Menu from './Menu'
+import Menu from '../QuickMenu/Menu'
 import Header from './Header'
 import PushNotification from '../General/PushNotification'
 

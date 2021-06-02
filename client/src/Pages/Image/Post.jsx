@@ -1,8 +1,10 @@
 import React from 'react'
 import styled from 'styled-components/macro'
 import { useQuery } from '@apollo/client'
-import PostContent from '../../Components/Post/PostContent'
 import { GET_ENTITY } from '../../Util/GraphQL_Queries'
+
+import PostContent from '../../Components/Post/PostContent'
+import SkeletonPost from '../../Components/skeletons/SkeletonPost'
 
 import { useHistory } from 'react-router-dom'
 import ErrorMessage from '../../Components/General/ErrorMessage'
@@ -12,18 +14,20 @@ import { MAX_TABLET_PX } from '../../styles/breakpoints'
 
 export default function Post({ postId, postWidth }) {
     const history = useHistory()
-    const { error, loading, data: { entity } = {} } = useQuery(GET_ENTITY, {
+    const {
+        error,
+        loading,
+        data: { entity } = {},
+    } = useQuery(GET_ENTITY, {
         variables: {
             id: postId,
         },
     })
 
-    console.log(entity)
-
     return (
         <FlexWrapper>
             <PostWrapper postWidth={postWidth}>
-                {loading && <p>Loading...</p>}
+                {loading && <SkeletonPost contentOnly />}
                 {error && <ErrorMessage>{error.message}</ErrorMessage>}
 
                 {entity && (
@@ -43,7 +47,7 @@ export default function Post({ postId, postWidth }) {
 const FlexWrapper = styled.div`
     display: flex;
     position: absolute;
-    z-index:0;
+    z-index: 0;
     top: 0;
     height: 100vh;
     width: 100%;

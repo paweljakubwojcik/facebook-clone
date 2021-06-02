@@ -13,13 +13,9 @@ export default function useResizableInput({ maxHeight, offset = 0 } = {}) {
         if (resizableInput.current) {
             resizableInput.current.style.height = '1px'
 
-            const paddingBottom = parseFloat(
-                window.getComputedStyle(resizableInput.current).paddingBottom.replace('px', '')
-            )
-
             const height =
                 resizableInput.current.scrollHeight < maxHeight || !maxHeight
-                    ? resizableInput.current.scrollHeight + paddingBottom + offset
+                    ? resizableInput.current.scrollHeight + offset
                     : maxHeight
             resizableInput.current.style.height = height + 'px'
         }

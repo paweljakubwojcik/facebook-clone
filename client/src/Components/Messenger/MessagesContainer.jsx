@@ -57,6 +57,8 @@ const Messages = styled.div`
     height: 100%;
     width: 100%;
     overflow-y: auto;
+
+    ${(props) => props.theme.scrollBar};
 `
 
 const Timestamp = styled.div`

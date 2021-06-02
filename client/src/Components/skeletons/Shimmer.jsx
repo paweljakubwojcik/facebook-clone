@@ -1,9 +1,6 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 
-
-
-
 export default function Shimmer() {
     return (
         <ShimmerWrapper className="shimmer-wrapper">
@@ -13,7 +10,7 @@ export default function Shimmer() {
 }
 
 const shimmer = keyframes`
-  0% {
+    0%{
         transform: translateX(-300%) skewX(-20deg);
     }
     50% {
@@ -22,7 +19,7 @@ const shimmer = keyframes`
     100% {
         transform: translateX(300%) skewX(-20deg);
     }
-`;
+`
 
 const ShimmerWrapper = styled.div`
     position: absolute;
@@ -31,7 +28,7 @@ const ShimmerWrapper = styled.div`
     width: 100%;
     height: 100%;
 
-    .shimmer{
+    .shimmer {
         width: 50%;
         height: 100%;
         background-color: #ffffff33;
@@ -39,6 +36,4 @@ const ShimmerWrapper = styled.div`
         animation: ${shimmer} 2s infinite;
         filter: blur(10px);
     }
-
 `
-

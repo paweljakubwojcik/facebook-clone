@@ -13,6 +13,7 @@ import NotFound from '../General/NotFound'
 import AnswerToInvitation from '../General/ActionButtons/AnswerToInvitation'
 import ListElement, { ElementContainer } from './ListElement'
 import { useIntersectionObserver } from '../../Util/Hooks/useIntersectionObserver'
+import SkeletonUserButton from '../skeletons/SkeletonUserButton'
 
 const limit = 8
 
@@ -100,10 +101,10 @@ const Notifications = forwardRef(({ count, visible, ...rest }, ref) => {
                             <Notification data={notification} key={notification.id} />
                         ))}
                         {!loading && !error && canFetchMore && (
-                            <ElementContainer
-                                ref={setRef}
-                                style={{ pointerEvents: 'none' }}
-                            ></ElementContainer>
+                            <div ref={setRef}>
+                                <SkeletonUserButton />
+                                <SkeletonUserButton />
+                            </div>
                         )}
                         {!loading && !error && !canFetchMore && (
                             <ElementContainer style={{ pointerEvents: 'none' }}>

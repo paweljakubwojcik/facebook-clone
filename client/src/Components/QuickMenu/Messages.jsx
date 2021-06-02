@@ -10,6 +10,7 @@ import ListElement, { ElementContainer } from './ListElement'
 import Avatar from '../General/Avatar'
 import { MessengerContext } from '../../Context/messenger'
 import { useIntersectionObserver } from '../../Util/Hooks/useIntersectionObserver'
+import SkeletonUserButton from '../skeletons/SkeletonUserButton'
 
 const limit = 2
 
@@ -92,14 +93,10 @@ export default forwardRef(function Messages({ visible }, ref) {
                         <ConversationElement data={conversation} key={conversation.id} />
                     ))}
                 {!loading && !error && canFetchMore && (
-                    <ElementContainer ref={setRef} style={{ pointerEvents: 'none' }}>
-                        no more notifications today ;/
-                    </ElementContainer>
-                )}
-                {!loading && !error && !canFetchMore && (
-                    <ElementContainer ref={setRef} style={{ pointerEvents: 'none' }}>
-                        no more messages
-                    </ElementContainer>
+                    <div ref={setRef}>
+                        <SkeletonUserButton />
+                        <SkeletonUserButton />
+                    </div>
                 )}
             </Container>
         </DropDownMenu>
