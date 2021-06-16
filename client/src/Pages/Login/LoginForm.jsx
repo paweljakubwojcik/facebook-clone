@@ -76,7 +76,7 @@ export default function LoginForm({ setForm }) {
             </Form.Row>
             <Providers>
                 <p>Or login using one of the following:</p>
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
                     {/* <Form.Button type="button">Facebook</Form.Button> */}
                     <Form.Button type="button" as="a" href={getGoogleAuthLink()}>
                         Google

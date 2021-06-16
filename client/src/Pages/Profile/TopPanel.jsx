@@ -61,6 +61,7 @@ export default function TopPanel({ loading, user, width }) {
                             )}
                         </AvatarContainer>
                         <h2>{user?.username}</h2>
+                        <h3>{user?.email}</h3>
                     </User>
                     {profileForm && (
                         <ChangeImageForm
@@ -90,10 +91,14 @@ const User = styled.div`
     flex-direction: column;
     align-items: center;
     h2 {
-        margin: 0.7em;
+        margin-top: 0.7em;
         font-size: 1.6em;
     }
-    
+    h3 {
+        margin-bottom: 0.7em;
+        font-size: 1em;
+        color: ${(props) => props.theme.secondaryFontColor};
+    }
 `
 
 const GradientContainer = styled.div`
