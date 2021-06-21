@@ -5,6 +5,7 @@ module.exports = gql`
     extend type Query {
         images(userId: ID!, limit: Int!, offset: Int!): [Image]
         image(imageId: ID!): Image
+        imageOfTheDay: Image
     }
 
     extend type Mutation {

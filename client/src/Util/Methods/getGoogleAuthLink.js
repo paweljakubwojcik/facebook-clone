@@ -1,5 +1,5 @@
 import * as queryString from 'query-string'
-import { GOOGLE_AUTH_CLIENT_ID } from '../../config'
+import { GOOGLE_AUTH_CLIENT_ID } from '../../appConfig'
 
 export const getGoogleAuthLink = () => {
     const stringifiedParams = queryString.stringify({

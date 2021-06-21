@@ -32,7 +32,7 @@ const imageSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['PROFILE', 'BACKGROUND', 'NONE'],
+        enum: ['PROFILE', 'BACKGROUND', 'NONE', 'IMAGE_OF_THE_DAY'],
     },
 })
 

@@ -63,3 +63,21 @@ export const ADD_PICTURE = gql`
         }
     }
 `
+
+export const GET_IMAGE_OF_THE_DAY = gql`
+    query imageOfTheDay {
+        imageOfTheDay {
+            id
+            title
+            createdAt
+            urls {
+                id
+                large
+            }
+            author {
+                name
+                link
+            }
+        }
+    }
+`
