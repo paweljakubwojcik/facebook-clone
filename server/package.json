@@ -7,7 +7,7 @@
         "dev": "nodemon server.js",
         "start": "node server.js",
         "preinstall": "npx npm-force-resolutions",
-        "deploy": "heroku git:remote -a fakebook-fake-facebook && git subtree push --prefix server heroku master"
+        "deploy": "cd ../ && heroku git:remote -a fakebook-fake-facebook && git subtree push --prefix server heroku master"
     },
     "engines": {
         "node": "12.x"
