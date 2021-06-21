@@ -5,7 +5,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 if (process.env.NODE_ENV === 'production') {
     HTTP_URL = 'https://fakebook-fake-facebook.herokuapp.com/'
-    WS_URL = 'ws://fakebook-fake-facebook.herokuapp.com/subscriptions'
+    WS_URL = 'wss://fakebook-fake-facebook.herokuapp.com/subscriptions'
 }
 
 export const GOOGLE_AUTH_CLIENT_ID =
