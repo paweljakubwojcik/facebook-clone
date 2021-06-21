@@ -8,7 +8,7 @@ import ElementContainer from './ElementContainer'
 import Avatar from './Avatar'
 import { FilledButton } from '../General/Buttons'
 import DotLoader from './DotLoader'
-import { GET_USER_DETAILS } from '../../Util/GraphQL_Queries/User_queries'
+import { GET_USER_DETAILS } from '../../Util/GraphQL_Queries'
 
 export default function ProfilePreview({ userId }) {
     const { data: { user } = {}, loading } = useQuery(GET_USER_DETAILS, {

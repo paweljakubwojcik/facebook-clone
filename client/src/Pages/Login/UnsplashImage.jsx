@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import Logo from '../../styles/images/logo.png'
 
-import { GET_IMAGE_OF_THE_DAY } from '../../Util/GraphQL_Queries/Image_queries'
+import { GET_IMAGE_OF_THE_DAY } from '../../Util/GraphQL_Queries'
 import { useQuery } from '@apollo/client'
 
 // this component fetch a random photo every time it's mounted

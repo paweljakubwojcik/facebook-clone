@@ -15,6 +15,7 @@ const pubsub = new PubSub()
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    introspection: true,
     context: ({ req, connection, payload: { authorization } = {} }) => {
         if (connection) connection.context.authorization = authorization // some auth shinanegans
         return {

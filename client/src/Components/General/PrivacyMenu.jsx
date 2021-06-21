@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useQuery } from '@apollo/client'
-import { ENUMS } from '../../Util/GraphQL_Queries/Type_queries'
+import { ENUMS } from '../../Util/GraphQL_Queries'
 
 import RadioButtonsGroup from './AnimatedMenu/RadioButtons'
 

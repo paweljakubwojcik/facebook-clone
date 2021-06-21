@@ -13,7 +13,7 @@ import { MessengerContext } from '../../Context/messenger'
 import { useCurrentUser } from '../../Util/Hooks/useCurrentUser'
 
 import { useQuery } from '@apollo/client'
-import { GET_CONVERSATION } from '../../Util/GraphQL_Queries/Conversation_queries'
+import { GET_CONVERSATION } from '../../Util/GraphQL_Queries'
 import { useIntersectionObserver } from '../../Util/Hooks/useIntersectionObserver'
 import MessagesContainer from './MessagesContainer'
 import ErrorMessage from '../General/ErrorMessage'
