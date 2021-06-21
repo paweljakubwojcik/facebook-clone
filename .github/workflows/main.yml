@@ -15,22 +15,10 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            - name: Config git
-              run: git config --global user.name "Automated Heroku Deploy" && git config --global user.email ${{env.EMAIL}}
-            - name: create login file
-              run: |
-                  cat > ~/.netrc <<EOF
-                    machine api.heroku.com
-                      login ${{env.EMAIL}}
-                      password ${{env.HEROKU_API_KEY}}
-                    machine git.heroku.com
-                      login ${{env.EMAIL}}
-                      password ${{env.HEROKU_API_KEY}}
-                  EOF
-            - name: Login to heroku
-              run: heroku login
-            - name: Choosing app
-              run: heroku git:remote -a ${{env.APP_NAME}}
-
-            - name: Pushing build to heroku git
-              run: git push heroku `git subtree split --prefix=server production`:refs/heads/master
+        - uses: actions/checkout@v2
+        - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+          with:
+            heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+            heroku_app_name: ${{env.APP_NAME}}
+            heroku_email: ${{env.EMAIL}}
+            appdir: "server" 
