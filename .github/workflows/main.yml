@@ -1,8 +1,7 @@
 name: HEROKU CI
 env:
-  APP_NAME: ${{ 'fakebook-fake-facebook' }}
-  EMAIL: ${{'pawel.jakub.wojcik@gmail.com'}}
-
+    APP_NAME: ${{ 'fakebook-fake-facebook' }}
+    EMAIL: ${{'pawel.jakub.wojcik@gmail.com'}}
 
 on:
     push:
@@ -18,7 +17,9 @@ jobs:
             - name: Config git
               run: git config --global user.name "Automated Heroku Deploy" && git config --global user.email ${{env.EMAIL}}
             - name: Login to heroku
-              run: heroku login 
-              
+              run: heroku login
+            - name: Adding remote
+              run: heroku git:remote -a ${{env.APP_NAME}}
+
             - name: Pushing build to heroku git
               run: git push heroku `git subtree split --prefix=server production`:refs/heads/master
