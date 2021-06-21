@@ -1,19 +1,23 @@
 
 # Fakebook aka facebook-clone
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9464aedd-dd07-499a-b1a1-43ee6b238ac2/deploy-status)](https://app.netlify.com/sites/fakebook-fake-facebook/deploys)
+
+## [Live link](https://fakebook-fake-facebook.netlify.app/)
 
 #### features I managed to implement:
   - [x] user registration & authorization
+  - [x] google authorization 
   - [x] adding/deleting post
-  - [x] adding/deleting comments onto posts
   - [x] liking unliking posts and comments
   - [x] uploading pictures
   - [x] adding other users to friends
   - [x] targetted feed, you can choose who can see your post
   - [x] light and dark theme
   - [x] backend pagination of posts
-  - [x] notifications
+  - [x] real time notifications, powered by pooling
+  - [x] messenger, powered by websocket connection
   
-There are many issues left, but I don't have time nor motivation to addres them right now.
+There are many issues left, but I don't have time nor motivation to addres them right now
   
 ## tech so far used:
 * [GraphQl](https://graphql.org/) with [Apollo-server](https://www.apollographql.com/docs/apollo-server/) & [Apollo-Client](https://www.apollographql.com/docs/react/)
