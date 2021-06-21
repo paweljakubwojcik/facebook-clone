@@ -21,3 +21,4 @@ jobs:
                   appdir: './server'
                   branch: 'production'
                   useforce: true
+                  dynamicFiles: false
