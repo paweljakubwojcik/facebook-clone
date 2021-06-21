@@ -8,17 +8,14 @@ on:
     workflow_dispatch:
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: Deploy to Heroku
-              uses: CDNievas/heroku-action@v1.0 # This is the action
-              with:
-                  heroku_app_name: 'fakebook-fake-facebook'
-                  heroku_email: 'pawel.jakub.wojcik@gmail.com'
-                  heroku_api_key: '${{secrets.HEROKU_API_KEY}}'
-                  appdir: './server'
-                  branch: 'production'
-                  useforce: true
-                  dynamicFiles: false
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "fakebook-fake-facebook"
+          heroku_email: "pawel.jakub.wojcik@gmail.com"
+          justlogin: true
+      - run: heroku auth:whoami

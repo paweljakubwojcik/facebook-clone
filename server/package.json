@@ -1,37 +1,38 @@
 {
-  "name": "fakebook",
-  "version": "1.0.0",
-  "description": "facebook clone with limited features",
-  "main": "server.js",
-  "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js",
-    "preinstall": "npx npm-force-resolutions"
-  },
-  "engines": {
-    "node": "12.x"
-  },
-  "author": "Me",
-  "license": "ISC",
-  "dependencies": {
-    "apollo-server": "^2.21.0",
-    "apollo-server-express": "^2.21.0",
-    "axios": "^0.21.1",
-    "bcryptjs": "^2.4.3",
-    "dayjs": "^1.10.4",
-    "dotenv": "^8.2.0",
-    "firebase-admin": "^9.5.0",
-    "graphql": "^15.5.0",
-    "graphql-upload": "^11.0.0",
-    "graphql-upload-minimal": "^1.2.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.3",
-    "node-fetch": "^2.6.1",
-    "sharp": "^0.27.1",
-    "unsplash-js": "^6.3.0"
-  },
-  "resolutions": {
-    "fs-capacitor": "6.2.0",
-    "graphql-upload": "11.0.0"
-  }
+    "name": "fakebook",
+    "version": "1.0.0",
+    "description": "facebook clone with limited features",
+    "main": "server.js",
+    "scripts": {
+        "dev": "nodemon server.js",
+        "start": "node server.js",
+        "preinstall": "npx npm-force-resolutions",
+        "deploy": "heroku git:remote -a fakebook-fake-facebook && git subtree push --prefix server heroku master"
+    },
+    "engines": {
+        "node": "12.x"
+    },
+    "author": "Me",
+    "license": "ISC",
+    "dependencies": {
+        "apollo-server": "^2.21.0",
+        "apollo-server-express": "^2.21.0",
+        "axios": "^0.21.1",
+        "bcryptjs": "^2.4.3",
+        "dayjs": "^1.10.4",
+        "dotenv": "^8.2.0",
+        "firebase-admin": "^9.5.0",
+        "graphql": "^15.5.0",
+        "graphql-upload": "^11.0.0",
+        "graphql-upload-minimal": "^1.2.0",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^5.12.3",
+        "node-fetch": "^2.6.1",
+        "sharp": "^0.27.1",
+        "unsplash-js": "^6.3.0"
+    },
+    "resolutions": {
+        "fs-capacitor": "6.2.0",
+        "graphql-upload": "11.0.0"
+    }
 }
