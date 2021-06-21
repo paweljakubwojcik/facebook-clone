@@ -11,6 +11,7 @@ import { getMainDefinition } from '@apollo/client/utilities'
 import { setContext } from '@apollo/client/link/context'
 import { createUploadLink } from 'apollo-upload-client'
 import { WebSocketLink } from '@apollo/client/link/ws'
+import { HTTP_URL, WS_URL } from './appConfig'
 
 import cursorPagination from './Util/cursorPagination'
 import copyAuthHeaderMiddleware from './Util/ApolloMiddleware/copyAuthHeaderMiddleware'
@@ -18,11 +19,11 @@ import copyAuthHeaderMiddleware from './Util/ApolloMiddleware/copyAuthHeaderMidd
 // TODO: setup authetication over subscriptions
 
 const httpLink = createUploadLink({
-    uri: 'http://localhost:5000',
+    uri: HTTP_URL,
 })
 
 const wsLink = new WebSocketLink({
-    uri: 'ws://localhost:5000/subscriptions',
+    uri: WS_URL,
     options: {
         reconnect: true,
     },
