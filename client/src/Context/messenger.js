@@ -99,8 +99,6 @@ function MessengerProvider(props) {
         })
     }, [])
 
-    console.log({ activeConversations, minimalizedConversations })
-
     const { isLogged } = useContext(AuthContext)
     useEffect(() => {
         if (!isLogged) clear()
