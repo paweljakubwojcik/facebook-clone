@@ -2,7 +2,6 @@ name: HEROKU CI
 env:
     APP_NAME: ${{ 'fakebook-fake-facebook' }}
     EMAIL: ${{'pawel.jakub.wojcik@gmail.com'}}
-    HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
 
 on:
     push:
