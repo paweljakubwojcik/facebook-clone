@@ -45,3 +45,35 @@ module.exports.generateRandomPhoto = async (type) => {
         storageProvider: 'UNSPLASH',
     }
 }
+
+/**
+ *
+ * @returns {Promise<{urls: { thumbnail: string, small: string, medium: string, large: string, }, createdAt: string, author: {name: string,link: string,},storageProvider: string,}>}
+ */
+module.exports.getImageOfTheDay = async () => {
+    try {
+        const picture = await unsplash.photos
+            .getRandomPhoto({
+                query: 'community',
+                orientation: 'portrait',
+            })
+            .then((data) => toJson(data))
+
+        return {
+            urls: {
+                thumbnail: picture.urls.thumb,
+                small: picture.urls.thumb,
+                medium: picture.urls.small,
+                large: picture.urls.regular,
+            },
+            createdAt: new Date().toISOString(),
+            author: {
+                name: picture.user.name,
+                link: picture.user.links.html,
+            },
+            storageProvider: 'UNSPLASH',
+        }
+    } catch (error) {
+        throw error
+    }
+}
