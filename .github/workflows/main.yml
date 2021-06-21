@@ -21,4 +21,5 @@ jobs:
             heroku_api_key: ${{secrets.HEROKU_API_KEY}}
             heroku_app_name: ${{env.APP_NAME}}
             heroku_email: ${{env.EMAIL}}
-            appdir: "server" 
+            appdir: "server"
+            branch: "production"
