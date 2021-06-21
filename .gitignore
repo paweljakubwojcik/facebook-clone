@@ -4,3 +4,4 @@ config.json
 *.code-workspace
 .env
 temp/
+DEPLOY_STRATEGY.MD
