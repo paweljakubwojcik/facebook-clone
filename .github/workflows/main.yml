@@ -17,9 +17,9 @@ jobs:
       - name: Deploy to Heroku
         uses: CDNievas/heroku-action@v1.0 # This is the action
         with:
-          app-name: "fakebook-fake-facebook"
+          heroku_app_name: "fakebook-fake-facebook"
           heroku_email: "pawel.jakub.wojcik@gmail.com"
-          api-key: "${{secrets.HEROKU_API_KEY}}"
+          heroku_api_key: "${{secrets.HEROKU_API_KEY}}"
           appdir: "./server"
           branch: "production"
     
