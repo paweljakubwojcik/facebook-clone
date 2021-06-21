@@ -2,11 +2,14 @@
   "name": "fakebook",
   "version": "1.0.0",
   "description": "facebook clone with limited features",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
     "preinstall": "npx npm-force-resolutions"
+  },
+  "engines": {
+    "node": "12.x"
   },
   "author": "Me",
   "license": "ISC",
