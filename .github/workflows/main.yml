@@ -11,13 +11,17 @@ jobs:
     deploy:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
-            - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+            - name: Heroku Action
+  # You may pin to the exact commit or the version.
+  # uses: CDNievas/heroku-action@c9cf9c85571e67583e44ec92c0d1113f66b0e838
+              uses: CDNievas/heroku-action@v1.0
               with:
-                  heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-                  heroku_app_name: 'fakebook-fake-facebook'
-                  heroku_email: 'pawel.jakub.wojcik@gmail.com'
-                  justlogin: true
-                  
-            - name: Run whoami
-              run: heroku auth:whoami
+    # Used for authentication. You can find it in your heroku homepage account settings
+                heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+    # Email from Heroku Account
+                heroku_email: pawel.jakub.wojcik@gmail.com
+    # The appname to use for deploying/updating
+                heroku_app_name: fakebook-fake-facebook
+    # The branch that you would like to deploy to Heroku
+                branch: production
+                appdir: server  
