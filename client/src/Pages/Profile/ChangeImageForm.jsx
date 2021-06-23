@@ -15,7 +15,7 @@ import PictureLink from '../../Components/General/PictureLink'
 import FormButton from '../../Components/General/FormButton'
 import { SquareButton } from '../../Components/General/Buttons'
 import FileImage from '../../Components/General/FileImage'
-
+import ErrorMessage from '../../Components/General/ErrorMessage'
 
 const enumTypes = {
     profile: 'profileImage',
@@ -40,7 +40,7 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
 
     const field = enumTypes[type]
 
-    const { updatePicture, loading } = useUpdatePicture({ image, body }, callback, field)
+    const { updatePicture, loading, error } = useUpdatePicture({ image, body }, callback, field)
 
     async function addPicture() {
         await updatePicture()
@@ -60,12 +60,12 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
         if (isFile) {
             setPreview(image[0])
         }
-        return () => {}
     }, [image, isFile, user])
 
     const resizableInput = useResizableInput({ maxHeight: 120 })
 
     const [active, setActive] = useState('main')
+
     useEffect(() => {
         setActive(image ? 'imgPreview' : 'main')
     }, [image])
@@ -154,6 +154,7 @@ export default function ChangeImageForm({ toggleForm, user, type }) {
                             </Buttons>
                         </AnimatedMenu.Secondary>
                     </AnimatedMenu>
+                    {error && <ErrorMessage textOnly>{error.message} </ErrorMessage>}
                 </Form>
             </ElementContainer>
         </Modal>

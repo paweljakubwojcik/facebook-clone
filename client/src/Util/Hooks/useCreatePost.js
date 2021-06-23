@@ -15,13 +15,12 @@ export const useCreatePost = (values, callback) => {
 
     const { pathname } = useLocation()
     const userId = pathname.split('/')[2]
-    console.log(userId)
 
     const [uploadPost] = useMutation(ADD_POST, {
         //executed if mutation is succesful
-        async update(proxy, { data: { createPost: newPost } }) {
+        async update(cache, { data: { createPost: newPost } }) {
             try {
-                const cacheData = proxy.readQuery({
+                const cacheData = cache.readQuery({
                     query: GET_POSTS,
                     variables: { userId },
                 })
@@ -31,7 +30,7 @@ export const useCreatePost = (values, callback) => {
 
                 //updating cache
                 const updatedPosts = [newPost, ...cacheData.posts]
-                proxy.writeQuery({
+                cache.writeQuery({
                     query: GET_POSTS,
                     variables: { userId },
                     data: { posts: updatedPosts },
