@@ -230,9 +230,6 @@ export const UPDATE_USER = gql`
             username
             backgroundImage {
                 id
-                post {
-                    id
-                }
                 urls {
                     id
                     small

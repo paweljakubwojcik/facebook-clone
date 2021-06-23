@@ -67,11 +67,11 @@ const userSchema = new Schema({
     ],
     profileImage: {
         type: Schema.Types.ObjectId,
-        ref: 'images',
+        ref: 'Image',
     },
     backgroundImage: {
         type: Schema.Types.ObjectId,
-        ref: 'images',
+        ref: 'Image',
     },
     conversations: [
         {

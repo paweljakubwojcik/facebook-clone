@@ -67,8 +67,8 @@ const StyledButton = styled.button`
     margin: 1em;
     //padding: .3rem 1.3em;
     display: flex;
-    justify-content:center;
-    align-items:center;
+    justify-content: center;
+    align-items: center;
     height: 2.5rem;
     width: 7.5rem;
     text-align: center;
@@ -81,5 +81,5 @@ const StyledButton = styled.button`
     animation: ${(props) => props.loading && loading} 6s infinite
         cubic-bezier(0.66, -0.33, 0.3, 1.02);
     background-color: ${(props) => props.inactive && props.theme.secondaryElementColor};
-    pointer-events: ${(props) => props.inactive && 'none'};
+    pointer-events: ${(props) => (props.inactive || props.loading) && 'none'};
 `

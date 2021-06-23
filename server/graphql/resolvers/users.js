@@ -1,9 +1,9 @@
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
 const { UserInputError } = require('apollo-server')
 
+const { Types } = require('mongoose')
+
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators')
-const { createWelcomePost } = require('./methods/createWelcomePost')
 const { generateRandomPhoto } = require('../../services/unsplash')
 const { paginateResult, getPaginatedResult } = require('./methods/cursorPagination')
 const checkAuth = require('../../utils/checkAuth')
@@ -17,7 +17,6 @@ const Conversation = require('../../models/Conversation')
 const getPrivacyFilter = require('./methods/getPrivacyFilter')
 const { validateGoogleUser } = require('../../services/googleAuth')
 const generateImageFromGoogleAuth = require('./methods/generateImageFromGoogleAuth')
-const conversations = require('./conversations')
 
 module.exports = {
     Mutation: {
@@ -218,13 +217,17 @@ module.exports = {
             return await user.save()
         },
         async updateUser(_, { field, newValue }, context) {
-            const { id } = checkAuth(context)
-            const user = await User.findByIdAndUpdate(
-                id,
-                { [field]: newValue },
-                { new: true, useFindAndModify: false }
-            )
-            return user
+            try {
+                const { id } = checkAuth(context)
+                const user = await User.findByIdAndUpdate(
+                    id,
+                    { [field]: newValue },
+                    { new: true, useFindAndModify: false }
+                )
+                return user
+            } catch (error) {
+                return error
+            }
         },
         async updateUserInfo(_, { field, newValue }, context) {
             try {
